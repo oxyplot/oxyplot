@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Demo_OxyPlotControls</name>
+    </assembly>
+    <members>
+        <member name="T:Demo_OxyPlotControls.App">
+            <summary>
+            Interaction logic for App.xaml.
+            Application-level events such as Startup, Exit, and DispatcherUnhandledException can be handled in this file.
+            </summary>
+            <summary>
+            App
+            </summary>
+        </member>
+        <member name="M:Demo_OxyPlotControls.App.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:Demo_OxyPlotControls.App.Main">
+            <summary>
+            Application Entry Point.
+            </summary>
+        </member>
+        <member name="T:Demo_OxyPlotControls.MainWindow">
+            <summary>
+            Interaction logic for MainWindow.xaml.
+            Demonstrates OxyPlot controls with various series types.
+            </summary>
+            <summary>
+            MainWindow
+            </summary>
+        </member>
+        <member name="F:Demo_OxyPlotControls.MainWindow.TestAxisNameBindingProperty">
+            <summary>
+            Dependency property for the test axis name binding property.
+            </summary>
+        </member>
+        <member name="P:Demo_OxyPlotControls.MainWindow.TestAxisNameBinding">
+            <summary>
+            Gets or sets the test axis name binding value.
+            </summary>
+        </member>
+        <member name="P:Demo_OxyPlotControls.MainWindow.Points1">
+            <summary>
+            Gets the first set of data points for testing.
+            </summary>
+        </member>
+        <member name="P:Demo_OxyPlotControls.MainWindow.Points2">
+            <summary>
+            Gets the second set of data points for testing.
+            </summary>
+        </member>
+        <member name="P:Demo_OxyPlotControls.MainWindow.Points3">
+            <summary>
+            Gets the third set of data points for testing.
+            </summary>
+        </member>
+        <member name="P:Demo_OxyPlotControls.MainWindow.Points4">
+            <summary>
+            Gets the fourth set of data points for testing.
+            </summary>
+        </member>
+        <member name="P:Demo_OxyPlotControls.MainWindow.AreaPoints">
+            <summary>
+            Gets the area points collection for testing.
+            </summary>
+        </member>
+        <member name="P:Demo_OxyPlotControls.MainWindow.ScatterPoints">
+            <summary>
+            Gets the scatter points collection for testing.
+            </summary>
+        </member>
+        <member name="F:Demo_OxyPlotControls.MainWindow._demoDataRegistry">
+            <summary>
+            Registry to store demo data for series, keyed by series title.
+            This allows restoring data after loading XML settings.
+            </summary>
+        </member>
+        <member name="F:Demo_OxyPlotControls.MainWindow._categoryAxisLabelsRegistry">
+            <summary>
+            Registry to store category axis labels, keyed by axis key.
+            </summary>
+        </member>
+        <member name="M:Demo_OxyPlotControls.MainWindow.#ctor">
+            <summary>
+            Initializes a new instance of the MainWindow class.
+            </summary>
+        </member>
+        <member name="M:Demo_OxyPlotControls.MainWindow.RepopulateAllSeriesData">
+            <summary>
+            Repopulates all series with demo data after loading XML settings.
+            </summary>
+        </member>
+        <member name="M:Demo_OxyPlotControls.MainWindow.RepopulateCategoryAxisLabels">
+            <summary>
+            Repopulates category axis labels from the registry.
+            </summary>
+        </member>
+        <member name="M:Demo_OxyPlotControls.MainWindow.RepopulateSeriesData(OxyPlot.Wpf.Series)">
+            <summary>
+            Repopulates a single series with demo data.
+            First tries to match by title, then falls back to type-based defaults.
+            </summary>
+        </member>
+        <member name="M:Demo_OxyPlotControls.MainWindow.ApplyDataToSeries(OxyPlot.Wpf.Series,System.Object)">
+            <summary>
+            Applies stored data to a series.
+            </summary>
+        </member>
+        <member name="M:Demo_OxyPlotControls.MainWindow.GenerateDefaultDemoData(OxyPlot.Wpf.Series)">
+            <summary>
+            Generates default demo data for a series based on its type.
+            </summary>
+        </member>
+        <member name="M:Demo_OxyPlotControls.MainWindow.RegisterDemoData(System.String,System.Object)">
+            <summary>
+            Registers demo data for a series in the registry.
+            </summary>
+        </member>
+        <member name="M:Demo_OxyPlotControls.MainWindow.RegisterCategoryAxisLabels(System.String,System.Collections.IEnumerable)">
+            <summary>
+            Registers category axis labels in the registry.
+            </summary>
+        </member>
+        <member name="T:Demo_OxyPlotControls.MainWindow.DummyMultiPurposePoint">
+            <summary>
+            Dummy class for testing binding of series.
+            </summary>
+        </member>
+        <member name="T:Demo_OxyPlotControls.MainWindow.AreaPoint">
+            <summary>
+            Represents an area point with two data points.
+            </summary>
+        </member>
+        <member name="P:Demo_OxyPlotControls.MainWindow.AreaPoint.X1">
+            <summary>
+            Gets or sets the X1 coordinate.
+            </summary>
+        </member>
+        <member name="P:Demo_OxyPlotControls.MainWindow.AreaPoint.X2">
+            <summary>
+            Gets or sets the X2 coordinate.
+            </summary>
+        </member>
+        <member name="P:Demo_OxyPlotControls.MainWindow.AreaPoint.Y1">
+            <summary>
+            Gets or sets the Y1 coordinate.
+            </summary>
+        </member>
+        <member name="P:Demo_OxyPlotControls.MainWindow.AreaPoint.Y2">
+            <summary>
+            Gets or sets the Y2 coordinate.
+            </summary>
+        </member>
+        <member name="M:Demo_OxyPlotControls.MainWindow.AreaPoint.#ctor(OxyPlot.DataPoint,OxyPlot.DataPoint)">
+            <summary>
+            Initializes a new instance of the AreaPoint class.
+            </summary>
+            <param name="p1">The first data point.</param>
+            <param name="p2">The second data point.</param>
+        </member>
+        <member name="M:Demo_OxyPlotControls.MainWindow.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Demo_OxyPlotControls.TestWindow">
+            <summary>
+            Interaction logic for TestWindow.xaml
+            </summary>
+            <summary>
+            TestWindow
+            </summary>
+        </member>
+        <member name="M:Demo_OxyPlotControls.TestWindow.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Demo_OxyPlotControls.OxyPlotPropertiesDialog">
+            <summary>
+            Interaction logic for OxyPlotPropertiesDialog.xaml
+            </summary>
+            <summary>
+            OxyPlotPropertiesDialog
+            </summary>
+        </member>
+        <member name="M:Demo_OxyPlotControls.OxyPlotPropertiesDialog.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+    </members>
+</doc>

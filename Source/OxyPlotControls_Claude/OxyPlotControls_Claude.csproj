@@ -1,0 +1,42 @@
+<!-- OxyPlotControls - Modern C# WPF Controls for OxyPlot -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net8.0-windows;net9.0-windows</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <LangVersion>12.0</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <RootNamespace>OxyPlotControls</RootNamespace>
+    <AssemblyName>OxyPlotControls</AssemblyName>
+    <Authors>USACE-RMC</Authors>
+    <Description>WPF controls for editing and configuring OxyPlot charts. Provides property editors for series, axes, annotations, and general plot settings.</Description>
+    <Copyright>Copyright © USACE-RMC 2026</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+    <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
+    <!-- NOTE: DatabaseManager reference required for Excel/SQLite export functionality -->
+    <!-- Add reference to DatabaseManager project or package before building -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
+
+  <!-- Cursor files as embedded resources for custom cursors -->
+  <ItemGroup>
+    <Resource Include="Resources\*.cur" />
+  </ItemGroup>
+  <!-- DatabaseManager reference uses $(TargetFramework) to support multi-targeting -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0-windows'">
+    <Reference Include="DatabaseManager">
+      <HintPath>..\..\..\database-management\DatabaseManager\bin\Debug\net9.0\DatabaseManager.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+    <Reference Include="DatabaseManager">
+      <HintPath>..\..\..\database-management\DatabaseManager\bin\Debug\net8.0\DatabaseManager.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

@@ -1,42 +1,264 @@
-<!-- OxyPlotControls - Modern C# WPF Controls for OxyPlot -->
-<Project Sdk="Microsoft.NET.Sdk">
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <TargetFrameworks>net8.0-windows;net9.0-windows</TargetFrameworks>
-    <UseWPF>true</UseWPF>
-    <Nullable>enable</Nullable>
-    <LangVersion>12.0</LangVersion>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <RootNamespace>OxyPlotControls</RootNamespace>
     <AssemblyName>OxyPlotControls</AssemblyName>
-    <Authors>USACE-RMC</Authors>
-    <Description>WPF controls for editing and configuring OxyPlot charts. Provides property editors for series, axes, annotations, and general plot settings.</Description>
-    <Copyright>Copyright © USACE-RMC 2026</Copyright>
+    <OutputType>Library</OutputType>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <ProjectGuid>{EC9A1CF9-D426-4C94-8E67-4B25AC6877DE}</ProjectGuid>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
-
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>OxyPlotControls.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>OxyPlotControls.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DocumentationFile>OxyPlotControls.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <DefineConstants>TRACE</DefineConstants>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DocumentationFile>OxyPlotControls.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
-    <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
-    <!-- NOTE: DatabaseManager reference required for Excel/SQLite export functionality -->
-    <!-- Add reference to DatabaseManager project or package before building -->
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="8.0.5" />
-  </ItemGroup>
-
-  <!-- Cursor files as embedded resources for custom cursors -->
-  <ItemGroup>
-    <Resource Include="Resources\*.cur" />
-  </ItemGroup>
-  <!-- DatabaseManager reference uses $(TargetFramework) to support multi-targeting -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0-windows'">
     <Reference Include="DatabaseManager">
-      <HintPath>..\..\..\database-management\DatabaseManager\bin\Debug\net9.0\DatabaseManager.dll</HintPath>
+      <HintPath>..\..\database-management\DatabaseManager\bin\Debug\net481\DatabaseManager.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
-    <Reference Include="DatabaseManager">
-      <HintPath>..\..\..\database-management\DatabaseManager\bin\Debug\net8.0\DatabaseManager.dll</HintPath>
+    <Reference Include="GenericControls">
+      <HintPath>..\..\genericcontrols\GenericControls\bin\Debug\GenericControls.dll</HintPath>
     </Reference>
+    <Reference Include="OxyPlot, Version=1.0.0.0, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\OxyPlot.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.Wpf, Version=0.0.1.0, Culture=neutral, PublicKeyToken=75e952ba404cdbb0, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\OxyPlot.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.119.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Annotations\AnnotationControl.xaml.cs">
+      <DependentUpon>AnnotationControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Annotations\AnnotationSelectorControl.xaml.cs">
+      <DependentUpon>AnnotationSelectorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Axes\AxesControl.xaml.cs">
+      <DependentUpon>AxesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Axes\AxisControl.xaml.cs">
+      <DependentUpon>AxisControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="OxyPlotPropertiesControl.xaml.cs">
+      <DependentUpon>OxyPlotPropertiesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OxyPlotSettingsSerializer.cs" />
+    <Compile Include="OxyPlotToolbar.xaml.cs">
+      <DependentUpon>OxyPlotToolbar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SavePlotImageDialog.xaml.cs">
+      <DependentUpon>SavePlotImageDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Series\BarSeriesControl.xaml.cs">
+      <DependentUpon>BarSeriesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Series\BoxPlotSeriesControl.xaml.cs">
+      <DependentUpon>BoxPlotSeriesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Series\LineSeriesControl.xaml.cs">
+      <DependentUpon>LineSeriesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Series\ScatterSeriesControl.xaml.cs">
+      <DependentUpon>ScatterSeriesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Series\GenericSeriesControl.xaml.cs">
+      <DependentUpon>GenericSeriesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Series\SeriesControl.xaml.cs">
+      <DependentUpon>SeriesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Series\SeriesSelectorControl.xaml.cs">
+      <DependentUpon>SeriesSelectorControl.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Annotations\AnnotationControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Expander\ExpanderStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Annotations\AnnotationSelectorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Axes\AxesControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Axes\AxisControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GeneralPlotControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LegendControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="GeneralPlotControl.xaml.cs">
+      <DependentUpon>GeneralPlotControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LegendControl.xaml.cs">
+      <DependentUpon>LegendControl.xaml</DependentUpon>
+    </Compile>
+    <Page Include="OxyPlotPropertiesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OxyPlotToolbar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\IconResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SavePlotImageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Series\BarSeriesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Series\BoxPlotSeriesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Series\LineSeriesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Series\ScatterSeriesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Series\GenericSeriesControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Series\SeriesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Series\SeriesSelectorControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\pointer.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ZoomIn.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Polyline.png" />
+    <Resource Include="Resources\TextBox.png" />
+    <Resource Include="Resources\Polygon.png" />
+    <Resource Include="Resources\Point.png" />
+    <Resource Include="Resources\Rectangle.png" />
+    <Resource Include="Resources\Vertical_Line.png" />
+    <None Include="packages.config" />
+    <None Include="Resources\SelectPointCursor.cur" />
+    <Resource Include="Resources\Pan_Hand_Closed.cur" />
+    <Resource Include="Resources\save_chart_image.ico" />
+    <None Include="Resources\AddPointCursor.cur" />
+    <Resource Include="Resources\Horizontal_Line.png" />
+    <Resource Include="Resources\ArrowAnnotation.png" />
+    <Resource Include="Resources\Ellipse.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\EditTextbox.png" />
+    <Resource Include="Resources\Format.png" />
+    <Resource Include="Resources\ExportFile_16x.png" />
+    <None Include="Resources\ExportToExcel_16x.png" />
+    <Resource Include="Resources\Delete.png" />
+    <Resource Include="Resources\ExportPerformance_16x.png" />
+    <Content Include="Resources\OxyPlot.dll" />
+    <Content Include="Resources\OxyPlot.Wpf.dll" />
+    <Resource Include="Resources\Pan_Hand.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
+  </Target>
 </Project>

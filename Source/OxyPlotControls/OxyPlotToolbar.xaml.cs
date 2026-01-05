@@ -1,2294 +1,3705 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Microsoft.Win32;
 using OxyPlot;
-using OxyPlot.Wpf;
-using OxyPlot.Axes;
-using System.IO;
-using OxyPlotControls.Dialogs;
-using DatabaseManager;
+using Wpf = OxyPlot.Wpf;
 
-// Use aliases to resolve ambiguity between OxyPlot.Annotations and OxyPlot.Wpf
-using Annotation = OxyPlot.Annotations.Annotation;
-using LineAnnotation = OxyPlot.Annotations.LineAnnotation;
-using ArrowAnnotation = OxyPlot.Annotations.ArrowAnnotation;
-using TextAnnotation = OxyPlot.Annotations.TextAnnotation;
-using RectangleAnnotation = OxyPlot.Annotations.RectangleAnnotation;
-using EllipseAnnotation = OxyPlot.Annotations.EllipseAnnotation;
-using PointAnnotation = OxyPlot.Annotations.PointAnnotation;
-using PolygonAnnotation = OxyPlot.Annotations.PolygonAnnotation;
-using PolylineAnnotation = OxyPlot.Annotations.PolylineAnnotation;
-
-// Series types alias
-using ScatterPoint = OxyPlot.Series.ScatterPoint;
-using HistogramSeries = OxyPlot.Series.HistogramSeries;
-using HeatMapSeries = OxyPlot.Series.HeatMapSeries;
-using LinearBarSeries = OxyPlot.Series.LinearBarSeries;
-
-// Use OxyPlot.PlotCommands (not OxyPlot.Wpf.PlotCommands)
-using PlotCommands = OxyPlot.PlotCommands;
-
-// Resolve Path ambiguity between System.IO.Path and System.Windows.Shapes.Path
-using IOPath = System.IO.Path;
-
-// Additional type aliases needed
-using LineAnnotationType = OxyPlot.Annotations.LineAnnotationType;
-using ScatterErrorPoint = OxyPlot.Series.ScatterErrorPoint;
-
-namespace OxyPlotControls;
-
-/// <summary>
-/// Interactive toolbar for OxyPlot with Pan/Zoom and annotation drawing capabilities.
-/// Complete C# port of the VB OxyplotToolbar with PlotView/PlotModel architecture.
-/// </summary>
-public partial class OxyPlotToolbar : UserControl
+namespace OxyPlotControls
 {
-    #region Construction
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="OxyPlotToolbar"/> class.
+    /// OxyPlot toolbar control providing pan, zoom, annotation, and export functionality.
     /// </summary>
-    public OxyPlotToolbar()
+    public partial class OxyPlotToolbar : UserControl
     {
-        InitializeComponent();
-        InitializeCursors();
-        InitializeLeaderLine();
-    }
+        #region Construction
 
-    #endregion
-
-    #region Members
-
-    /// <summary>
-    /// Dependency property for the PlotView.
-    /// </summary>
-    public static readonly DependencyProperty PlotViewProperty =
-        DependencyProperty.Register(
-            nameof(PlotView),
-            typeof(PlotView),
-            typeof(OxyPlotToolbar),
-            new PropertyMetadata(null, OnPlotViewChanged));
-
-    /// <summary>
-    /// Gets or sets the PlotView that this toolbar controls.
-    /// </summary>
-    public PlotView? PlotView
-    {
-        get => (PlotView?)GetValue(PlotViewProperty);
-        set => SetValue(PlotViewProperty, value);
-    }
-
-    /// <summary>
-    /// Dependency property for the icon size.
-    /// </summary>
-    public static readonly DependencyProperty IconSizeProperty =
-        DependencyProperty.Register(
-            nameof(IconSize),
-            typeof(double),
-            typeof(OxyPlotToolbar),
-            new PropertyMetadata(20.0));
-
-    /// <summary>
-    /// Gets or sets the toolbar icon size.
-    /// </summary>
-    public double IconSize
-    {
-        get => (double)GetValue(IconSizeProperty);
-        set => SetValue(IconSizeProperty, value);
-    }
-
-    /// <summary>
-    /// Dependency property for the toolbar orientation.
-    /// </summary>
-    public static readonly DependencyProperty OrientationProperty =
-        DependencyProperty.Register(
-            nameof(Orientation),
-            typeof(Orientation),
-            typeof(OxyPlotToolbar),
-            new PropertyMetadata(Orientation.Vertical));
-
-    /// <summary>
-    /// Gets or sets the toolbar orientation.
-    /// </summary>
-    public Orientation Orientation
-    {
-        get => (Orientation)GetValue(OrientationProperty);
-        set => SetValue(OrientationProperty, value);
-    }
-
-    // Cursors
-    private Cursor? _movePointsCursor;
-    private Cursor? _addPointCursor;
-    private Cursor? _panHandCursor;
-    private Cursor? _panHandClosedCursor;
-    private Cursor? _zoomCursor;
-
-    // Edit annotation variables
-    private bool _doubleClicked;
-    private bool _showPoints;
-    private ScreenPoint _lastScreenPoint = ScreenPoint.Undefined;
-    private bool _moveStartPoint;
-    private bool _moveEndPoint;
-    private int _movePointIndex = -1;
-    private bool _scaleMaxX;
-    private bool _scaleMaxY;
-    private bool _scaleMinX;
-    private bool _scaleMinY;
-    private OxyColor _originalColor = OxyColors.White;
-
-    // Adding annotations
-    private AddToolMode _addAnnotationToolMode = AddToolMode.None;
-    private Annotation? _targetAddAnnotation;
-
-    // Context menu and text editing
-    private TextBox? _textBox;
-    private ContextMenu? _contextMenu;
-
-    // Line annotation tooltip
-    private ToolTip? _lineAnnotationTooltip;
-
-    /// <summary>
-    /// Enumeration for adding annotation tool mode.
-    /// </summary>
-    public enum AddToolMode
-    {
-        None,
-        AddArrowAnnotation,
-        AddTextAnnotation,
-        AddRectangleAnnotation,
-        AddEllipseAnnotation,
-        AddPointAnnotation,
-        AddPolygonAnnotation,
-        AddPolylineAnnotation,
-        AddVerticalLineAnnotation,
-        AddHorizontalLineAnnotation
-    }
-
-    /// <summary>
-    /// Enumeration for property expander types.
-    /// </summary>
-    public enum PropertyExpander
-    {
-        General_PlotTitle,
-        General_PlotSubtitle,
-        Axes_Title,
-        Axes_Options,
-        Axes_Display,
-        Annotations_Text,
-        Series_Options
-    }
-
-    /// <summary>
-    /// Event arguments for PropertiesCalled event.
-    /// </summary>
-    public class PropertiesCalledEventArgs : EventArgs
-    {
-        public PlotView? TargetPlot { get; set; }
-        public bool OpenProperties { get; set; }
-        public PropertyExpander? PropertyExpander { get; set; }
-        public object? SelectedObject { get; set; }
-    }
-
-    /// <summary>
-    /// Event indicating the plot properties need to be opened.
-    /// </summary>
-    public event EventHandler<PropertiesCalledEventArgs>? PropertiesCalled;
-
-    // Series types that cannot be swapped
-    private static readonly HashSet<Type> NonSwapSeriesTypes = new()
-    {
-        typeof(HistogramSeries),
-        typeof(OxyPlot.Series.BarSeries),
-        typeof(LinearBarSeries),
-        typeof(HeatMapSeries)
-    };
-
-    #endregion
-
-    #region Initialization
-
-    private static void OnPlotViewChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is OxyPlotToolbar toolbar)
+        /// <summary>
+        /// Creates a new OxyPlot properties toolbar.
+        /// </summary>
+        public OxyPlotToolbar()
         {
-            toolbar.InitializePlot(e.OldValue as PlotView, e.NewValue as PlotView);
-        }
-    }
+            InitializeComponent();
 
-    /// <summary>
-    /// Initializes the plot when PlotView changes.
-    /// </summary>
-    private void InitializePlot(PlotView? oldPlot, PlotView? newPlot)
-    {
-        // Unsubscribe from old plot
-        if (oldPlot?.ActualModel != null)
-        {
-            oldPlot.ActualModel.MouseDown -= PlotModelMouseDown;
-            oldPlot.ActualModel.MouseMove -= PlotModelMouseMove;
-            oldPlot.ActualModel.MouseUp -= PlotModelMouseUp;
-
-            if (oldPlot.ActualModel.Annotations is INotifyCollectionChanged oldAnnotations)
+            // Set up custom cursors from embedded resources
+            using (var ms = new MemoryStream(Properties.Resources.SelectPointCursor))
             {
-                oldAnnotations.CollectionChanged -= PlotModelAnnotationCollectionChanged;
+                _movePointsCursor = new Cursor(ms);
+            }
+            using (var ms = new MemoryStream(Properties.Resources.AddPointCursor))
+            {
+                _addPointCursor = new Cursor(ms);
+            }
+            using (var ms = new MemoryStream(Properties.Resources.Pan_Hand))
+            {
+                _panHandCursor = new Cursor(ms);
+            }
+            using (var ms = new MemoryStream(Properties.Resources.Pan_Hand_Closed))
+            {
+                _panHandClosedCursor = new Cursor(ms);
+            }
+            using (var ms = new MemoryStream(Properties.Resources.ZoomIn))
+            {
+                _zoomCursor = new Cursor(ms);
+            }
+
+            // Create leader line canvas and leader line
+            _leaderLine.StrokeThickness = 2;
+            _leaderLine.Visibility = Visibility.Collapsed;
+            _leaderLine.Stroke = new SolidColorBrush(Colors.SkyBlue);
+            _leaderLine.StrokeDashArray = new DoubleCollection(LineStyle.DashDashDot.GetDashArray());
+
+            _c.Children.Add(_leaderLine);
+        }
+
+        #endregion
+
+        #region Members
+
+        /// <summary>
+        /// Dependency property for the Plot property.
+        /// </summary>
+        public static readonly DependencyProperty PlotProperty = DependencyProperty.Register(
+            nameof(Plot), typeof(Wpf.Plot), typeof(OxyPlotToolbar), new PropertyMetadata(null, InitializePlot));
+
+        /// <summary>
+        /// Gets and sets the OxyPlot Plot associated with this toolbar.
+        /// </summary>
+        public Wpf.Plot Plot
+        {
+            get => (Wpf.Plot)GetValue(PlotProperty);
+            set => SetValue(PlotProperty, value);
+        }
+
+        /// <summary>
+        /// Property changed callback for the Plot property.
+        /// </summary>
+        private static void InitializePlot(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d == null) return;
+            if (d.GetType() != typeof(OxyPlotToolbar)) return;
+
+            var oxyToolBar = (OxyPlotToolbar)d;
+
+            // Remove handlers from old plot
+            if (e.OldValue != null && e.OldValue.GetType() == typeof(Wpf.Plot))
+            {
+                var oldPlot = (Wpf.Plot)e.OldValue;
+                oldPlot.ActualModel.MouseDown -= oxyToolBar.PlotModelMouseDown;
+                oldPlot.ActualModel.MouseMove -= oxyToolBar.PlotModelMouseMove;
+                oldPlot.ActualModel.MouseUp -= oxyToolBar.PlotModelMouseUp;
+                oldPlot.Annotations.CollectionChanged -= oxyToolBar.PlotModelAnnotationCollectionChanged;
+                oldPlot.LayoutUpdated -= oxyToolBar.ToolBarLayoutUpdated;
+
+                oldPlot.grid.Children.Remove(oxyToolBar._c);
+            }
+
+            // Add handlers to new plot
+            if (e.NewValue != null && e.NewValue.GetType() == typeof(Wpf.Plot))
+            {
+                var newPlot = (Wpf.Plot)e.NewValue;
+
+                // Set up the mouse events
+                newPlot.ActualModel.MouseDown += oxyToolBar.PlotModelMouseDown;
+                newPlot.ActualModel.MouseMove += oxyToolBar.PlotModelMouseMove;
+                newPlot.ActualModel.MouseUp += oxyToolBar.PlotModelMouseUp;
+                newPlot.Annotations.CollectionChanged += oxyToolBar.PlotModelAnnotationCollectionChanged;
+
+                newPlot.ApplyTemplate(); // Needed to set the canvas
+
+                // Define the zooming cursor
+                newPlot.ZoomHorizontalCursor = oxyToolBar._zoomCursor;
+                newPlot.ZoomRectangleCursor = oxyToolBar._zoomCursor;
+                newPlot.ZoomVerticalCursor = oxyToolBar._zoomCursor;
+
+                // Define the pan cursor
+                newPlot.PanCursor = oxyToolBar._panHandCursor;
+
+                // Set up the mouse bindings
+                if (oxyToolBar.PointerButton.IsChecked == true) oxyToolBar.PointerButton_Click(oxyToolBar, new RoutedEventArgs());
+                if (oxyToolBar.ZoomButton.IsChecked == true) oxyToolBar.ZoomButton_Click(oxyToolBar, new RoutedEventArgs());
+                if (oxyToolBar.PanButton.IsChecked == true) oxyToolBar.PanButton_Click(oxyToolBar, new RoutedEventArgs());
+
+                newPlot.LayoutUpdated += oxyToolBar.ToolBarLayoutUpdated;
+
+                // Set up leader line for adding polyline and polygon annotations
+                newPlot.grid.Children.Add(oxyToolBar._c);
             }
         }
 
-        // Subscribe to new plot
-        if (newPlot?.ActualModel != null)
+        /// <summary>
+        /// Updates the toolbar margin based on plot layout.
+        /// </summary>
+        private void ToolBarLayoutUpdated(object sender, EventArgs eventArgs)
         {
-            newPlot.ActualModel.MouseDown += PlotModelMouseDown;
-            newPlot.ActualModel.MouseMove += PlotModelMouseMove;
-            newPlot.ActualModel.MouseUp += PlotModelMouseUp;
-
-            // Set up custom cursors
-            newPlot.ZoomHorizontalCursor = _zoomCursor ?? Cursors.Cross;
-            newPlot.ZoomRectangleCursor = _zoomCursor ?? Cursors.Cross;
-            newPlot.ZoomVerticalCursor = _zoomCursor ?? Cursors.Cross;
-            newPlot.PanCursor = _panHandCursor ?? Cursors.Hand;
-
-            // Set up initial controller bindings
-            if (PointerButton.IsChecked == true) PointerButton_Click(this, new RoutedEventArgs());
-            else if (ZoomButton.IsChecked == true) ZoomButton_Click(this, new RoutedEventArgs());
-            else if (PanButton.IsChecked == true) PanButton_Click(this, new RoutedEventArgs());
-
-            // Subscribe to annotation collection changes
-            if (newPlot.ActualModel.Annotations is INotifyCollectionChanged annotations)
+            var model = Plot.ActualModel;
+            if (!string.IsNullOrEmpty(Plot.Title))
             {
-                annotations.CollectionChanged += PlotModelAnnotationCollectionChanged;
+                OxyToolBar.Margin = new Thickness(OxyToolBar.Margin.Left, model.ActualPlotMargins.Top + model.TitleArea.Bottom - model.TitlePadding, OxyToolBar.Margin.Right, OxyToolBar.Margin.Bottom);
             }
-
-            // Set up existing annotations
-            foreach (var annotation in newPlot.ActualModel.Annotations)
+            else
             {
-                SetupAnnotationHandlers(annotation);
+                OxyToolBar.Margin = new Thickness(OxyToolBar.Margin.Left, model.ActualPlotMargins.Top + model.Padding.Top, OxyToolBar.Margin.Right, OxyToolBar.Margin.Bottom);
             }
         }
 
-        SetCursor();
-    }
+        /// <summary>
+        /// Dependency property for the icon size.
+        /// </summary>
+        public static readonly DependencyProperty IconSizeProperty = DependencyProperty.Register(
+            nameof(IconSize), typeof(double), typeof(OxyPlotToolbar), new PropertyMetadata(20.0));
 
-    /// <summary>
-    /// Initializes custom cursors from embedded resources.
-    /// Falls back to standard cursors if resources are not available.
-    /// </summary>
-    private void InitializeCursors()
-    {
-        // Try to load custom cursors from embedded resources
-        _panHandCursor = LoadCursorFromResource("Pan_Hand.cur") ?? Cursors.Hand;
-        _panHandClosedCursor = LoadCursorFromResource("Pan_Hand_Closed.cur") ?? Cursors.Hand;
-        _zoomCursor = LoadCursorFromResource("ZoomIn.cur") ?? Cursors.Cross;
-        _movePointsCursor = LoadCursorFromResource("SelectPointCursor.cur") ?? Cursors.SizeAll;
-        _addPointCursor = LoadCursorFromResource("AddPointCursor.cur") ?? Cursors.Cross;
-    }
-
-    /// <summary>
-    /// Loads a cursor from a WPF resource.
-    /// </summary>
-    /// <param name="resourceName">The resource file name.</param>
-    /// <returns>The cursor, or null if not found.</returns>
-    private static Cursor? LoadCursorFromResource(string resourceName)
-    {
-        try
+        /// <summary>
+        /// Gets and sets the toolbar icon size.
+        /// </summary>
+        public double IconSize
         {
-            // Use pack URI format for WPF resources
-            var resourceUri = new Uri($"pack://application:,,,/OxyPlotControls;component/Resources/{resourceName}");
-            var resourceInfo = System.Windows.Application.GetResourceStream(resourceUri);
-            if (resourceInfo != null)
-            {
-                return new Cursor(resourceInfo.Stream);
-            }
-        }
-        catch
-        {
-            // Fallback to null, caller will use default cursor
+            get => (double)GetValue(IconSizeProperty);
+            set => SetValue(IconSizeProperty, value);
         }
 
-        return null;
-    }
+        /// <summary>
+        /// Dependency property for the toolbar orientation.
+        /// </summary>
+        public static readonly DependencyProperty ToolBarOrientationProperty = DependencyProperty.Register(
+            nameof(ToolBarOrientation), typeof(Orientation), typeof(OxyPlotToolbar), new UIPropertyMetadata(Orientation.Vertical));
 
-    /// <summary>
-    /// Initializes the leader line for polygon/polyline drawing.
-    /// </summary>
-    private void InitializeLeaderLine()
-    {
-        LeaderLine.StrokeThickness = 2;
-        LeaderLine.Visibility = Visibility.Collapsed;
-        LeaderLine.Stroke = new SolidColorBrush(Colors.SkyBlue);
-        LeaderLine.StrokeDashArray = new DoubleCollection(new[] { 4.0, 2.0, 1.0, 2.0 });
-    }
-
-    #endregion
-
-    #region Pan & Zoom
-
-    /// <summary>
-    /// User clicked the pointer button.
-    /// </summary>
-    private void PointerButton_Click(object sender, RoutedEventArgs e)
-    {
-        StopAddAnnotation();
-
-        if (PlotView?.ActualController == null) return;
-
-        var controller = PlotView.ActualController;
-        controller.UnbindAll();
-        controller.BindMouseDown(OxyMouseButton.Middle, PlotCommands.PanAt);
-        controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.SnapTrack);
-        controller.BindMouseWheel(PlotCommands.ZoomWheel);
-        controller.BindKeyDown(OxyKey.Escape, PlotCommands.Reset);
-
-        SetCursor();
-    }
-
-    /// <summary>
-    /// User clicked the pan button.
-    /// </summary>
-    private void PanButton_Click(object sender, RoutedEventArgs e)
-    {
-        StopAddAnnotation();
-
-        if (PlotView?.ActualController == null) return;
-
-        var controller = PlotView.ActualController;
-        controller.UnbindAll();
-        controller.BindMouseDown(OxyMouseButton.Middle, PlotCommands.PanAt);
-        controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
-        controller.BindMouseDown(OxyMouseButton.Right, PlotCommands.SnapTrack);
-        controller.BindMouseWheel(PlotCommands.ZoomWheel);
-        controller.BindKeyDown(OxyKey.Escape, PlotCommands.Reset);
-
-        SetCursor();
-    }
-
-    /// <summary>
-    /// User clicked zoom button.
-    /// </summary>
-    private void ZoomButton_Click(object sender, RoutedEventArgs e)
-    {
-        StopAddAnnotation();
-
-        if (PlotView?.ActualController == null) return;
-
-        var controller = PlotView.ActualController;
-        controller.UnbindAll();
-        controller.BindMouseDown(OxyMouseButton.Middle, PlotCommands.PanAt);
-        controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.ZoomRectangle);
-        controller.BindMouseDown(OxyMouseButton.Right, PlotCommands.SnapTrack);
-        controller.BindMouseWheel(PlotCommands.ZoomWheel);
-        controller.BindKeyDown(OxyKey.Escape, PlotCommands.Reset);
-
-        SetCursor();
-    }
-
-    /// <summary>
-    /// User clicked zoom to extents.
-    /// </summary>
-    private void ZoomAllButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (PlotView?.ActualModel == null) return;
-
-        PlotView.ActualModel.ResetAllAxes();
-        PlotView.InvalidatePlot(false);
-        PlotView.Focus();
-    }
-
-    /// <summary>
-    /// Sets the mouse cursor based on the current tool mode.
-    /// </summary>
-    private void SetCursor()
-    {
-        if (PlotView == null) return;
-
-        if (_addAnnotationToolMode != AddToolMode.None)
+        /// <summary>
+        /// Gets and sets the toolbar orientation.
+        /// </summary>
+        public Orientation ToolBarOrientation
         {
-            PlotView.Cursor = _addPointCursor;
+            get => (Orientation)GetValue(ToolBarOrientationProperty);
+            set => SetValue(ToolBarOrientationProperty, value);
         }
-        else if (PanButton.IsChecked == true)
+
+        private TextBox _textBox = null;
+        private ContextMenu _contextMenu = null;
+
+        /// <summary>
+        /// Enumeration for adding annotation tool mode.
+        /// </summary>
+        public enum AddToolMode
         {
-            PlotView.Cursor = _panHandCursor;
+            None,
+            AddArrowAnnotation,
+            AddTextAnnotation,
+            AddRectangleAnnotation,
+            AddEllipseAnnotation,
+            AddPointAnnotation,
+            AddPolygonAnnotation,
+            AddPolylineAnnotation,
+            AddVerticalLineAnnotation,
+            AddHorizontalLineAnnotation
         }
-        else if (PointerButton.IsChecked == true)
+
+        // Custom Cursors
+        private Cursor _movePointsCursor;
+        private Cursor _addPointCursor;
+        private Cursor _panHandCursor;
+        private Cursor _panHandClosedCursor;
+        private Cursor _zoomCursor;
+
+        // Edit Annotation variables
+        private bool _doubleClicked = false;
+        private bool _showPoints = false;
+        private Polyline _leaderLine = new Polyline();
+        private Canvas _c = new Canvas();
+        private ScreenPoint _lastScreenPoint = ScreenPoint.Undefined;
+        private bool _moveStartPoint = false;
+        private bool _moveEndPoint = false;
+        private int _movePointIndex = -1;
+        private bool _scaleMaxX = false;
+        private bool _scaleMaxY = false;
+        private bool _scaleMinX = false;
+        private bool _scaleMinY = false;
+        private Color _originalColor = Colors.White;
+
+        // Adding Annotations
+        private AddToolMode _addAnnotationToolMode = AddToolMode.None;
+        private Wpf.Annotation _targetAddAnnotation = null;
+
+        /// <summary>
+        /// Delegate for the PropertiesCalled event.
+        /// </summary>
+        /// <param name="targetPlot">The plot whose properties need to be opened.</param>
+        /// <param name="openProperties">Boolean value indicating if plot properties should be opened.</param>
+        /// <param name="propertyExpander">The property expander that needs to be expanded.</param>
+        /// <param name="selectedObject">The selected plot object to edit.</param>
+        public delegate void PropertiesCalledEventHandler(Wpf.Plot targetPlot, bool openProperties, OxyPlotPropertiesControl.PropertyEXP? propertyExpander, object selectedObject);
+
+        /// <summary>
+        /// Event indicating the plot properties need to be opened.
+        /// </summary>
+        public event PropertiesCalledEventHandler PropertiesCalled;
+
+        // Non-swappable series types
+        private static readonly HashSet<Type> _nonSwapSeriesTypes = new HashSet<Type>
         {
-            PlotView.Cursor = Cursors.Arrow;
-        }
-        else if (ZoomButton.IsChecked == true)
+            typeof(Wpf.HistogramSeries),
+            typeof(Wpf.BarSeries),
+            typeof(Wpf.ColumnSeries),
+            typeof(Wpf.HeatMapSeries)
+        };
+
+        #endregion
+
+        #region Pan & Zoom
+
+        /// <summary>
+        /// User clicked the pointer button.
+        /// </summary>
+        private void PointerButton_Click(object sender, RoutedEventArgs e)
         {
-            PlotView.Cursor = _zoomCursor;
-        }
-        else
-        {
-            PlotView.Cursor = Cursors.Arrow;
-        }
-    }
+            if (Plot == null) return;
 
-    #endregion
-
-    #region Annotations
-
-    /// <summary>
-    /// When Add button is clicked, show context menu.
-    /// </summary>
-    private void AddAnnotationToggleButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (AddAnnotationToggleButton.ContextMenu != null)
-        {
-            AddAnnotationToggleButton.ContextMenu.IsOpen = true;
-        }
-    }
-
-    private void AddArrowAnnotationItem_Click(object sender, RoutedEventArgs e)
-    {
-        StopAddAnnotation();
-        PlotView?.ActualController?.UnbindAll();
-        _addAnnotationToolMode = AddToolMode.AddArrowAnnotation;
-        SetCursor();
-    }
-
-    private void AddTextAnnotationItem_Click(object sender, RoutedEventArgs e)
-    {
-        StopAddAnnotation();
-        PlotView?.ActualController?.UnbindAll();
-        _addAnnotationToolMode = AddToolMode.AddTextAnnotation;
-        SetCursor();
-    }
-
-    private void AddVerticalLineAnnotationItem_Click(object sender, RoutedEventArgs e)
-    {
-        StopAddAnnotation();
-        PlotView?.ActualController?.UnbindAll();
-        _addAnnotationToolMode = AddToolMode.AddVerticalLineAnnotation;
-        SetCursor();
-    }
-
-    private void AddHorizontalLineAnnotationItem_Click(object sender, RoutedEventArgs e)
-    {
-        StopAddAnnotation();
-        PlotView?.ActualController?.UnbindAll();
-        _addAnnotationToolMode = AddToolMode.AddHorizontalLineAnnotation;
-        SetCursor();
-    }
-
-    private void AddRectangleAnnotationItem_Click(object sender, RoutedEventArgs e)
-    {
-        StopAddAnnotation();
-        PlotView?.ActualController?.UnbindAll();
-        _addAnnotationToolMode = AddToolMode.AddRectangleAnnotation;
-        SetCursor();
-    }
-
-    private void AddEllipseAnnotationItem_Click(object sender, RoutedEventArgs e)
-    {
-        StopAddAnnotation();
-        PlotView?.ActualController?.UnbindAll();
-        _addAnnotationToolMode = AddToolMode.AddEllipseAnnotation;
-        SetCursor();
-    }
-
-    private void AddPointAnnotationItem_Click(object sender, RoutedEventArgs e)
-    {
-        StopAddAnnotation();
-        PlotView?.ActualController?.UnbindAll();
-        _addAnnotationToolMode = AddToolMode.AddPointAnnotation;
-        SetCursor();
-    }
-
-    private void AddPolygonAnnotationItem_Click(object sender, RoutedEventArgs e)
-    {
-        StopAddAnnotation();
-        _addAnnotationToolMode = AddToolMode.AddPolygonAnnotation;
-        LeaderLine.Visibility = Visibility.Visible;
-        LeaderLine.Points.Clear();
-        SetCursor();
-    }
-
-    private void AddPolylineAnnotationItem_Click(object sender, RoutedEventArgs e)
-    {
-        StopAddAnnotation();
-        _addAnnotationToolMode = AddToolMode.AddPolylineAnnotation;
-        LeaderLine.Visibility = Visibility.Visible;
-        LeaderLine.Points.Clear();
-        SetCursor();
-    }
-
-    // Direct button handlers (for Toolbar buttons in XAML)
-    private void AddArrowAnnotation_Click(object sender, RoutedEventArgs e) => AddArrowAnnotationItem_Click(sender, e);
-    private void AddTextAnnotation_Click(object sender, RoutedEventArgs e) => AddTextAnnotationItem_Click(sender, e);
-    private void AddVerticalLineAnnotation_Click(object sender, RoutedEventArgs e) => AddVerticalLineAnnotationItem_Click(sender, e);
-    private void AddHorizontalLineAnnotation_Click(object sender, RoutedEventArgs e) => AddHorizontalLineAnnotationItem_Click(sender, e);
-    private void AddRectangleAnnotation_Click(object sender, RoutedEventArgs e) => AddRectangleAnnotationItem_Click(sender, e);
-    private void AddEllipseAnnotation_Click(object sender, RoutedEventArgs e) => AddEllipseAnnotationItem_Click(sender, e);
-    private void AddPointAnnotation_Click(object sender, RoutedEventArgs e) => AddPointAnnotationItem_Click(sender, e);
-    private void AddPolygonAnnotation_Click(object sender, RoutedEventArgs e) => AddPolygonAnnotationItem_Click(sender, e);
-    private void AddPolylineAnnotation_Click(object sender, RoutedEventArgs e) => AddPolylineAnnotationItem_Click(sender, e);
-
-    /// <summary>
-    /// Stop adding the annotation.
-    /// </summary>
-    private void StopAddAnnotation()
-    {
-        if (_addAnnotationToolMode != AddToolMode.None)
-        {
-            if (_addAnnotationToolMode == AddToolMode.AddPolygonAnnotation ||
-                _addAnnotationToolMode == AddToolMode.AddPolylineAnnotation)
-            {
-                LeaderLine.Visibility = Visibility.Collapsed;
-                LeaderLine.Points.Clear();
-                PlotView?.InvalidatePlot(false);
-            }
-
-            _doubleClicked = false;
-            _addAnnotationToolMode = AddToolMode.None;
-            _targetAddAnnotation = null;
-
-            // Restore controller bindings
-            if (PanButton.IsChecked == true) PanButton_Click(this, new RoutedEventArgs());
-            else if (PointerButton.IsChecked == true) PointerButton_Click(this, new RoutedEventArgs());
-            else if (ZoomButton.IsChecked == true) ZoomButton_Click(this, new RoutedEventArgs());
+            var controller = Plot.ActualController;
+            controller.UnbindAll();
+            controller.BindMouseDown(OxyMouseButton.Middle, PlotCommands.PanAt);
+            controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.SnapTrack);
+            controller.BindMouseWheel(PlotCommands.ZoomWheel);
+            controller.BindKeyDown(OxyKey.Escape, PlotCommands.Reset);
 
             SetCursor();
         }
-    }
 
-    /// <summary>
-    /// A new annotation has been added to the plot. Adds the appropriate handlers.
-    /// </summary>
-    private void PlotModelAnnotationCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        if (e.NewItems != null)
+        /// <summary>
+        /// User clicked the pan button.
+        /// </summary>
+        private void PanButton_Click(object sender, RoutedEventArgs e)
         {
+            if (Plot == null) return;
+
+            var controller = Plot.ActualController;
+            controller.UnbindAll();
+            controller.BindMouseDown(OxyMouseButton.Middle, PlotCommands.PanAt);
+            controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
+            controller.BindMouseDown(OxyMouseButton.Right, PlotCommands.SnapTrack);
+            controller.BindMouseWheel(PlotCommands.ZoomWheel);
+            controller.BindKeyDown(OxyKey.Escape, PlotCommands.Reset);
+
+            SetCursor();
+        }
+
+        /// <summary>
+        /// User clicked zoom button.
+        /// </summary>
+        private void ZoomButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Plot == null) return;
+
+            var controller = Plot.ActualController;
+            controller.UnbindAll();
+            controller.BindMouseDown(OxyMouseButton.Middle, PlotCommands.PanAt);
+            controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.ZoomRectangle);
+            controller.BindMouseDown(OxyMouseButton.Right, PlotCommands.SnapTrack);
+            controller.BindMouseWheel(PlotCommands.ZoomWheel);
+            controller.BindKeyDown(OxyKey.Escape, PlotCommands.Reset);
+
+            SetCursor();
+        }
+
+        /// <summary>
+        /// User clicked zoom to extents.
+        /// </summary>
+        private void ZoomAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Plot == null) return;
+
+            Plot.ResetAllAxes();
+            Plot.InvalidatePlot(false);
+            Plot.Focus();
+        }
+
+        /// <summary>
+        /// Sets the mouse cursor based on the current tool mode.
+        /// </summary>
+        private void SetCursor()
+        {
+            if (_addAnnotationToolMode != AddToolMode.None)
+            {
+                Plot.DefaultPlotCursor = _addPointCursor;
+                Plot.Cursor = _addPointCursor;
+            }
+            else if (PanButton.IsChecked == true)
+            {
+                Plot.PanCursor = _panHandCursor;
+                Plot.DefaultPlotCursor = _panHandCursor;
+                Plot.Cursor = _panHandCursor;
+            }
+            else if (PointerButton.IsChecked == true)
+            {
+                Plot.DefaultPlotCursor = Cursors.Arrow;
+                Plot.Cursor = Cursors.Arrow;
+            }
+            else if (ZoomButton.IsChecked == true)
+            {
+                Plot.DefaultPlotCursor = _zoomCursor;
+                Plot.Cursor = _zoomCursor;
+            }
+            else
+            {
+                Plot.DefaultPlotCursor = Cursors.Arrow;
+                Plot.Cursor = Cursors.Arrow;
+            }
+        }
+
+        #endregion
+
+        #region Annotations
+
+        /// <summary>
+        /// When Add button is clicked, show context menu.
+        /// </summary>
+        private void AddAnnotationToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddAnnotationToggleButton.ContextMenu.IsOpen = true;
+        }
+
+        /// <summary>
+        /// Add arrow annotation.
+        /// </summary>
+        private void AddArrowAnnotationItem_Click(object sender, RoutedEventArgs e)
+        {
+            StopAddAnnotation();
+            Plot.ActualController.UnbindAll();
+            _addAnnotationToolMode = AddToolMode.AddArrowAnnotation;
+            SetCursor();
+        }
+
+        /// <summary>
+        /// Add text annotation.
+        /// </summary>
+        private void AddTextAnnotationItem_Click(object sender, RoutedEventArgs e)
+        {
+            StopAddAnnotation();
+            Plot.ActualController.UnbindAll();
+            _addAnnotationToolMode = AddToolMode.AddTextAnnotation;
+            SetCursor();
+        }
+
+        /// <summary>
+        /// Add vertical line annotation.
+        /// </summary>
+        private void AddVerticalLineAnnotationItem_Click(object sender, RoutedEventArgs e)
+        {
+            StopAddAnnotation();
+            Plot.ActualController.UnbindAll();
+            _addAnnotationToolMode = AddToolMode.AddVerticalLineAnnotation;
+            SetCursor();
+        }
+
+        /// <summary>
+        /// Add horizontal line annotation.
+        /// </summary>
+        private void AddHorizontalLineAnnotationItem_Click(object sender, RoutedEventArgs e)
+        {
+            StopAddAnnotation();
+            Plot.ActualController.UnbindAll();
+            _addAnnotationToolMode = AddToolMode.AddHorizontalLineAnnotation;
+            SetCursor();
+        }
+
+        /// <summary>
+        /// Add rectangle annotation.
+        /// </summary>
+        private void AddRectangleAnnotationItem_Click(object sender, RoutedEventArgs e)
+        {
+            StopAddAnnotation();
+            Plot.ActualController.UnbindAll();
+            _addAnnotationToolMode = AddToolMode.AddRectangleAnnotation;
+            SetCursor();
+        }
+
+        /// <summary>
+        /// Add ellipse annotation.
+        /// </summary>
+        private void AddEllipseAnnotationItem_Click(object sender, RoutedEventArgs e)
+        {
+            StopAddAnnotation();
+            Plot.ActualController.UnbindAll();
+            _addAnnotationToolMode = AddToolMode.AddEllipseAnnotation;
+            SetCursor();
+        }
+
+        /// <summary>
+        /// Add point annotation.
+        /// </summary>
+        private void AddPointAnnotationItem_Click(object sender, RoutedEventArgs e)
+        {
+            StopAddAnnotation();
+            Plot.ActualController.UnbindAll();
+            _addAnnotationToolMode = AddToolMode.AddPointAnnotation;
+            SetCursor();
+        }
+
+        /// <summary>
+        /// Add polygon annotation.
+        /// </summary>
+        private void AddPolygonAnnotationItem_Click(object sender, RoutedEventArgs e)
+        {
+            StopAddAnnotation();
+            _addAnnotationToolMode = AddToolMode.AddPolygonAnnotation;
+            _leaderLine.Visibility = Visibility.Visible;
+            _leaderLine.Points.Clear();
+            SetCursor();
+        }
+
+        /// <summary>
+        /// Add polyline annotation.
+        /// </summary>
+        private void AddPolylineAnnotationItem_Click(object sender, RoutedEventArgs e)
+        {
+            StopAddAnnotation();
+            _addAnnotationToolMode = AddToolMode.AddPolylineAnnotation;
+            _leaderLine.Visibility = Visibility.Visible;
+            _leaderLine.Points.Clear();
+            SetCursor();
+        }
+
+        /// <summary>
+        /// Stop adding the annotation.
+        /// </summary>
+        private void StopAddAnnotation()
+        {
+            if (_addAnnotationToolMode != AddToolMode.None)
+            {
+                if (_addAnnotationToolMode == AddToolMode.AddPolygonAnnotation || _addAnnotationToolMode == AddToolMode.AddPolylineAnnotation)
+                {
+                    _leaderLine.Visibility = Visibility.Collapsed;
+                    _leaderLine.Points.Clear();
+                    Plot.InvalidatePlot(false);
+                }
+
+                _doubleClicked = false;
+                _addAnnotationToolMode = AddToolMode.None;
+                _targetAddAnnotation = null;
+
+                if (PanButton.IsChecked == true)
+                {
+                    PanButton_Click(null, null);
+                }
+                else if (PointerButton.IsChecked == true)
+                {
+                    PointerButton_Click(null, null);
+                }
+                else if (ZoomButton.IsChecked == true)
+                {
+                    ZoomButton_Click(null, null);
+                }
+                SetCursor();
+            }
+        }
+
+        /// <summary>
+        /// A new annotation has been added to the plot. Adds the appropriate handlers.
+        /// </summary>
+        private void PlotModelAnnotationCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems == null) return;
+
             foreach (var item in e.NewItems)
             {
-                if (item is Annotation annotation)
+                if (item.GetType() == typeof(Wpf.ArrowAnnotation))
                 {
-                    SetupAnnotationHandlers(annotation);
-                }
-            }
-        }
-    }
+                    var newArrow = (Wpf.ArrowAnnotation)item;
 
-    /// <summary>
-    /// Sets up mouse handlers for an annotation.
-    /// </summary>
-    private void SetupAnnotationHandlers(Annotation annotation)
-    {
-        switch (annotation)
-        {
-            case ArrowAnnotation arrow:
-                SetupArrowAnnotationHandlers(arrow);
-                break;
-            case TextAnnotation text:
-                SetupTextAnnotationHandlers(text);
-                break;
-            case RectangleAnnotation rect:
-                SetupRectangleAnnotationHandlers(rect);
-                break;
-            case EllipseAnnotation ellipse:
-                SetupEllipseAnnotationHandlers(ellipse);
-                break;
-            case PointAnnotation point:
-                SetupPointAnnotationHandlers(point);
-                break;
-            case PolygonAnnotation polygon:
-                SetupPolygonAnnotationHandlers(polygon);
-                break;
-            case PolylineAnnotation polyline:
-                SetupPolylineAnnotationHandlers(polyline);
-                break;
-            case LineAnnotation line:
-                SetupLineAnnotationHandlers(line);
-                break;
-        }
-    }
-
-    private void SetupArrowAnnotationHandlers(ArrowAnnotation arrow)
-    {
-        arrow.MouseDown += (s, e) =>
-        {
-            if (_addAnnotationToolMode != AddToolMode.None) return;
-            if (e.ChangedButton != OxyMouseButton.Left) return;
-
-            _lastScreenPoint = e.Position;
-            _moveStartPoint = e.HitTestResult.Index != 2;
-            _moveEndPoint = e.HitTestResult.Index != 1;
-            _originalColor = arrow.Color;
-            arrow.Color = OxyColors.Red;
-
-            RaisePropertiesCalled(false, PropertyExpander.Annotations_Text, arrow);
-
-            PlotView?.InvalidatePlot(false);
-            e.Handled = true;
-        };
-
-        arrow.MouseMove += (s, e) =>
-        {
-            var dx = e.Position.X - _lastScreenPoint.X;
-            var dy = e.Position.Y - _lastScreenPoint.Y;
-            var startScreen = arrow.Transform(arrow.StartPoint);
-            var endScreen = arrow.Transform(arrow.EndPoint);
-
-            var newStartScreen = new ScreenPoint(startScreen.X + dx, startScreen.Y + dy);
-            var newEndScreen = new ScreenPoint(endScreen.X + dx, endScreen.Y + dy);
-
-            if (_moveStartPoint) arrow.StartPoint = arrow.InverseTransform(newStartScreen);
-            if (_moveEndPoint) arrow.EndPoint = arrow.InverseTransform(newEndScreen);
-
-            _lastScreenPoint = e.Position;
-            PlotView?.InvalidatePlot(false);
-            e.Handled = true;
-        };
-
-        arrow.MouseUp += (s, e) =>
-        {
-            arrow.Color = _originalColor;
-            PlotView?.InvalidatePlot(false);
-        };
-    }
-
-    private void SetupTextAnnotationHandlers(TextAnnotation text)
-    {
-        text.MouseDown += (s, e) =>
-        {
-            if (_addAnnotationToolMode != AddToolMode.None) return;
-            if (e.ChangedButton != OxyMouseButton.Left) return;
-
-            _lastScreenPoint = e.Position;
-            _moveStartPoint = e.HitTestResult.Index == 0;
-            _originalColor = text.Background;
-            text.Background = OxyColors.Red;
-
-            RaisePropertiesCalled(false, PropertyExpander.Annotations_Text, text);
-
-            PlotView?.InvalidatePlot(false);
-            e.Handled = true;
-        };
-
-        text.MouseMove += (s, e) =>
-        {
-            var dx = e.Position.X - _lastScreenPoint.X;
-            var dy = e.Position.Y - _lastScreenPoint.Y;
-            var screen = text.Transform(text.TextPosition);
-            var newScreen = new ScreenPoint(screen.X + dx, screen.Y + dy);
-
-            if (_moveStartPoint) text.TextPosition = text.InverseTransform(newScreen);
-
-            _lastScreenPoint = e.Position;
-            PlotView?.InvalidatePlot(false);
-            e.Handled = true;
-        };
-
-        text.MouseUp += (s, e) =>
-        {
-            text.Background = _originalColor;
-            PlotView?.InvalidatePlot(false);
-        };
-    }
-
-    private void SetupRectangleAnnotationHandlers(RectangleAnnotation rect)
-    {
-        rect.MouseDown += (s, e) =>
-        {
-            if (_addAnnotationToolMode != AddToolMode.None) return;
-            if (e.ChangedButton != OxyMouseButton.Left) return;
-
-            _lastScreenPoint = e.Position;
-
-            var upperRight = rect.Transform(rect.MaximumX, rect.MaximumY);
-            var lowerLeft = rect.Transform(rect.MinimumX, rect.MinimumY);
-            var topRight = new ScreenPoint(Math.Abs(upperRight.X - e.Position.X), Math.Abs(upperRight.Y - e.Position.Y));
-            var bottomLeft = new ScreenPoint(Math.Abs(lowerLeft.X - e.Position.X), Math.Abs(lowerLeft.Y - e.Position.Y));
-
-            _scaleMaxX = topRight.X < 10;
-            _scaleMaxY = topRight.Y < 10;
-            _scaleMinX = bottomLeft.X < 10;
-            _scaleMinY = bottomLeft.Y < 10;
-
-            if (e.HitTestResult.Index == 0)
-            {
-                _moveStartPoint = !_scaleMaxX && !_scaleMaxY && !_scaleMinX && !_scaleMinY;
-            }
-
-            _originalColor = rect.Fill;
-            rect.Fill = OxyColors.Red;
-
-            RaisePropertiesCalled(false, PropertyExpander.Annotations_Text, rect);
-
-            PlotView?.InvalidatePlot(false);
-            e.Handled = true;
-        };
-
-        rect.MouseMove += (s, e) =>
-        {
-            var dx = e.Position.X - _lastScreenPoint.X;
-            var dy = e.Position.Y - _lastScreenPoint.Y;
-
-            var upperRightScreen = rect.Transform(rect.MaximumX, rect.MaximumY);
-            var lowerLeftScreen = rect.Transform(rect.MinimumX, rect.MinimumY);
-
-            var newUpperRight = rect.InverseTransform(new ScreenPoint(upperRightScreen.X + dx, upperRightScreen.Y + dy));
-            var newLowerLeft = rect.InverseTransform(new ScreenPoint(lowerLeftScreen.X + dx, lowerLeftScreen.Y + dy));
-
-            if (_scaleMaxX) rect.MaximumX = newUpperRight.X;
-            if (_scaleMaxY) rect.MaximumY = newUpperRight.Y;
-            if (_scaleMinX) rect.MinimumX = newLowerLeft.X;
-            if (_scaleMinY) rect.MinimumY = newLowerLeft.Y;
-
-            if (_moveStartPoint)
-            {
-                rect.MaximumX = newUpperRight.X;
-                rect.MaximumY = newUpperRight.Y;
-                rect.MinimumX = newLowerLeft.X;
-                rect.MinimumY = newLowerLeft.Y;
-            }
-
-            _lastScreenPoint = e.Position;
-            PlotView?.InvalidatePlot(false);
-            e.Handled = true;
-        };
-
-        rect.MouseUp += (s, e) =>
-        {
-            rect.Fill = _originalColor;
-            _moveStartPoint = false;
-            _scaleMaxX = _scaleMaxY = _scaleMinX = _scaleMinY = false;
-            PlotView?.InvalidatePlot(false);
-        };
-    }
-
-    private void SetupEllipseAnnotationHandlers(EllipseAnnotation ellipse)
-    {
-        ellipse.MouseDown += (s, e) =>
-        {
-            if (_addAnnotationToolMode != AddToolMode.None) return;
-            if (e.ChangedButton != OxyMouseButton.Left) return;
-
-            _lastScreenPoint = e.Position;
-
-            var upperRight = ellipse.Transform(ellipse.X + ellipse.Width / 2, ellipse.Y + ellipse.Height / 2);
-            var lowerLeft = ellipse.Transform(ellipse.X - ellipse.Width / 2, ellipse.Y - ellipse.Height / 2);
-            var topRight = new ScreenPoint(Math.Abs(upperRight.X - e.Position.X), Math.Abs(upperRight.Y - e.Position.Y));
-            var bottomLeft = new ScreenPoint(Math.Abs(lowerLeft.X - e.Position.X), Math.Abs(lowerLeft.Y - e.Position.Y));
-
-            _scaleMaxX = topRight.X < 10;
-            _scaleMaxY = topRight.Y < 10;
-            _scaleMinX = bottomLeft.X < 10;
-            _scaleMinY = bottomLeft.Y < 10;
-
-            if (e.HitTestResult.Index == 0)
-            {
-                _moveStartPoint = !_scaleMaxX && !_scaleMaxY && !_scaleMinX && !_scaleMinY;
-            }
-
-            _originalColor = ellipse.Fill;
-            ellipse.Fill = OxyColors.Red;
-
-            RaisePropertiesCalled(false, PropertyExpander.Annotations_Text, ellipse);
-
-            PlotView?.InvalidatePlot(false);
-            e.Handled = true;
-        };
-
-        ellipse.MouseMove += (s, e) =>
-        {
-            var dx = e.Position.X - _lastScreenPoint.X;
-            var dy = e.Position.Y - _lastScreenPoint.Y;
-
-            var centerScreen = ellipse.Transform(ellipse.X, ellipse.Y);
-
-            if (_moveStartPoint)
-            {
-                var newCenter = ellipse.InverseTransform(new ScreenPoint(centerScreen.X + dx, centerScreen.Y + dy));
-                ellipse.X = newCenter.X;
-                ellipse.Y = newCenter.Y;
-            }
-            else
-            {
-                // Resize
-                var mouseData = ellipse.InverseTransform(e.Position);
-                if (_scaleMaxX || _scaleMinX)
-                {
-                    ellipse.Width = Math.Abs(mouseData.X - ellipse.X) * 2;
-                }
-                if (_scaleMaxY || _scaleMinY)
-                {
-                    ellipse.Height = Math.Abs(mouseData.Y - ellipse.Y) * 2;
-                }
-            }
-
-            _lastScreenPoint = e.Position;
-            PlotView?.InvalidatePlot(false);
-            e.Handled = true;
-        };
-
-        ellipse.MouseUp += (s, e) =>
-        {
-            ellipse.Fill = _originalColor;
-            _moveStartPoint = false;
-            _scaleMaxX = _scaleMaxY = _scaleMinX = _scaleMinY = false;
-            PlotView?.InvalidatePlot(false);
-        };
-    }
-
-    private void SetupPointAnnotationHandlers(PointAnnotation point)
-    {
-        point.MouseDown += (s, e) =>
-        {
-            if (_addAnnotationToolMode != AddToolMode.None) return;
-            if (e.ChangedButton != OxyMouseButton.Left) return;
-
-            _lastScreenPoint = e.Position;
-            _moveStartPoint = e.HitTestResult.Index == 0;
-            _originalColor = point.Fill;
-            point.Fill = OxyColors.Red;
-
-            RaisePropertiesCalled(false, PropertyExpander.Annotations_Text, point);
-
-            PlotView?.InvalidatePlot(false);
-            e.Handled = true;
-        };
-
-        point.MouseMove += (s, e) =>
-        {
-            var dx = e.Position.X - _lastScreenPoint.X;
-            var dy = e.Position.Y - _lastScreenPoint.Y;
-            var screen = point.Transform(new DataPoint(point.X, point.Y));
-            var newData = point.InverseTransform(new ScreenPoint(screen.X + dx, screen.Y + dy));
-
-            if (_moveStartPoint)
-            {
-                point.X = newData.X;
-                point.Y = newData.Y;
-            }
-
-            _lastScreenPoint = e.Position;
-            PlotView?.InvalidatePlot(false);
-            e.Handled = true;
-        };
-
-        point.MouseUp += (s, e) =>
-        {
-            point.Fill = _originalColor;
-            PlotView?.InvalidatePlot(false);
-        };
-    }
-
-    private void SetupPolygonAnnotationHandlers(PolygonAnnotation polygon)
-    {
-        polygon.MouseDown += (s, e) =>
-        {
-            if (_addAnnotationToolMode != AddToolMode.None) return;
-            if (e.ChangedButton != OxyMouseButton.Left) return;
-
-            _lastScreenPoint = e.Position;
-
-            var screenToData = polygon.InverseTransform(e.Position);
-            var screen2ToData = polygon.InverseTransform(new ScreenPoint(e.Position.X - 10, e.Position.Y - 10));
-            var dxy = new DataPoint(Math.Abs(screenToData.X - screen2ToData.X), Math.Abs(screenToData.Y - screen2ToData.Y));
-
-            // Check if over a vertex
-            _movePointIndex = -1;
-            for (int i = 0; i < polygon.Points.Count; i++)
-            {
-                if (Math.Abs(screenToData.X - polygon.Points[i].X) < dxy.X &&
-                    Math.Abs(screenToData.Y - polygon.Points[i].Y) < dxy.Y)
-                {
-                    _movePointIndex = i;
-                    break;
-                }
-            }
-
-            // Ctrl+click to insert a new point on the nearest edge
-            if (e.ModifierKeys.HasFlag(OxyModifierKeys.Control) && _movePointIndex == -1 && polygon.Points.Count >= 3)
-            {
-                var insertIndex = FindNearestPolygonEdgeIndex(polygon, screenToData);
-                if (insertIndex >= 0)
-                {
-                    polygon.Points.Insert(insertIndex + 1, screenToData);
-                    _movePointIndex = insertIndex + 1;
-                }
-            }
-
-            _originalColor = polygon.Fill;
-            polygon.Fill = OxyColors.Red;
-
-            RaisePropertiesCalled(false, PropertyExpander.Annotations_Text, polygon);
-
-            PlotView?.InvalidatePlot(false);
-            e.Handled = true;
-        };
-
-        polygon.MouseMove += (s, e) =>
-        {
-            var dx = e.Position.X - _lastScreenPoint.X;
-            var dy = e.Position.Y - _lastScreenPoint.Y;
-
-            if (_movePointIndex >= 0 && _movePointIndex < polygon.Points.Count)
-            {
-                // Move single vertex
-                var screen = polygon.Transform(polygon.Points[_movePointIndex]);
-                var newData = polygon.InverseTransform(new ScreenPoint(screen.X + dx, screen.Y + dy));
-                polygon.Points[_movePointIndex] = newData;
-            }
-            else
-            {
-                // Move entire polygon
-                var newPoints = new List<DataPoint>();
-                foreach (var pt in polygon.Points)
-                {
-                    var screen = polygon.Transform(pt);
-                    var newData = polygon.InverseTransform(new ScreenPoint(screen.X + dx, screen.Y + dy));
-                    newPoints.Add(newData);
-                }
-                polygon.Points.Clear();
-                foreach (var pt in newPoints) polygon.Points.Add(pt);
-            }
-
-            _lastScreenPoint = e.Position;
-            PlotView?.InvalidatePlot(false);
-            e.Handled = true;
-        };
-
-        polygon.MouseUp += (s, e) =>
-        {
-            polygon.Fill = _originalColor;
-            _movePointIndex = -1;
-            PlotView?.InvalidatePlot(false);
-        };
-    }
-
-    private void SetupPolylineAnnotationHandlers(PolylineAnnotation polyline)
-    {
-        polyline.MouseDown += (s, e) =>
-        {
-            if (_addAnnotationToolMode != AddToolMode.None) return;
-            if (e.ChangedButton != OxyMouseButton.Left) return;
-
-            _lastScreenPoint = e.Position;
-
-            var screenToData = polyline.InverseTransform(e.Position);
-            var screen2ToData = polyline.InverseTransform(new ScreenPoint(e.Position.X - 10, e.Position.Y - 10));
-            var dxy = new DataPoint(Math.Abs(screenToData.X - screen2ToData.X), Math.Abs(screenToData.Y - screen2ToData.Y));
-
-            // Check if over a vertex
-            _movePointIndex = -1;
-            for (int i = 0; i < polyline.Points.Count; i++)
-            {
-                if (Math.Abs(screenToData.X - polyline.Points[i].X) < dxy.X &&
-                    Math.Abs(screenToData.Y - polyline.Points[i].Y) < dxy.Y)
-                {
-                    _movePointIndex = i;
-                    break;
-                }
-            }
-
-            // Ctrl+click to insert a new point on the nearest segment
-            if (e.ModifierKeys.HasFlag(OxyModifierKeys.Control) && _movePointIndex == -1 && polyline.Points.Count >= 2)
-            {
-                var insertIndex = FindNearestSegmentIndex(polyline, screenToData);
-                if (insertIndex >= 0)
-                {
-                    polyline.Points.Insert(insertIndex + 1, screenToData);
-                    _movePointIndex = insertIndex + 1;
-                }
-            }
-
-            _originalColor = polyline.Color;
-            polyline.Color = OxyColors.Red;
-
-            RaisePropertiesCalled(false, PropertyExpander.Annotations_Text, polyline);
-
-            PlotView?.InvalidatePlot(false);
-            e.Handled = true;
-        };
-
-        polyline.MouseMove += (s, e) =>
-        {
-            var dx = e.Position.X - _lastScreenPoint.X;
-            var dy = e.Position.Y - _lastScreenPoint.Y;
-
-            if (_movePointIndex >= 0 && _movePointIndex < polyline.Points.Count)
-            {
-                // Move single vertex
-                var screen = polyline.Transform(polyline.Points[_movePointIndex]);
-                var newData = polyline.InverseTransform(new ScreenPoint(screen.X + dx, screen.Y + dy));
-                polyline.Points[_movePointIndex] = newData;
-            }
-            else
-            {
-                // Move entire polyline
-                var newPoints = new List<DataPoint>();
-                foreach (var pt in polyline.Points)
-                {
-                    var screen = polyline.Transform(pt);
-                    var newData = polyline.InverseTransform(new ScreenPoint(screen.X + dx, screen.Y + dy));
-                    newPoints.Add(newData);
-                }
-                polyline.Points.Clear();
-                foreach (var pt in newPoints) polyline.Points.Add(pt);
-            }
-
-            _lastScreenPoint = e.Position;
-            PlotView?.InvalidatePlot(false);
-            e.Handled = true;
-        };
-
-        polyline.MouseUp += (s, e) =>
-        {
-            polyline.Color = _originalColor;
-            _movePointIndex = -1;
-            PlotView?.InvalidatePlot(false);
-        };
-    }
-
-    private void SetupLineAnnotationHandlers(LineAnnotation line)
-    {
-        line.MouseDown += (s, e) =>
-        {
-            if (_addAnnotationToolMode != AddToolMode.None) return;
-            if (e.ChangedButton != OxyMouseButton.Left) return;
-
-            _lastScreenPoint = e.Position;
-            _moveStartPoint = e.HitTestResult.Index == 0;
-            _originalColor = line.Color;
-            line.Color = OxyColors.Red;
-
-            RaisePropertiesCalled(false, PropertyExpander.Annotations_Text, line);
-
-            PlotView?.InvalidatePlot(false);
-            e.Handled = true;
-        };
-
-        line.MouseMove += (s, e) =>
-        {
-            if (_moveStartPoint)
-            {
-                var newData = line.InverseTransform(e.Position);
-
-                if (line.Type == LineAnnotationType.Vertical)
-                {
-                    line.X = newData.X;
-                }
-                else if (line.Type == LineAnnotationType.Horizontal)
-                {
-                    line.Y = newData.Y;
-                }
-            }
-
-            _lastScreenPoint = e.Position;
-            PlotView?.InvalidatePlot(false);
-            e.Handled = true;
-        };
-
-        line.MouseUp += (s, e) =>
-        {
-            line.Color = _originalColor;
-            PlotView?.InvalidatePlot(false);
-        };
-    }
-
-    #endregion
-
-    #region Mouse Events
-
-    /// <summary>
-    /// Determines the behavior for the mouse down event.
-    /// </summary>
-    private void PlotModelMouseDown(object? sender, OxyMouseDownEventArgs e)
-    {
-        if (PlotView?.ActualModel == null) return;
-
-        // Handle annotation creation mode
-        if (_addAnnotationToolMode != AddToolMode.None)
-        {
-            HandleAnnotationCreation(e);
-            return;
-        }
-
-        // Handle right-click context menu
-        if (e.ChangedButton == OxyMouseButton.Right)
-        {
-            PlotView.Cursor = Cursors.Arrow;
-            ShowContextMenu(e);
-            return;
-        }
-
-        // Handle pan cursor
-        if (PanButton.IsChecked == true || e.ChangedButton == OxyMouseButton.Middle)
-        {
-            PlotView.Cursor = _panHandClosedCursor;
-        }
-    }
-
-    /// <summary>
-    /// Determines the behavior for the mouse move event.
-    /// </summary>
-    private void PlotModelMouseMove(object? sender, OxyMouseEventArgs e)
-    {
-        if (PlotView?.ActualModel == null) return;
-
-        // Handle annotation creation preview
-        if (_addAnnotationToolMode != AddToolMode.None && _targetAddAnnotation != null)
-        {
-            UpdateAnnotationDuringCreation(e);
-            return;
-        }
-
-        // Show edit point feedback when hovering over annotations
-        UpdateEditPointFeedback(e);
-    }
-
-    /// <summary>
-    /// Determines the behavior for the mouse up event.
-    /// </summary>
-    private void PlotModelMouseUp(object? sender, OxyMouseEventArgs e)
-    {
-        if (PlotView?.ActualModel == null) return;
-
-        if (_addAnnotationToolMode == AddToolMode.AddPolygonAnnotation ||
-            _addAnnotationToolMode == AddToolMode.AddPolylineAnnotation)
-        {
-            if (_doubleClicked) StopAddAnnotation();
-        }
-        else if (_addAnnotationToolMode == AddToolMode.AddHorizontalLineAnnotation ||
-                 _addAnnotationToolMode == AddToolMode.AddVerticalLineAnnotation)
-        {
-            CloseLineAnnotationTooltip();
-            StopAddAnnotation();
-        }
-        else if (_addAnnotationToolMode == AddToolMode.AddRectangleAnnotation ||
-                 _addAnnotationToolMode == AddToolMode.AddEllipseAnnotation)
-        {
-            EnsureMinimumAnnotationSize(e);
-            StopAddAnnotation();
-        }
-        else if (_addAnnotationToolMode == AddToolMode.AddArrowAnnotation)
-        {
-            EnsureArrowHasLength();
-            StopAddAnnotation();
-        }
-        else if (_addAnnotationToolMode != AddToolMode.None)
-        {
-            StopAddAnnotation();
-        }
-
-        // Reset pan cursor
-        if (PanButton.IsChecked == true)
-        {
-            PlotView.Cursor = _panHandCursor;
-        }
-    }
-
-    /// <summary>
-    /// Handles annotation creation during mouse down.
-    /// </summary>
-    private void HandleAnnotationCreation(OxyMouseDownEventArgs e)
-    {
-        if (PlotView?.ActualModel == null) return;
-
-        var dataPoint = ConvertScreenToDataPoint(e.Position);
-
-        switch (_addAnnotationToolMode)
-        {
-            case AddToolMode.AddArrowAnnotation:
-                var arrow = new ArrowAnnotation
-                {
-                    StartPoint = dataPoint,
-                    EndPoint = dataPoint,
-                    Text = "Arrow Annotation",
-                    Color = OxyColors.Blue,
-                    StrokeThickness = 2
-                };
-                PlotView.ActualModel.Annotations.Add(arrow);
-                _targetAddAnnotation = arrow;
-                RaisePropertiesCalled(true, PropertyExpander.Annotations_Text, arrow);
-                break;
-
-            case AddToolMode.AddTextAnnotation:
-                var text = new TextAnnotation
-                {
-                    TextPosition = dataPoint,
-                    Text = "Text Annotation",
-                    Stroke = OxyColors.Black,
-                    StrokeThickness = 1
-                };
-                PlotView.ActualModel.Annotations.Add(text);
-                _targetAddAnnotation = text;
-                RaisePropertiesCalled(true, PropertyExpander.Annotations_Text, text);
-                break;
-
-            case AddToolMode.AddVerticalLineAnnotation:
-                var vLine = new LineAnnotation
-                {
-                    Type = LineAnnotationType.Vertical,
-                    X = dataPoint.X,
-                    Text = "Vertical Line Annotation",
-                    Color = OxyColors.Red,
-                    StrokeThickness = 1
-                };
-                PlotView.ActualModel.Annotations.Add(vLine);
-                _targetAddAnnotation = vLine;
-                RaisePropertiesCalled(true, PropertyExpander.Annotations_Text, vLine);
-                OpenLineAnnotationTooltip(vLine);
-                break;
-
-            case AddToolMode.AddHorizontalLineAnnotation:
-                var hLine = new LineAnnotation
-                {
-                    Type = LineAnnotationType.Horizontal,
-                    Y = dataPoint.Y,
-                    Text = "Horizontal Line Annotation",
-                    Color = OxyColors.Red,
-                    StrokeThickness = 1
-                };
-                PlotView.ActualModel.Annotations.Add(hLine);
-                _targetAddAnnotation = hLine;
-                RaisePropertiesCalled(true, PropertyExpander.Annotations_Text, hLine);
-                OpenLineAnnotationTooltip(hLine);
-                break;
-
-            case AddToolMode.AddRectangleAnnotation:
-                var rect = new RectangleAnnotation
-                {
-                    MinimumX = dataPoint.X,
-                    MaximumX = dataPoint.X,
-                    MinimumY = dataPoint.Y,
-                    MaximumY = dataPoint.Y,
-                    Text = "Rectangle Annotation",
-                    Fill = OxyColor.FromAColor(80, OxyColors.LightBlue),
-                    Stroke = OxyColors.Blue,
-                    StrokeThickness = 1
-                };
-                PlotView.ActualModel.Annotations.Add(rect);
-                _targetAddAnnotation = rect;
-                RaisePropertiesCalled(true, PropertyExpander.Annotations_Text, rect);
-                break;
-
-            case AddToolMode.AddEllipseAnnotation:
-                var ellipse = new EllipseAnnotation
-                {
-                    X = dataPoint.X,
-                    Y = dataPoint.Y,
-                    Width = 0,
-                    Height = 0,
-                    Text = "Ellipse Annotation",
-                    Fill = OxyColor.FromAColor(80, OxyColors.LightGreen),
-                    Stroke = OxyColors.Green,
-                    StrokeThickness = 1
-                };
-                PlotView.ActualModel.Annotations.Add(ellipse);
-                _targetAddAnnotation = ellipse;
-                RaisePropertiesCalled(true, PropertyExpander.Annotations_Text, ellipse);
-                break;
-
-            case AddToolMode.AddPointAnnotation:
-                var point = new PointAnnotation
-                {
-                    X = dataPoint.X,
-                    Y = dataPoint.Y,
-                    Text = "Point Annotation",
-                    Size = 5,
-                    Fill = OxyColors.Red,
-                    Stroke = OxyColors.Black,
-                    StrokeThickness = 1
-                };
-                PlotView.ActualModel.Annotations.Add(point);
-                _targetAddAnnotation = point;
-                RaisePropertiesCalled(true, PropertyExpander.Annotations_Text, point);
-                break;
-
-            case AddToolMode.AddPolygonAnnotation:
-                if (_targetAddAnnotation == null)
-                {
-                    var polygon = new PolygonAnnotation
+                    newArrow.InternalAnnotation.MouseDown += (s, ae) =>
                     {
-                        Text = "Polygon Annotation",
-                        Fill = OxyColor.FromAColor(80, OxyColors.Yellow),
-                        Stroke = OxyColors.Orange,
-                        StrokeThickness = 1
+                        if (!newArrow.IsEnabled) return;
+                        if (_addAnnotationToolMode != AddToolMode.None) return;
+                        if (ae.ChangedButton != OxyMouseButton.Left) return;
+
+                        _lastScreenPoint = new ScreenPoint(ae.Position.X, ae.Position.Y);
+                        _moveStartPoint = ae.HitTestResult.Index != 2;
+                        _moveEndPoint = ae.HitTestResult.Index != 1;
+                        _originalColor = newArrow.Color;
+                        newArrow.Color = Colors.Red;
+
+                        GetSelectedObjects(s, ae);
+
+                        Plot.ActualModel.InvalidatePlot(false);
+                        ae.Handled = true;
                     };
-                    polygon.Points.Add(dataPoint);
-                    LeaderLine.Points.Add(new Point(e.Position.X, e.Position.Y));
-                    LeaderLine.Points.Add(new Point(e.Position.X, e.Position.Y));
-                    _targetAddAnnotation = polygon;
+
+                    newArrow.InternalAnnotation.MouseMove += (s, ae) =>
+                    {
+                        if (!newArrow.IsEnabled) return;
+
+                        double dx = ae.Position.X - _lastScreenPoint.X;
+                        double dy = ae.Position.Y - _lastScreenPoint.Y;
+                        var startScreenPoint = newArrow.InternalAnnotation.Transform(new DataPoint(newArrow.StartPoint.X, newArrow.StartPoint.Y));
+                        var endScreenPoint = newArrow.InternalAnnotation.Transform(new DataPoint(newArrow.EndPoint.X, newArrow.EndPoint.Y));
+
+                        var startDataPoint = newArrow.InternalAnnotation.InverseTransform(new ScreenPoint(startScreenPoint.X + dx, startScreenPoint.Y + dy));
+                        var endDataPoint = newArrow.InternalAnnotation.InverseTransform(new ScreenPoint(endScreenPoint.X + dx, endScreenPoint.Y + dy));
+
+                        if (_moveStartPoint) newArrow.StartPoint = startDataPoint;
+                        if (_moveEndPoint) newArrow.EndPoint = endDataPoint;
+
+                        _lastScreenPoint = ae.Position;
+                        Plot.ActualModel.InvalidatePlot(false);
+                        ae.Handled = true;
+                    };
+
+                    newArrow.InternalAnnotation.MouseUp += (s, ae) =>
+                    {
+                        if (!newArrow.IsEnabled) return;
+                        newArrow.Color = _originalColor;
+                    };
+                }
+                else if (item.GetType() == typeof(Wpf.TextAnnotation))
+                {
+                    var newText = (Wpf.TextAnnotation)item;
+
+                    newText.InternalAnnotation.MouseDown += (s, ae) =>
+                    {
+                        if (!newText.IsEnabled) return;
+                        if (_addAnnotationToolMode != AddToolMode.None) return;
+                        if (ae.ChangedButton != OxyMouseButton.Left) return;
+
+                        _lastScreenPoint = new ScreenPoint(ae.Position.X, ae.Position.Y);
+                        _moveStartPoint = ae.HitTestResult.Index == 0;
+                        _originalColor = newText.Background;
+                        newText.Background = Colors.Red;
+
+                        GetSelectedObjects(s, ae);
+
+                        Plot.ActualModel.InvalidatePlot(false);
+                        ae.Handled = true;
+                    };
+
+                    newText.InternalAnnotation.MouseMove += (s, ae) =>
+                    {
+                        if (!newText.IsEnabled) return;
+
+                        double dx = ae.Position.X - _lastScreenPoint.X;
+                        double dy = ae.Position.Y - _lastScreenPoint.Y;
+                        var theScreenPoint = newText.InternalAnnotation.Transform(new DataPoint(newText.TextPosition.X, newText.TextPosition.Y));
+                        var theDataPoint = newText.InternalAnnotation.InverseTransform(new ScreenPoint(theScreenPoint.X + dx, theScreenPoint.Y + dy));
+
+                        if (_moveStartPoint) newText.TextPosition = theDataPoint;
+
+                        _lastScreenPoint = ae.Position;
+                        Plot.ActualModel.InvalidatePlot(false);
+                        ae.Handled = true;
+                    };
+
+                    newText.InternalAnnotation.MouseUp += (s, ae) =>
+                    {
+                        if (!newText.IsEnabled) return;
+                        newText.Background = _originalColor;
+                    };
+                }
+                else if (item.GetType() == typeof(Wpf.RectangleAnnotation))
+                {
+                    var newRect = (Wpf.RectangleAnnotation)item;
+
+                    newRect.InternalAnnotation.MouseDown += (s, ae) =>
+                    {
+                        if (!newRect.IsEnabled) return;
+                        if (_addAnnotationToolMode != AddToolMode.None) return;
+                        if (ae.ChangedButton != OxyMouseButton.Left) return;
+
+                        _lastScreenPoint = new ScreenPoint(ae.Position.X, ae.Position.Y);
+                        var upperRight = newRect.InternalAnnotation.Transform(newRect.MaximumX, newRect.MaximumY);
+                        var lowerLeft = newRect.InternalAnnotation.Transform(newRect.MinimumX, newRect.MinimumY);
+                        var topRight = new ScreenPoint(Math.Abs(upperRight.X - ae.Position.X), Math.Abs(upperRight.Y - ae.Position.Y));
+                        var bottomLeft = new ScreenPoint(Math.Abs(lowerLeft.X - ae.Position.X), Math.Abs(lowerLeft.Y - ae.Position.Y));
+
+                        _scaleMaxX = topRight.X < 10;
+                        _scaleMaxY = topRight.Y < 10;
+                        _scaleMinX = bottomLeft.X < 10;
+                        _scaleMinY = bottomLeft.Y < 10;
+
+                        if (ae.HitTestResult.Index == 0)
+                        {
+                            _moveStartPoint = !_scaleMaxX && !_scaleMaxY && !_scaleMinX && !_scaleMinY;
+                        }
+
+                        _originalColor = newRect.Fill;
+                        newRect.Fill = Colors.Red;
+
+                        GetSelectedObjects(s, ae);
+
+                        Plot.ActualModel.InvalidatePlot(false);
+                        ae.Handled = true;
+                    };
+
+                    newRect.InternalAnnotation.MouseMove += (s, ae) =>
+                    {
+                        if (!newRect.IsEnabled) return;
+
+                        double dx = ae.Position.X - _lastScreenPoint.X;
+                        double dy = ae.Position.Y - _lastScreenPoint.Y;
+                        var upperRightScreenPoint = newRect.InternalAnnotation.Transform(newRect.MaximumX, newRect.MaximumY);
+                        var lowerLeftScreenPoint = newRect.InternalAnnotation.Transform(newRect.MinimumX, newRect.MinimumY);
+
+                        var upperRightDataPoint = newRect.InternalAnnotation.InverseTransform(new ScreenPoint(upperRightScreenPoint.X + dx, upperRightScreenPoint.Y + dy));
+                        var lowerLeftDataPoint = newRect.InternalAnnotation.InverseTransform(new ScreenPoint(lowerLeftScreenPoint.X + dx, lowerLeftScreenPoint.Y + dy));
+
+                        if (_scaleMaxX) newRect.MaximumX = upperRightDataPoint.X;
+                        if (_scaleMaxY) newRect.MaximumY = upperRightDataPoint.Y;
+                        if (_scaleMinX) newRect.MinimumX = lowerLeftDataPoint.X;
+                        if (_scaleMinY) newRect.MinimumY = lowerLeftDataPoint.Y;
+
+                        if (_moveStartPoint)
+                        {
+                            newRect.MaximumX = upperRightDataPoint.X;
+                            newRect.MaximumY = upperRightDataPoint.Y;
+                            newRect.MinimumX = lowerLeftDataPoint.X;
+                            newRect.MinimumY = lowerLeftDataPoint.Y;
+                        }
+
+                        _lastScreenPoint = ae.Position;
+                        Plot.ActualModel.InvalidatePlot(false);
+                        ae.Handled = true;
+                    };
+
+                    newRect.InternalAnnotation.MouseUp += (s, ae) =>
+                    {
+                        if (!newRect.IsEnabled) return;
+                        newRect.Fill = _originalColor;
+                    };
+                }
+                else if (item.GetType() == typeof(Wpf.EllipseAnnotation))
+                {
+                    var newEllipse = (Wpf.EllipseAnnotation)item;
+
+                    newEllipse.InternalAnnotation.MouseDown += (s, ae) =>
+                    {
+                        if (!newEllipse.IsEnabled) return;
+                        if (_addAnnotationToolMode != AddToolMode.None) return;
+                        if (ae.ChangedButton != OxyMouseButton.Left) return;
+
+                        _lastScreenPoint = new ScreenPoint(ae.Position.X, ae.Position.Y);
+                        var upperRight = newEllipse.InternalAnnotation.Transform(newEllipse.MaximumX, newEllipse.MaximumY);
+                        var lowerLeft = newEllipse.InternalAnnotation.Transform(newEllipse.MinimumX, newEllipse.MinimumY);
+                        var topRight = new ScreenPoint(Math.Abs(upperRight.X - ae.Position.X), Math.Abs(upperRight.Y - ae.Position.Y));
+                        var bottomLeft = new ScreenPoint(Math.Abs(lowerLeft.X - ae.Position.X), Math.Abs(lowerLeft.Y - ae.Position.Y));
+
+                        _scaleMaxX = topRight.X < 10;
+                        _scaleMaxY = topRight.Y < 10;
+                        _scaleMinX = bottomLeft.X < 10;
+                        _scaleMinY = bottomLeft.Y < 10;
+
+                        if (ae.HitTestResult.Index == 0)
+                        {
+                            _moveStartPoint = !_scaleMaxX && !_scaleMaxY && !_scaleMinX && !_scaleMinY;
+                        }
+
+                        _originalColor = newEllipse.Fill;
+                        newEllipse.Fill = Colors.Red;
+
+                        GetSelectedObjects(s, ae);
+
+                        Plot.ActualModel.InvalidatePlot(false);
+                        ae.Handled = true;
+                    };
+
+                    newEllipse.InternalAnnotation.MouseMove += (s, ae) =>
+                    {
+                        if (!newEllipse.IsEnabled) return;
+
+                        double dx = ae.Position.X - _lastScreenPoint.X;
+                        double dy = ae.Position.Y - _lastScreenPoint.Y;
+                        var upperRightScreenPoint = newEllipse.InternalAnnotation.Transform(newEllipse.MaximumX, newEllipse.MaximumY);
+                        var lowerLeftScreenPoint = newEllipse.InternalAnnotation.Transform(newEllipse.MinimumX, newEllipse.MinimumY);
+
+                        var upperRightDataPoint = newEllipse.InternalAnnotation.InverseTransform(new ScreenPoint(upperRightScreenPoint.X + dx, upperRightScreenPoint.Y + dy));
+                        var lowerLeftDataPoint = newEllipse.InternalAnnotation.InverseTransform(new ScreenPoint(lowerLeftScreenPoint.X + dx, lowerLeftScreenPoint.Y + dy));
+
+                        if (_scaleMaxX) newEllipse.MaximumX = upperRightDataPoint.X;
+                        if (_scaleMaxY) newEllipse.MaximumY = upperRightDataPoint.Y;
+                        if (_scaleMinX) newEllipse.MinimumX = lowerLeftDataPoint.X;
+                        if (_scaleMinY) newEllipse.MinimumY = lowerLeftDataPoint.Y;
+
+                        if (_moveStartPoint)
+                        {
+                            newEllipse.MaximumX = upperRightDataPoint.X;
+                            newEllipse.MaximumY = upperRightDataPoint.Y;
+                            newEllipse.MinimumX = lowerLeftDataPoint.X;
+                            newEllipse.MinimumY = lowerLeftDataPoint.Y;
+                        }
+
+                        _lastScreenPoint = ae.Position;
+                        Plot.ActualModel.InvalidatePlot(false);
+                        ae.Handled = true;
+                    };
+
+                    newEllipse.InternalAnnotation.MouseUp += (s, ae) =>
+                    {
+                        if (!newEllipse.IsEnabled) return;
+                        newEllipse.Fill = _originalColor;
+                    };
+                }
+                else if (item.GetType() == typeof(Wpf.PointAnnotation))
+                {
+                    var newPoint = (Wpf.PointAnnotation)item;
+
+                    newPoint.InternalAnnotation.MouseDown += (s, ae) =>
+                    {
+                        if (!newPoint.IsEnabled) return;
+                        if (_addAnnotationToolMode != AddToolMode.None) return;
+                        if (ae.ChangedButton != OxyMouseButton.Left) return;
+
+                        _lastScreenPoint = new ScreenPoint(ae.Position.X, ae.Position.Y);
+                        _moveStartPoint = ae.HitTestResult.Index == 0;
+                        _originalColor = newPoint.Fill;
+                        newPoint.Fill = Colors.Red;
+
+                        GetSelectedObjects(s, ae);
+
+                        Plot.ActualModel.InvalidatePlot(false);
+                        ae.Handled = true;
+                    };
+
+                    newPoint.InternalAnnotation.MouseMove += (s, ae) =>
+                    {
+                        if (!newPoint.IsEnabled) return;
+
+                        double dx = ae.Position.X - _lastScreenPoint.X;
+                        double dy = ae.Position.Y - _lastScreenPoint.Y;
+                        var theScreenPoint = newPoint.InternalAnnotation.Transform(new DataPoint(newPoint.X, newPoint.Y));
+                        var theDataPoint = newPoint.InternalAnnotation.InverseTransform(new ScreenPoint(theScreenPoint.X + dx, theScreenPoint.Y + dy));
+
+                        if (_moveStartPoint)
+                        {
+                            newPoint.X = theDataPoint.X;
+                            newPoint.Y = theDataPoint.Y;
+                        }
+
+                        _lastScreenPoint = ae.Position;
+                        Plot.ActualModel.InvalidatePlot(false);
+                        ae.Handled = true;
+                    };
+
+                    newPoint.InternalAnnotation.MouseUp += (s, ae) =>
+                    {
+                        if (!newPoint.IsEnabled) return;
+                        newPoint.Fill = _originalColor;
+                    };
+                }
+                else if (item.GetType() == typeof(Wpf.PolygonAnnotation))
+                {
+                    var newPolygon = (Wpf.PolygonAnnotation)item;
+
+                    newPolygon.InternalAnnotation.MouseDown += (s, ae) =>
+                    {
+                        if (!newPolygon.IsEnabled) return;
+                        if (_addAnnotationToolMode != AddToolMode.None) return;
+                        if (ae.ChangedButton != OxyMouseButton.Left) return;
+
+                        _lastScreenPoint = new ScreenPoint(ae.Position.X, ae.Position.Y);
+                        var screenToData = newPolygon.InternalAnnotation.InverseTransform(ae.Position);
+                        var screen2ToData = newPolygon.InternalAnnotation.InverseTransform(new ScreenPoint(ae.Position.X - 10, ae.Position.Y - 10));
+                        var dxy = new DataPoint(Math.Abs(screenToData.X - screen2ToData.X), Math.Abs(screenToData.Y - screen2ToData.Y));
+                        var dPoint = newPolygon.InternalAnnotation.InverseTransform(ae.Position);
+
+                        _movePointIndex = -1;
+                        for (int i = 0; i < newPolygon.Points.Count; i++)
+                        {
+                            if (Math.Abs(dPoint.X - newPolygon.Points[i].X) < dxy.X && Math.Abs(dPoint.Y - newPolygon.Points[i].Y) < dxy.Y)
+                            {
+                                _movePointIndex = i;
+                                break;
+                            }
+                        }
+
+                        if (_movePointIndex == -1)
+                        {
+                            bool onLine = false;
+                            for (int i = 0; i < newPolygon.Points.Count - 1; i++)
+                            {
+                                var p1 = newPolygon.InternalAnnotation.Transform(newPolygon.Points[i]);
+                                var p2 = newPolygon.InternalAnnotation.Transform(newPolygon.Points[i + 1]);
+                                var linePoint = ScreenPointHelper.FindPointOnLine(ae.Position, p1, p2);
+                                if ((linePoint - ae.Position).Length < 10)
+                                {
+                                    newPolygon.Points.Insert(i + 1, newPolygon.InternalAnnotation.InverseTransform(linePoint));
+                                    onLine = true;
+                                    _movePointIndex = i + 1;
+                                    break;
+                                }
+                            }
+
+                            if (!onLine)
+                            {
+                                var p1 = newPolygon.InternalAnnotation.Transform(newPolygon.Points[0]);
+                                var p2 = newPolygon.InternalAnnotation.Transform(newPolygon.Points[newPolygon.Points.Count - 1]);
+                                var linePoint = ScreenPointHelper.FindPointOnLine(ae.Position, p1, p2);
+                                if ((linePoint - ae.Position).Length < 10)
+                                {
+                                    newPolygon.Points.Add(newPolygon.InternalAnnotation.InverseTransform(linePoint));
+                                    _movePointIndex = newPolygon.Points.Count - 1;
+                                }
+                                else
+                                {
+                                    if (ae.HitTestResult.Index == 0) _moveStartPoint = true;
+                                }
+                            }
+                        }
+
+                        _originalColor = newPolygon.Fill;
+                        newPolygon.Fill = Colors.Red;
+
+                        GetSelectedObjects(s, ae);
+
+                        Plot.ActualModel.InvalidatePlot(false);
+                        ae.Handled = true;
+                    };
+
+                    newPolygon.InternalAnnotation.MouseMove += (s, ae) =>
+                    {
+                        if (!newPolygon.IsEnabled) return;
+
+                        double dx = ae.Position.X - _lastScreenPoint.X;
+                        double dy = ae.Position.Y - _lastScreenPoint.Y;
+
+                        if (_movePointIndex > -1)
+                        {
+                            var screenPoint = newPolygon.InternalAnnotation.Transform(new DataPoint(newPolygon.Points[_movePointIndex].X, newPolygon.Points[_movePointIndex].Y));
+                            newPolygon.Points[_movePointIndex] = newPolygon.InternalAnnotation.InverseTransform(new ScreenPoint(screenPoint.X + dx, screenPoint.Y + dy));
+                        }
+                        else if (_moveStartPoint)
+                        {
+                            for (int i = 0; i < newPolygon.Points.Count; i++)
+                            {
+                                var screenPoint = newPolygon.InternalAnnotation.Transform(new DataPoint(newPolygon.Points[i].X, newPolygon.Points[i].Y));
+                                newPolygon.Points[i] = newPolygon.InternalAnnotation.InverseTransform(new ScreenPoint(screenPoint.X + dx, screenPoint.Y + dy));
+                            }
+                        }
+
+                        _lastScreenPoint = ae.Position;
+                        Plot.ActualModel.InvalidatePlot(false);
+                        ae.Handled = true;
+                    };
+
+                    newPolygon.InternalAnnotation.MouseUp += (s, ae) =>
+                    {
+                        if (!newPolygon.IsEnabled) return;
+                        newPolygon.Fill = _originalColor;
+                    };
+                }
+                else if (item.GetType() == typeof(Wpf.PolylineAnnotation))
+                {
+                    var newPolyline = (Wpf.PolylineAnnotation)item;
+
+                    newPolyline.InternalAnnotation.MouseDown += (s, ae) =>
+                    {
+                        if (!newPolyline.IsEnabled) return;
+                        if (_addAnnotationToolMode != AddToolMode.None) return;
+                        if (ae.ChangedButton != OxyMouseButton.Left) return;
+
+                        _lastScreenPoint = new ScreenPoint(ae.Position.X, ae.Position.Y);
+                        var screenToData = newPolyline.InternalAnnotation.InverseTransform(ae.Position);
+                        var screen2ToData = newPolyline.InternalAnnotation.InverseTransform(new ScreenPoint(ae.Position.X - 10, ae.Position.Y - 10));
+                        var dxy = new DataPoint(Math.Abs(screenToData.X - screen2ToData.X), Math.Abs(screenToData.Y - screen2ToData.Y));
+                        var dPoint = newPolyline.InternalAnnotation.InverseTransform(ae.Position);
+
+                        _movePointIndex = -1;
+                        for (int i = 0; i < newPolyline.Points.Count; i++)
+                        {
+                            if (Math.Abs(dPoint.X - newPolyline.Points[i].X) < dxy.X && Math.Abs(dPoint.Y - newPolyline.Points[i].Y) < dxy.Y)
+                            {
+                                _movePointIndex = i;
+                                break;
+                            }
+                        }
+
+                        bool onLine = false;
+                        if (_movePointIndex == -1 && ae.IsControlDown)
+                        {
+                            for (int i = 0; i < newPolyline.Points.Count - 1; i++)
+                            {
+                                var p1 = newPolyline.InternalAnnotation.Transform(newPolyline.Points[i]);
+                                var p2 = newPolyline.InternalAnnotation.Transform(newPolyline.Points[i + 1]);
+                                var linePoint = ScreenPointHelper.FindPointOnLine(ae.Position, p1, p2);
+                                if ((linePoint - ae.Position).Length < 10)
+                                {
+                                    newPolyline.Points.Insert(i + 1, newPolyline.InternalAnnotation.InverseTransform(linePoint));
+                                    onLine = true;
+                                    _movePointIndex = i + 1;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (!onLine) _moveStartPoint = true;
+
+                        _originalColor = newPolyline.Color;
+                        newPolyline.Color = Colors.Red;
+
+                        GetSelectedObjects(s, ae);
+
+                        Plot.ActualModel.InvalidatePlot(false);
+                        ae.Handled = true;
+                    };
+
+                    newPolyline.InternalAnnotation.MouseMove += (s, ae) =>
+                    {
+                        if (!newPolyline.IsEnabled) return;
+
+                        double dx = ae.Position.X - _lastScreenPoint.X;
+                        double dy = ae.Position.Y - _lastScreenPoint.Y;
+
+                        if (_movePointIndex > -1)
+                        {
+                            var screenPoint = newPolyline.InternalAnnotation.Transform(new DataPoint(newPolyline.Points[_movePointIndex].X, newPolyline.Points[_movePointIndex].Y));
+                            newPolyline.Points[_movePointIndex] = newPolyline.InternalAnnotation.InverseTransform(new ScreenPoint(screenPoint.X + dx, screenPoint.Y + dy));
+                        }
+                        else if (_moveStartPoint)
+                        {
+                            for (int i = 0; i < newPolyline.Points.Count; i++)
+                            {
+                                var screenPoint = newPolyline.InternalAnnotation.Transform(new DataPoint(newPolyline.Points[i].X, newPolyline.Points[i].Y));
+                                newPolyline.Points[i] = newPolyline.InternalAnnotation.InverseTransform(new ScreenPoint(screenPoint.X + dx, screenPoint.Y + dy));
+                            }
+                        }
+
+                        _lastScreenPoint = ae.Position;
+                        Plot.ActualModel.InvalidatePlot(false);
+                        ae.Handled = true;
+                    };
+
+                    newPolyline.InternalAnnotation.MouseUp += (s, ae) =>
+                    {
+                        if (!newPolyline.IsEnabled) return;
+                        newPolyline.Color = _originalColor;
+                    };
+                }
+                else if (item.GetType() == typeof(Wpf.LineAnnotation))
+                {
+                    var newLine = (Wpf.LineAnnotation)item;
+
+                    newLine.InternalAnnotation.MouseDown += (s, ae) =>
+                    {
+                        if (!newLine.IsEnabled) return;
+                        if (_addAnnotationToolMode != AddToolMode.None) return;
+                        if (ae.ChangedButton != OxyMouseButton.Left) return;
+
+                        _lastScreenPoint = new ScreenPoint(ae.Position.X, ae.Position.Y);
+                        _moveStartPoint = ae.HitTestResult.Index == 0;
+
+                        _originalColor = newLine.Color;
+                        newLine.Color = Colors.Red;
+
+                        GetSelectedObjects(s, ae);
+
+                        if ((Mouse.LeftButton == MouseButtonState.Pressed && PanButton.IsChecked == true) || Mouse.MiddleButton == MouseButtonState.Pressed)
+                        {
+                            Plot.PanCursor = _panHandClosedCursor;
+                            Plot.DefaultPlotCursor = _panHandClosedCursor;
+                            Plot.Cursor = _panHandClosedCursor;
+                        }
+
+                        OpenLineAnnotationTooltip(newLine);
+                        UpdateLineAnnotationTooltip(newLine);
+                        Plot.ActualModel.InvalidatePlot(false);
+                        ae.Handled = true;
+                    };
+
+                    newLine.InternalAnnotation.MouseMove += (s, ae) =>
+                    {
+                        if (!newLine.IsEnabled) return;
+
+                        double dx = ae.Position.X - _lastScreenPoint.X;
+                        double dy = ae.Position.Y - _lastScreenPoint.Y;
+                        var screenPoint = newLine.InternalAnnotation.Transform(new DataPoint(newLine.X, newLine.Y));
+                        var dataPoint = newLine.InternalAnnotation.InverseTransform(new ScreenPoint(screenPoint.X + dx, screenPoint.Y + dy));
+
+                        if (_moveStartPoint)
+                        {
+                            if (newLine.Type == OxyPlot.Annotations.LineAnnotationType.LinearEquation)
+                            {
+                                dx = dataPoint.X - newLine.X;
+                                dy = dataPoint.Y - newLine.Y;
+                                newLine.Intercept += (dy - newLine.Slope * dx);
+                            }
+                            else
+                            {
+                                newLine.X = dataPoint.X;
+                                newLine.Y = dataPoint.Y;
+                            }
+                            UpdateLineAnnotationTooltip(newLine);
+                        }
+
+                        _lastScreenPoint = ae.Position;
+                        Plot.ActualModel.InvalidatePlot(false);
+                        ae.Handled = true;
+                    };
+
+                    newLine.InternalAnnotation.MouseUp += (s, ae) =>
+                    {
+                        if (!newLine.IsEnabled) return;
+                        newLine.Color = _originalColor;
+                        CloseLineAnnotationTooltip(newLine);
+                    };
+                }
+            }
+        }
+
+        /// <summary>
+        /// Open the line annotation tooltip.
+        /// </summary>
+        private void OpenLineAnnotationTooltip(Wpf.LineAnnotation lineAnnotation)
+        {
+            if (lineAnnotation.ToolTip != null)
+            {
+                ((ToolTip)lineAnnotation.ToolTip).IsOpen = false;
+            }
+
+            var toolTip = new ToolTip
+            {
+                FontFamily = Plot.FontFamily,
+                FontSize = Plot.FontSize,
+                FontWeight = Plot.FontWeight,
+                Background = Brushes.White,
+                BorderBrush = Brushes.Transparent,
+                Placement = PlacementMode.Relative,
+                PlacementTarget = Plot.canvas,
+                Padding = new Thickness(1),
+                Margin = new Thickness(0),
+                IsOpen = true
+            };
+            lineAnnotation.ToolTip = toolTip;
+        }
+
+        /// <summary>
+        /// Update the line annotation tooltip.
+        /// </summary>
+        private void UpdateLineAnnotationTooltip(Wpf.LineAnnotation lineAnnotation)
+        {
+            switch (lineAnnotation.Type)
+            {
+                case OxyPlot.Annotations.LineAnnotationType.Horizontal:
+                    if (lineAnnotation.ToolTip != null)
+                    {
+                        DataPoint dataPoint;
+                        if (!lineAnnotation.InternalAnnotation.XAxis.IsReversed)
+                        {
+                            dataPoint = new DataPoint(lineAnnotation.InternalAnnotation.XAxis.ActualMinimum, lineAnnotation.Y);
+                        }
+                        else
+                        {
+                            dataPoint = new DataPoint(lineAnnotation.InternalAnnotation.XAxis.ActualMaximum, lineAnnotation.Y);
+                        }
+                        var toolTip = (ToolTip)lineAnnotation.ToolTip;
+                        toolTip.Content = lineAnnotation.InternalAnnotation.YAxis.FormatValue(lineAnnotation.Y);
+                        toolTip.UpdateLayout();
+                        toolTip.VerticalOffset = lineAnnotation.InternalAnnotation.Transform(dataPoint).Y - toolTip.ActualHeight / 2;
+                        toolTip.HorizontalOffset = lineAnnotation.InternalAnnotation.Transform(dataPoint).X - toolTip.ActualWidth;
+                    }
+                    break;
+
+                case OxyPlot.Annotations.LineAnnotationType.Vertical:
+                    if (lineAnnotation.ToolTip != null)
+                    {
+                        DataPoint dataPoint;
+                        if (!lineAnnotation.InternalAnnotation.YAxis.IsReversed)
+                        {
+                            dataPoint = new DataPoint(lineAnnotation.X, lineAnnotation.InternalAnnotation.YAxis.ActualMinimum);
+                        }
+                        else
+                        {
+                            dataPoint = new DataPoint(lineAnnotation.X, lineAnnotation.InternalAnnotation.YAxis.ActualMaximum);
+                        }
+                        var toolTip = (ToolTip)lineAnnotation.ToolTip;
+                        toolTip.Content = lineAnnotation.InternalAnnotation.XAxis.FormatValue(lineAnnotation.X);
+                        toolTip.UpdateLayout();
+                        toolTip.VerticalOffset = lineAnnotation.InternalAnnotation.Transform(dataPoint).Y;
+                        toolTip.HorizontalOffset = lineAnnotation.InternalAnnotation.Transform(dataPoint).X - toolTip.ActualWidth / 2;
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Close the line annotation tooltip.
+        /// </summary>
+        private void CloseLineAnnotationTooltip(Wpf.LineAnnotation lineAnnotation)
+        {
+            if (lineAnnotation.ToolTip != null)
+            {
+                ((ToolTip)lineAnnotation.ToolTip).IsOpen = false;
+            }
+        }
+
+        #endregion
+
+        #region Mouse Events
+
+        /// <summary>
+        /// Plot model mouse down.
+        /// </summary>
+        private void PlotModelMouseDown(object sender, OxyMouseDownEventArgs e)
+        {
+            if (_contextMenu != null)
+            {
+                _contextMenu.IsOpen = false;
+            }
+            if (_textBox != null)
+            {
+                System.Windows.Input.Keyboard.ClearFocus();
+            }
+
+            _moveStartPoint = false;
+            _moveEndPoint = false;
+            _movePointIndex = -1;
+            _scaleMaxX = false;
+            _scaleMaxY = false;
+            _scaleMinX = false;
+            _scaleMinY = false;
+
+            if (e.ClickCount == 2)
+            {
+                _doubleClicked = true;
+            }
+
+            if ((Mouse.LeftButton == MouseButtonState.Pressed && PanButton.IsChecked == true) || Mouse.MiddleButton == MouseButtonState.Pressed)
+            {
+                Plot.PanCursor = _panHandClosedCursor;
+                Plot.DefaultPlotCursor = _panHandClosedCursor;
+                Plot.Cursor = _panHandClosedCursor;
+            }
+
+            if (_addAnnotationToolMode != AddToolMode.None)
+            {
+                switch (_addAnnotationToolMode)
+                {
+                    case AddToolMode.AddArrowAnnotation:
+                        var newArrow = new Wpf.ArrowAnnotation { Text = "Arrow Annotation" };
+                        Plot.Annotations.Add(newArrow);
+                        Plot.ActualModel.InvalidatePlot(false);
+                        PropertiesCalled?.Invoke(Plot, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newArrow);
+                        newArrow.StartPoint = newArrow.InternalAnnotation.InverseTransform(e.Position);
+                        newArrow.EndPoint = newArrow.StartPoint;
+                        _targetAddAnnotation = newArrow;
+                        break;
+
+                    case AddToolMode.AddTextAnnotation:
+                        var newText = new Wpf.TextAnnotation { Text = "Text Annotation" };
+                        Plot.Annotations.Add(newText);
+                        Plot.ActualModel.InvalidatePlot(false);
+                        PropertiesCalled?.Invoke(Plot, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newText);
+                        newText.TextPosition = newText.InternalAnnotation.InverseTransform(e.Position);
+                        _targetAddAnnotation = newText;
+                        break;
+
+                    case AddToolMode.AddVerticalLineAnnotation:
+                        var newVLine = new Wpf.LineAnnotation { Text = "Vertical Line Annotation" };
+                        Plot.Annotations.Add(newVLine);
+                        Plot.ActualModel.InvalidatePlot(false);
+                        PropertiesCalled?.Invoke(Plot, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newVLine);
+
+                        if (newVLine.InternalAnnotation.YAxis.IsReversed == false)
+                        {
+                            newVLine.TextLinePosition = 1;
+                            newVLine.TextHorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                        }
+                        else
+                        {
+                            newVLine.TextLinePosition = 0;
+                            newVLine.TextHorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                        }
+
+                        {
+                            OxyRect plotArea = Plot.ActualModel.PlotArea;
+                            var plotLL = newVLine.InternalAnnotation.InverseTransform(new ScreenPoint(plotArea.Left, plotArea.Bottom));
+                            var plotUR = newVLine.InternalAnnotation.InverseTransform(new ScreenPoint(plotArea.Right, plotArea.Top));
+                            var dataPointClicked = newVLine.InternalAnnotation.InverseTransform(e.Position);
+                            newVLine.X = dataPointClicked.X;
+                            newVLine.Y = dataPointClicked.Y;
+                            newVLine.Type = OxyPlot.Annotations.LineAnnotationType.Vertical;
+                            newVLine.Intercept = dataPointClicked.Y;
+                            newVLine.Slope = (plotUR.Y - plotLL.Y) / (plotUR.X - plotLL.X);
+                            _targetAddAnnotation = newVLine;
+
+                            OpenLineAnnotationTooltip(newVLine);
+                            UpdateLineAnnotationTooltip(newVLine);
+                            Plot.ActualModel.InvalidatePlot(false);
+                        }
+                        break;
+
+                    case AddToolMode.AddHorizontalLineAnnotation:
+                        var newHLine = new Wpf.LineAnnotation { Text = "Horizontal Line Annotation" };
+                        Plot.Annotations.Add(newHLine);
+                        Plot.ActualModel.InvalidatePlot(false);
+                        PropertiesCalled?.Invoke(Plot, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newHLine);
+
+                        if (newHLine.InternalAnnotation.XAxis.IsReversed == false)
+                        {
+                            newHLine.TextLinePosition = 0;
+                            newHLine.TextHorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                        }
+                        else
+                        {
+                            newHLine.TextLinePosition = 1;
+                            newHLine.TextHorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                        }
+
+                        {
+                            OxyRect plotArea = Plot.ActualModel.PlotArea;
+                            var plotLL = newHLine.InternalAnnotation.InverseTransform(new ScreenPoint(plotArea.Left, plotArea.Bottom));
+                            var plotUR = newHLine.InternalAnnotation.InverseTransform(new ScreenPoint(plotArea.Right, plotArea.Top));
+                            var dataPointClicked = newHLine.InternalAnnotation.InverseTransform(e.Position);
+                            newHLine.X = dataPointClicked.X;
+                            newHLine.Y = dataPointClicked.Y;
+                            newHLine.Type = OxyPlot.Annotations.LineAnnotationType.Horizontal;
+                            newHLine.Intercept = dataPointClicked.Y;
+                            newHLine.Slope = (plotUR.Y - plotLL.Y) / (plotUR.X - plotLL.X);
+                            _targetAddAnnotation = newHLine;
+
+                            OpenLineAnnotationTooltip(newHLine);
+                            UpdateLineAnnotationTooltip(newHLine);
+                            Plot.ActualModel.InvalidatePlot(false);
+                        }
+                        break;
+
+                    case AddToolMode.AddRectangleAnnotation:
+                        var newRectangle = new Wpf.RectangleAnnotation { Text = "Rectangle Annotation" };
+                        Plot.Annotations.Add(newRectangle);
+                        Plot.ActualModel.InvalidatePlot(false);
+                        PropertiesCalled?.Invoke(Plot, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newRectangle);
+                        {
+                            var dataPointClicked = newRectangle.InternalAnnotation.InverseTransform(e.Position);
+                            newRectangle.MinimumX = dataPointClicked.X;
+                            newRectangle.MaximumX = dataPointClicked.X;
+                            newRectangle.MinimumY = dataPointClicked.Y;
+                            newRectangle.MaximumY = dataPointClicked.Y;
+                            _targetAddAnnotation = newRectangle;
+                        }
+                        break;
+
+                    case AddToolMode.AddEllipseAnnotation:
+                        var newEllipse = new Wpf.EllipseAnnotation { Text = "Ellipse Annotation" };
+                        Plot.Annotations.Add(newEllipse);
+                        Plot.ActualModel.InvalidatePlot(false);
+                        PropertiesCalled?.Invoke(Plot, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newEllipse);
+                        {
+                            var dataPointClicked = newEllipse.InternalAnnotation.InverseTransform(e.Position);
+                            newEllipse.MinimumX = dataPointClicked.X;
+                            newEllipse.MaximumX = dataPointClicked.X;
+                            newEllipse.MinimumY = dataPointClicked.Y;
+                            newEllipse.MaximumY = dataPointClicked.Y;
+                            _targetAddAnnotation = newEllipse;
+                        }
+                        break;
+
+                    case AddToolMode.AddPointAnnotation:
+                        var newPoint = new Wpf.PointAnnotation { Text = "Point Annotation", Size = 5 };
+                        Plot.Annotations.Add(newPoint);
+                        Plot.ActualModel.InvalidatePlot(false);
+                        PropertiesCalled?.Invoke(Plot, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newPoint);
+                        {
+                            var dataPointClicked = newPoint.InternalAnnotation.InverseTransform(e.Position);
+                            OxyRect plotArea = Plot.ActualModel.PlotArea;
+                            var plotLL = newPoint.InternalAnnotation.InverseTransform(new ScreenPoint(plotArea.Left, plotArea.Bottom));
+                            var plotUR = newPoint.InternalAnnotation.InverseTransform(new ScreenPoint(plotArea.Right, plotArea.Top));
+                            var plotCenter = newPoint.InternalAnnotation.InverseTransform(Plot.ActualModel.PlotArea.Center);
+
+                            newPoint.X = dataPointClicked.X;
+                            newPoint.Y = dataPointClicked.Y;
+                            _targetAddAnnotation = newPoint;
+                        }
+                        break;
+
+                    case AddToolMode.AddPolygonAnnotation:
+                        if (_targetAddAnnotation == null)
+                        {
+                            var newPolygon = new Wpf.PolygonAnnotation { Text = "Polygon Annotation" };
+                            newPolygon.Points = new System.Collections.Generic.List<DataPoint>();
+                            var dataPointClicked = ConvertScreenPointToDataPoint(e.Position);
+                            newPolygon.Points.Add(dataPointClicked);
+                            _leaderLine.Points.Add(new Point(e.Position.X, e.Position.Y));
+                            _leaderLine.Points.Add(new Point(e.Position.X, e.Position.Y));
+                            _targetAddAnnotation = newPolygon;
+                        }
+                        else
+                        {
+                            _doubleClicked = e.ClickCount > 1;
+                            var polyAnnotation = (Wpf.PolygonAnnotation)_targetAddAnnotation;
+                            if (polyAnnotation.Points.Count == 3)
+                            {
+                                Plot.Annotations.Add(polyAnnotation);
+                                PropertiesCalled?.Invoke(Plot, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, polyAnnotation);
+                            }
+                            if (e.ClickCount < 2)
+                            {
+                                _leaderLine.Points.Add(new Point(e.Position.X, e.Position.Y));
+                                polyAnnotation.Points.Add(ConvertScreenPointToDataPoint(e.Position));
+                            }
+                        }
+                        break;
+
+                    case AddToolMode.AddPolylineAnnotation:
+                        if (_targetAddAnnotation == null)
+                        {
+                            var newPolyline = new Wpf.PolylineAnnotation { Text = "Polyline Annotation" };
+                            newPolyline.Points = new System.Collections.Generic.List<DataPoint>();
+                            Plot.Annotations.Add(newPolyline);
+                            PropertiesCalled?.Invoke(Plot, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newPolyline);
+                            var dataPointClicked = ConvertScreenPointToDataPoint(e.Position);
+                            newPolyline.Points.Add(dataPointClicked);
+                            _leaderLine.Points.Add(new Point(e.Position.X, e.Position.Y));
+                            _leaderLine.Points.Add(new Point(e.Position.X, e.Position.Y));
+                            _targetAddAnnotation = newPolyline;
+                        }
+                        else
+                        {
+                            _doubleClicked = e.ClickCount > 1;
+                            if (e.ClickCount < 2)
+                            {
+                                ((Wpf.PolylineAnnotation)_targetAddAnnotation).Points.Add(_targetAddAnnotation.InternalAnnotation.InverseTransform(e.Position));
+                            }
+                        }
+                        break;
+                }
+                return;
+            }
+
+            if (Mouse.RightButton == MouseButtonState.Pressed)
+            {
+                Plot.DefaultPlotCursor = Cursors.Arrow;
+                Plot.Cursor = Cursors.Arrow;
+                GetSelectedObjects(sender, e);
+                return;
+            }
+            else
+            {
+                GetSelectedObjects(sender, e);
+            }
+
+            if (PanButton.IsChecked == true || Mouse.MiddleButton == MouseButtonState.Pressed)
+            {
+                Plot.PanCursor = _panHandClosedCursor;
+                Plot.DefaultPlotCursor = _panHandClosedCursor;
+                Plot.Cursor = _panHandClosedCursor;
+            }
+        }
+
+        /// <summary>
+        /// Plot model mouse move.
+        /// </summary>
+        private void PlotModelMouseMove(object sender, OxyMouseEventArgs e)
+        {
+            // For adding annotations
+            if (_addAnnotationToolMode != AddToolMode.None && _targetAddAnnotation != null)
+            {
+                switch (_addAnnotationToolMode)
+                {
+                    case AddToolMode.AddArrowAnnotation:
+                        ((Wpf.ArrowAnnotation)_targetAddAnnotation).EndPoint = _targetAddAnnotation.InternalAnnotation.InverseTransform(e.Position);
+                        break;
+
+                    case AddToolMode.AddTextAnnotation:
+                        ((Wpf.TextAnnotation)_targetAddAnnotation).TextPosition = _targetAddAnnotation.InternalAnnotation.InverseTransform(e.Position);
+                        break;
+
+                    case AddToolMode.AddVerticalLineAnnotation:
+                        ((Wpf.LineAnnotation)_targetAddAnnotation).X = _targetAddAnnotation.InternalAnnotation.InverseTransform(e.Position).X;
+                        UpdateLineAnnotationTooltip((Wpf.LineAnnotation)_targetAddAnnotation);
+                        break;
+
+                    case AddToolMode.AddHorizontalLineAnnotation:
+                        ((Wpf.LineAnnotation)_targetAddAnnotation).Y = _targetAddAnnotation.InternalAnnotation.InverseTransform(e.Position).Y;
+                        UpdateLineAnnotationTooltip((Wpf.LineAnnotation)_targetAddAnnotation);
+                        break;
+
+                    case AddToolMode.AddRectangleAnnotation:
+                        {
+                            var mouseDataPoint = _targetAddAnnotation.InternalAnnotation.InverseTransform(e.Position);
+                            var rect = (Wpf.RectangleAnnotation)_targetAddAnnotation;
+                            rect.MaximumX = mouseDataPoint.X;
+                            rect.MaximumY = mouseDataPoint.Y;
+                        }
+                        break;
+
+                    case AddToolMode.AddEllipseAnnotation:
+                        {
+                            var mouseDataPoint = _targetAddAnnotation.InternalAnnotation.InverseTransform(e.Position);
+                            var ellipse = (Wpf.EllipseAnnotation)_targetAddAnnotation;
+                            ellipse.MaximumX = mouseDataPoint.X;
+                            ellipse.MaximumY = mouseDataPoint.Y;
+                        }
+                        break;
+
+                    case AddToolMode.AddPointAnnotation:
+                        {
+                            var mouseDataPoint = _targetAddAnnotation.InternalAnnotation.InverseTransform(e.Position);
+                            var point = (Wpf.PointAnnotation)_targetAddAnnotation;
+                            point.X = mouseDataPoint.X;
+                            point.Y = mouseDataPoint.Y;
+                        }
+                        break;
+
+                    case AddToolMode.AddPolygonAnnotation:
+                        _leaderLine.Points[_leaderLine.Points.Count - 1] = new Point(e.Position.X, e.Position.Y);
+                        Plot.InvalidatePlot(true);
+                        break;
+
+                    case AddToolMode.AddPolylineAnnotation:
+                        {
+                            var polyAnnotation = (Wpf.PolylineAnnotation)_targetAddAnnotation;
+                            _leaderLine.Points[0] = ConvertDataPointToPoint(polyAnnotation.Points[polyAnnotation.Points.Count - 1]);
+                            _leaderLine.Points[_leaderLine.Points.Count - 1] = new Point(e.Position.X, e.Position.Y);
+                            Plot.InvalidatePlot(false);
+                        }
+                        break;
+                }
+                return;
+            }
+
+            // Cursor update logic - show markers and update cursor when hovering over annotations
+            bool requiresRedraw = _showPoints;
+            _showPoints = false;
+            var markerPoints = new List<ScreenPoint>();
+            var markerSizes = new List<double>();
+            Cursor updatedCursor = null;
+
+            foreach (var a in Plot.Annotations)
+            {
+                if (!a.IsEnabled) continue;
+                var ht = a.InternalAnnotation.HitTest(new HitTestArguments(e.Position, 10));
+                if (ht == null) continue;
+
+                var aType = a.GetType();
+                if (aType == typeof(Wpf.ArrowAnnotation))
+                {
+                    var arrowAnnotation = (Wpf.ArrowAnnotation)a;
+                    markerPoints.Add(arrowAnnotation.InternalAnnotation.Transform(arrowAnnotation.StartPoint));
+                    markerPoints.Add(arrowAnnotation.InternalAnnotation.Transform(arrowAnnotation.EndPoint));
+                    markerSizes.AddRange(new[] { 2.2, 2.2 });
+
+                    switch (ht.Index)
+                    {
+                        case 0:
+                            updatedCursor = Cursors.SizeAll;
+                            break;
+                        case 1:
+                        case 2:
+                            updatedCursor = _movePointsCursor;
+                            break;
+                    }
+                }
+                else if (aType == typeof(Wpf.TextAnnotation))
+                {
+                    if (ht.Index == 0) updatedCursor = Cursors.SizeAll;
+                }
+                else if (aType == typeof(Wpf.RectangleAnnotation))
+                {
+                    var rAnnotation = (Wpf.RectangleAnnotation)a;
+                    var ur = rAnnotation.InternalAnnotation.Transform(Math.Max(rAnnotation.MaximumX, rAnnotation.MinimumX), Math.Max(rAnnotation.MaximumY, rAnnotation.MinimumY));
+                    var ll = rAnnotation.InternalAnnotation.Transform(Math.Min(rAnnotation.MinimumX, rAnnotation.MaximumX), Math.Min(rAnnotation.MinimumY, rAnnotation.MaximumY));
+
+                    markerPoints.Add(ur);
+                    markerPoints.Add(ll);
+                    markerPoints.Add(new ScreenPoint(ll.X, ur.Y));
+                    markerPoints.Add(new ScreenPoint(ur.X, ll.Y));
+                    markerPoints.Add(new ScreenPoint(ll.X, ll.Y + (ur.Y - ll.Y) / 2));
+                    markerPoints.Add(new ScreenPoint(ur.X, ll.Y + (ur.Y - ll.Y) / 2));
+                    markerPoints.Add(new ScreenPoint(ll.X + (ur.X - ll.X) / 2, ll.Y));
+                    markerPoints.Add(new ScreenPoint(ll.X + (ur.X - ll.X) / 2, ur.Y));
+                    markerSizes.AddRange(new[] { 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0 });
+
+                    var topRight = new ScreenPoint(Math.Abs(ur.X - e.Position.X), Math.Abs(ur.Y - e.Position.Y));
+                    var bottomLeft = new ScreenPoint(Math.Abs(ll.X - e.Position.X), Math.Abs(ll.Y - e.Position.Y));
+
+                    // Corners
+                    if (topRight.X < 10 && topRight.Y < 10) { updatedCursor = Cursors.SizeNESW; continue; }
+                    if (bottomLeft.X < 10 && bottomLeft.Y < 10) { updatedCursor = Cursors.SizeNESW; continue; }
+                    if (bottomLeft.X < 10 && topRight.Y < 10) { updatedCursor = Cursors.SizeNWSE; continue; }
+                    if (topRight.X < 10 && bottomLeft.Y < 10) { updatedCursor = Cursors.SizeNWSE; continue; }
+                    // Edges
+                    if (topRight.X < 10 || bottomLeft.X < 10) { updatedCursor = Cursors.SizeWE; continue; }
+                    if (topRight.Y < 10 || bottomLeft.Y < 10) { updatedCursor = Cursors.SizeNS; continue; }
+                    // All
+                    if (ht.Index == 0) updatedCursor = Cursors.SizeAll;
+                }
+                else if (aType == typeof(Wpf.EllipseAnnotation))
+                {
+                    var eAnnotation = (Wpf.EllipseAnnotation)a;
+                    var ur = eAnnotation.InternalAnnotation.Transform(Math.Max(eAnnotation.MaximumX, eAnnotation.MinimumX), Math.Max(eAnnotation.MaximumY, eAnnotation.MinimumY));
+                    var ll = eAnnotation.InternalAnnotation.Transform(Math.Min(eAnnotation.MinimumX, eAnnotation.MaximumX), Math.Min(eAnnotation.MinimumY, eAnnotation.MaximumY));
+
+                    markerPoints.Add(ur);
+                    markerPoints.Add(ll);
+                    markerPoints.Add(new ScreenPoint(ll.X, ur.Y));
+                    markerPoints.Add(new ScreenPoint(ur.X, ll.Y));
+                    markerPoints.Add(new ScreenPoint(ll.X, ll.Y + (ur.Y - ll.Y) / 2));
+                    markerPoints.Add(new ScreenPoint(ur.X, ll.Y + (ur.Y - ll.Y) / 2));
+                    markerPoints.Add(new ScreenPoint(ll.X + (ur.X - ll.X) / 2, ll.Y));
+                    markerPoints.Add(new ScreenPoint(ll.X + (ur.X - ll.X) / 2, ur.Y));
+                    markerSizes.AddRange(new[] { 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0 });
+
+                    var topRight = new ScreenPoint(Math.Abs(ur.X - e.Position.X), Math.Abs(ur.Y - e.Position.Y));
+                    var bottomLeft = new ScreenPoint(Math.Abs(ll.X - e.Position.X), Math.Abs(ll.Y - e.Position.Y));
+
+                    // Corners
+                    if (topRight.X < 10 && topRight.Y < 10) { updatedCursor = Cursors.SizeNESW; continue; }
+                    if (bottomLeft.X < 10 && bottomLeft.Y < 10) { updatedCursor = Cursors.SizeNESW; continue; }
+                    if (bottomLeft.X < 10 && topRight.Y < 10) { updatedCursor = Cursors.SizeNWSE; continue; }
+                    if (topRight.X < 10 && bottomLeft.Y < 10) { updatedCursor = Cursors.SizeNWSE; continue; }
+                    // Edges
+                    if (topRight.X < 10 || bottomLeft.X < 10) { updatedCursor = Cursors.SizeWE; continue; }
+                    if (topRight.Y < 10 || bottomLeft.Y < 10) { updatedCursor = Cursors.SizeNS; continue; }
+                    // All
+                    if (ht.Index == 0) updatedCursor = Cursors.SizeAll;
+                }
+                else if (aType == typeof(Wpf.PointAnnotation))
+                {
+                    if (ht.Index == 0) updatedCursor = Cursors.SizeAll;
+                }
+                else if (aType == typeof(Wpf.PolygonAnnotation))
+                {
+                    if (ht.Index == 0)
+                    {
+                        var polyAnnotation = (Wpf.PolygonAnnotation)a;
+                        var screenToData = polyAnnotation.InternalAnnotation.InverseTransform(e.Position);
+                        var screen2ToData = polyAnnotation.InternalAnnotation.InverseTransform(new ScreenPoint(e.Position.X - 10, e.Position.Y - 10));
+                        var dxy = new DataPoint(Math.Abs(screenToData.X - screen2ToData.X), Math.Abs(screenToData.Y - screen2ToData.Y));
+
+                        foreach (var p in polyAnnotation.Points)
+                        {
+                            markerPoints.Add(polyAnnotation.InternalAnnotation.Transform(p));
+                            markerSizes.Add(2);
+                        }
+
+                        var dPoint = polyAnnotation.InternalAnnotation.InverseTransform(e.Position);
+                        // Check if cursor is over any points
+                        if (polyAnnotation.Points.Any(o => Math.Abs(dPoint.X - o.X) < dxy.X && Math.Abs(dPoint.Y - o.Y) < dxy.Y))
+                        {
+                            updatedCursor = _movePointsCursor;
+                        }
+                        else
+                        {
+                            bool onLine = false;
+                            for (int i = 0; i < polyAnnotation.Points.Count - 1; i++)
+                            {
+                                var p1 = polyAnnotation.InternalAnnotation.Transform(polyAnnotation.Points[i]);
+                                var p2 = polyAnnotation.InternalAnnotation.Transform(polyAnnotation.Points[i + 1]);
+                                var linePoint = ScreenPointHelper.FindPointOnLine(e.Position, p1, p2);
+                                if ((linePoint - e.Position).Length < 10)
+                                {
+                                    onLine = true;
+                                    updatedCursor = _addPointCursor;
+                                    break;
+                                }
+                            }
+
+                            if (!onLine)
+                            {
+                                var p1 = polyAnnotation.InternalAnnotation.Transform(polyAnnotation.Points[0]);
+                                var p2 = polyAnnotation.InternalAnnotation.Transform(polyAnnotation.Points[polyAnnotation.Points.Count - 1]);
+                                var linePoint = ScreenPointHelper.FindPointOnLine(e.Position, p1, p2);
+                                if ((linePoint - e.Position).Length < 10)
+                                {
+                                    updatedCursor = _addPointCursor;
+                                }
+                                else
+                                {
+                                    updatedCursor = Cursors.SizeAll;
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (aType == typeof(Wpf.PolylineAnnotation))
+                {
+                    if (ht.Index == 0)
+                    {
+                        var polylineAnnotation = (Wpf.PolylineAnnotation)a;
+                        var screenToData = polylineAnnotation.InternalAnnotation.InverseTransform(e.Position);
+                        var screen2ToData = polylineAnnotation.InternalAnnotation.InverseTransform(new ScreenPoint(e.Position.X - 10, e.Position.Y - 10));
+                        var dxy = new DataPoint(Math.Abs(screenToData.X - screen2ToData.X), Math.Abs(screenToData.Y - screen2ToData.Y));
+
+                        foreach (var p in polylineAnnotation.Points)
+                        {
+                            markerPoints.Add(polylineAnnotation.InternalAnnotation.Transform(p));
+                            markerSizes.Add(2);
+                        }
+
+                        var dPoint = polylineAnnotation.InternalAnnotation.InverseTransform(e.Position);
+                        // Check if cursor is over any points
+                        if (polylineAnnotation.Points.Any(o => Math.Abs(dPoint.X - o.X) < dxy.X && Math.Abs(dPoint.Y - o.Y) < dxy.Y))
+                        {
+                            updatedCursor = _movePointsCursor;
+                        }
+                        else
+                        {
+                            if (e.IsControlDown)
+                            {
+                                updatedCursor = _addPointCursor;
+                            }
+                            else
+                            {
+                                updatedCursor = Cursors.SizeAll;
+                            }
+                        }
+                    }
+                }
+                else if (aType == typeof(Wpf.LineAnnotation))
+                {
+                    if (ht.Index == 0) updatedCursor = Cursors.SizeAll;
+                }
+            }
+
+            if (markerPoints.Count > 0)
+            {
+                _showPoints = true;
+                RenderingExtensions.DrawMarkers(Plot.RenderContext, Plot.ActualModel.PlotArea, markerPoints, MarkerType.Square, new List<ScreenPoint>(), markerSizes, OxyColors.White, OxyColors.Black, 2);
+            }
+            else
+            {
+                if (requiresRedraw) Plot.InvalidatePlot(false);
+            }
+
+            if (updatedCursor == null)
+            {
+                Plot.Cursor = Plot.DefaultPlotCursor;
+            }
+            else
+            {
+                Plot.Cursor = updatedCursor;
+                return;
+            }
+
+            // Set closed pan hand if needed
+            if ((Mouse.LeftButton == MouseButtonState.Pressed && PanButton.IsChecked == true) || Mouse.MiddleButton == MouseButtonState.Pressed)
+            {
+                Plot.PanCursor = _panHandClosedCursor;
+                Plot.DefaultPlotCursor = _panHandClosedCursor;
+                Plot.Cursor = _panHandClosedCursor;
+            }
+        }
+
+        /// <summary>
+        /// Plot model mouse up.
+        /// </summary>
+        private void PlotModelMouseUp(object sender, OxyMouseEventArgs e)
+        {
+            if (_addAnnotationToolMode == AddToolMode.AddPolygonAnnotation || _addAnnotationToolMode == AddToolMode.AddPolylineAnnotation)
+            {
+                if (_doubleClicked) StopAddAnnotation();
+            }
+            else if (_addAnnotationToolMode == AddToolMode.AddHorizontalLineAnnotation || _addAnnotationToolMode == AddToolMode.AddVerticalLineAnnotation)
+            {
+                CloseLineAnnotationTooltip((Wpf.LineAnnotation)_targetAddAnnotation);
+                StopAddAnnotation();
+            }
+            else if (_addAnnotationToolMode == AddToolMode.AddRectangleAnnotation)
+            {
+                // Check to see if the size of rectangle is at least 10 pixels in height and width
+                var rectangle = (Wpf.RectangleAnnotation)_targetAddAnnotation;
+                ScreenPoint upperRight = rectangle.InternalAnnotation.Transform(rectangle.MaximumX, rectangle.MaximumY);
+                ScreenPoint lowerLeft = rectangle.InternalAnnotation.Transform(rectangle.MinimumX, rectangle.MinimumY);
+                double pixelWidth = Math.Abs(upperRight.X - lowerLeft.X);
+                double pixelHeight = Math.Abs(upperRight.Y - lowerLeft.Y);
+                // Correct the height and width if necessary
+                if (pixelWidth < 10 || pixelHeight < 10)
+                {
+                    var plotLL = rectangle.InternalAnnotation.InverseTransform(new ScreenPoint(Plot.ActualModel.PlotArea.Left, Plot.ActualModel.PlotArea.Bottom));
+                    var plotUR = rectangle.InternalAnnotation.InverseTransform(new ScreenPoint(Plot.ActualModel.PlotArea.Right, Plot.ActualModel.PlotArea.Top));
+                    double centerXShift = Math.Abs((plotUR.X - plotLL.X) * 0.1);
+                    double centerYShift = Math.Abs((plotUR.Y - plotLL.Y) * 0.1);
+                    var mouseDataPoint = rectangle.InternalAnnotation.InverseTransform(e.Position);
+                    if (pixelWidth < 10)
+                    {
+                        rectangle.MinimumX = mouseDataPoint.X - centerXShift;
+                        rectangle.MaximumX = mouseDataPoint.X + centerXShift;
+                    }
+                    if (pixelHeight < 10)
+                    {
+                        rectangle.MinimumY = mouseDataPoint.Y - centerYShift;
+                        rectangle.MaximumY = mouseDataPoint.Y + centerYShift;
+                    }
+                }
+                StopAddAnnotation();
+            }
+            else if (_addAnnotationToolMode == AddToolMode.AddEllipseAnnotation)
+            {
+                // Check to see if the size of the ellipse is at least 10 pixels in height and width
+                var ellipse = (Wpf.EllipseAnnotation)_targetAddAnnotation;
+                ScreenPoint upperRight = ellipse.InternalAnnotation.Transform(ellipse.MaximumX, ellipse.MaximumY);
+                ScreenPoint lowerLeft = ellipse.InternalAnnotation.Transform(ellipse.MinimumX, ellipse.MinimumY);
+                double pixelWidth = Math.Abs(upperRight.X - lowerLeft.X);
+                double pixelHeight = Math.Abs(upperRight.Y - lowerLeft.Y);
+                // Correct the height and width if necessary
+                if (pixelWidth < 10 || pixelHeight < 10)
+                {
+                    var plotLL = ellipse.InternalAnnotation.InverseTransform(new ScreenPoint(Plot.ActualModel.PlotArea.Left, Plot.ActualModel.PlotArea.Bottom));
+                    var plotUR = ellipse.InternalAnnotation.InverseTransform(new ScreenPoint(Plot.ActualModel.PlotArea.Right, Plot.ActualModel.PlotArea.Top));
+                    double centerXShift = Math.Abs((plotUR.X - plotLL.X) * 0.1);
+                    double centerYShift = Math.Abs((plotUR.Y - plotLL.Y) * 0.1);
+                    var mouseDataPoint = ellipse.InternalAnnotation.InverseTransform(e.Position);
+                    if (pixelWidth < 10)
+                    {
+                        ellipse.MinimumX = mouseDataPoint.X - centerXShift;
+                        ellipse.MaximumX = mouseDataPoint.X + centerXShift;
+                    }
+                    if (pixelHeight < 10)
+                    {
+                        ellipse.MinimumY = mouseDataPoint.Y - centerYShift;
+                        ellipse.MaximumY = mouseDataPoint.Y + centerYShift;
+                    }
+                }
+                StopAddAnnotation();
+            }
+            else
+            {
+                if (_addAnnotationToolMode == AddToolMode.AddArrowAnnotation)
+                {
+                    var arrow = (Wpf.ArrowAnnotation)_targetAddAnnotation;
+                    if (Math.Abs(arrow.StartPoint.X - arrow.EndPoint.X) < 0.000000001 && Math.Abs(arrow.StartPoint.Y - arrow.EndPoint.Y) < 0.000000001)
+                    {
+                        OxyRect plotArea = Plot.ActualModel.PlotArea;
+                        var plotCenter = ConvertScreenPointToDataPoint(plotArea.Center);
+                        double xShift = plotArea.Center.X + Math.Abs(plotArea.Right - plotArea.Left) * 0.05;
+                        var centerXShifted = ConvertScreenPointToDataPoint(new ScreenPoint(xShift, plotArea.Center.Y));
+                        arrow.StartPoint = new DataPoint(arrow.StartPoint.X + centerXShifted.X, arrow.StartPoint.Y);
+                    }
+                }
+                StopAddAnnotation();
+            }
+
+            SetCursor();
+        }
+
+        /// <summary>
+        /// Get the selected objects and build the right-click context menu.
+        /// </summary>
+        private void GetSelectedObjects(object sender, OxyMouseDownEventArgs e)
+        {
+            // Middle clicks initiate the Pan option
+            if (e.ChangedButton == OxyMouseButton.Middle) return;
+
+            // Left clicks try to edit/open the first thing clicked. Right clicks provide more context.
+            bool leftClickBool = e.ChangedButton == OxyMouseButton.Left;
+
+            _contextMenu = new ContextMenu();
+
+            if (!leftClickBool && Plot.ActualModel.PlotArea.Contains(e.Position))
+            {
+                var formatPlotItem = new MenuItem { Header = "Format Plot Area", Icon = CreateMenuIcon("Format.png") };
+                formatPlotItem.Click += (s, args) => PropertiesCalled?.Invoke(Plot, true, OxyPlotPropertiesControl.PropertyEXP.General_PlotArea, Plot.ActualModel.PlotArea);
+                _contextMenu.Items.Add(formatPlotItem);
+            }
+
+            // SERIES hit test
+            var seriesHTRS = Plot.ActualModel.HitTest(new HitTestArguments(e.Position, 10)).ToList();
+            foreach (var htr in seriesHTRS)
+            {
+                var wpfSeries = Plot.Series.FirstOrDefault(d => d.InternalSeries.Equals(htr.Element));
+                if (wpfSeries != null)
+                {
+                    if (leftClickBool)
+                    {
+                        PropertiesCalled?.Invoke(Plot, false, OxyPlotPropertiesControl.PropertyEXP.Series_General, wpfSeries);
+                        return;
+                    }
+                    else
+                    {
+                        var seriesItem = new MenuItem { Header = "Format Series: " + wpfSeries.Title, Icon = CreateMenuIcon("Format.png") };
+                        seriesItem.Click += (s, args) => PropertiesCalled?.Invoke(Plot, true, OxyPlotPropertiesControl.PropertyEXP.Series_General, wpfSeries);
+                        _contextMenu.Items.Add(seriesItem);
+                    }
+                }
+            }
+
+            var plotAndAxisArea = Plot.ActualModel.PlotAndAxisArea;
+            var plotArea = Plot.ActualModel.PlotArea;
+
+            // Legend Area custom hit test
+            var legendArea = Plot.ActualModel.LegendArea;
+            if (legendArea.Contains(e.Position))
+            {
+                if (leftClickBool)
+                {
+                    PropertiesCalled?.Invoke(Plot, false, OxyPlotPropertiesControl.PropertyEXP.Legend_Title, legendArea);
+                    return;
                 }
                 else
                 {
-                    _doubleClicked = e.ClickCount > 1;
-                    var polygon = (PolygonAnnotation)_targetAddAnnotation;
-                    if (polygon.Points.Count == 3)
+                    var legendItem = new MenuItem { Header = "Format Legend", Icon = CreateMenuIcon("Format.png") };
+                    legendItem.Click += (s, args) => PropertiesCalled?.Invoke(Plot, true, OxyPlotPropertiesControl.PropertyEXP.Legend_Title, legendArea);
+                    _contextMenu.Items.Add(legendItem);
+                }
+            }
+
+            // TEXT HIT TEST
+            var textResult = Plot.canvas.InputHitTest(new Point(e.Position.X, e.Position.Y));
+            if (textResult != null)
+            {
+                if (textResult.GetType() == typeof(TextBlock))
+                {
+                    var txtblock = (TextBlock)textResult;
+
+                    // CHART TITLE SELECTED
+                    if (Plot.Title == txtblock.Text && Plot.ActualModel.TitleArea.Contains(new ScreenPoint(e.Position.X, e.Position.Y)))
                     {
-                        PlotView.ActualModel.Annotations.Add(polygon);
-                        RaisePropertiesCalled(true, PropertyExpander.Annotations_Text, polygon);
+                        if (leftClickBool)
+                        {
+                            PropertiesCalled?.Invoke(Plot, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotTitle, Plot.ActualModel.TitleArea);
+                            CreateEditTBX(txtblock, Plot, Wpf.Plot.TitleProperty, 0, Plot.canvas);
+                            return;
+                        }
+                        else
+                        {
+                            var editTitleItem = new MenuItem { Header = "Edit Plot Title", Icon = CreateMenuIcon("EditTextbox.png") };
+                            editTitleItem.Click += (s, args) =>
+                            {
+                                PropertiesCalled?.Invoke(Plot, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotTitle, Plot.ActualModel.TitleArea);
+                                CreateEditTBX(txtblock, Plot, Wpf.Plot.TitleProperty, 0, Plot.canvas);
+                            };
+                            var formatTitleItem = new MenuItem { Header = "Format Plot Title", Icon = CreateMenuIcon("Format.png") };
+                            formatTitleItem.Click += (s, args) =>
+                            {
+                                PropertiesCalled?.Invoke(Plot, true, OxyPlotPropertiesControl.PropertyEXP.General_PlotTitle, Plot.ActualModel.TitleArea);
+                                PropertiesCalled?.Invoke(Plot, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Plot.ActualModel.TitleArea);
+                            };
+                            _contextMenu.Items.Add(editTitleItem);
+                            _contextMenu.Items.Add(formatTitleItem);
+                        }
                     }
-                    if (!_doubleClicked)
+
+                    // CHART SUBTITLE SELECTED
+                    if (Plot.Subtitle == txtblock.Text && Plot.ActualModel.TitleArea.Contains(new ScreenPoint(e.Position.X, e.Position.Y)))
                     {
-                        polygon.Points.Add(dataPoint);
-                        LeaderLine.Points.Add(new Point(e.Position.X, e.Position.Y));
+                        if (leftClickBool)
+                        {
+                            PropertiesCalled?.Invoke(Plot, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Plot.ActualModel.TitleArea);
+                            CreateEditTBX(txtblock, Plot, Wpf.Plot.SubtitleProperty, 0, Plot.canvas);
+                            return;
+                        }
+                        else
+                        {
+                            var editSubtitleItem = new MenuItem { Header = "Edit Plot Subtitle", Icon = CreateMenuIcon("EditTextbox.png") };
+                            editSubtitleItem.Click += (s, args) =>
+                            {
+                                PropertiesCalled?.Invoke(Plot, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Plot.ActualModel.TitleArea);
+                                CreateEditTBX(txtblock, Plot, Wpf.Plot.SubtitleProperty, 0, Plot.canvas);
+                            };
+                            var formatSubtitleItem = new MenuItem { Header = "Format Plot Subtitle", Icon = CreateMenuIcon("Format.png") };
+                            formatSubtitleItem.Click += (s, args) =>
+                            {
+                                PropertiesCalled?.Invoke(Plot, true, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Plot.ActualModel.TitleArea);
+                            };
+                            _contextMenu.Items.Add(editSubtitleItem);
+                            _contextMenu.Items.Add(formatSubtitleItem);
+                        }
+                    }
+
+                    // AXES TITLES SELECTED
+                    if (Plot.ActualModel.PlotAndAxisArea.Contains(new ScreenPoint(e.Position.X, e.Position.Y)))
+                    {
+                        var axes = Plot.Axes.Where(x => x.Title != null && txtblock.Text.Contains(x.Title)).ToList();
+
+                        if (axes.Count > 1)
+                        {
+                            // Narrow it down to the selected axis area
+                            OxyRect selectedAxisArea = default;
+
+                            foreach (var ax in axes)
+                            {
+                                var dummyCanvas = new Canvas();
+                                var crc = new Wpf.CanvasRenderContext(dummyCanvas);
+                                var size = new Size(Plot.canvas.ActualWidth, Plot.canvas.ActualHeight);
+                                dummyCanvas.Measure(size);
+                                dummyCanvas.Arrange(new Rect(size));
+                                dummyCanvas.UpdateLayout();
+
+                                ax.InternalAxis.Render(crc, 1);
+                                dummyCanvas.UpdateLayout();
+
+                                foreach (var tbk in FindVisualChildren<TextBlock>(dummyCanvas))
+                                {
+                                    string title = ax.Title;
+                                    if (ax.Unit != null)
+                                    {
+                                        title = string.Format(ax.TitleFormatString, ax.Title, ax.Unit);
+                                    }
+
+                                    if (title == tbk.Text)
+                                    {
+                                        double axLeft, axTop, axWidth, axHeight;
+                                        if (ax.Position == OxyPlot.Axes.AxisPosition.Left || ax.Position == OxyPlot.Axes.AxisPosition.Right)
+                                        {
+                                            axLeft = GetPosition(tbk, dummyCanvas).X;
+                                            axTop = GetPosition(tbk, dummyCanvas).Y - tbk.ActualWidth;
+                                            axWidth = tbk.ActualHeight;
+                                            axHeight = tbk.ActualWidth;
+                                        }
+                                        else
+                                        {
+                                            axLeft = GetPosition(tbk, dummyCanvas).X;
+                                            axTop = GetPosition(tbk, dummyCanvas).Y;
+                                            axWidth = tbk.ActualWidth;
+                                            axHeight = tbk.ActualHeight;
+                                        }
+
+                                        selectedAxisArea = new OxyRect(axLeft, axTop, axWidth, axHeight);
+
+                                        if (selectedAxisArea.Contains(e.Position))
+                                        {
+                                            axes = new List<Wpf.Axis> { ax };
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (axes.Count == 1)
+                        {
+                            var ax = axes.First();
+
+                            if (leftClickBool)
+                            {
+                                PropertiesCalled?.Invoke(Plot, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Title, ax);
+                                if (ax.InternalAxis.IsVertical())
+                                {
+                                    CreateEditTBX(txtblock, ax, Wpf.Axis.TitleProperty, -90, Plot.canvas);
+                                }
+                                else
+                                {
+                                    CreateEditTBX(txtblock, ax, Wpf.Axis.TitleProperty, 0, Plot.canvas);
+                                }
+                                return;
+                            }
+                            else
+                            {
+                                var editAxisItem = new MenuItem { Header = "Edit Axis Title: " + ax.Title, Icon = CreateMenuIcon("EditTextbox.png") };
+                                editAxisItem.Click += (s, args) =>
+                                {
+                                    PropertiesCalled?.Invoke(Plot, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Title, ax);
+                                    if (ax.InternalAxis.IsVertical())
+                                    {
+                                        CreateEditTBX(txtblock, ax, Wpf.Axis.TitleProperty, -90, Plot.canvas);
+                                    }
+                                    else
+                                    {
+                                        CreateEditTBX(txtblock, ax, Wpf.Axis.TitleProperty, 0, Plot.canvas);
+                                    }
+                                };
+                                _contextMenu.Items.Add(editAxisItem);
+                            }
+                        }
                     }
                 }
-                break;
+            }
 
-            case AddToolMode.AddPolylineAnnotation:
-                if (_targetAddAnnotation == null)
+            // AXIS Areas hit test
+            foreach (var ax in Plot.Axes)
+            {
+                double axLeft = 0, axTop = 0, axWidth = 0, axHeight = 0;
+
+                switch (ax.Position)
                 {
-                    var polyline = new PolylineAnnotation
-                    {
-                        Text = "Polyline Annotation",
-                        Color = OxyColors.Purple,
-                        StrokeThickness = 2
-                    };
-                    polyline.Points.Add(dataPoint);
-                    PlotView.ActualModel.Annotations.Add(polyline);
-                    LeaderLine.Points.Add(new Point(e.Position.X, e.Position.Y));
-                    LeaderLine.Points.Add(new Point(e.Position.X, e.Position.Y));
-                    _targetAddAnnotation = polyline;
-                    RaisePropertiesCalled(true, PropertyExpander.Annotations_Text, polyline);
+                    case OxyPlot.Axes.AxisPosition.Bottom:
+                        axLeft = plotArea.Left;
+                        axTop = plotArea.Bottom + ax.AxisDistance;
+                        axWidth = plotArea.Width;
+                        axHeight = ax.InternalAxis.DesiredSize.Height;
+                        break;
+                    case OxyPlot.Axes.AxisPosition.Top:
+                        axLeft = plotArea.Left;
+                        axTop = plotArea.Top - ax.AxisDistance - ax.InternalAxis.DesiredSize.Height;
+                        axWidth = plotArea.Width;
+                        axHeight = ax.InternalAxis.DesiredSize.Height;
+                        break;
+                    case OxyPlot.Axes.AxisPosition.Left:
+                        axLeft = plotArea.Left - ax.AxisDistance - ax.InternalAxis.DesiredSize.Width;
+                        axTop = plotArea.Top;
+                        axWidth = ax.InternalAxis.DesiredSize.Width;
+                        axHeight = plotArea.Height;
+                        break;
+                    case OxyPlot.Axes.AxisPosition.Right:
+                        axLeft = plotArea.Right + ax.AxisDistance;
+                        axTop = plotArea.Top;
+                        axWidth = ax.InternalAxis.DesiredSize.Width;
+                        axHeight = plotArea.Height;
+                        break;
                 }
-                else
+
+                var axArea1 = new OxyRect(axLeft, axTop, axWidth, axHeight);
+                if (axArea1.Contains(e.Position))
                 {
-                    _doubleClicked = e.ClickCount > 1;
-                    if (!_doubleClicked)
+                    if (leftClickBool)
                     {
-                        ((PolylineAnnotation)_targetAddAnnotation).Points.Add(dataPoint);
-                        LeaderLine.Points.Add(new Point(e.Position.X, e.Position.Y));
+                        PropertiesCalled?.Invoke(Plot, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Options, ax);
+                        PropertiesCalled?.Invoke(Plot, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Display, ax);
+                        return;
+                    }
+                    else
+                    {
+                        var formatAxisItem = new MenuItem { Header = "Format Axis: " + ax.Title, Icon = CreateMenuIcon("Format.png") };
+                        formatAxisItem.Click += (s, args) =>
+                        {
+                            PropertiesCalled?.Invoke(Plot, true, OxyPlotPropertiesControl.PropertyEXP.Axes_Options, ax);
+                            PropertiesCalled?.Invoke(Plot, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Display, ax);
+                        };
+                        _contextMenu.Items.Add(formatAxisItem);
                     }
                 }
-                break;
-        }
+            }
 
-        PlotView.InvalidatePlot(false);
-    }
-
-    /// <summary>
-    /// Updates annotation during creation (mouse move).
-    /// </summary>
-    private void UpdateAnnotationDuringCreation(OxyMouseEventArgs e)
-    {
-        if (PlotView?.ActualModel == null || _targetAddAnnotation == null) return;
-
-        var dataPoint = ConvertScreenToDataPoint(e.Position);
-
-        switch (_targetAddAnnotation)
-        {
-            case ArrowAnnotation arrow:
-                arrow.EndPoint = dataPoint;
-                break;
-
-            case TextAnnotation text:
-                text.TextPosition = dataPoint;
-                break;
-
-            case LineAnnotation line when line.Type == LineAnnotationType.Vertical:
-                line.X = dataPoint.X;
-                UpdateLineAnnotationTooltip(line);
-                break;
-
-            case LineAnnotation line when line.Type == LineAnnotationType.Horizontal:
-                line.Y = dataPoint.Y;
-                UpdateLineAnnotationTooltip(line);
-                break;
-
-            case RectangleAnnotation rect:
-                rect.MaximumX = dataPoint.X;
-                rect.MaximumY = dataPoint.Y;
-                break;
-
-            case EllipseAnnotation ellipse:
-                var width = Math.Abs(dataPoint.X - ellipse.X);
-                var height = Math.Abs(dataPoint.Y - ellipse.Y);
-                ellipse.Width = width * 2;
-                ellipse.Height = height * 2;
-                break;
-
-            case PointAnnotation point:
-                point.X = dataPoint.X;
-                point.Y = dataPoint.Y;
-                break;
-
-            case PolygonAnnotation:
-            case PolylineAnnotation:
-                if (LeaderLine.Points.Count > 0)
+            // ANNOTATIONS hit test
+            var annoHTRS = Plot.ActualModel.HitTest(new HitTestArguments(e.Position, 10)).ToList();
+            foreach (var htr in annoHTRS)
+            {
+                var theAnno = htr.Element as OxyPlot.Annotations.Annotation;
+                if (theAnno != null)
                 {
-                    LeaderLine.Points[^1] = new Point(e.Position.X, e.Position.Y);
+                    var wpfAnno = Plot.Annotations.FirstOrDefault(d => d.InternalAnnotation == theAnno);
+                    if (wpfAnno != null)
+                    {
+                        var annoText = ((Wpf.TextualAnnotation)wpfAnno).Text;
+
+                        if (leftClickBool)
+                        {
+                            PropertiesCalled?.Invoke(Plot, false, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, wpfAnno);
+                            return;
+                        }
+                        else
+                        {
+                            var editAnnoItem = new MenuItem { Header = "Edit Annotation Text: " + annoText, Icon = CreateMenuIcon("EditTextbox.png") };
+                            editAnnoItem.Click += (s, args) =>
+                            {
+                                PropertiesCalled?.Invoke(Plot, false, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, wpfAnno);
+
+                                // Dummy canvas is used to render the item
+                                var dummyCanvas = new Canvas();
+                                var crc = new Wpf.CanvasRenderContext(dummyCanvas);
+                                var size = new Size(Plot.canvas.ActualWidth, Plot.canvas.ActualHeight);
+                                dummyCanvas.Measure(size);
+                                dummyCanvas.Arrange(new Rect(size));
+                                dummyCanvas.UpdateLayout();
+                                wpfAnno.InternalAnnotation.Render(crc);
+                                dummyCanvas.UpdateLayout();
+
+                                foreach (var tbk in FindVisualChildren<TextBlock>(dummyCanvas))
+                                {
+                                    var annoType = wpfAnno.GetType();
+                                    if (annoType == typeof(Wpf.ArrowAnnotation))
+                                    {
+                                        var anno = (Wpf.ArrowAnnotation)wpfAnno;
+                                        if (tbk.Text == anno.Text)
+                                        {
+                                            CreateEditTBX(tbk, anno, Wpf.ArrowAnnotation.TextProperty, anno.TextRotation, dummyCanvas);
+                                        }
+                                    }
+                                    else if (annoType == typeof(Wpf.TextAnnotation))
+                                    {
+                                        var anno = (Wpf.TextAnnotation)wpfAnno;
+                                        if (tbk.Text == anno.Text)
+                                        {
+                                            CreateEditTBX(tbk, anno, Wpf.TextAnnotation.TextProperty, anno.TextRotation, dummyCanvas);
+                                        }
+                                    }
+                                    else if (annoType == typeof(Wpf.RectangleAnnotation))
+                                    {
+                                        var anno = (Wpf.RectangleAnnotation)wpfAnno;
+                                        if (tbk.Text == anno.Text)
+                                        {
+                                            CreateEditTBX(tbk, anno, Wpf.RectangleAnnotation.TextProperty, anno.TextRotation, dummyCanvas);
+                                        }
+                                    }
+                                    else if (annoType == typeof(Wpf.EllipseAnnotation))
+                                    {
+                                        var anno = (Wpf.EllipseAnnotation)wpfAnno;
+                                        if (tbk.Text == anno.Text)
+                                        {
+                                            CreateEditTBX(tbk, anno, Wpf.EllipseAnnotation.TextProperty, anno.TextRotation, dummyCanvas);
+                                        }
+                                    }
+                                    else if (annoType == typeof(Wpf.PointAnnotation))
+                                    {
+                                        var anno = (Wpf.PointAnnotation)wpfAnno;
+                                        if (tbk.Text == anno.Text)
+                                        {
+                                            CreateEditTBX(tbk, anno, Wpf.PointAnnotation.TextProperty, anno.TextRotation, dummyCanvas);
+                                        }
+                                    }
+                                    else if (annoType == typeof(Wpf.PolygonAnnotation))
+                                    {
+                                        var anno = (Wpf.PolygonAnnotation)wpfAnno;
+                                        if (tbk.Text == anno.Text)
+                                        {
+                                            CreateEditTBX(tbk, anno, Wpf.PolygonAnnotation.TextProperty, anno.TextRotation, dummyCanvas);
+                                        }
+                                    }
+                                    else if (annoType == typeof(Wpf.PolylineAnnotation))
+                                    {
+                                        var anno = (Wpf.PolylineAnnotation)wpfAnno;
+                                        if (tbk.Text == anno.Text)
+                                        {
+                                            CreateEditTBX(tbk, anno, Wpf.PolylineAnnotation.TextProperty, anno.TextRotation, dummyCanvas);
+                                        }
+                                    }
+                                    else if (annoType == typeof(Wpf.LineAnnotation))
+                                    {
+                                        var anno = (Wpf.LineAnnotation)wpfAnno;
+                                        if (tbk.Text == anno.Text)
+                                        {
+                                            CreateEditTBX(tbk, anno, Wpf.LineAnnotation.TextProperty, anno.TextRotation, dummyCanvas);
+                                        }
+                                    }
+                                }
+                            };
+
+                            var formatAnnoItem = new MenuItem { Header = "Format Annotation: " + annoText, Icon = CreateMenuIcon("Format.png") };
+                            formatAnnoItem.Click += (s, args) => PropertiesCalled?.Invoke(Plot, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, wpfAnno);
+
+                            var deleteAnnoItem = new MenuItem { Header = "Delete Annotation: " + annoText, Icon = CreateMenuIcon("Delete.png") };
+                            deleteAnnoItem.Click += (s, args) =>
+                            {
+                                Plot.Annotations.Remove(wpfAnno);
+                                Plot.InvalidatePlot(false);
+                            };
+
+                            _contextMenu.Items.Add(editAnnoItem);
+                            _contextMenu.Items.Add(formatAnnoItem);
+                            _contextMenu.Items.Add(deleteAnnoItem);
+                        }
+                    }
                 }
-                break;
-        }
 
-        PlotView.InvalidatePlot(false);
-    }
-
-    /// <summary>
-    /// Updates visual edit point feedback when hovering over annotations.
-    /// </summary>
-    private void UpdateEditPointFeedback(OxyMouseEventArgs e)
-    {
-        if (PlotView?.ActualModel == null) return;
-
-        Cursor? updatedCursor = null;
-
-        foreach (var annotation in PlotView.ActualModel.Annotations)
-        {
-            var hitResult = annotation.HitTest(new HitTestArguments(e.Position, 10));
-            if (hitResult == null) continue;
-
-            switch (annotation)
-            {
-                case ArrowAnnotation:
-                    updatedCursor = hitResult.Index == 0 ? Cursors.SizeAll : _movePointsCursor;
-                    break;
-
-                case TextAnnotation:
-                    if (hitResult.Index == 0) updatedCursor = Cursors.SizeAll;
-                    break;
-
-                case RectangleAnnotation rect:
-                    updatedCursor = GetRectangleCursor(rect, e.Position);
-                    break;
-
-                case EllipseAnnotation ellipse:
-                    updatedCursor = GetEllipseCursor(ellipse, e.Position);
-                    break;
-
-                case PointAnnotation:
-                    if (hitResult.Index == 0) updatedCursor = Cursors.SizeAll;
-                    break;
-
-                case PolygonAnnotation polygon:
-                    updatedCursor = GetPolygonCursor(polygon, e.Position);
-                    break;
-
-                case PolylineAnnotation polyline:
-                    updatedCursor = GetPolylineCursor(polyline, e.Position);
-                    break;
-
-                case LineAnnotation:
-                    if (hitResult.Index == 0) updatedCursor = Cursors.SizeAll;
-                    break;
-            }
-
-            if (updatedCursor != null) break;
-        }
-
-        PlotView.Cursor = updatedCursor ?? (PanButton.IsChecked == true ? _panHandCursor :
-                                             ZoomButton.IsChecked == true ? _zoomCursor : Cursors.Arrow);
-    }
-
-    private Cursor GetRectangleCursor(RectangleAnnotation rect, ScreenPoint position)
-    {
-        var ur = rect.Transform(Math.Max(rect.MaximumX, rect.MinimumX), Math.Max(rect.MaximumY, rect.MinimumY));
-        var ll = rect.Transform(Math.Min(rect.MinimumX, rect.MaximumX), Math.Min(rect.MinimumY, rect.MaximumY));
-        var topRight = new ScreenPoint(Math.Abs(ur.X - position.X), Math.Abs(ur.Y - position.Y));
-        var bottomLeft = new ScreenPoint(Math.Abs(ll.X - position.X), Math.Abs(ll.Y - position.Y));
-
-        // Corners
-        if (topRight.X < 10 && topRight.Y < 10) return Cursors.SizeNESW;
-        if (bottomLeft.X < 10 && bottomLeft.Y < 10) return Cursors.SizeNESW;
-        if (bottomLeft.X < 10 && topRight.Y < 10) return Cursors.SizeNWSE;
-        if (topRight.X < 10 && bottomLeft.Y < 10) return Cursors.SizeNWSE;
-        // Edges
-        if (topRight.X < 10 || bottomLeft.X < 10) return Cursors.SizeWE;
-        if (topRight.Y < 10 || bottomLeft.Y < 10) return Cursors.SizeNS;
-
-        return Cursors.SizeAll;
-    }
-
-    private Cursor GetEllipseCursor(EllipseAnnotation ellipse, ScreenPoint position)
-    {
-        var ur = ellipse.Transform(ellipse.X + ellipse.Width / 2, ellipse.Y + ellipse.Height / 2);
-        var ll = ellipse.Transform(ellipse.X - ellipse.Width / 2, ellipse.Y - ellipse.Height / 2);
-        var topRight = new ScreenPoint(Math.Abs(ur.X - position.X), Math.Abs(ur.Y - position.Y));
-        var bottomLeft = new ScreenPoint(Math.Abs(ll.X - position.X), Math.Abs(ll.Y - position.Y));
-
-        // Corners
-        if (topRight.X < 10 && topRight.Y < 10) return Cursors.SizeNESW;
-        if (bottomLeft.X < 10 && bottomLeft.Y < 10) return Cursors.SizeNESW;
-        if (bottomLeft.X < 10 && topRight.Y < 10) return Cursors.SizeNWSE;
-        if (topRight.X < 10 && bottomLeft.Y < 10) return Cursors.SizeNWSE;
-        // Edges
-        if (topRight.X < 10 || bottomLeft.X < 10) return Cursors.SizeWE;
-        if (topRight.Y < 10 || bottomLeft.Y < 10) return Cursors.SizeNS;
-
-        return Cursors.SizeAll;
-    }
-
-    private Cursor GetPolygonCursor(PolygonAnnotation polygon, ScreenPoint position)
-    {
-        var screenToData = polygon.InverseTransform(position);
-        var screen2ToData = polygon.InverseTransform(new ScreenPoint(position.X - 10, position.Y - 10));
-        var dxy = new DataPoint(Math.Abs(screenToData.X - screen2ToData.X), Math.Abs(screenToData.Y - screen2ToData.Y));
-
-        // Check if over a vertex
-        if (polygon.Points.Any(p => Math.Abs(screenToData.X - p.X) < dxy.X && Math.Abs(screenToData.Y - p.Y) < dxy.Y))
-        {
-            return _movePointsCursor ?? Cursors.SizeAll;
-        }
-
-        return Cursors.SizeAll;
-    }
-
-    private Cursor GetPolylineCursor(PolylineAnnotation polyline, ScreenPoint position)
-    {
-        var screenToData = polyline.InverseTransform(position);
-        var screen2ToData = polyline.InverseTransform(new ScreenPoint(position.X - 10, position.Y - 10));
-        var dxy = new DataPoint(Math.Abs(screenToData.X - screen2ToData.X), Math.Abs(screenToData.Y - screen2ToData.Y));
-
-        // Check if over a vertex
-        if (polyline.Points.Any(p => Math.Abs(screenToData.X - p.X) < dxy.X && Math.Abs(screenToData.Y - p.Y) < dxy.Y))
-        {
-            return _movePointsCursor ?? Cursors.SizeAll;
-        }
-
-        return Cursors.SizeAll;
-    }
-
-    private void EnsureMinimumAnnotationSize(OxyMouseEventArgs e)
-    {
-        if (PlotView?.ActualModel == null) return;
-
-        var plotArea = PlotView.ActualModel.PlotArea;
-
-        if (_targetAddAnnotation is RectangleAnnotation rect)
-        {
-            var upperRight = rect.Transform(rect.MaximumX, rect.MaximumY);
-            var lowerLeft = rect.Transform(rect.MinimumX, rect.MinimumY);
-            var pixelWidth = Math.Abs(upperRight.X - lowerLeft.X);
-            var pixelHeight = Math.Abs(upperRight.Y - lowerLeft.Y);
-
-            if (pixelWidth < 10 || pixelHeight < 10)
-            {
-                var plotLL = rect.InverseTransform(new ScreenPoint(plotArea.Left, plotArea.Bottom));
-                var plotUR = rect.InverseTransform(new ScreenPoint(plotArea.Right, plotArea.Top));
-                var centerXShift = Math.Abs((plotUR.X - plotLL.X) * 0.1);
-                var centerYShift = Math.Abs((plotUR.Y - plotLL.Y) * 0.1);
-                var mouseData = rect.InverseTransform(e.Position);
-
-                if (pixelWidth < 10)
-                {
-                    rect.MinimumX = mouseData.X - centerXShift;
-                    rect.MaximumX = mouseData.X + centerXShift;
-                }
-                if (pixelHeight < 10)
-                {
-                    rect.MinimumY = mouseData.Y - centerYShift;
-                    rect.MaximumY = mouseData.Y + centerYShift;
-                }
-            }
-        }
-        else if (_targetAddAnnotation is EllipseAnnotation ellipse)
-        {
-            if (ellipse.Width < 0.001 || ellipse.Height < 0.001)
-            {
-                var plotLL = ellipse.InverseTransform(new ScreenPoint(plotArea.Left, plotArea.Bottom));
-                var plotUR = ellipse.InverseTransform(new ScreenPoint(plotArea.Right, plotArea.Top));
-                ellipse.Width = Math.Abs((plotUR.X - plotLL.X) * 0.2);
-                ellipse.Height = Math.Abs((plotUR.Y - plotLL.Y) * 0.2);
-            }
-        }
-    }
-
-    private void EnsureArrowHasLength()
-    {
-        if (_targetAddAnnotation is ArrowAnnotation arrow)
-        {
-            if (Math.Abs(arrow.StartPoint.X - arrow.EndPoint.X) < 0.000001 &&
-                Math.Abs(arrow.StartPoint.Y - arrow.EndPoint.Y) < 0.000001)
-            {
-                if (PlotView?.ActualModel != null)
-                {
-                    var plotArea = PlotView.ActualModel.PlotArea;
-                    var center = ConvertScreenToDataPoint(plotArea.Center);
-                    var xShift = plotArea.Width * 0.05;
-                    var shifted = ConvertScreenToDataPoint(new ScreenPoint(plotArea.Center.X + xShift, plotArea.Center.Y));
-                    arrow.StartPoint = new DataPoint(arrow.StartPoint.X + (shifted.X - center.X), arrow.StartPoint.Y);
-                }
-            }
-        }
-    }
-
-    #endregion
-
-    #region Context Menu
-
-    /// <summary>
-    /// Shows context menu for right-click.
-    /// </summary>
-    private void ShowContextMenu(OxyMouseDownEventArgs e)
-    {
-        if (PlotView?.ActualModel == null) return;
-
-        _contextMenu = new ContextMenu();
-
-        // Check for annotation hit
-        foreach (var annotation in PlotView.ActualModel.Annotations)
-        {
-            var hitResult = annotation.HitTest(new HitTestArguments(e.Position, 10));
-            if (hitResult != null)
-            {
-                AddAnnotationContextMenuItems(annotation);
+                // Only add one CM for annotations
                 break;
             }
-        }
 
-        if (_contextMenu.Items.Count > 0)
-        {
-            _contextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
+            if (_contextMenu.Items.Count == 0)
+            {
+                return;
+            }
+
+            _contextMenu.Placement = PlacementMode.MousePoint;
+            _contextMenu.HorizontalOffset = 0;
+            _contextMenu.VerticalOffset = 0;
             _contextMenu.IsOpen = true;
         }
-    }
 
-    private void AddAnnotationContextMenuItems(Annotation annotation)
-    {
-        var annotationText = GetAnnotationText(annotation);
+        #endregion
 
-        var editItem = new MenuItem { Header = $"Edit Annotation Text: {annotationText}" };
-        editItem.Click += (s, e) =>
+        #region CreateEditTBX
+
+        /// <summary>
+        /// Creates an in-place text box for editing text on the plot.
+        /// Supports plot titles, axis titles, and all annotation types.
+        /// </summary>
+        /// <param name="existingTextblock">The existing TextBlock element being edited.</param>
+        /// <param name="dependencyObj">The dependency object containing the text property.</param>
+        /// <param name="dependencyProp">The dependency property to bind the text to.</param>
+        /// <param name="angle">The rotation angle for the text box.</param>
+        /// <param name="canvas">The canvas for positioning.</param>
+        private void CreateEditTBX(TextBlock existingTextblock, DependencyObject dependencyObj, DependencyProperty dependencyProp, double angle, Canvas canvas)
         {
-            RaisePropertiesCalled(false, PropertyExpander.Annotations_Text, annotation);
-        };
+            IInputElement txtblckAsInputElem = existingTextblock as IInputElement;
+            Color currentTextColor = Colors.Black; // This is for all annotations (hiding text while editing)
+            Color currentStrokeColor = Colors.Black; // This is just for the text annotation, which is a box by default
 
-        var formatItem = new MenuItem { Header = $"Format Annotation: {annotationText}" };
-        formatItem.Click += (s, e) =>
-        {
-            RaisePropertiesCalled(true, PropertyExpander.Annotations_Text, annotation);
-        };
-
-        var deleteItem = new MenuItem { Header = $"Delete Annotation: {annotationText}" };
-        deleteItem.Click += (s, e) =>
-        {
-            PlotView?.ActualModel?.Annotations.Remove(annotation);
-            PlotView?.InvalidatePlot(false);
-        };
-
-        _contextMenu?.Items.Add(editItem);
-        _contextMenu?.Items.Add(formatItem);
-        _contextMenu?.Items.Add(deleteItem);
-    }
-
-    private string GetAnnotationText(Annotation annotation)
-    {
-        return annotation switch
-        {
-            ArrowAnnotation a => a.Text ?? "Arrow",
-            TextAnnotation t => t.Text ?? "Text",
-            RectangleAnnotation r => r.Text ?? "Rectangle",
-            EllipseAnnotation e => e.Text ?? "Ellipse",
-            PointAnnotation p => p.Text ?? "Point",
-            PolygonAnnotation pg => pg.Text ?? "Polygon",
-            PolylineAnnotation pl => pl.Text ?? "Polyline",
-            LineAnnotation l => l.Text ?? "Line",
-            _ => "Annotation"
-        };
-    }
-
-    #endregion
-
-    #region Line Annotation Tooltips
-
-    private void OpenLineAnnotationTooltip(LineAnnotation line)
-    {
-        // Close any previous tooltip
-        CloseLineAnnotationTooltip();
-
-        _lineAnnotationTooltip = new ToolTip
-        {
-            IsOpen = true,
-            Placement = System.Windows.Controls.Primitives.PlacementMode.Relative,
-            PlacementTarget = PlotView,
-            Background = System.Windows.Media.Brushes.White,
-            BorderBrush = System.Windows.Media.Brushes.Transparent,
-            Padding = new Thickness(2),
-            Margin = new Thickness(0)
-        };
-        UpdateLineAnnotationTooltip(line);
-    }
-
-    private void UpdateLineAnnotationTooltip(LineAnnotation line)
-    {
-        if (_lineAnnotationTooltip == null || PlotView?.ActualModel == null) return;
-
-        // Use axis-aware formatting (DateTimeAxis shows dates, CategoryAxis shows labels, etc.)
-        if (line.Type == LineAnnotationType.Vertical)
-        {
-            var xAxis = line.XAxis ?? PlotView.ActualModel.DefaultXAxis;
-            if (xAxis != null)
+            Point point;
+            try
             {
-                // Format the value using the axis's own formatting logic
-                _lineAnnotationTooltip.Content = xAxis.FormatValue(line.X);
-
-                // Position tooltip at the bottom of the line
-                var dataPoint = xAxis.IsReversed
-                    ? new DataPoint(line.X, line.YAxis?.ActualMaximum ?? 0)
-                    : new DataPoint(line.X, line.YAxis?.ActualMinimum ?? 0);
-                var screenPoint = line.Transform(dataPoint);
-                _lineAnnotationTooltip.UpdateLayout();
-                _lineAnnotationTooltip.VerticalOffset = screenPoint.Y;
-                _lineAnnotationTooltip.HorizontalOffset = screenPoint.X - (_lineAnnotationTooltip.ActualWidth / 2);
+                point = GetPosition((Visual)txtblckAsInputElem, canvas);
             }
-        }
-        else if (line.Type == LineAnnotationType.Horizontal)
-        {
-            var yAxis = line.YAxis ?? PlotView.ActualModel.DefaultYAxis;
-            if (yAxis != null)
+            catch
             {
-                // Format the value using the axis's own formatting logic
-                _lineAnnotationTooltip.Content = yAxis.FormatValue(line.Y);
-
-                // Position tooltip at the left of the line
-                var dataPoint = line.XAxis?.IsReversed == true
-                    ? new DataPoint(line.XAxis.ActualMaximum, line.Y)
-                    : new DataPoint(line.XAxis?.ActualMinimum ?? 0, line.Y);
-                var screenPoint = line.Transform(dataPoint);
-                _lineAnnotationTooltip.UpdateLayout();
-                _lineAnnotationTooltip.VerticalOffset = screenPoint.Y - (_lineAnnotationTooltip.ActualHeight / 2);
-                _lineAnnotationTooltip.HorizontalOffset = screenPoint.X - _lineAnnotationTooltip.ActualWidth;
+                return;
             }
-        }
-    }
 
-    private void CloseLineAnnotationTooltip()
-    {
-        if (_lineAnnotationTooltip != null)
-        {
-            _lineAnnotationTooltip.IsOpen = false;
-            _lineAnnotationTooltip = null;
-        }
-    }
+            double left = point.X;
+            double top = point.Y;
+            double width = existingTextblock.ActualWidth;
+            double height = existingTextblock.ActualHeight;
+            double fontsize = existingTextblock.FontSize;
+            FontFamily fontFamily = existingTextblock.FontFamily;
+            FontWeight fontWeight = existingTextblock.FontWeight;
+            Brush foreColor = existingTextblock.Foreground;
 
-    #endregion
+            // Create canvas for the textbox overlay
+            var canvasOverlay = new Canvas { Name = "TextBoxCanvas" };
+            canvasOverlay.Background = new SolidColorBrush(Colors.Transparent);
+            var dockPanel = new DockPanel();
+            var plotParent = (Grid)Plot.canvas.Parent;
+            plotParent.Children.Add(canvasOverlay);
 
-    #region Properties Button
+            // Set initial text box settings
+            _textBox = new TextBox();
+            _textBox.Background = Plot.Background;
+            _textBox.TextAlignment = TextAlignment.Center;
+            _textBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            _textBox.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            _textBox.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Stretch;
+            _textBox.VerticalContentAlignment = System.Windows.VerticalAlignment.Stretch;
+            _textBox.Padding = new Thickness(-2);
+            _textBox.FontSize = fontsize;
+            _textBox.FontFamily = fontFamily;
+            _textBox.FontWeight = fontWeight;
+            _textBox.Foreground = foreColor;
+            TextOptions.SetTextFormattingMode(_textBox, TextFormattingMode.Display);
 
-    private void PropertiesButton_Click(object sender, RoutedEventArgs e)
-    {
-        RaisePropertiesCalled(true, null, null);
-    }
-
-    private void RaisePropertiesCalled(bool openProperties, PropertyExpander? expander, object? selectedObject)
-    {
-        PropertiesCalled?.Invoke(this, new PropertiesCalledEventArgs
-        {
-            TargetPlot = PlotView,
-            OpenProperties = openProperties,
-            PropertyExpander = expander,
-            SelectedObject = selectedObject
-        });
-    }
-
-    #endregion
-
-    #region Swap Axes
-
-    private void SwapAxesButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (PlotView?.ActualModel == null) return;
-
-        // Check if any series type prevents swapping
-        foreach (var series in PlotView.ActualModel.Series)
-        {
-            if (NonSwapSeriesTypes.Contains(series.GetType())) return;
-        }
-
-        // Swap axis positions
-        foreach (var axis in PlotView.ActualModel.Axes)
-        {
-            axis.Position = axis.Position switch
+            // Normalize all angles to 0-360
+            if (angle < 0 || angle >= 360)
             {
-                AxisPosition.Bottom => AxisPosition.Left,
-                AxisPosition.Left => AxisPosition.Bottom,
-                AxisPosition.Top => AxisPosition.Right,
-                AxisPosition.Right => AxisPosition.Top,
-                _ => axis.Position
+                angle = angle % 360;
+                if (angle < 0)
+                {
+                    angle += 360;
+                }
+            }
+
+            // Determine what type of element was selected
+            var depObjType = dependencyObj.GetType();
+
+            if (depObjType == typeof(Wpf.Plot))
+            {
+                // It must be a title or subtitle, which are handled the same way
+                dockPanel.RenderTransform = new RotateTransform(angle, 0, 0);
+                dockPanel.Width = Plot.ActualModel.PlotArea.Width;
+                dockPanel.Height = height;
+                Canvas.SetLeft(dockPanel, Plot.ActualModel.PlotArea.Left);
+                Canvas.SetTop(dockPanel, top);
+
+                string title = Plot.Title;
+                currentTextColor = Plot.TitleColor;
+                Plot.TitleColor = Colors.Transparent;
+                _textBox.Text = title;
+            }
+            else if (depObjType == typeof(Wpf.LogarithmicAxis) || depObjType == typeof(Wpf.LinearAxis) ||
+                     depObjType == typeof(Wpf.DateTimeAxis) || depObjType == typeof(Wpf.CategoryAxis) ||
+                     depObjType == typeof(Wpf.GumbelProbabilityAxis) || depObjType == typeof(Wpf.LinearColorAxis) ||
+                     depObjType == typeof(Wpf.AngleAxis) || depObjType == typeof(Wpf.NormalProbabilityAxis) ||
+                     depObjType == typeof(Wpf.TimeSpanAxis) || depObjType == typeof(Wpf.MagnitudeAxis))
+            {
+                if (angle == 0)
+                {
+                    dockPanel.RenderTransform = new RotateTransform(angle, 0, 0);
+                    dockPanel.Width = Plot.ActualModel.PlotArea.Width;
+                    dockPanel.Height = height;
+                    Canvas.SetLeft(dockPanel, Plot.ActualModel.PlotArea.Left);
+                    Canvas.SetTop(dockPanel, top);
+                }
+                else if (angle == 270) // Vertical text - flowing up
+                {
+                    dockPanel.RenderTransform = new RotateTransform(angle, 0, 0);
+                    dockPanel.Width = Plot.ActualModel.PlotArea.Height;
+                    dockPanel.Height = height;
+                    Canvas.SetTop(dockPanel, Plot.ActualModel.PlotArea.Bottom);
+                    Canvas.SetLeft(dockPanel, left);
+                }
+                // else angle not handled
+            }
+            else if (depObjType == typeof(Wpf.ArrowAnnotation))
+            {
+                dockPanel.RenderTransform = new RotateTransform(0, 0, 0);
+                var annotation = (Wpf.ArrowAnnotation)dependencyObj;
+                _textBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.Padding = new Thickness(0);
+
+                // Hide rotated annotation
+                currentTextColor = annotation.TextColor;
+                annotation.TextColor = Colors.Transparent;
+
+                var startPoint = annotation.InternalAnnotation.Transform(annotation.StartPoint.X, annotation.StartPoint.Y);
+
+                dockPanel.Width = existingTextblock.Width + 2;
+                Canvas.SetTop(dockPanel, startPoint.Y - height);
+                Canvas.SetLeft(dockPanel, startPoint.X);
+            }
+            else if (depObjType == typeof(Wpf.LineAnnotation))
+            {
+                var annotation = (Wpf.LineAnnotation)dependencyObj;
+                _textBox.HorizontalAlignment = annotation.TextHorizontalAlignment;
+                _textBox.HorizontalContentAlignment = annotation.TextHorizontalAlignment;
+                _textBox.VerticalAlignment = annotation.TextVerticalAlignment;
+                _textBox.VerticalContentAlignment = annotation.TextVerticalAlignment;
+                _textBox.Padding = new Thickness(0);
+                currentTextColor = annotation.TextColor;
+                annotation.TextColor = Colors.Transparent;
+
+                switch (annotation.Type)
+                {
+                    case OxyPlot.Annotations.LineAnnotationType.Horizontal:
+                        dockPanel.RenderTransform = new RotateTransform(0, 0, 0);
+                        dockPanel.Width = existingTextblock.ActualWidth + 2;
+                        _textBox.Width = dockPanel.Width;
+                        Canvas.SetLeft(dockPanel, left);
+                        Canvas.SetTop(dockPanel, top);
+                        break;
+                    case OxyPlot.Annotations.LineAnnotationType.Vertical:
+                        dockPanel.RenderTransform = new RotateTransform(0, 0, 0);
+                        dockPanel.Width = existingTextblock.ActualWidth + 2;
+                        _textBox.Width = dockPanel.Width;
+                        Canvas.SetLeft(dockPanel, left);
+                        Canvas.SetTop(dockPanel, top);
+                        break;
+                    default: // Linear equation
+                        dockPanel.RenderTransform = new RotateTransform(0, 0, 0);
+                        dockPanel.Width = existingTextblock.ActualWidth + 2;
+                        _textBox.Width = dockPanel.Width;
+                        Canvas.SetLeft(dockPanel, left);
+                        Canvas.SetTop(dockPanel, top);
+                        break;
+                }
+            }
+            else if (depObjType == typeof(Wpf.PolygonAnnotation))
+            {
+                var annotation = (Wpf.PolygonAnnotation)dependencyObj;
+                currentTextColor = annotation.TextColor;
+                annotation.TextColor = Colors.Transparent;
+                // Just make a generic textbox near the object
+                _textBox.Width = existingTextblock.Width;
+                _textBox.TextAlignment = TextAlignment.Left;
+                _textBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.Padding = new Thickness(0);
+                dockPanel.RenderTransform = new RotateTransform(0, 0, 0);
+                dockPanel.Width = _textBox.Width;
+                dockPanel.Height = height;
+                Canvas.SetLeft(dockPanel, left);
+                Canvas.SetTop(dockPanel, top);
+            }
+            else if (depObjType == typeof(Wpf.PolylineAnnotation))
+            {
+                var annotation = (Wpf.PolylineAnnotation)dependencyObj;
+                currentTextColor = annotation.TextColor;
+                annotation.TextColor = Colors.Transparent;
+                // Just make a generic textbox near the object
+                _textBox.Width = existingTextblock.Width;
+                _textBox.TextAlignment = TextAlignment.Left;
+                _textBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.Padding = new Thickness(0);
+                dockPanel.RenderTransform = new RotateTransform(0, 0, 0);
+                dockPanel.Width = _textBox.Width;
+                dockPanel.Height = height;
+                Canvas.SetLeft(dockPanel, left);
+                Canvas.SetTop(dockPanel, top);
+            }
+            else if (depObjType == typeof(Wpf.PointAnnotation))
+            {
+                var annotation = (Wpf.PointAnnotation)dependencyObj;
+                currentTextColor = annotation.TextColor;
+                annotation.TextColor = Colors.Transparent;
+                // Just make a generic textbox near the object
+                _textBox.Width = existingTextblock.Width;
+                _textBox.TextAlignment = TextAlignment.Left;
+                _textBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.Padding = new Thickness(0);
+                dockPanel.RenderTransform = new RotateTransform(0, 0, 0);
+                dockPanel.Width = _textBox.Width;
+                dockPanel.Height = height;
+                Canvas.SetLeft(dockPanel, left);
+                Canvas.SetTop(dockPanel, top);
+            }
+            else if (depObjType == typeof(Wpf.RectangleAnnotation))
+            {
+                var annotation = (Wpf.RectangleAnnotation)dependencyObj;
+                currentTextColor = annotation.TextColor;
+                annotation.TextColor = Colors.Transparent;
+                // Just make a generic text box near the object
+                _textBox.Width = existingTextblock.Width;
+                _textBox.TextAlignment = TextAlignment.Left;
+                _textBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.Padding = new Thickness(0);
+                dockPanel.RenderTransform = new RotateTransform(0, 0, 0);
+                dockPanel.Width = _textBox.Width;
+                dockPanel.Height = height;
+                Canvas.SetLeft(dockPanel, left);
+                Canvas.SetTop(dockPanel, top);
+            }
+            else if (depObjType == typeof(Wpf.TextAnnotation))
+            {
+                var annotation = (Wpf.TextAnnotation)dependencyObj;
+                currentTextColor = annotation.TextColor;
+                annotation.TextColor = Colors.Transparent;
+                currentStrokeColor = annotation.Stroke;
+                annotation.Stroke = Colors.Transparent;
+                // Just make a generic text box near the object
+                _textBox.Width = existingTextblock.Width;
+                _textBox.TextAlignment = TextAlignment.Left;
+                _textBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.Padding = new Thickness(0);
+                dockPanel.RenderTransform = new RotateTransform(0, 0, 0);
+                dockPanel.Width = _textBox.Width;
+                dockPanel.Height = height;
+                Canvas.SetLeft(dockPanel, left);
+                Canvas.SetTop(dockPanel, top);
+            }
+            else if (depObjType == typeof(Wpf.EllipseAnnotation))
+            {
+                var annotation = (Wpf.EllipseAnnotation)dependencyObj;
+                currentTextColor = annotation.TextColor;
+                annotation.TextColor = Colors.Transparent;
+                // Just make a generic text box near the object
+                _textBox.Width = existingTextblock.Width;
+                _textBox.TextAlignment = TextAlignment.Left;
+                _textBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.Padding = new Thickness(0);
+                dockPanel.RenderTransform = new RotateTransform(0, 0, 0);
+                dockPanel.Width = _textBox.Width;
+                dockPanel.Height = height;
+                Canvas.SetLeft(dockPanel, left);
+                Canvas.SetTop(dockPanel, top);
+            }
+
+            // Add the textbox to the dock panel and canvas
+            dockPanel.Children.Add(_textBox);
+            canvasOverlay.Children.Add(dockPanel);
+
+            // Focus color from template is controlling here
+            _textBox.BorderThickness = new Thickness(1);
+            _textBox.Focus();
+
+            // Set up binding
+            var binding = new Binding { Mode = BindingMode.OneWay, Source = _textBox, Path = new PropertyPath("Text") };
+
+            // Check if dependency object is an axis, in which case, need to get initial title
+            if (depObjType == typeof(Wpf.LogarithmicAxis) || depObjType == typeof(Wpf.LinearAxis) ||
+                depObjType == typeof(Wpf.DateTimeAxis) || depObjType == typeof(Wpf.CategoryAxis) ||
+                depObjType == typeof(Wpf.GumbelProbabilityAxis) || depObjType == typeof(Wpf.LinearColorAxis) ||
+                depObjType == typeof(Wpf.AngleAxis) || depObjType == typeof(Wpf.NormalProbabilityAxis) ||
+                depObjType == typeof(Wpf.TimeSpanAxis) || depObjType == typeof(Wpf.MagnitudeAxis))
+            {
+                var axis = (Wpf.Axis)dependencyObj;
+                string title = axis.Title;
+                currentTextColor = axis.TitleColor;
+                axis.TitleColor = Colors.Transparent;
+                _textBox.Text = title; // Set up initial text
+            }
+            else
+            {
+                _textBox.Text = existingTextblock.Text; // Set up initial text
+            }
+
+            // Put the cursor at the end of the textbox
+            if (_textBox.Text != null && _textBox.Text.Length > 0)
+            {
+                _textBox.SelectionStart = _textBox.Text.Length;
+            }
+            BindingOperations.SetBinding(dependencyObj, dependencyProp, binding);
+
+            // If the plot size changes, remove the textbox overlay
+            // Note: Do NOT clear the binding here - the binding must remain in place for the text to be saved
+            Plot.SizeChanged += (s, args) =>
+            {
+                plotParent.Children.Remove(canvasOverlay);
+                // This will also fire the lost focus event below
+            };
+
+            // On key enter, remove the textbox overlay
+            // Note: Do NOT clear the binding here - the binding must remain in place for the text to be saved
+            _textBox.PreviewKeyDown += (s, args) =>
+            {
+                if (args.Key == Key.Enter)
+                {
+                    plotParent.Children.Remove(canvasOverlay);
+                    // This will also fire the lost focus event below
+                }
+            };
+
+            // On lost focus, remove the textbox overlay
+            // Note: Do NOT clear the binding here - the binding must remain in place for the text to be saved
+            _textBox.LostFocus += (s, args) =>
+            {
+                plotParent.Children.Remove(canvasOverlay);
+
+                // Change the color of the text back from transparent for annotations
+                if (depObjType == typeof(Wpf.RectangleAnnotation))
+                {
+                    var anno = (Wpf.RectangleAnnotation)dependencyObj;
+                    anno.TextColor = currentTextColor;
+                }
+                else if (depObjType == typeof(Wpf.LineAnnotation))
+                {
+                    var anno = (Wpf.LineAnnotation)dependencyObj;
+                    anno.TextColor = currentTextColor;
+                }
+                else if (depObjType == typeof(Wpf.PolygonAnnotation))
+                {
+                    var anno = (Wpf.PolygonAnnotation)dependencyObj;
+                    anno.TextColor = currentTextColor;
+                }
+                else if (depObjType == typeof(Wpf.PolylineAnnotation))
+                {
+                    var anno = (Wpf.PolylineAnnotation)dependencyObj;
+                    anno.TextColor = currentTextColor;
+                }
+                else if (depObjType == typeof(Wpf.EllipseAnnotation))
+                {
+                    var anno = (Wpf.EllipseAnnotation)dependencyObj;
+                    anno.TextColor = currentTextColor;
+                }
+                else if (depObjType == typeof(Wpf.ArrowAnnotation))
+                {
+                    var anno = (Wpf.ArrowAnnotation)dependencyObj;
+                    anno.TextColor = currentTextColor;
+                }
+                else if (depObjType == typeof(Wpf.PointAnnotation))
+                {
+                    var anno = (Wpf.PointAnnotation)dependencyObj;
+                    anno.TextColor = currentTextColor;
+                }
+                else if (depObjType == typeof(Wpf.TextAnnotation))
+                {
+                    var anno = (Wpf.TextAnnotation)dependencyObj;
+                    anno.TextColor = currentTextColor;
+                    anno.Stroke = currentStrokeColor;
+                }
+                else if (depObjType == typeof(Wpf.LogarithmicAxis) || depObjType == typeof(Wpf.LinearAxis) ||
+                         depObjType == typeof(Wpf.DateTimeAxis) || depObjType == typeof(Wpf.CategoryAxis) ||
+                         depObjType == typeof(Wpf.GumbelProbabilityAxis) || depObjType == typeof(Wpf.LinearColorAxis) ||
+                         depObjType == typeof(Wpf.AngleAxis) || depObjType == typeof(Wpf.NormalProbabilityAxis) ||
+                         depObjType == typeof(Wpf.TimeSpanAxis) || depObjType == typeof(Wpf.MagnitudeAxis))
+                {
+                    var ax = (Wpf.Axis)dependencyObj;
+                    ax.TitleColor = currentTextColor;
+                }
+                else if (depObjType == typeof(Wpf.Plot))
+                {
+                    Plot.TitleColor = currentTextColor;
+                }
             };
         }
 
-        // Swap data points in series
-        foreach (var series in PlotView.ActualModel.Series)
+        #endregion
+
+        #region Helper Methods
+
+        /// <summary>
+        /// Support method for finding visual children.
+        /// </summary>
+        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
         {
-            SwapSeriesData(series);
-        }
-
-        PlotView.InvalidatePlot(true);
-    }
-
-    private void SwapSeriesData(OxyPlot.Series.Series series)
-    {
-        // Note: Derived types must come before base types in pattern matching
-        switch (series)
-        {
-            // AreaSeries extends LineSeries, so check it first
-            case OxyPlot.Series.AreaSeries areaSeries:
-                SwapDataPoints(areaSeries.Points);
-                SwapDataPoints(areaSeries.Points2);
-                break;
-            case OxyPlot.Series.LineSeries lineSeries:
-                SwapDataPoints(lineSeries.Points);
-                break;
-            case OxyPlot.Series.ScatterSeries scatterSeries:
-                SwapScatterPoints(scatterSeries.Points);
-                break;
-        }
-    }
-
-    private void SwapDataPoints(IList<DataPoint> points)
-    {
-        var swapped = points.Select(p => new DataPoint(p.Y, p.X)).ToList();
-        points.Clear();
-        foreach (var p in swapped) points.Add(p);
-    }
-
-    private void SwapScatterPoints(IList<ScatterPoint> points)
-    {
-        var swapped = points.Select(p => new ScatterPoint(p.Y, p.X, p.Size, p.Value)).ToList();
-        points.Clear();
-        foreach (var p in swapped) points.Add(p);
-    }
-
-    #endregion
-
-    #region Export Series Data
-
-    private static readonly string[] BadCharacters = { ":", "\\", "/", "?", "*", "[", "]" };
-
-    private void ExportDataButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (PlotView?.ActualModel == null) return;
-
-        var tableList = new List<DataTable>();
-        int tableCount = 0;
-
-        foreach (var series in PlotView.ActualModel.Series)
-        {
-            var dataTable = new DataTable("Series");
-            string seriesName = "";
-            tableCount++;
-
-            // Note: Derived types must come before base types in pattern matching
-            switch (series)
+            if (depObj != null)
             {
-                // AreaSeries extends LineSeries, so check it first
-                case OxyPlot.Series.AreaSeries areaSeries:
-                    seriesName = GetSeriesName(areaSeries.Title, "AreaSeries", tableCount);
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+                {
+                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+
+                    if (child != null && child is T)
+                    {
+                        yield return (T)child;
+                    }
+
+                    foreach (T childOfChild in FindVisualChildren<T>(child))
+                    {
+                        yield return childOfChild;
+                    }
+                }
+            }
+        }
+
+        private DataPoint ConvertScreenPointToDataPoint(ScreenPoint pt)
+        {
+            return Plot.ActualModel.DefaultXAxis.InverseTransform(pt.X, pt.Y, Plot.ActualModel.DefaultYAxis);
+        }
+
+        private ScreenPoint ConvertDataPointToScreenPoint(DataPoint pt)
+        {
+            return Plot.ActualModel.DefaultXAxis.Transform(pt.X, pt.Y, Plot.ActualModel.DefaultYAxis);
+        }
+
+        private Point ConvertDataPointToPoint(DataPoint pt)
+        {
+            var sp = Plot.ActualModel.DefaultXAxis.Transform(pt.X, pt.Y, Plot.ActualModel.DefaultYAxis);
+            return new Point(sp.X, sp.Y);
+        }
+
+        private DataPoint ConvertLeaderLinePoint(int pointIndex)
+        {
+            return Plot.ActualModel.DefaultXAxis.InverseTransform(_leaderLine.Points[pointIndex].X, _leaderLine.Points[pointIndex].Y, Plot.ActualModel.DefaultYAxis);
+        }
+
+        private Size MeasureString(string candidate, FontFamily family, FontStyle style, FontWeight weight, FontStretch stretch, double size)
+        {
+            if (candidate == null)
+            {
+                return new Size(0, 0);
+            }
+            var formattedText = new FormattedText(
+                candidate,
+                System.Globalization.CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(family, style, weight, stretch),
+                size,
+                Brushes.Black,
+                new NumberSubstitution());
+            return new Size(formattedText.Width, formattedText.Height);
+        }
+
+        /// <summary>
+        /// Gets the position of an element on the plot.
+        /// </summary>
+        /// <param name="element">The visual element.</param>
+        /// <param name="canvas">The canvas to get position relative to.</param>
+        /// <returns>The position of the element.</returns>
+        private Point GetPosition(Visual element, Canvas canvas)
+        {
+            var positionTransform = element.TransformToAncestor(canvas);
+            var areaPosition = positionTransform.Transform(new Point(0, 0));
+            return areaPosition;
+        }
+
+        /// <summary>
+        /// Loads an image resource and returns it as a BitmapImage.
+        /// </summary>
+        /// <param name="resourceName">The name of the resource file (e.g., "Format.png").</param>
+        /// <returns>A BitmapImage that can be used as an Image source.</returns>
+        private static BitmapImage LoadResourceImage(string resourceName)
+        {
+            var uri = new Uri($"pack://application:,,,/OxyPlotControls;component/Resources/{resourceName}", UriKind.Absolute);
+            var bitmapImage = new BitmapImage(uri);
+            return bitmapImage;
+        }
+
+        /// <summary>
+        /// Creates an Image control with the specified resource image.
+        /// </summary>
+        /// <param name="resourceName">The name of the resource file (e.g., "Format.png").</param>
+        /// <returns>An Image control with the resource as its source.</returns>
+        private static Image CreateMenuIcon(string resourceName)
+        {
+            return new Image { Source = LoadResourceImage(resourceName), Width = 16, Height = 16 };
+        }
+
+        #endregion
+
+        #region Export Series Data
+
+        /// <summary>
+        /// Export series data to file.
+        /// </summary>
+        private void ExportDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            var tableList = new List<DataTable>();
+            int tableCount = 0;
+            string[] badCharacters = { ":", "\\", "/", "?", "*", "[", "]" };
+
+            foreach (Wpf.Series series in Plot.Series)
+            {
+                var dataTable = new DataTable("Series");
+                string seriesName = "";
+                tableCount++;
+
+                if (series.GetType() == typeof(Wpf.LineSeries))
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "LineSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
+
                     dataTable.TableName = seriesName;
                     dataTable.Columns.Add("id", typeof(int));
                     dataTable.Columns.Add(seriesName + "_x", typeof(string));
                     dataTable.Columns.Add(seriesName + "_y", typeof(string));
 
-                    foreach (var point in areaSeries.Points)
-                    {
-                        dataTable.Rows.Add(dataTable.Rows.Count + 1, point.X, point.Y);
-                    }
-                    break;
+                    var oxySeries = (OxyPlot.Series.LineSeries)series.InternalSeries;
 
-                case OxyPlot.Series.LineSeries lineSeries:
-                    seriesName = GetSeriesName(lineSeries.Title, "LineSeries", tableCount);
+                    if (oxySeries.ItemsSource != null)
+                    {
+                        var datalist = oxySeries.ItemsSource as IEnumerable<DataPoint>;
+                        if (datalist != null)
+                        {
+                            foreach (var seriesValue in datalist.ToList())
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesValue.X, seriesValue.Y);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var obj in oxySeries.ItemsSource.Cast<object>())
+                            {
+                                PropertyInfo propX = obj.GetType().GetProperty(oxySeries.DataFieldX);
+                                string xVal = Convert.ToString(propX.GetValue(obj, null));
+                                PropertyInfo propY = obj.GetType().GetProperty(oxySeries.DataFieldY);
+                                string yVal = Convert.ToString(propY.GetValue(obj, null));
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, xVal, yVal);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var seriesValue in oxySeries.Points)
+                        {
+                            dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesValue.X, seriesValue.Y);
+                        }
+                    }
+                }
+                else if (series.GetType() == typeof(Wpf.ScatterPointSeries))
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "ScatterSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
+
                     dataTable.TableName = seriesName;
                     dataTable.Columns.Add("id", typeof(int));
                     dataTable.Columns.Add(seriesName + "_x", typeof(string));
                     dataTable.Columns.Add(seriesName + "_y", typeof(string));
 
-                    foreach (var point in lineSeries.Points)
-                    {
-                        dataTable.Rows.Add(dataTable.Rows.Count + 1, point.X, point.Y);
-                    }
-                    break;
+                    var oxySeries = (OxyPlot.Series.ScatterSeries)series.InternalSeries;
 
-                case OxyPlot.Series.ScatterSeries scatterSeries:
-                    seriesName = GetSeriesName(scatterSeries.Title, "ScatterSeries", tableCount);
+                    if (oxySeries.ItemsSource != null)
+                    {
+                        var datalist = oxySeries.ItemsSource as IEnumerable<OxyPlot.Series.ScatterPoint>;
+                        if (datalist != null)
+                        {
+                            foreach (var seriesValue in datalist.ToList())
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesValue.X, seriesValue.Y);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var obj in oxySeries.ItemsSource.Cast<object>())
+                            {
+                                PropertyInfo propX = obj.GetType().GetProperty(oxySeries.DataFieldX);
+                                string xVal = Convert.ToString(propX.GetValue(obj, null));
+                                PropertyInfo propY = obj.GetType().GetProperty(oxySeries.DataFieldY);
+                                string yVal = Convert.ToString(propY.GetValue(obj, null));
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, xVal, yVal);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var seriesValue in oxySeries.Points)
+                        {
+                            dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesValue.X, seriesValue.Y);
+                        }
+                    }
+                }
+                else if (series.GetType() == typeof(Wpf.AreaSeries))
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "AreaSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
+
                     dataTable.TableName = seriesName;
                     dataTable.Columns.Add("id", typeof(int));
                     dataTable.Columns.Add(seriesName + "_x", typeof(string));
                     dataTable.Columns.Add(seriesName + "_y", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_x2", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_y2", typeof(string));
 
-                    foreach (var point in scatterSeries.Points)
+                    var oxySeries = (OxyPlot.Series.AreaSeries)series.InternalSeries;
+
+                    if (oxySeries.ItemsSource != null)
                     {
-                        dataTable.Rows.Add(dataTable.Rows.Count + 1, point.X, point.Y);
-                    }
-                    break;
+                        var datalist = oxySeries.ItemsSource as IEnumerable<DataPoint>;
+                        if (datalist != null)
+                        {
+                            foreach (var seriesValue in datalist.ToList())
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesValue.X, seriesValue.Y);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var obj in oxySeries.ItemsSource.Cast<object>())
+                            {
+                                PropertyInfo propX = obj.GetType().GetProperty(oxySeries.DataFieldX);
+                                string xVal = Convert.ToString(propX.GetValue(obj, null));
+                                PropertyInfo propY = obj.GetType().GetProperty(oxySeries.DataFieldY);
+                                string yVal = Convert.ToString(propY.GetValue(obj, null));
 
-                case OxyPlot.Series.HistogramSeries histogramSeries:
-                    seriesName = GetSeriesName(histogramSeries.Title, "HistogramSeries", tableCount);
+                                string xVal2 = "";
+                                if (oxySeries.DataFieldX2 != null)
+                                {
+                                    PropertyInfo propX2 = obj.GetType().GetProperty(oxySeries.DataFieldX2);
+                                    xVal2 = Convert.ToString(propX2.GetValue(obj, null));
+                                }
+
+                                string yVal2 = "";
+                                if (oxySeries.DataFieldY2 != null)
+                                {
+                                    PropertyInfo propY2 = obj.GetType().GetProperty(oxySeries.DataFieldY2);
+                                    yVal2 = Convert.ToString(propY2.GetValue(obj, null));
+                                }
+
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, xVal, yVal, xVal2, yVal2);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < oxySeries.Points.Count; i++)
+                        {
+                            if (oxySeries.Points2.Count > 0)
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, oxySeries.Points[i].X, oxySeries.Points[i].Y, oxySeries.Points2[i].X, oxySeries.Points2[i].Y);
+                            }
+                            else
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, oxySeries.Points[i].X, oxySeries.Points[i].Y, "", "");
+                            }
+                        }
+                    }
+                }
+                else if (series.GetType() == typeof(Wpf.BoxPlotSeries))
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "BoxPlotSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
+
+                    dataTable.TableName = seriesName;
+                    dataTable.Columns.Add("id", typeof(int));
+                    dataTable.Columns.Add(seriesName + "_position", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_lowerWhisker", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_boxMinimum", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_median", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_boxMaximum", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_upperWhisker", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_label", typeof(string));
+
+                    var oxySeries = (OxyPlot.Series.BoxPlotSeries)series.InternalSeries;
+
+                    if (oxySeries.ItemsSource != null)
+                    {
+                        var datalist = oxySeries.ItemsSource as IEnumerable<OxyPlot.Series.BoxPlotItem>;
+                        if (datalist != null)
+                        {
+                            foreach (var bpi in datalist)
+                            {
+                                var r = dataTable.Rows.Add(dataTable.Rows.Count + 1, bpi.Position, bpi.LowerWhisker, bpi.BoxMinimum, bpi.Median, bpi.BoxMaximum, bpi.UpperWhisker);
+
+                                // Check if a X Axis Label is specified
+                                if (oxySeries.XAxis != null)
+                                {
+                                    if (oxySeries.XAxis.GetType() == typeof(OxyPlot.Axes.CategoryAxis))
+                                    {
+                                        if (((OxyPlot.Axes.CategoryAxis)oxySeries.XAxis).LabelField != null)
+                                        {
+                                            r[seriesName + "_label"] = ((OxyPlot.Axes.CategoryAxis)oxySeries.XAxis).LabelField;
+                                        }
+                                    }
+                                }
+
+                                int j = 1;
+                                foreach (var outlier in bpi.Outliers)
+                                {
+                                    if (!dataTable.Columns.Contains("outlier" + j))
+                                    {
+                                        dataTable.Columns.Add("outlier" + j, typeof(string));
+                                    }
+                                    r[dataTable.Columns.IndexOf("outlier" + j)] = outlier;
+                                    j++;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < oxySeries.Items.Count; i++)
+                        {
+                            var r = dataTable.Rows.Add(dataTable.Rows.Count + 1, oxySeries.Items[i].Position, oxySeries.Items[i].LowerWhisker, oxySeries.Items[i].BoxMinimum, oxySeries.Items[i].Median, oxySeries.Items[i].BoxMaximum, oxySeries.Items[i].UpperWhisker);
+
+                            // Check if a X Axis Label is specified
+                            if (oxySeries.XAxis != null)
+                            {
+                                if (oxySeries.XAxis.GetType() == typeof(OxyPlot.Axes.CategoryAxis))
+                                {
+                                    if (((OxyPlot.Axes.CategoryAxis)oxySeries.XAxis).LabelField != null)
+                                    {
+                                        r[seriesName + "_label"] = ((OxyPlot.Axes.CategoryAxis)oxySeries.XAxis).LabelField;
+                                    }
+                                }
+                            }
+
+                            int j = 1;
+                            foreach (var outlier in oxySeries.Items[i].Outliers)
+                            {
+                                if (!dataTable.Columns.Contains("outlier" + j))
+                                {
+                                    dataTable.Columns.Add("outlier" + j, typeof(string));
+                                }
+                                r[dataTable.Columns.IndexOf("outlier" + j)] = outlier;
+                                j++;
+                            }
+                        }
+                    }
+                }
+                else if (series.GetType() == typeof(Wpf.BarSeries))
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "BarSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
+
+                    dataTable.TableName = seriesName;
+                    dataTable.Columns.Add("id", typeof(int));
+                    dataTable.Columns.Add(seriesName + "_categoryIndex", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_color", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_value", typeof(string));
+
+                    var oxySeries = (OxyPlot.Series.BarSeries)series.InternalSeries;
+
+                    if (oxySeries.ItemsSource != null)
+                    {
+                        var datalist = oxySeries.ItemsSource as IEnumerable<OxyPlot.Series.BarItem>;
+                        if (datalist != null)
+                        {
+                            foreach (var seriesItem in datalist.ToList())
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesItem.CategoryIndex, seriesItem.Color.GetColorName(), seriesItem.Value);
+                            }
+                        }
+                        else
+                        {
+                            int c = 0;
+                            foreach (var obj in oxySeries.ItemsSource.Cast<object>())
+                            {
+                                string colorVal = "";
+                                if (oxySeries.ColorField != null)
+                                {
+                                    PropertyInfo propColor = obj.GetType().GetProperty(oxySeries.ColorField);
+                                    colorVal = Convert.ToString(propColor.GetValue(obj, null));
+                                }
+
+                                string valueVal = "";
+                                if (oxySeries.ValueField != null)
+                                {
+                                    PropertyInfo propValue = obj.GetType().GetProperty(oxySeries.ValueField);
+                                    valueVal = Convert.ToString(propValue.GetValue(obj, null));
+                                }
+
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, c, colorVal, valueVal);
+                                c++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var seriesItem in oxySeries.Items)
+                        {
+                            dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesItem.CategoryIndex, seriesItem.Color.GetColorName(), seriesItem.Value);
+                        }
+                    }
+                }
+                else if (series.GetType() == typeof(Wpf.ColumnSeries))
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "ColumnSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
+
+                    dataTable.TableName = seriesName;
+                    dataTable.Columns.Add("id", typeof(int));
+                    dataTable.Columns.Add(seriesName + "_categoryIndex", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_color", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_value", typeof(string));
+
+                    var oxySeries = (OxyPlot.Series.ColumnSeries)series.InternalSeries;
+
+                    if (oxySeries.ItemsSource != null)
+                    {
+                        var datalist = oxySeries.ItemsSource as IEnumerable<OxyPlot.Series.ColumnItem>;
+                        if (datalist != null)
+                        {
+                            foreach (var seriesItem in datalist.ToList())
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesItem.CategoryIndex, seriesItem.Color.GetColorName(), seriesItem.Value);
+                            }
+                        }
+                        else
+                        {
+                            int c = 0;
+                            foreach (var obj in oxySeries.ItemsSource.Cast<object>())
+                            {
+                                string colorVal = "";
+                                if (oxySeries.ColorField != null)
+                                {
+                                    PropertyInfo propColor = obj.GetType().GetProperty(oxySeries.ColorField);
+                                    colorVal = Convert.ToString(propColor.GetValue(obj, null));
+                                }
+
+                                string valueVal = "";
+                                if (oxySeries.ValueField != null)
+                                {
+                                    PropertyInfo propValue = obj.GetType().GetProperty(oxySeries.ValueField);
+                                    valueVal = Convert.ToString(propValue.GetValue(obj, null));
+                                }
+
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, c, colorVal, valueVal);
+                                c++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var seriesItem in oxySeries.Items)
+                        {
+                            dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesItem.CategoryIndex, seriesItem.Color.GetColorName(), seriesItem.Value);
+                        }
+                    }
+                }
+                else if (series.GetType() == typeof(Wpf.HistogramSeries))
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "HistogramSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
+
                     dataTable.TableName = seriesName;
                     dataTable.Columns.Add("id", typeof(int));
                     dataTable.Columns.Add(seriesName + "_rangeStart", typeof(string));
                     dataTable.Columns.Add(seriesName + "_rangeEnd", typeof(string));
                     dataTable.Columns.Add(seriesName + "_area", typeof(string));
 
-                    foreach (var item in histogramSeries.Items)
+                    var oxySeries = (OxyPlot.Series.HistogramSeries)series.InternalSeries;
+
+                    if (oxySeries.ItemsSource != null)
                     {
-                        dataTable.Rows.Add(dataTable.Rows.Count + 1, item.RangeStart, item.RangeEnd, item.Area);
-                    }
-                    break;
-
-                case LinearBarSeries linearBarSeries:
-                    seriesName = GetSeriesName(linearBarSeries.Title, "LinearBarSeries", tableCount);
-                    dataTable.TableName = seriesName;
-                    dataTable.Columns.Add("id", typeof(int));
-                    dataTable.Columns.Add(seriesName + "_x", typeof(double));
-                    dataTable.Columns.Add(seriesName + "_y", typeof(double));
-
-                    foreach (var item in linearBarSeries.Points)
-                    {
-                        dataTable.Rows.Add(dataTable.Rows.Count + 1, item.X, item.Y);
-                    }
-                    break;
-
-                case OxyPlot.Series.BarSeries barSeries:
-                    seriesName = GetSeriesName(barSeries.Title, "BarSeries", tableCount);
-                    dataTable.TableName = seriesName;
-                    dataTable.Columns.Add("id", typeof(int));
-                    dataTable.Columns.Add(seriesName + "_categoryIndex", typeof(string));
-                    dataTable.Columns.Add(seriesName + "_value", typeof(string));
-
-                    foreach (var item in barSeries.Items)
-                    {
-                        dataTable.Rows.Add(dataTable.Rows.Count + 1, item.CategoryIndex, item.Value);
-                    }
-                    break;
-
-                case OxyPlot.Series.BoxPlotSeries boxPlotSeries:
-                    seriesName = GetSeriesName(boxPlotSeries.Title, "BoxPlotSeries", tableCount);
-                    dataTable.TableName = seriesName;
-                    dataTable.Columns.Add("id", typeof(int));
-                    dataTable.Columns.Add(seriesName + "_position", typeof(string));
-                    dataTable.Columns.Add(seriesName + "_lowerWhisker", typeof(string));
-                    dataTable.Columns.Add(seriesName + "_boxBottom", typeof(string));
-                    dataTable.Columns.Add(seriesName + "_median", typeof(string));
-                    dataTable.Columns.Add(seriesName + "_boxTop", typeof(string));
-                    dataTable.Columns.Add(seriesName + "_upperWhisker", typeof(string));
-
-                    foreach (var item in boxPlotSeries.Items)
-                    {
-                        dataTable.Rows.Add(dataTable.Rows.Count + 1, item.X, item.LowerWhisker, item.BoxBottom, item.Median, item.BoxTop, item.UpperWhisker);
-                    }
-                    break;
-
-                case HeatMapSeries heatMapSeries:
-                    if (heatMapSeries.Data == null) continue;
-                    seriesName = GetSeriesName(heatMapSeries.Title, "HeatMapSeries", tableCount);
-                    dataTable.TableName = seriesName;
-                    dataTable.Columns.Add("id", typeof(int));
-                    dataTable.Columns.Add("y", typeof(string));
-
-                    for (int x = 0; x < heatMapSeries.Data.GetLength(0); x++)
-                    {
-                        dataTable.Columns.Add($"x{x}", typeof(string));
-                    }
-
-                    var yCount = heatMapSeries.Data.GetLength(1);
-                    for (int y = 0; y < yCount; y++)
-                    {
-                        var row = dataTable.NewRow();
-                        row[0] = y + 1;
-                        // Avoid division by zero when there's only one row
-                        row[1] = yCount > 1
-                            ? heatMapSeries.Y0 + y * (heatMapSeries.Y1 - heatMapSeries.Y0) / (yCount - 1)
-                            : heatMapSeries.Y0;
-                        for (int x = 0; x < heatMapSeries.Data.GetLength(0); x++)
+                        var datalist = oxySeries.ItemsSource as IEnumerable<OxyPlot.Series.HistogramItem>;
+                        if (datalist != null)
                         {
-                            row[x + 2] = heatMapSeries.Data[x, y];
+                            foreach (var seriesValue in datalist.ToList())
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesValue.RangeStart, seriesValue.RangeEnd, seriesValue.Area);
+                            }
                         }
-                        dataTable.Rows.Add(row);
                     }
-                    break;
+                    else
+                    {
+                        foreach (var seriesItem in oxySeries.Items)
+                        {
+                            dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesItem.RangeStart, seriesItem.RangeEnd, seriesItem.Area);
+                        }
+                    }
+                }
+                else if (series.GetType() == typeof(Wpf.HeatMapSeries))
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "HeatMapSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
 
-                case OxyPlot.Series.ScatterErrorSeries scatterErrorSeries:
-                    seriesName = GetSeriesName(scatterErrorSeries.Title, "ScatterErrorSeries", tableCount);
                     dataTable.TableName = seriesName;
                     dataTable.Columns.Add("id", typeof(int));
+                    dataTable.Columns.Add("xy", typeof(string));
+
+                    var oxySeries = (OxyPlot.Series.HeatMapSeries)series.InternalSeries;
+
+                    if (oxySeries.ItemsSource != null)
+                    {
+                        var datalist = oxySeries.ItemsSource as IEnumerable<double[,]>;
+                        if (datalist != null)
+                        {
+                            // Add columns
+                            double x0 = oxySeries.X0;
+                            double x1 = oxySeries.X1;
+                            int xN = datalist.ToArray().GetLength(0) - 1;
+                            double xDelta = (x1 - x0) / xN;
+                            dataTable.Columns.Add(x0.ToString(), typeof(string));
+                            for (int i = 1; i < datalist.ToArray().GetLength(0); i++)
+                            {
+                                x0 += xDelta;
+                                dataTable.Columns.Add(x0.ToString(), typeof(string));
+                            }
+
+                            // Add rows
+                            double y0 = oxySeries.Y0;
+                            double y1 = oxySeries.Y1;
+                            int yN = datalist.ToArray().GetLength(1) - 1;
+                            double yDelta = (y1 - y0) / yN;
+                            dataTable.Rows.Add();
+                            dataTable.Rows[0][0] = 1;
+                            dataTable.Rows[0][1] = y0;
+
+                            for (int j = 1; j < datalist.ToArray().GetLength(1); j++)
+                            {
+                                dataTable.Rows.Add();
+                                y0 += yDelta;
+                                dataTable.Rows[j][0] = j + 1;
+                                dataTable.Rows[j][1] = y0;
+                            }
+
+                            // Fill in matrix
+                            for (int x = 0; x < datalist.ToArray().GetLength(0); x++)
+                            {
+                                double[,] xy = datalist.ToArray().ElementAt(x);
+                                for (int y = 0; y < datalist.ToArray().GetLength(1); y++)
+                                {
+                                    dataTable.Rows[y][x + 2] = xy[x, y];
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Add columns
+                        double x0 = oxySeries.X0;
+                        double x1 = oxySeries.X1;
+                        int xN = oxySeries.Data.GetLength(0) - 1;
+                        double xDelta = (x1 - x0) / xN;
+                        dataTable.Columns.Add(x0.ToString(), typeof(string));
+                        for (int i = 1; i < oxySeries.Data.GetLength(0); i++)
+                        {
+                            x0 += xDelta;
+                            dataTable.Columns.Add(x0.ToString(), typeof(string));
+                        }
+
+                        // Add rows
+                        double y0 = oxySeries.Y0;
+                        double y1 = oxySeries.Y1;
+                        int yN = oxySeries.Data.GetLength(1) - 1;
+                        double yDelta = (y1 - y0) / yN;
+                        dataTable.Rows.Add();
+                        dataTable.Rows[0][0] = 1;
+                        dataTable.Rows[0][1] = y0;
+
+                        for (int j = 1; j < oxySeries.Data.GetLength(1); j++)
+                        {
+                            dataTable.Rows.Add();
+                            y0 += yDelta;
+                            dataTable.Rows[j][0] = j + 1;
+                            dataTable.Rows[j][1] = y0;
+                        }
+
+                        // Fill in matrix
+                        for (int x = 0; x < oxySeries.Data.GetLength(0); x++)
+                        {
+                            for (int y = 0; y < oxySeries.Data.GetLength(1); y++)
+                            {
+                                dataTable.Rows[y][x + 2] = oxySeries.Data[x, y];
+                            }
+                        }
+                    }
+                }
+                else if (series.GetType() == typeof(Wpf.ScatterErrorSeries))
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "ScatterErrorSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
+
+                    dataTable.TableName = seriesName;
+                    dataTable.Columns.Add("id", typeof(int));
+                    dataTable.Columns.Add(seriesName + "_xLower", typeof(string));
                     dataTable.Columns.Add(seriesName + "_x", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_xUpper", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_yLower", typeof(string));
                     dataTable.Columns.Add(seriesName + "_y", typeof(string));
-                    dataTable.Columns.Add(seriesName + "_errorX", typeof(string));
-                    dataTable.Columns.Add(seriesName + "_errorY", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_yUpper", typeof(string));
 
-                    foreach (var point in scatterErrorSeries.Points)
+                    var oxySeries = (OxyPlot.Series.ScatterErrorSeries)series.InternalSeries;
+                    var wpfSeries = (Wpf.ScatterErrorSeries)series;
+
+                    if (oxySeries.ItemsSource != null)
                     {
-                        if (point is ScatterErrorPoint errorPoint)
+                        var datalist = oxySeries.ItemsSource as IEnumerable<OxyPlot.Series.ScatterPoint>;
+                        if (datalist != null)
                         {
-                            dataTable.Rows.Add(dataTable.Rows.Count + 1, errorPoint.X, errorPoint.Y, errorPoint.ErrorX, errorPoint.ErrorY);
+                            foreach (OxyPlot.Series.ScatterErrorPoint seriesValue in datalist.ToList())
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesValue.LowerErrorX, seriesValue.X, seriesValue.UpperErrorX, seriesValue.LowerErrorY, seriesValue.Y, seriesValue.UpperErrorY);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var obj in oxySeries.ItemsSource.Cast<object>())
+                            {
+                                PropertyInfo propX = obj.GetType().GetProperty(oxySeries.DataFieldX);
+                                string xVal = Convert.ToString(propX.GetValue(obj, null));
+
+                                PropertyInfo propY = obj.GetType().GetProperty(oxySeries.DataFieldY);
+                                string yVal = Convert.ToString(propY.GetValue(obj, null));
+
+                                string xLower = "";
+                                if (wpfSeries.DataFieldLowerErrorX != null)
+                                {
+                                    PropertyInfo propXlower = obj.GetType().GetProperty(wpfSeries.DataFieldLowerErrorX);
+                                    xLower = Convert.ToString(propXlower.GetValue(obj, null));
+                                }
+
+                                string xUpper = "";
+                                if (wpfSeries.DataFieldUpperErrorX != null)
+                                {
+                                    PropertyInfo propXupper = obj.GetType().GetProperty(wpfSeries.DataFieldUpperErrorX);
+                                    xUpper = Convert.ToString(propXupper.GetValue(obj, null));
+                                }
+
+                                string yLower = "";
+                                if (wpfSeries.DataFieldLowerErrorY != null)
+                                {
+                                    PropertyInfo propYlower = obj.GetType().GetProperty(wpfSeries.DataFieldLowerErrorY);
+                                    yLower = Convert.ToString(propYlower.GetValue(obj, null));
+                                }
+
+                                string yUpper = "";
+                                if (wpfSeries.DataFieldUpperErrorY != null)
+                                {
+                                    PropertyInfo propYupper = obj.GetType().GetProperty(wpfSeries.DataFieldUpperErrorY);
+                                    yUpper = Convert.ToString(propYupper.GetValue(obj, null));
+                                }
+
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, xLower, xVal, xUpper, yLower, yVal, yUpper);
+                            }
                         }
                     }
-                    break;
+                    else
+                    {
+                        foreach (var seriesValue in oxySeries.Points)
+                        {
+                            dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesValue.LowerErrorX, seriesValue.X, seriesValue.UpperErrorX, seriesValue.LowerErrorY, seriesValue.Y, seriesValue.UpperErrorY);
+                        }
+                    }
+                }
 
-                case OxyPlot.Series.ContourSeries:
-                    continue;
+                // Check for item source on a X category axis
+                var xCat = ((OxyPlot.Series.XYAxisSeries)series.InternalSeries).XAxis as OxyPlot.Axes.CategoryAxis;
+                if (xCat != null)
+                {
+                    dataTable.Columns.Add("Xcategory", typeof(string));
 
-                default:
-                    continue;
-            }
+                    if (xCat.ItemsSource != null)
+                    {
+                        var xCatList = xCat.ItemsSource as IEnumerable<string>;
+                        if (xCatList != null)
+                        {
+                            for (int i = 0; i < dataTable.Rows.Count; i++)
+                            {
+                                dataTable.Rows[i]["Xcategory"] = xCatList.ElementAt(i);
+                            }
+                        }
+                        else
+                        {
+                            int i = 0;
+                            foreach (var obj in xCat.ItemsSource.Cast<object>())
+                            {
+                                PropertyInfo propLabel = obj.GetType().GetProperty(xCat.LabelField);
+                                string xVal = Convert.ToString(propLabel.GetValue(obj, null));
+                                dataTable.Rows[i]["Xcategory"] = xVal;
+                                i++;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // Check for item source on a Y category axis
+                    var yCat = ((OxyPlot.Series.XYAxisSeries)series.InternalSeries).YAxis as OxyPlot.Axes.CategoryAxis;
+                    if (yCat != null)
+                    {
+                        dataTable.Columns.Add("Ycategory", typeof(string));
 
-            if (dataTable.Rows.Count > 0)
-            {
+                        if (yCat.ItemsSource != null)
+                        {
+                            var yCatList = yCat.ItemsSource as IEnumerable<string>;
+                            if (yCatList != null)
+                            {
+                                for (int i = 0; i < dataTable.Rows.Count; i++)
+                                {
+                                    dataTable.Rows[i]["Ycategory"] = yCatList.ElementAt(i);
+                                }
+                            }
+                            else
+                            {
+                                int i = 0;
+                                foreach (var obj in yCat.ItemsSource.Cast<object>())
+                                {
+                                    PropertyInfo propLabel = obj.GetType().GetProperty(yCat.LabelField);
+                                    string yVal = Convert.ToString(propLabel.GetValue(obj, null));
+                                    dataTable.Rows[i]["Ycategory"] = yVal;
+                                    i++;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Skip contour series for now
+                if (series.GetType() == typeof(Wpf.ContourSeries)) continue;
+
                 tableList.Add(dataTable);
             }
-        }
 
-        if (tableList.Count == 0)
-        {
-            MessageBox.Show("No exportable series data found.", "Export Data", MessageBoxButton.OK, MessageBoxImage.Information);
-            return;
-        }
-
-        ExportTables(tableList);
-    }
-
-    private string GetSeriesName(string? title, string defaultPrefix, int tableCount)
-    {
-        string name = !string.IsNullOrEmpty(title) ? title : $"{defaultPrefix}_{tableCount}";
-        foreach (var badChar in BadCharacters)
-        {
-            name = name.Replace(badChar, "_");
-        }
-        return name;
-    }
-
-    private void ExportTables(List<DataTable> tableList)
-    {
-        var filters = "CSV (*.csv)|*.csv|Excel (*.xlsx)|*.xlsx|SQLite (*.sqlite)|*.sqlite";
-        var saveDialog = new SaveFileDialog { Filter = filters, FilterIndex = 1 };
-
-        if (saveDialog.ShowDialog() != true) return;
-
-        try
-        {
-            var extension = IOPath.GetExtension(saveDialog.FileName).ToLower();
-
-            switch (extension)
+            // Show save dialog
+            string filters = "comma delimited(*.csv) |*.csv|Excel(*.xlsx) |*.xlsx|Sqlite(*.sqlite) |*.sqlite";
+            try
             {
-                case ".csv":
-                    // Combine all tables since CSV only supports one sheet/table
-                    var mergedTable = MergeAllTables(tableList, "id");
-                    var csvDataView = new InMemoryReader(mergedTable).GetTableManager(mergedTable.TableName);
-                    csvDataView?.ExportToCsv(saveDialog.FileName);
-                    break;
-
-                case ".xlsx":
-                    // Save each DataTable to the file as a new sheet
-                    foreach (var dt in tableList)
-                    {
-                        var dataView = new InMemoryReader(dt).GetTableManager(dt.TableName);
-                        dataView?.ExportToXlsx(saveDialog.FileName);
-                    }
-                    break;
-
-                case ".sqlite":
-                    // Save each DataTable to the file as a new table
-                    foreach (var dt in tableList)
-                    {
-                        var dataView = new InMemoryReader(dt).GetTableManager(dt.TableName);
-                        dataView?.ExportToSqlite(saveDialog.FileName, dataView.TableName);
-                    }
-                    break;
-
-                default:
-                    throw new NotSupportedException($"Selected file format extension '{extension}' is not supported for export.");
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.Message, "Export Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
-
-    private DataTable MergeAllTables(IList<DataTable> tables, string primaryKeyColumn)
-    {
-        if (!tables.Any()) throw new ArgumentException("Tables must not be empty", nameof(tables));
-        if (tables.Count == 1) return tables[0];
-
-        var merged = new DataTable("Merged");
-        merged.BeginLoadData();
-
-        foreach (var table in tables)
-        {
-            merged.Merge(table);
-        }
-
-        merged.EndLoadData();
-
-        if (primaryKeyColumn != null)
-        {
-            var groups = merged.AsEnumerable().GroupBy(r => r[primaryKeyColumn]);
-            var duplicates = groups.Where(g => g.Count() > 1);
-
-            foreach (var group in duplicates)
-            {
-                var firstRow = group.First();
-                foreach (DataColumn col in merged.Columns)
+                var saveFileBrowser = new Microsoft.Win32.SaveFileDialog { Filter = filters, FilterIndex = 1 };
+                if (saveFileBrowser.ShowDialog() == true)
                 {
-                    if (firstRow.IsNull(col))
+                    string extension = System.IO.Path.GetExtension(saveFileBrowser.FileName);
+                    switch (extension)
                     {
-                        var nonNullRow = group.Skip(1).FirstOrDefault(r => !r.IsNull(col));
-                        if (nonNullRow != null) firstRow[col] = nonNullRow[col];
+                        case ".csv":
+                            // Combine all tables because CSVs only have one sheet/table
+                            int uniqueCount = 1;
+                            var colNames = new List<string>();
+                            foreach (var theDT in tableList)
+                            {
+                                for (int i = 0; i < theDT.Columns.Count; i++)
+                                {
+                                    if (theDT.Columns[i].ColumnName == "id")
+                                    {
+                                        continue;
+                                    }
+
+                                    if (!colNames.Contains(theDT.Columns[i].ColumnName))
+                                    {
+                                        colNames.Add(theDT.Columns[i].ColumnName);
+                                    }
+                                    else
+                                    {
+                                        while (colNames.Contains(theDT.Columns[i].ColumnName))
+                                        {
+                                            theDT.Columns[theDT.Columns[i].ColumnName].ColumnName = theDT.Columns[i].ColumnName + "_" + uniqueCount;
+                                        }
+                                        colNames.Add(theDT.Columns[i].ColumnName);
+                                    }
+                                }
+                            }
+
+                            var totalDT = new DataTable("Exported_Data");
+                            totalDT = MergeAll(tableList, "id");
+
+                            var csvDataView = new DatabaseManager.InMemoryReader(totalDT).GetTableManager(totalDT.TableName);
+                            csvDataView.ExportToCsv(saveFileBrowser.FileName);
+                            break;
+
+                        case ".xlsx":
+                            // Save each DT to the file (as new sheet)
+                            foreach (var dt in tableList)
+                            {
+                                var xlsxDataView = new DatabaseManager.InMemoryReader(dt).GetTableManager(dt.TableName);
+                                if (xlsxDataView == null) continue;
+                                xlsxDataView.ExportToXlsx(saveFileBrowser.FileName);
+                            }
+                            break;
+
+                        case ".sqlite":
+                            // Save each DT to the file (as new table)
+                            foreach (var dt in tableList)
+                            {
+                                var sqliteDataView = new DatabaseManager.InMemoryReader(dt).GetTableManager(dt.TableName);
+                                if (sqliteDataView == null) continue;
+                                sqliteDataView.ExportToSqlite(saveFileBrowser.FileName, sqliteDataView.TableName);
+                            }
+                            break;
+
+                        default:
+                            throw new Exception("selected file format extension '" + System.IO.Path.GetExtension(saveFileBrowser.FileName) + "' is not supported for export.");
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
-                foreach (var row in group.Skip(1).ToList())
+        /// <summary>
+        /// Merge all data tables by a primary key column.
+        /// </summary>
+        public DataTable MergeAll(IList<DataTable> tables, string primaryKeyColumn)
+        {
+            if (!tables.Any()) throw new ArgumentException("Tables must not be empty", nameof(tables));
+
+            if (primaryKeyColumn != null)
+            {
+                foreach (var t in tables)
                 {
-                    merged.Rows.Remove(row);
+                    if (!t.Columns.Contains(primaryKeyColumn))
+                        throw new ArgumentException("All tables must have the specified primarykey column " + primaryKeyColumn, nameof(primaryKeyColumn));
+                }
+            }
+
+            if (tables.Count == 1) return tables[0];
+
+            var table = new DataTable("TblUnion");
+            table.BeginLoadData();
+
+            foreach (var t in tables)
+            {
+                table.Merge(t);
+            }
+
+            table.EndLoadData();
+
+            if (primaryKeyColumn != null)
+            {
+                var pkGroups = table.AsEnumerable().GroupBy(r => r[primaryKeyColumn]);
+                var dupGroups = pkGroups.Where(g => g.Count() > 1);
+
+                foreach (var grpDup in dupGroups)
+                {
+                    DataRow firstRow = grpDup.First();
+
+                    foreach (DataColumn c in table.Columns)
+                    {
+                        if (firstRow.IsNull(c))
+                        {
+                            DataRow firstNotNullRow = grpDup.Skip(1).FirstOrDefault(r => !r.IsNull(c));
+                            if (firstNotNullRow != null) firstRow[c] = firstNotNullRow[c];
+                        }
+                    }
+
+                    var rowsToRemove = grpDup.Skip(1).ToList();
+                    foreach (DataRow rowToRemove in rowsToRemove)
+                    {
+                        table.Rows.Remove(rowToRemove);
+                    }
+                }
+            }
+
+            return table;
+        }
+
+        /// <summary>
+        /// Merge two data tables by index (row-wise).
+        /// </summary>
+        public DataTable MergeTablesByIndex(DataTable t1, DataTable t2)
+        {
+            if (t1 == null || t2 == null) return null;
+            var t3 = t1.Clone();
+
+            foreach (DataColumn col in t2.Columns)
+            {
+                string newColumnName = col.ColumnName;
+                int colNum = 1;
+
+                while (t3.Columns.Contains(newColumnName))
+                {
+                    newColumnName = string.Format("{0}_{1}", col.ColumnName, System.Threading.Interlocked.Increment(ref colNum));
+                }
+
+                t3.Columns.Add(newColumnName, col.DataType);
+            }
+
+            var mergedRows = t1.AsEnumerable().Zip(t2.AsEnumerable(), (r1, r2) => r1.ItemArray.Concat(r2.ItemArray).ToArray());
+
+            foreach (var rowFields in mergedRows)
+            {
+                t3.Rows.Add(rowFields);
+            }
+
+            return t3;
+        }
+
+        #endregion
+
+        #region Save Plot
+
+        /// <summary>
+        /// On Click, open the save plot image dialog.
+        /// </summary>
+        private void SaveImageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Plot == null) return;
+            var saveImageDialog = new SavePlotImageDialog(Plot) { Owner = Window.GetWindow(this) };
+            saveImageDialog.ShowDialog();
+        }
+
+        #endregion
+
+        #region Properties and Swap Axes
+
+        /// <summary>
+        /// Open plot properties.
+        /// </summary>
+        private void PropertiesButton_Click(object sender, RoutedEventArgs e)
+        {
+            PropertiesCalled?.Invoke(Plot, true, null, null);
+        }
+
+        /// <summary>
+        /// Swap the X and Y axes.
+        /// </summary>
+        private void SwapAxesButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var s in Plot.Series)
+            {
+                if (_nonSwapSeriesTypes.Contains(s.GetType())) return;
+            }
+
+            foreach (var axis in Plot.Axes)
+            {
+                if (axis.Position == OxyPlot.Axes.AxisPosition.Bottom)
+                {
+                    axis.Position = OxyPlot.Axes.AxisPosition.Left;
+                }
+                else if (axis.Position == OxyPlot.Axes.AxisPosition.Left)
+                {
+                    axis.Position = OxyPlot.Axes.AxisPosition.Bottom;
+                }
+            }
+
+            foreach (var s in Plot.Series)
+            {
+                if (typeof(Wpf.DataPointSeries).IsAssignableFrom(s.GetType()))
+                {
+                    SwapDataPointSeries((Wpf.DataPointSeries)s);
+                }
+                else if (s.GetType() == typeof(Wpf.ScatterPointSeries))
+                {
+                    SwapScatterSeries((Wpf.ScatterPointSeries)s);
+                }
+                else if (s.GetType() == typeof(Wpf.ScatterErrorSeries))
+                {
+                    SwapScatterErrorSeries((Wpf.ScatterErrorSeries)s);
+                }
+                else if (s.GetType() == typeof(Wpf.BoxPlotSeries))
+                {
+                    foreach (var axis in Plot.Axes)
+                    {
+                        if (axis.GetType() == typeof(Wpf.CategoryAxis))
+                        {
+                            ((Wpf.BoxPlotSeries)s).IsVertical = axis.Position == OxyPlot.Axes.AxisPosition.Bottom;
+                        }
+                    }
+                }
+            }
+
+            Plot.InvalidatePlot(true);
+        }
+
+        private void SwapDataPointSeries(Wpf.DataPointSeries dps)
+        {
+            if (dps == null) return;
+            if (dps.ItemsSource == null)
+            {
+                SwapDataPoints((OxyPlot.Series.DataPointSeries)dps.InternalSeries);
+            }
+            else
+            {
+                if (dps.DataFieldX == null && dps.DataFieldY == null)
+                {
+                    dps.DataFieldX = "Y";
+                    dps.DataFieldY = "X";
+                }
+                else
+                {
+                    string dfx = dps.DataFieldX;
+                    dps.DataFieldX = dps.DataFieldY;
+                    dps.DataFieldY = dfx;
+                }
+
+                if (dps.GetType() == typeof(Wpf.AreaSeries))
+                {
+                    var areaSeries = (Wpf.AreaSeries)dps;
+                    string dfx2 = areaSeries.DataFieldX2;
+                    areaSeries.DataFieldX2 = areaSeries.DataFieldY2;
+                    areaSeries.DataFieldY2 = dfx2;
                 }
             }
         }
 
-        return merged;
-    }
-
-    private void ExportDataTableToCsv(DataTable dataTable, string fileName)
-    {
-        var sb = new StringBuilder();
-
-        var columnNames = dataTable.Columns.Cast<DataColumn>().Select(c => EscapeCsvField(c.ColumnName));
-        sb.AppendLine(string.Join(",", columnNames));
-
-        foreach (DataRow row in dataTable.Rows)
+        private void SwapDataPoints(OxyPlot.Series.DataPointSeries dps)
         {
-            var fields = row.ItemArray.Select(f => EscapeCsvField(f?.ToString() ?? ""));
-            sb.AppendLine(string.Join(",", fields));
-        }
-
-        File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
-    }
-
-    private string EscapeCsvField(string field)
-    {
-        if (field.Contains(',') || field.Contains('"') || field.Contains('\n') || field.Contains('\r'))
-        {
-            return $"\"{field.Replace("\"", "\"\"")}\"";
-        }
-        return field;
-    }
-
-    #endregion
-
-    #region Save Plot
-
-    private void SaveImageButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (PlotView == null) return;
-
-        try
-        {
-            var dialog = new SavePlotImageDialog(PlotView)
+            if (dps?.Points == null || dps.Points.Count == 0) return;
+            var pnts = dps.Points.ToArray();
+            dps.Points.Clear();
+            foreach (var p in pnts)
             {
-                Owner = Window.GetWindow(this)
-            };
-            dialog.ShowDialog();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Error opening save dialog: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
-
-    #endregion
-
-    #region Helper Methods
-
-    private DataPoint ConvertScreenToDataPoint(ScreenPoint screenPoint)
-    {
-        if (PlotView?.ActualModel == null)
-            return new DataPoint(0, 0);
-
-        var xAxis = PlotView.ActualModel.DefaultXAxis;
-        var yAxis = PlotView.ActualModel.DefaultYAxis;
-
-        if (xAxis == null || yAxis == null)
-            return new DataPoint(0, 0);
-
-        return xAxis.InverseTransform(screenPoint.X, screenPoint.Y, yAxis);
-    }
-
-    /// <summary>
-    /// Finds the index of the nearest segment in a polyline to the given point.
-    /// </summary>
-    /// <param name="polyline">The polyline annotation.</param>
-    /// <param name="point">The point to find the nearest segment to.</param>
-    /// <returns>The index of the first point of the nearest segment, or -1 if not found.</returns>
-    private static int FindNearestSegmentIndex(PolylineAnnotation polyline, DataPoint point)
-    {
-        if (polyline.Points.Count < 2) return -1;
-
-        var minDistance = double.MaxValue;
-        var nearestIndex = -1;
-
-        for (int i = 0; i < polyline.Points.Count - 1; i++)
-        {
-            var p1 = polyline.Points[i];
-            var p2 = polyline.Points[i + 1];
-            var distance = PointToSegmentDistance(point, p1, p2);
-
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                nearestIndex = i;
+                dps.Points.Add(new DataPoint(p.Y, p.X));
             }
         }
 
-        return nearestIndex;
-    }
-
-    /// <summary>
-    /// Finds the index of the nearest edge in a polygon to the given point.
-    /// Polygons are closed, so the last point connects to the first.
-    /// </summary>
-    /// <param name="polygon">The polygon annotation.</param>
-    /// <param name="point">The point to find the nearest edge to.</param>
-    /// <returns>The index of the first point of the nearest edge, or -1 if not found.</returns>
-    private static int FindNearestPolygonEdgeIndex(PolygonAnnotation polygon, DataPoint point)
-    {
-        if (polygon.Points.Count < 3) return -1;
-
-        var minDistance = double.MaxValue;
-        var nearestIndex = -1;
-
-        for (int i = 0; i < polygon.Points.Count; i++)
+        private void SwapScatterSeries(Wpf.ScatterSeries<OxyPlot.Series.ScatterPoint> sps)
         {
-            var p1 = polygon.Points[i];
-            var p2 = polygon.Points[(i + 1) % polygon.Points.Count]; // Wrap around to first point
-            var distance = PointToSegmentDistance(point, p1, p2);
-
-            if (distance < minDistance)
+            if (sps == null) return;
+            if (sps.ItemsSource == null)
             {
-                minDistance = distance;
-                nearestIndex = i;
+                SwapScatterPoints((OxyPlot.Series.ScatterSeries)sps.InternalSeries);
+            }
+            else
+            {
+                string dfx = sps.DataFieldX;
+                sps.DataFieldX = sps.DataFieldY;
+                sps.DataFieldY = dfx;
             }
         }
 
-        return nearestIndex;
-    }
-
-    /// <summary>
-    /// Calculates the distance from a point to a line segment.
-    /// </summary>
-    private static double PointToSegmentDistance(DataPoint point, DataPoint segStart, DataPoint segEnd)
-    {
-        var dx = segEnd.X - segStart.X;
-        var dy = segEnd.Y - segStart.Y;
-        var lengthSquared = dx * dx + dy * dy;
-
-        if (lengthSquared == 0)
+        private void SwapScatterPoints(OxyPlot.Series.ScatterSeries dps)
         {
-            // Segment is a point
-            return Math.Sqrt(Math.Pow(point.X - segStart.X, 2) + Math.Pow(point.Y - segStart.Y, 2));
+            if (dps?.Points == null || dps.Points.Count == 0) return;
+            var pnts = dps.Points.ToArray();
+            dps.Points.Clear();
+            foreach (var p in pnts)
+            {
+                dps.Points.Add(new OxyPlot.Series.ScatterPoint(p.Y, p.X, p.Size, p.Value, p.Tag));
+            }
         }
 
-        // Project point onto the line segment
-        var t = Math.Max(0, Math.Min(1, ((point.X - segStart.X) * dx + (point.Y - segStart.Y) * dy) / lengthSquared));
+        private void SwapScatterErrorSeries(Wpf.ScatterErrorSeries sps)
+        {
+            if (sps == null) return;
+            if (sps.ItemsSource == null)
+            {
+                SwapScatterErrorPoints((OxyPlot.Series.ScatterErrorSeries)sps.InternalSeries);
+            }
+            else
+            {
+                string dfx = sps.DataFieldX;
+                sps.DataFieldX = sps.DataFieldY;
+                sps.DataFieldY = dfx;
 
-        var projX = segStart.X + t * dx;
-        var projY = segStart.Y + t * dy;
+                dfx = sps.DataFieldLowerErrorX;
+                sps.DataFieldLowerErrorX = sps.DataFieldLowerErrorY;
+                sps.DataFieldLowerErrorY = dfx;
 
-        return Math.Sqrt(Math.Pow(point.X - projX, 2) + Math.Pow(point.Y - projY, 2));
+                dfx = sps.DataFieldUpperErrorX;
+                sps.DataFieldUpperErrorX = sps.DataFieldUpperErrorY;
+                sps.DataFieldUpperErrorY = dfx;
+            }
+        }
+
+        private void SwapScatterErrorPoints(OxyPlot.Series.ScatterErrorSeries dps)
+        {
+            if (dps?.Points == null || dps.Points.Count == 0) return;
+            var pnts = dps.Points.ToArray();
+            dps.Points.Clear();
+            foreach (var p in pnts)
+            {
+                dps.Points.Add(new OxyPlot.Series.ScatterErrorPoint(p.Y, p.X, p.LowerErrorY, p.UpperErrorY, p.LowerErrorX, p.UpperErrorX, p.Size, p.Value, p.Tag));
+            }
+        }
+
+        #endregion
     }
-
-    #endregion
 }

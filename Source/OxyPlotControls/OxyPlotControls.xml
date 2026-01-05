@@ -1,0 +1,2385 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OxyPlotControls</name>
+    </assembly>
+    <members>
+        <member name="T:OxyPlotControls.AnnotationControl">
+            <summary>
+            Control for editing annotation properties in an OxyPlot chart.
+            Supports various annotation types including text, arrow, line, shape, and point annotations.
+            </summary>
+            <summary>
+            AnnotationControl
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AnnotationControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlotControls.AnnotationControl"/> class.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AnnotationControl.AnnotationPropertiesTag">
+            <summary>
+            XML element tag used for serializing annotation properties.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AnnotationControl.TextLinePositionOptions">
+            <summary>
+            Gets the available text line position options (0 to 1 in 0.1 increments).
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AnnotationControl.AnnotationLayerOptions">
+            <summary>
+            Gets the available annotation layer options.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AnnotationControl.AnnotationTextOrientationOptions">
+            <summary>
+            Gets the available annotation text orientation options.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AnnotationControl.AnnotationFunctionTypeOptions">
+            <summary>
+            Gets the available function annotation type options.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AnnotationControl.LineAnnotationTypeOptions">
+            <summary>
+            Gets the available line annotation type options.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AnnotationControl.MarkerTypeOptions">
+            <summary>
+            Gets the available marker type options for point annotations.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AnnotationControl.LineJoinOptions">
+            <summary>
+            Gets the available line join options.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AnnotationControl.LineStyleOptions">
+            <summary>
+            Gets the available line style options.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AnnotationControl.AnnotationProperty">
+            <summary>
+            Identifies the Annotation dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AnnotationControl.Annotation">
+            <summary>
+            Gets or sets the annotation being edited by this control.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AnnotationControl.ExpanderStyleProperty">
+            <summary>
+            Identifies the ExpanderStyle dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AnnotationControl.ExpanderStyle">
+            <summary>
+            Gets or sets the style applied to expanders in this control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AnnotationControl.AnnotationPropertiesToXElement(OxyPlot.Wpf.TextualAnnotation)">
+            <summary>
+            Serializes annotation properties to an XElement for XML storage.
+            </summary>
+            <param name="annotation">The annotation to serialize.</param>
+            <returns>An XElement containing the serialized annotation properties.</returns>
+        </member>
+        <member name="M:OxyPlotControls.AnnotationControl.XElementToAnnotationProperties(System.Xml.Linq.XElement)">
+            <summary>
+            Deserializes annotation properties from an XElement.
+            </summary>
+            <param name="element">The XElement containing the annotation properties.</param>
+            <returns>A new annotation with the deserialized properties.</returns>
+        </member>
+        <member name="M:OxyPlotControls.AnnotationControl.HideExpanders">
+            <summary>
+            Hides the expander controls. Useful when an annotation is deleted.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AnnotationControl.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.DataPointToPointConverter">
+            <summary>
+            Converts between OxyPlot DataPoint and WPF Point types.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.DataPointToPointConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts an OxyPlot DataPoint to a WPF Point.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.DataPointToPointConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a WPF Point back to an OxyPlot DataPoint.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.ScreenVectorToPointConverter">
+            <summary>
+            Converts between OxyPlot ScreenVector and WPF Point types.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.ScreenVectorToPointConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts an OxyPlot ScreenVector to a WPF Point.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.ScreenVectorToPointConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a WPF Point back to an OxyPlot ScreenVector.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.AnnotationSelectorControl">
+            <summary>
+            A user control that provides a selector and editor for OxyPlot annotations.
+            Allows users to select an annotation from a dropdown, add new annotations, and edit their properties.
+            </summary>
+            <summary>
+            AnnotationSelectorControl
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AnnotationSelectorControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlotControls.AnnotationSelectorControl"/> class.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AnnotationSelectorControl.AnnotationsPropertiesTag">
+            <summary>
+            The XML tag name used for serializing annotations properties.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AnnotationSelectorControl.PlotProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.AnnotationSelectorControl.Plot"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AnnotationSelectorControl.Plot">
+            <summary>
+            Gets or sets the OxyPlot Plot control that contains the annotations.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AnnotationSelectorControl.SelectedAnnotationProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.AnnotationSelectorControl.SelectedAnnotation"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AnnotationSelectorControl.SelectedAnnotation">
+            <summary>
+            Gets or sets the currently selected annotation.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AnnotationSelectorControl.ExpanderStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.AnnotationSelectorControl.ExpanderStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AnnotationSelectorControl.ExpanderStyle">
+            <summary>
+            Gets or sets the style for expander controls.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AnnotationSelectorControl.ComboBoxStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.AnnotationSelectorControl.ComboBoxStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AnnotationSelectorControl.ComboBoxStyle">
+            <summary>
+            Gets or sets the style for combo box controls.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AnnotationSelectorControl.AddHandlers">
+            <summary>
+            Add required handlers.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AnnotationSelectorControl.Annotation_CollectionChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            When a new annotation is added or removed externally, update the control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AnnotationSelectorControl.AnnotationPropertyControlComboBox_SelectionChanged(System.Object,System.Windows.Controls.SelectionChangedEventArgs)">
+            <summary>
+            On selection changed, make sure selection is an annotation.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AnnotationSelectorControl.DeleteAnnotationButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Delete the selected annotation.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AnnotationSelectorControl.AnnotationsPropertiesToXElement(OxyPlot.Wpf.Plot)">
+            <summary>
+            Serializes all annotations properties to an XML element for persistence.
+            </summary>
+            <param name="plot">The OxyPlot Plot control containing the annotations to serialize.</param>
+            <returns>An XElement containing all serialized annotations properties.</returns>
+        </member>
+        <member name="M:OxyPlotControls.AnnotationSelectorControl.XElementToAnnotationsProperties(OxyPlot.Wpf.Plot,System.Xml.Linq.XElement)">
+            <summary>
+            Deserializes annotations properties from an XML element and applies them to the plot.
+            </summary>
+            <param name="plot">The OxyPlot Plot control to apply settings to.</param>
+            <param name="element">The XElement containing serialized annotations properties.</param>
+        </member>
+        <member name="M:OxyPlotControls.AnnotationSelectorControl.FindElementByName``1(System.Windows.DependencyObject,System.String)">
+            <summary>
+            Finds a child element of the specified type and name in the visual tree.
+            </summary>
+            <typeparam name="T">The type of element to find.</typeparam>
+            <param name="parent">The parent element to search from.</param>
+            <param name="name">The name of the element to find.</param>
+            <returns>The found element, or null if not found.</returns>
+        </member>
+        <member name="M:OxyPlotControls.AnnotationSelectorControl.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.AxesControl">
+            <summary>
+            A user control that provides a selector and editor for OxyPlot axes.
+            Allows users to select an axis from a dropdown and edit its properties.
+            </summary>
+            <summary>
+            AxesControl
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AxesControl.AxesPropertiesTag">
+            <summary>
+            The XML tag name used for serializing axes properties.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AxesControl.PlotProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.AxesControl.Plot"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AxesControl.Plot">
+            <summary>
+            Gets or sets the OxyPlot Plot control that contains the axes.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AxesControl.SelectedAxisProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.AxesControl.SelectedAxis"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AxesControl.SelectedAxis">
+            <summary>
+            Gets or sets the currently selected axis.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AxesControl.TitleMinWidthProp">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.AxesControl.TitleMinWidth"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AxesControl.TitleMinWidth">
+            <summary>
+            Gets or sets the minimum width for title elements.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AxesControl.LeaderLinesVisibilityProp">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.AxesControl.LeaderLinesVisibility"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AxesControl.LeaderLinesVisibility">
+            <summary>
+            Gets or sets the visibility of leader lines.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AxesControl.TabItemStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.AxesControl.TabItemStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AxesControl.TabItemStyle">
+            <summary>
+            Gets or sets the style for tab items.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AxesControl.ExpanderStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.AxesControl.ExpanderStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AxesControl.ExpanderStyle">
+            <summary>
+            Gets or sets the style for expander controls.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AxesControl.ComboBoxStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.AxesControl.ComboBoxStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AxesControl.ComboBoxStyle">
+            <summary>
+            Gets or sets the style for combo box controls.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AxesControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlotControls.AxesControl"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AxesControl.AxesPropertiesToXElement(OxyPlot.Wpf.Plot)">
+            <summary>
+            Serializes all axes properties to an XML element for persistence.
+            </summary>
+            <param name="plot">The OxyPlot Plot control containing the axes to serialize.</param>
+            <returns>An XElement containing all serialized axes properties.</returns>
+        </member>
+        <member name="M:OxyPlotControls.AxesControl.XElementToAxesProperties(OxyPlot.Wpf.Plot,System.Xml.Linq.XElement)">
+            <summary>
+            Deserializes axes properties from an XML element and applies them to the plot.
+            </summary>
+            <param name="plot">The OxyPlot Plot control to apply settings to.</param>
+            <param name="element">The XElement containing serialized axes properties.</param>
+        </member>
+        <member name="M:OxyPlotControls.AxesControl.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.AxisControl">
+            <summary>
+            Control for editing axis properties in an OxyPlot chart.
+            Provides UI elements for configuring axis type, range, labels, gridlines, and tick marks.
+            </summary>
+            <summary>
+            AxisControl
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AxisControl.AxisPropertiesTag">
+            <summary>
+            XML element tag used for serializing axis properties.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AxisControl.LineStyleOptions">
+            <summary>
+            Gets the available line style options for axis styling.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AxisControl.AxisPositionOptions">
+            <summary>
+            Gets the available axis position options.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AxisControl.AxisTickStyleOptions">
+            <summary>
+            Gets the available axis tick style options.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AxisControl.AxisLayerOptions">
+            <summary>
+            Gets the available axis layer options.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AxisControl.AxisProperty">
+            <summary>
+            Identifies the Axis dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AxisControl.Axis">
+            <summary>
+            Gets or sets the axis being edited by this control.
+            </summary>
+        </member>
+        <member name="E:OxyPlotControls.AxisControl.AxisTypeChanged">
+            <summary>
+            Occurs when the axis type is changed by the user.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AxisControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlotControls.AxisControl"/> class.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AxisControl.TabItemStyleProperty">
+            <summary>
+            Identifies the TabItemStyle dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AxisControl.TabItemStyle">
+            <summary>
+            Gets or sets the style applied to tab items in this control.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.AxisControl.ExpanderStyleProperty">
+            <summary>
+            Identifies the ExpanderStyle dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.AxisControl.ExpanderStyle">
+            <summary>
+            Gets or sets the style applied to expanders in this control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AxisControl.AxisPropertiesToXElement(OxyPlot.Wpf.Axis)">
+            <summary>
+            Serializes axis properties to an XElement for XML storage.
+            </summary>
+            <param name="axis">The axis to serialize.</param>
+            <returns>An XElement containing the serialized axis properties.</returns>
+        </member>
+        <member name="M:OxyPlotControls.AxisControl.XElementToAxisProperties(System.Xml.Linq.XElement,OxyPlot.Wpf.Axis)">
+            <summary>
+            Deserializes axis properties from an XElement.
+            </summary>
+            <param name="element">The XElement containing the axis properties.</param>
+            <param name="targetAxis">Optional target axis to apply properties to.</param>
+            <returns>A new or updated axis with the deserialized properties.</returns>
+        </member>
+        <member name="M:OxyPlotControls.AxisControl.ConvertAxisToLogarithmicAxis(OxyPlot.Wpf.Axis,System.Double,System.Boolean)">
+            <summary>
+            Converts an axis to a logarithmic axis while preserving compatible properties.
+            </summary>
+            <param name="wpfAxis">The source axis to convert.</param>
+            <param name="logBase">The logarithm base to use.</param>
+            <param name="powerPadding">Whether to use power padding.</param>
+            <returns>A new logarithmic axis with properties copied from the source.</returns>
+        </member>
+        <member name="M:OxyPlotControls.AxisControl.ConvertAxisToLinearAxis(OxyPlot.Wpf.Axis,System.Boolean,System.Double,System.String)">
+            <summary>
+            Converts an axis to a linear axis while preserving compatible properties.
+            </summary>
+            <param name="wpfAxis">The source axis to convert.</param>
+            <param name="formatAsFractions">Whether to format values as fractions.</param>
+            <param name="fractionUnits">The fraction unit value.</param>
+            <param name="fractionSymbol">The symbol to use for fractions.</param>
+            <returns>A new linear axis with properties copied from the source.</returns>
+        </member>
+        <member name="M:OxyPlotControls.AxisControl.ConvertAxisToNormalAxis(OxyPlot.Wpf.Axis)">
+            <summary>
+            Converts an axis to a normal probability axis while preserving compatible properties.
+            </summary>
+            <param name="wpfAxis">The source axis to convert.</param>
+            <returns>A new normal probability axis with properties copied from the source.</returns>
+        </member>
+        <member name="M:OxyPlotControls.AxisControl.ConvertAxisToGumbelAxis(OxyPlot.Wpf.Axis)">
+            <summary>
+            Converts an axis to a Gumbel probability axis while preserving compatible properties.
+            </summary>
+            <param name="wpfAxis">The source axis to convert.</param>
+            <returns>A new Gumbel probability axis with properties copied from the source.</returns>
+        </member>
+        <member name="M:OxyPlotControls.AxisControl.ConvertAxisToDateTimeAxis(OxyPlot.Wpf.Axis)">
+            <summary>
+            Converts an axis to a date time axis while preserving compatible properties.
+            </summary>
+            <param name="wpfAxis">The source axis to convert.</param>
+            <returns>A new date time axis with properties copied from the source.</returns>
+        </member>
+        <member name="M:OxyPlotControls.AxisControl.CloseExpanders">
+            <summary>
+            Closes all expander controls in the axis control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AxisControl.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.ReverseAxisConverter">
+            <summary>
+            Converter for determining if an axis is reversed based on start and end positions.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.ReverseAxisConverter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts start position, end position, and axis to a boolean indicating if the axis is reversed.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.ReverseAxisConverter.ConvertBack(System.Object,System.Type[],System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a reversed boolean back to start and end positions.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.OxyLineStyleToDashArrayConverter">
+            <summary>
+            Converts OxyPlot LineStyle to WPF DoubleCollection for dash arrays.
+            Returns matching instances from LineStyleOptions for proper ComboBox selection.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyLineStyleToDashArrayConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts an OxyPlot LineStyle to a WPF DoubleCollection dash array.
+            Returns the matching instance from LineStyleOptions to ensure proper ComboBox selection.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyLineStyleToDashArrayConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a WPF DoubleCollection dash array back to an OxyPlot LineStyle.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.EmptyStringToNullConverter">
+            <summary>
+            Converts empty strings to null values for binding purposes.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.EmptyStringToNullConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value to its string representation.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.EmptyStringToNullConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts empty strings to null, otherwise returns the value.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.VerticalTabSizeConverter">
+            <summary>
+            Converts between tab control dimensions for vertical tab sizing.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.VerticalTabSizeConverter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Calculates the height for each tab based on the tab control size and item count.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.VerticalTabSizeConverter.ConvertBack(System.Object,System.Type[],System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Not implemented. Throws NotImplementedException.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.DateToNumberConverter">
+            <summary>
+            Converts between OxyPlot date axis double values and DateTime objects.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.DateToNumberConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts an OxyPlot double date value to a DateTime.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.DateToNumberConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a DateTime to an OxyPlot double date value.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.Extensions">
+            <summary>
+            Provides extension methods for OxyPlot types and data conversion utilities.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.Extensions.GetFirstAbstractBaseType(System.Type)">
+            <summary>
+            Gets the first abstract base type in the inheritance hierarchy.
+            </summary>
+            <param name="type">The type to search from.</param>
+            <returns>The first abstract base type, or null if none found.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when type is null.</exception>
+        </member>
+        <member name="M:OxyPlotControls.Extensions.ToPrettyText(OxyPlot.ScreenVector)">
+            <summary>
+            Converts a ScreenVector to a formatted string representation.
+            </summary>
+            <param name="sv">The screen vector to convert.</param>
+            <returns>A string in the format "X, Y" using invariant culture.</returns>
+        </member>
+        <member name="M:OxyPlotControls.Extensions.FromPrettyVectorText(System.String)">
+            <summary>
+            Parses a formatted string to create a ScreenVector.
+            </summary>
+            <param name="svString">The string in "X, Y" format.</param>
+            <returns>A ScreenVector parsed from the string, or default if parsing fails.</returns>
+        </member>
+        <member name="M:OxyPlotControls.Extensions.ToPrettyText(OxyPlot.DataPoint)">
+            <summary>
+            Converts a DataPoint to a formatted string representation.
+            </summary>
+            <param name="dp">The data point to convert.</param>
+            <returns>A string in the format "X, Y" using invariant culture.</returns>
+        </member>
+        <member name="M:OxyPlotControls.Extensions.FromPrettyDataText(System.String)">
+            <summary>
+            Parses a formatted string to create a DataPoint.
+            </summary>
+            <param name="dpString">The string in "X, Y" format.</param>
+            <returns>A DataPoint parsed from the string, or DataPoint.Undefined if parsing fails.</returns>
+        </member>
+        <member name="M:OxyPlotControls.Extensions.ToXElement(OxyPlot.DataPoint)">
+            <summary>
+            Converts a DataPoint to an XML element for serialization.
+            </summary>
+            <param name="dp">The data point to convert.</param>
+            <returns>An XElement representing the data point.</returns>
+        </member>
+        <member name="M:OxyPlotControls.Extensions.PointFromXElement(System.Xml.Linq.XElement)">
+            <summary>
+            Parses an XML element to create a DataPoint.
+            </summary>
+            <param name="dpElement">The XML element containing X and Y attributes.</param>
+            <returns>A DataPoint parsed from the element, or DataPoint.Undefined if parsing fails.</returns>
+        </member>
+        <member name="M:OxyPlotControls.Extensions.ToPrettyText(OxyPlot.ScreenPoint)">
+            <summary>
+            Converts a ScreenPoint to a formatted string representation.
+            </summary>
+            <param name="sp">The screen point to convert.</param>
+            <returns>A string in the format "X, Y" using invariant culture.</returns>
+        </member>
+        <member name="M:OxyPlotControls.Extensions.FromPrettyScreenText(System.String)">
+            <summary>
+            Parses a formatted string to create a ScreenPoint.
+            </summary>
+            <param name="spString">The string in "X, Y" format.</param>
+            <returns>A ScreenPoint parsed from the string, or ScreenPoint.Undefined if parsing fails.</returns>
+        </member>
+        <member name="M:OxyPlotControls.Extensions.ToPrettyText(System.Windows.Vector)">
+            <summary>
+            Converts a Vector to a formatted string representation.
+            </summary>
+            <param name="v">The vector to convert.</param>
+            <returns>A string in the format "X, Y" using invariant culture.</returns>
+        </member>
+        <member name="M:OxyPlotControls.Extensions.FromPrettyVectorString(System.String)">
+            <summary>
+            Parses a formatted string to create a Vector.
+            </summary>
+            <param name="vString">The string in "X, Y" format.</param>
+            <returns>A Vector parsed from the string, or default if parsing fails.</returns>
+        </member>
+        <member name="M:OxyPlotControls.Extensions.ToXElement(System.Collections.Generic.IList{OxyPlot.DataPoint},System.String)">
+            <summary>
+            Converts a list of DataPoints to an XML element for serialization.
+            </summary>
+            <param name="dataPoints">The list of data points to convert.</param>
+            <param name="name">The name for the parent XML element.</param>
+            <returns>An XElement containing all data points as child elements.</returns>
+        </member>
+        <member name="M:OxyPlotControls.Extensions.PointsFromXElement(System.Xml.Linq.XElement)">
+            <summary>
+            Parses an XML element to create a list of DataPoints.
+            </summary>
+            <param name="dpelements">The XML element containing DataPoint child elements.</param>
+            <returns>A list of DataPoints parsed from the element.</returns>
+        </member>
+        <member name="M:OxyPlotControls.Extensions.CopyBinding(System.Windows.DependencyObject,System.Windows.DependencyObject,System.Windows.DependencyProperty)">
+            <summary>
+            Copies a binding from one dependency object to another.
+            </summary>
+            <param name="fromTarget">The source dependency object.</param>
+            <param name="toTarget">The target dependency object.</param>
+            <param name="dp">The dependency property to copy the binding for.</param>
+            <returns>True if a binding was found and copied; otherwise, false.</returns>
+        </member>
+        <member name="M:OxyPlotControls.Extensions.IsBound(System.Windows.DependencyObject,System.Windows.DependencyProperty)">
+            <summary>
+            Checks if a dependency property has a binding.
+            </summary>
+            <param name="target">The dependency object to check.</param>
+            <param name="dp">The dependency property to check.</param>
+            <returns>True if the property has a binding; otherwise, false.</returns>
+        </member>
+        <member name="M:OxyPlotControls.Extensions.FromAxisProperties(OxyPlot.Wpf.Axis,OxyPlot.Wpf.Axis,System.Boolean)">
+            <summary>
+            Copies axis properties from one axis to another, respecting bindings.
+            </summary>
+            <param name="toAxis">The target axis to copy properties to.</param>
+            <param name="fromAxis">The source axis to copy properties from.</param>
+            <param name="ignoreToAxisBound">If true, skip properties that already have bindings on the target axis.</param>
+        </member>
+        <member name="T:OxyPlotControls.BindingConvertor">
+            <summary>
+            Converts binding expressions to markup extensions for serialization.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.BindingConvertor.CanConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <summary>
+            Determines whether this converter can convert to the specified type.
+            </summary>
+            <param name="context">The type descriptor context.</param>
+            <param name="destinationType">The destination type.</param>
+            <returns>True if the destination type is MarkupExtension; otherwise, false.</returns>
+        </member>
+        <member name="M:OxyPlotControls.BindingConvertor.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <summary>
+            Converts a binding expression to a markup extension.
+            </summary>
+            <param name="context">The type descriptor context.</param>
+            <param name="culture">The culture info.</param>
+            <param name="value">The value to convert.</param>
+            <param name="destinationType">The destination type.</param>
+            <returns>The parent binding of the binding expression.</returns>
+            <exception cref="T:System.Exception">Thrown when value is not a BindingExpression.</exception>
+        </member>
+        <member name="T:OxyPlotControls.EditorHelper">
+            <summary>
+            Provides helper methods for registering type converters with the type descriptor system.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.EditorHelper.Register``2">
+            <summary>
+            Registers a type converter for a specific type.
+            </summary>
+            <typeparam name="T">The type to register the converter for.</typeparam>
+            <typeparam name="TC">The type converter to register.</typeparam>
+        </member>
+        <member name="T:OxyPlotControls.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.Properties.Resources.AddPointCursor">
+            <summary>
+              Looks up a localized resource of type System.Byte[].
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.Properties.Resources.Pan_Hand">
+            <summary>
+              Looks up a localized resource of type System.Byte[].
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.Properties.Resources.Pan_Hand_Closed">
+            <summary>
+              Looks up a localized resource of type System.Byte[].
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.Properties.Resources.SelectPointCursor">
+            <summary>
+              Looks up a localized resource of type System.Byte[].
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.Properties.Resources.ZoomIn">
+            <summary>
+              Looks up a localized resource of type System.Byte[].
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.OxyPlotPropertiesControl">
+            <summary>
+            A comprehensive user control that provides a unified interface for editing all OxyPlot chart properties.
+            This control uses lazy loading to improve initialization times by only creating child controls when they are first accessed.
+            </summary>
+            <summary>
+            OxyPlotPropertiesControl
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PlotProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.OxyPlotPropertiesControl.Plot"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.OxyPlotPropertiesControl.Plot">
+            <summary>
+            Gets or sets the OxyPlot Plot control that this control edits.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.ShowCloseButtonProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.OxyPlotPropertiesControl.ShowCloseButton"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.OxyPlotPropertiesControl.ShowCloseButton">
+            <summary>
+            Gets or sets whether the close button is visible.
+            </summary>
+        </member>
+        <member name="E:OxyPlotControls.OxyPlotPropertiesControl.ClosePropertiesCalled">
+            <summary>
+            Occurs when the close properties button is clicked.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.BackButtonStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.OxyPlotPropertiesControl.BackButtonStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.OxyPlotPropertiesControl.BackButtonStyle">
+            <summary>
+            Gets or sets the style for the back/close button.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.TabItemStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.OxyPlotPropertiesControl.TabItemStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.OxyPlotPropertiesControl.TabItemStyle">
+            <summary>
+            Gets or sets the style for tab items.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.ExpanderStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.OxyPlotPropertiesControl.ExpanderStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.OxyPlotPropertiesControl.ExpanderStyle">
+            <summary>
+            Gets or sets the style for expander controls.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyControlComboBoxStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.OxyPlotPropertiesControl.PropertyControlComboBoxStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.OxyPlotPropertiesControl.PropertyControlComboBoxStyle">
+            <summary>
+            Gets or sets the style for the property control combo box.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotPropertiesControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlotControls.OxyPlotPropertiesControl"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotPropertiesControl.SelectGeneralSettings">
+            <summary>
+            Selects the general settings properties from the control dropdown menu.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotPropertiesControl.DeleteAnnotation(OxyPlot.Wpf.Annotation)">
+            <summary>
+            Deletes an annotation from the plot.
+            </summary>
+            <param name="anno">The annotation to delete.</param>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotPropertiesControl.ExpandProperty(OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP,System.Object)">
+            <summary>
+            Expands a specific property section and optionally selects a specific object.
+            </summary>
+            <param name="prop">The property section to expand.</param>
+            <param name="selectedObject">Optional object to select within the property section.</param>
+        </member>
+        <member name="T:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP">
+            <summary>
+            Enumeration of expandable property sections.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.General_PlotTitle">
+            <summary>Plot title section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle">
+            <summary>Plot subtitle section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.General_PlotArea">
+            <summary>Plot area section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.General_PlotBackground">
+            <summary>Plot background section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Legend_Title">
+            <summary>Legend title section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Legend_Items">
+            <summary>Legend items section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Legend_Area">
+            <summary>Legend area section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Legend_Position">
+            <summary>Legend position section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Axes_Options">
+            <summary>Axes options section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Axes_Display">
+            <summary>Axes display section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Axes_Title">
+            <summary>Axes title section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Axes_Labels">
+            <summary>Axes labels section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Axes_MajorGridLines">
+            <summary>Major grid lines section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Axes_MinorGridLines">
+            <summary>Minor grid lines section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Axes_TickOptions">
+            <summary>Tick options section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Series_General">
+            <summary>Series general section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Series_Display">
+            <summary>Series display section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Series_Markers">
+            <summary>Series markers section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Series_BoxAndWhiskers">
+            <summary>Box and whiskers section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Series_ErrorBarSettings">
+            <summary>Error bar settings section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Annotations_Text">
+            <summary>Annotations text section.</summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP.Annotations_Display">
+            <summary>Annotations display section.</summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotPropertiesControl.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.OxyPlotSettingsSerializer">
+            <summary>
+            Provides serialization and deserialization functionality for OxyPlot plot settings.
+            This module handles converting plot properties to and from XML elements for persistence.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotSettingsSerializer.OxyplotPropertiesTag">
+            <summary>
+            The XML tag name used for the root element containing OxyPlot properties.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotSettingsSerializer.ToXelement(OxyPlot.Wpf.Plot)">
+            <summary>
+            Serializes all plot properties to an XElement for persistence.
+            </summary>
+            <param name="plot">The OxyPlot Plot control to serialize.</param>
+            <returns>An XElement containing all serialized plot properties including general settings, legend, axes, annotations, and series.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotSettingsSerializer.FromXelement(OxyPlot.Wpf.Plot,System.Xml.Linq.XElement)">
+            <summary>
+            Deserializes plot properties from an XElement and applies them to the plot.
+            </summary>
+            <param name="plot">The OxyPlot Plot control to apply settings to.</param>
+            <param name="element">The XElement containing serialized plot properties.</param>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotSettingsSerializer.GetColorAttribute(System.Xml.Linq.XElement,System.String,System.Windows.Media.Color@)">
+            <summary>
+            Attempts to get a Color value from an XML element attribute.
+            </summary>
+            <param name="el">The XElement to read from.</param>
+            <param name="attributeName">The name of the attribute to read.</param>
+            <param name="c">When this method returns, contains the parsed Color if successful.</param>
+            <returns>True if the attribute exists and was successfully parsed; otherwise, false.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotSettingsSerializer.GetBrushAttribute(System.Xml.Linq.XElement,System.String,System.Windows.Media.BrushConverter,System.Windows.Media.Brush@)">
+            <summary>
+            Attempts to get a Brush value from an XML element attribute.
+            </summary>
+            <param name="el">The XElement to read from.</param>
+            <param name="attributeName">The name of the attribute to read.</param>
+            <param name="converter">The BrushConverter to use for parsing.</param>
+            <param name="b">When this method returns, contains the parsed Brush if successful.</param>
+            <returns>True if the attribute exists and was successfully parsed; otherwise, false.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotSettingsSerializer.GetStringAttribute(System.Xml.Linq.XElement,System.String,System.String@)">
+            <summary>
+            Attempts to get a String value from an XML element attribute.
+            </summary>
+            <param name="el">The XElement to read from.</param>
+            <param name="attributeName">The name of the attribute to read.</param>
+            <param name="s">When this method returns, contains the attribute value if successful.</param>
+            <returns>True if the attribute exists; otherwise, false.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotSettingsSerializer.GetDoubleAttribute(System.Xml.Linq.XElement,System.String,System.Double@)">
+            <summary>
+            Attempts to get a Double value from an XML element attribute.
+            </summary>
+            <param name="el">The XElement to read from.</param>
+            <param name="attributeName">The name of the attribute to read.</param>
+            <param name="d">When this method returns, contains the parsed Double if successful.</param>
+            <returns>True if the attribute exists and was successfully parsed; otherwise, false.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotSettingsSerializer.GetIntegerAttribute(System.Xml.Linq.XElement,System.String,System.Int32@)">
+            <summary>
+            Attempts to get an Integer value from an XML element attribute.
+            </summary>
+            <param name="el">The XElement to read from.</param>
+            <param name="attributeName">The name of the attribute to read.</param>
+            <param name="i">When this method returns, contains the parsed Integer if successful.</param>
+            <returns>True if the attribute exists and was successfully parsed; otherwise, false.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotSettingsSerializer.GetBooleanAttribute(System.Xml.Linq.XElement,System.String,System.Boolean@)">
+            <summary>
+            Attempts to get a Boolean value from an XML element attribute.
+            </summary>
+            <param name="el">The XElement to read from.</param>
+            <param name="attributeName">The name of the attribute to read.</param>
+            <param name="b">When this method returns, contains the parsed Boolean if successful.</param>
+            <returns>True if the attribute exists and was successfully parsed; otherwise, false.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotSettingsSerializer.GetFontFamilyAttribute(System.Xml.Linq.XElement,System.String,System.Windows.Media.FontFamilyConverter,System.Windows.Media.FontFamily@)">
+            <summary>
+            Attempts to get a FontFamily value from an XML element attribute.
+            </summary>
+            <param name="el">The XElement to read from.</param>
+            <param name="attributeName">The name of the attribute to read.</param>
+            <param name="converter">The FontFamilyConverter to use for parsing.</param>
+            <param name="ff">When this method returns, contains the parsed FontFamily if successful.</param>
+            <returns>True if the attribute exists and was successfully parsed; otherwise, false.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotSettingsSerializer.GetFontWeightAttribute(System.Xml.Linq.XElement,System.String,System.Windows.FontWeightConverter,System.Windows.FontWeight@)">
+            <summary>
+            Attempts to get a FontWeight value from an XML element attribute.
+            </summary>
+            <param name="el">The XElement to read from.</param>
+            <param name="attributeName">The name of the attribute to read.</param>
+            <param name="converter">The FontWeightConverter to use for parsing.</param>
+            <param name="fw">When this method returns, contains the parsed FontWeight if successful.</param>
+            <returns>True if the attribute exists and was successfully parsed; otherwise, false.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotSettingsSerializer.GetThicknessAttribute(System.Xml.Linq.XElement,System.String,System.Windows.ThicknessConverter,System.Windows.Thickness@)">
+            <summary>
+            Attempts to get a Thickness value from an XML element attribute.
+            </summary>
+            <param name="el">The XElement to read from.</param>
+            <param name="attributeName">The name of the attribute to read.</param>
+            <param name="converter">The ThicknessConverter to use for parsing.</param>
+            <param name="t">When this method returns, contains the parsed Thickness if successful.</param>
+            <returns>True if the attribute exists and was successfully parsed; otherwise, false.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotSettingsSerializer.GetEnumAttribute``1(System.Xml.Linq.XElement,System.String,``0@)">
+            <summary>
+            Attempts to get an Enum value from an XML element attribute.
+            </summary>
+            <typeparam name="TEnum">The enum type to parse.</typeparam>
+            <param name="el">The XElement to read from.</param>
+            <param name="attributeName">The name of the attribute to read.</param>
+            <param name="e">When this method returns, contains the parsed enum value if successful.</param>
+            <returns>True if the attribute exists and was successfully parsed; otherwise, false.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotSettingsSerializer.GetDataPointAttribute(System.Xml.Linq.XElement,System.String,OxyPlot.DataPoint@)">
+            <summary>
+            Attempts to get an OxyPlot DataPoint value from an XML element attribute.
+            </summary>
+            <param name="el">The XElement to read from.</param>
+            <param name="attributeName">The name of the attribute to read.</param>
+            <param name="dp">When this method returns, contains the parsed DataPoint if successful.</param>
+            <returns>True if the attribute exists and was successfully parsed; otherwise, false.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotSettingsSerializer.GetScreenVectorAttribute(System.Xml.Linq.XElement,System.String,OxyPlot.ScreenVector@)">
+            <summary>
+            Attempts to get an OxyPlot ScreenVector value from an XML element attribute.
+            </summary>
+            <param name="el">The XElement to read from.</param>
+            <param name="attributeName">The name of the attribute to read.</param>
+            <param name="vp">When this method returns, contains the parsed ScreenVector if successful.</param>
+            <returns>True if the attribute exists and was successfully parsed; otherwise, false.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotSettingsSerializer.GetScreenPointAttribute(System.Xml.Linq.XElement,System.String,OxyPlot.ScreenPoint@)">
+            <summary>
+            Attempts to get an OxyPlot ScreenPoint value from an XML element attribute.
+            </summary>
+            <param name="el">The XElement to read from.</param>
+            <param name="attributeName">The name of the attribute to read.</param>
+            <param name="vp">When this method returns, contains the parsed ScreenPoint if successful.</param>
+            <returns>True if the attribute exists and was successfully parsed; otherwise, false.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotSettingsSerializer.GetVectorAttribute(System.Xml.Linq.XElement,System.String,System.Windows.Vector@)">
+            <summary>
+            Attempts to get a WPF Vector value from an XML element attribute.
+            </summary>
+            <param name="el">The XElement to read from.</param>
+            <param name="attributeName">The name of the attribute to read.</param>
+            <param name="v">When this method returns, contains the parsed Vector if successful.</param>
+            <returns>True if the attribute exists and was successfully parsed; otherwise, false.</returns>
+        </member>
+        <member name="T:OxyPlotControls.OxyPlotToolbar">
+            <summary>
+            OxyPlot toolbar control providing pan, zoom, annotation, and export functionality.
+            </summary>
+            <summary>
+            OxyPlotToolbar
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.#ctor">
+            <summary>
+            Creates a new OxyPlot properties toolbar.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotToolbar.PlotProperty">
+            <summary>
+            Dependency property for the Plot property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.OxyPlotToolbar.Plot">
+            <summary>
+            Gets and sets the OxyPlot Plot associated with this toolbar.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.InitializePlot(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Property changed callback for the Plot property.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.ToolBarLayoutUpdated(System.Object,System.EventArgs)">
+            <summary>
+            Updates the toolbar margin based on plot layout.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotToolbar.IconSizeProperty">
+            <summary>
+            Dependency property for the icon size.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.OxyPlotToolbar.IconSize">
+            <summary>
+            Gets and sets the toolbar icon size.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.OxyPlotToolbar.ToolBarOrientationProperty">
+            <summary>
+            Dependency property for the toolbar orientation.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.OxyPlotToolbar.ToolBarOrientation">
+            <summary>
+            Gets and sets the toolbar orientation.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.OxyPlotToolbar.AddToolMode">
+            <summary>
+            Enumeration for adding annotation tool mode.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.OxyPlotToolbar.PropertiesCalledEventHandler">
+            <summary>
+            Delegate for the PropertiesCalled event.
+            </summary>
+            <param name="targetPlot">The plot whose properties need to be opened.</param>
+            <param name="openProperties">Boolean value indicating if plot properties should be opened.</param>
+            <param name="propertyExpander">The property expander that needs to be expanded.</param>
+            <param name="selectedObject">The selected plot object to edit.</param>
+        </member>
+        <member name="E:OxyPlotControls.OxyPlotToolbar.PropertiesCalled">
+            <summary>
+            Event indicating the plot properties need to be opened.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.PointerButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            User clicked the pointer button.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.PanButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            User clicked the pan button.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.ZoomButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            User clicked zoom button.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.ZoomAllButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            User clicked zoom to extents.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.SetCursor">
+            <summary>
+            Sets the mouse cursor based on the current tool mode.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.AddAnnotationToggleButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            When Add button is clicked, show context menu.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.AddArrowAnnotationItem_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Add arrow annotation.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.AddTextAnnotationItem_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Add text annotation.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.AddVerticalLineAnnotationItem_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Add vertical line annotation.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.AddHorizontalLineAnnotationItem_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Add horizontal line annotation.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.AddRectangleAnnotationItem_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Add rectangle annotation.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.AddEllipseAnnotationItem_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Add ellipse annotation.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.AddPointAnnotationItem_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Add point annotation.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.AddPolygonAnnotationItem_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Add polygon annotation.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.AddPolylineAnnotationItem_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Add polyline annotation.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.StopAddAnnotation">
+            <summary>
+            Stop adding the annotation.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.PlotModelAnnotationCollectionChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            A new annotation has been added to the plot. Adds the appropriate handlers.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.OpenLineAnnotationTooltip(OxyPlot.Wpf.LineAnnotation)">
+            <summary>
+            Open the line annotation tooltip.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.UpdateLineAnnotationTooltip(OxyPlot.Wpf.LineAnnotation)">
+            <summary>
+            Update the line annotation tooltip.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.CloseLineAnnotationTooltip(OxyPlot.Wpf.LineAnnotation)">
+            <summary>
+            Close the line annotation tooltip.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.PlotModelMouseDown(System.Object,OxyPlot.OxyMouseDownEventArgs)">
+            <summary>
+            Plot model mouse down.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.PlotModelMouseMove(System.Object,OxyPlot.OxyMouseEventArgs)">
+            <summary>
+            Plot model mouse move.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.PlotModelMouseUp(System.Object,OxyPlot.OxyMouseEventArgs)">
+            <summary>
+            Plot model mouse up.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.GetSelectedObjects(System.Object,OxyPlot.OxyMouseDownEventArgs)">
+            <summary>
+            Get the selected objects and build the right-click context menu.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.CreateEditTBX(System.Windows.Controls.TextBlock,System.Windows.DependencyObject,System.Windows.DependencyProperty,System.Double,System.Windows.Controls.Canvas)">
+            <summary>
+            Creates an in-place text box for editing text on the plot.
+            Supports plot titles, axis titles, and all annotation types.
+            </summary>
+            <param name="existingTextblock">The existing TextBlock element being edited.</param>
+            <param name="dependencyObj">The dependency object containing the text property.</param>
+            <param name="dependencyProp">The dependency property to bind the text to.</param>
+            <param name="angle">The rotation angle for the text box.</param>
+            <param name="canvas">The canvas for positioning.</param>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.FindVisualChildren``1(System.Windows.DependencyObject)">
+            <summary>
+            Support method for finding visual children.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.GetPosition(System.Windows.Media.Visual,System.Windows.Controls.Canvas)">
+            <summary>
+            Gets the position of an element on the plot.
+            </summary>
+            <param name="element">The visual element.</param>
+            <param name="canvas">The canvas to get position relative to.</param>
+            <returns>The position of the element.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.LoadResourceImage(System.String)">
+            <summary>
+            Loads an image resource and returns it as a BitmapImage.
+            </summary>
+            <param name="resourceName">The name of the resource file (e.g., "Format.png").</param>
+            <returns>A BitmapImage that can be used as an Image source.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.CreateMenuIcon(System.String)">
+            <summary>
+            Creates an Image control with the specified resource image.
+            </summary>
+            <param name="resourceName">The name of the resource file (e.g., "Format.png").</param>
+            <returns>An Image control with the resource as its source.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.ExportDataButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Export series data to file.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.MergeAll(System.Collections.Generic.IList{System.Data.DataTable},System.String)">
+            <summary>
+            Merge all data tables by a primary key column.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.MergeTablesByIndex(System.Data.DataTable,System.Data.DataTable)">
+            <summary>
+            Merge two data tables by index (row-wise).
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.SaveImageButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            On Click, open the save plot image dialog.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.PropertiesButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Open plot properties.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.SwapAxesButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Swap the X and Y axes.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyPlotToolbar.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.SavePlotImageDialog">
+            <summary>
+            A dialog window for saving OxyPlot charts as image files.
+            Supports PNG, PDF, and SVG formats with customizable dimensions.
+            </summary>
+            <summary>
+            SavePlotImageDialog
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.SavePlotImageDialog.#ctor(OxyPlot.Wpf.Plot)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlotControls.SavePlotImageDialog"/> class.
+            </summary>
+            <param name="thePlot">The OxyPlot Plot control to save as an image.</param>
+        </member>
+        <member name="M:OxyPlotControls.SavePlotImageDialog.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.BarSeriesControl">
+            <summary>
+            A control for editing bar series properties including fill color, stroke, and bar width.
+            </summary>
+            <summary>
+            BarSeriesControl
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.BarSeriesControl.BarSeriesPropertiesTag">
+            <summary>
+            The XML tag used for bar series properties in serialization.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.BarSeriesControl.SeriesProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.BarSeriesControl.Series"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.BarSeriesControl.Series">
+            <summary>
+            Gets or sets the bar series whose properties are being edited.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.BarSeriesControl.ExpanderStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.BarSeriesControl.ExpanderStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.BarSeriesControl.ExpanderStyle">
+            <summary>
+            Gets or sets the style to apply to expanders in this control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.BarSeriesControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlotControls.BarSeriesControl"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.BarSeriesControl.OnSeriesChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Called when the Series property changes.
+            Forces a layout update to ensure bindings are properly synchronized.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.BarSeriesControl.CloseExpanders">
+            <summary>
+            Closes all expanders in this control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.BarSeriesControl.Expand(OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP)">
+            <summary>
+            Expands the specified property section.
+            </summary>
+            <param name="expansionZone">The property section to expand.</param>
+        </member>
+        <member name="M:OxyPlotControls.BarSeriesControl.XElementToBarSeriesProperties(OxyPlot.Wpf.BarSeries,System.Xml.Linq.XElement)">
+            <summary>
+            Deserializes bar series properties from an XElement and applies them to a bar series.
+            </summary>
+            <param name="barSeries">The bar series to populate with properties.</param>
+            <param name="element">The XElement containing bar series properties.</param>
+        </member>
+        <member name="M:OxyPlotControls.BarSeriesControl.BarSeriesPropertiesToXElement(OxyPlot.Wpf.BarSeries)">
+            <summary>
+            Serializes bar series properties to an XElement.
+            </summary>
+            <param name="barSeries">The bar series to serialize.</param>
+            <returns>An XElement containing the bar series properties.</returns>
+        </member>
+        <member name="M:OxyPlotControls.BarSeriesControl.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.BarSeriesFillConverter">
+            <summary>
+            Converts bar series fill color to/from a SolidColorBrush, handling automatic colors.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.BarSeriesFillConverter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a fill color and series to a SolidColorBrush.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.BarSeriesFillConverter.ConvertBack(System.Object,System.Type[],System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a SolidColorBrush back to fill color and series.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.BoxPlotSeriesControl">
+            <summary>
+            A control for editing box plot series properties including box style, whiskers, and outliers.
+            </summary>
+            <summary>
+            BoxPlotSeriesControl
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.BoxPlotSeriesControl.BoxPlotSeriesPropertiesTag">
+            <summary>
+            The XML tag used for box plot series properties in serialization.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.BoxPlotSeriesControl.MarkerTypeOptions">
+            <summary>
+            Gets the list of available marker types (excluding Custom).
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.BoxPlotSeriesControl.LineStyleOptions">
+            <summary>
+            Gets the list of available line style options.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.BoxPlotSeriesControl.SeriesProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.BoxPlotSeriesControl.Series"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.BoxPlotSeriesControl.Series">
+            <summary>
+            Gets or sets the box plot series whose properties are being edited.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.BoxPlotSeriesControl.ExpanderStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.BoxPlotSeriesControl.ExpanderStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.BoxPlotSeriesControl.ExpanderStyle">
+            <summary>
+            Gets or sets the style to apply to expanders in this control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.BoxPlotSeriesControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlotControls.BoxPlotSeriesControl"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.BoxPlotSeriesControl.OnSeriesChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Called when the Series property changes.
+            Forces a layout update to ensure bindings are properly synchronized.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.BoxPlotSeriesControl.CloseExpanders">
+            <summary>
+            Closes all expanders in this control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.BoxPlotSeriesControl.Expand(OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP)">
+            <summary>
+            Expands the specified property section.
+            </summary>
+            <param name="expansionZone">The property section to expand.</param>
+        </member>
+        <member name="M:OxyPlotControls.BoxPlotSeriesControl.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.BoxPlotSeriesFillConverter">
+            <summary>
+            Converts box plot series fill color to/from a SolidColorBrush, handling automatic colors.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.BoxPlotSeriesFillConverter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a fill color and series to a SolidColorBrush.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.BoxPlotSeriesFillConverter.ConvertBack(System.Object,System.Type[],System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a SolidColorBrush back to fill color and series.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.LineSeriesControl">
+            <summary>
+            A control for editing line series properties including line style, color, and markers.
+            </summary>
+            <summary>
+            LineSeriesControl
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.LineSeriesControl.MarkerTypeOptions">
+            <summary>
+            Gets the list of available marker types (excluding Custom).
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.LineSeriesControl.LineLegendPositionOptions">
+            <summary>
+            Gets the list of available line legend positions.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.LineSeriesControl.LineJoinOptions">
+            <summary>
+            Gets the list of available line join options.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.LineSeriesControl.LineStyleOptions">
+            <summary>
+            Gets the list of available line style options.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.LineSeriesControl.SeriesProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.LineSeriesControl.Series"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.LineSeriesControl.Series">
+            <summary>
+            Gets or sets the line series whose properties are being edited.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.LineSeriesControl.ExpanderStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.LineSeriesControl.ExpanderStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.LineSeriesControl.ExpanderStyle">
+            <summary>
+            Gets or sets the style to apply to expanders in this control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.LineSeriesControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlotControls.LineSeriesControl"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.LineSeriesControl.OnSeriesChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Called when the Series property changes.
+            Forces a layout update to ensure bindings are properly synchronized.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.LineSeriesControl.CloseExpanders">
+            <summary>
+            Closes all expanders in this control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.LineSeriesControl.Expand(OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP)">
+            <summary>
+            Expands the specified property section.
+            </summary>
+            <param name="expansionZone">The property section to expand.</param>
+        </member>
+        <member name="M:OxyPlotControls.LineSeriesControl.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.LineSeriesColorConverter">
+            <summary>
+            Converts line series color to/from a SolidColorBrush, handling automatic colors.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.LineSeriesColorConverter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a color and series to a SolidColorBrush.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.LineSeriesColorConverter.ConvertBack(System.Object,System.Type[],System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a SolidColorBrush back to color and series.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.AreaSeriesColor2Converter">
+            <summary>
+            Converts area series color2 to/from a SolidColorBrush, handling automatic colors.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AreaSeriesColor2Converter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a color and series to a SolidColorBrush.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AreaSeriesColor2Converter.ConvertBack(System.Object,System.Type[],System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a SolidColorBrush back to color and series.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.AreaSeriesFillConverter">
+            <summary>
+            Converts area series fill color to/from a SolidColorBrush, handling automatic colors.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AreaSeriesFillConverter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a fill color and series to a SolidColorBrush.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.AreaSeriesFillConverter.ConvertBack(System.Object,System.Type[],System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a SolidColorBrush back to fill color and series.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.LineSeriesMarkerFillConverter">
+            <summary>
+            Converts line series marker fill color to/from a SolidColorBrush, handling automatic colors.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.LineSeriesMarkerFillConverter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a marker fill color and series to a SolidColorBrush.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.LineSeriesMarkerFillConverter.ConvertBack(System.Object,System.Type[],System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a SolidColorBrush back to marker fill color and series.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.LineSeriesMarkerStrokeConverter">
+            <summary>
+            Converts line series marker stroke color to/from a SolidColorBrush, handling automatic colors.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.LineSeriesMarkerStrokeConverter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a marker stroke color and series to a SolidColorBrush.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.LineSeriesMarkerStrokeConverter.ConvertBack(System.Object,System.Type[],System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a SolidColorBrush back to marker stroke color and series.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.ScatterSeriesControl">
+            <summary>
+            A control for editing scatter series properties including markers and error bars.
+            </summary>
+            <summary>
+            ScatterSeriesControl
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.ScatterSeriesControl.MarkerTypeOptions">
+            <summary>
+            Gets the list of available marker types (excluding Custom).
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.ScatterSeriesControl.SeriesProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.ScatterSeriesControl.Series"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.ScatterSeriesControl.Series">
+            <summary>
+            Gets or sets the scatter series whose properties are being edited.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.ScatterSeriesControl.ExpanderStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.ScatterSeriesControl.ExpanderStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.ScatterSeriesControl.ExpanderStyle">
+            <summary>
+            Gets or sets the style to apply to expanders in this control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.ScatterSeriesControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlotControls.ScatterSeriesControl"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.ScatterSeriesControl.OnSeriesChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Called when the Series property changes.
+            Forces a layout update to ensure bindings are properly synchronized.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.ScatterSeriesControl.CloseExpanders">
+            <summary>
+            Closes all expanders in this control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.ScatterSeriesControl.Expand(OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP)">
+            <summary>
+            Expands the specified property section.
+            </summary>
+            <param name="expansionZone">The property section to expand.</param>
+        </member>
+        <member name="M:OxyPlotControls.ScatterSeriesControl.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.ScatterSeriesMarkerFillConverter">
+            <summary>
+            Converts scatter series marker fill color to/from a SolidColorBrush, handling automatic colors.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.ScatterSeriesMarkerFillConverter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a marker fill color and series to a SolidColorBrush.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.ScatterSeriesMarkerFillConverter.ConvertBack(System.Object,System.Type[],System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a SolidColorBrush back to marker fill color and series.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.ScatterSeriesMarkerStrokeConverter">
+            <summary>
+            Converts scatter series marker stroke color to/from a SolidColorBrush, handling automatic colors.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.ScatterSeriesMarkerStrokeConverter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a marker stroke color and series to a SolidColorBrush.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.ScatterSeriesMarkerStrokeConverter.ConvertBack(System.Object,System.Type[],System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a SolidColorBrush back to marker stroke color and series.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.GenericSeriesControl">
+            <summary>
+            A generic control for editing series properties that applies to all series types.
+            Provides UI for common series properties and handles serialization/deserialization.
+            </summary>
+            <summary>
+            GenericSeriesControl
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.GenericSeriesControl.SeriesPropertiesTag">
+            <summary>
+            The XML tag used for series properties in serialization.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.GenericSeriesControl.MarkerTypeOptions">
+            <summary>
+            Gets the list of available marker types (excluding Custom).
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.GenericSeriesControl.LineLegendPositionOptions">
+            <summary>
+            Gets the list of available line legend positions.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.GenericSeriesControl.LineJoinOptions">
+            <summary>
+            Gets the list of available line join options.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.GenericSeriesControl.LineStyleOptions">
+            <summary>
+            Gets the list of available line style options.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.GenericSeriesControl.SeriesProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.GenericSeriesControl.Series"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.GenericSeriesControl.Series">
+            <summary>
+            Gets or sets the series whose properties are being edited.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.GenericSeriesControl.ExpanderStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.GenericSeriesControl.ExpanderStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.GenericSeriesControl.ExpanderStyle">
+            <summary>
+            Gets or sets the style to apply to expanders in this control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.GenericSeriesControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlotControls.GenericSeriesControl"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.GenericSeriesControl.InitializeControl(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Handles changes to the Series property.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.GenericSeriesControl.CloseExpanders">
+            <summary>
+            Closes all expanders in this control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.GenericSeriesControl.Expand(OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP)">
+            <summary>
+            Expands the specified property section.
+            </summary>
+            <param name="expansionZone">The property section to expand.</param>
+        </member>
+        <member name="M:OxyPlotControls.GenericSeriesControl.SeriesPropertiesToXElement(OxyPlot.Wpf.Plot)">
+            <summary>
+            Serializes all series properties from a plot to an XElement.
+            </summary>
+            <param name="plot">The plot containing the series to serialize.</param>
+            <returns>An XElement containing all series properties.</returns>
+        </member>
+        <member name="M:OxyPlotControls.GenericSeriesControl.XElementToSeriesProperties(OxyPlot.Wpf.Plot,System.Xml.Linq.XElement)">
+            <summary>
+            Deserializes series properties from an XElement and applies them to a plot.
+            </summary>
+            <param name="plot">The plot to populate with series.</param>
+            <param name="element">The XElement containing series properties.</param>
+        </member>
+        <member name="M:OxyPlotControls.GenericSeriesControl.SeriesPropertiesToXElement(OxyPlot.Wpf.Series)">
+            <summary>
+            Serializes a single series' properties to an XElement.
+            </summary>
+            <param name="series">The series to serialize.</param>
+            <returns>An XElement containing the series properties.</returns>
+        </member>
+        <member name="M:OxyPlotControls.GenericSeriesControl.XElementToSeriesProperties(System.Xml.Linq.XElement)">
+            <summary>
+            Deserializes series properties from an XElement and creates the appropriate series type.
+            </summary>
+            <param name="element">The XElement containing series properties.</param>
+            <returns>A new series instance with the deserialized properties, or null if the type is not recognized.</returns>
+        </member>
+        <member name="M:OxyPlotControls.GenericSeriesControl.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.OxySeriesColorConverter">
+            <summary>
+            Converts series color to/from a SolidColorBrush, handling automatic colors.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxySeriesColorConverter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a color and series to a SolidColorBrush.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxySeriesColorConverter.ConvertBack(System.Object,System.Type[],System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a SolidColorBrush back to color and series.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.OxySeriesMarkerFillConverter">
+            <summary>
+            Converts series marker fill color to/from a SolidColorBrush, handling automatic colors.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxySeriesMarkerFillConverter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a marker fill color and series to a SolidColorBrush.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxySeriesMarkerFillConverter.ConvertBack(System.Object,System.Type[],System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a SolidColorBrush back to marker fill color and series.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.OxySeriesMarkerStrokeConverter">
+            <summary>
+            Converts series marker stroke color to/from a SolidColorBrush, handling automatic colors.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxySeriesMarkerStrokeConverter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a marker stroke color and series to a SolidColorBrush.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxySeriesMarkerStrokeConverter.ConvertBack(System.Object,System.Type[],System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a SolidColorBrush back to marker stroke color and series.
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.SeriesControl">
+            <summary>
+            A control that dynamically displays the appropriate series property control
+            based on the type of OxyPlot series selected.
+            </summary>
+            <summary>
+            SeriesControl
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.SeriesControl.SeriesProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.SeriesControl.Series"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.SeriesControl.Series">
+            <summary>
+            Gets or sets the series whose properties should be displayed.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.SeriesControl.ExpanderStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.SeriesControl.ExpanderStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.SeriesControl.ExpanderStyle">
+            <summary>
+            Gets or sets the style to apply to expanders in the series property controls.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.SeriesControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlotControls.SeriesControl"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.SeriesControl.InitializeControl(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Handles changes to the Series property by displaying the appropriate property control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.SeriesControl.ExpandStyleChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Handles changes to the ExpanderStyle property.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.SeriesControl.CloseExpanders">
+            <summary>
+            Closes all expanders in the currently displayed series control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.SeriesControl.Expand(OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP)">
+            <summary>
+            Expands the specified expansion zone in the currently displayed series control.
+            </summary>
+            <param name="expansionZone">The property expansion zone to expand.</param>
+        </member>
+        <member name="M:OxyPlotControls.SeriesControl.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.SeriesSelectorControl">
+            <summary>
+            A control that provides a combobox for selecting and managing series in an OxyPlot chart.
+            Allows users to select, reorder, and delete series from the plot.
+            </summary>
+            <summary>
+            SeriesSelectorControl
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.SeriesSelectorControl.PlotProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.SeriesSelectorControl.Plot"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.SeriesSelectorControl.Plot">
+            <summary>
+            Gets or sets the OxyPlot Plot control that this selector is bound to.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.SeriesSelectorControl.SelectedSeriesProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.SeriesSelectorControl.SelectedSeries"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.SeriesSelectorControl.SelectedSeries">
+            <summary>
+            Gets or sets the currently selected series.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.SeriesSelectorControl.ComboBoxStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.SeriesSelectorControl.ComboBoxStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.SeriesSelectorControl.ComboBoxStyle">
+            <summary>
+            Gets or sets the style to apply to the series selection combobox.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.SeriesSelectorControl.ExpanderStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.SeriesSelectorControl.ExpanderStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.SeriesSelectorControl.ExpanderStyle">
+            <summary>
+            Gets or sets the style to apply to expanders in the series properties control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.SeriesSelectorControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlotControls.SeriesSelectorControl"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.SeriesSelectorControl.SetDefaultComboboxStyle">
+            <summary>
+            Sets the default combobox style from resources.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.SeriesSelectorControl.InitializePlot(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Handles changes to the Plot property.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.SeriesSelectorControl.AddHandlers">
+            <summary>
+            Adds required event handlers for series collection changes.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.SeriesSelectorControl.Series_CollectionChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Handles changes to the series collection.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.SeriesSelectorControl.SeriesPropertyControlComboBox_SelectionChanged(System.Object,System.Windows.Controls.SelectionChangedEventArgs)">
+            <summary>
+            Handles selection changes in the series combobox.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.SeriesSelectorControl.MoveSeriesUpButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Handles the click event for moving a series up in the order.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.SeriesSelectorControl.MoveSeriesDownButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Handles the click event for moving a series down in the order.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.SeriesSelectorControl.DeleteSeriesButton_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Handles the click event for deleting a series.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.SeriesSelectorControl.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.GeneralPlotControl">
+            <summary>
+            A user control that provides UI for editing general plot properties such as title, subtitle,
+            plot area styling, and background settings for an OxyPlot chart.
+            </summary>
+            <summary>
+            GeneralPlotControl
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.GeneralPlotControl.GeneralPropertiesTag">
+            <summary>
+            The XML tag name used for serializing general plot properties.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.GeneralPlotControl.PlotProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.GeneralPlotControl.Plot"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.GeneralPlotControl.Plot">
+            <summary>
+            Gets or sets the OxyPlot Plot control that this control edits.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.GeneralPlotControl.ExpanderStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.GeneralPlotControl.ExpanderStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.GeneralPlotControl.ExpanderStyle">
+            <summary>
+            Gets or sets the style applied to expander controls within this control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.GeneralPlotControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlotControls.GeneralPlotControl"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.GeneralPlotControl.OnPlotChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Called when the Plot property changes.
+            Forces a layout update to ensure bindings are properly synchronized.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.GeneralPlotControl.GeneralPropertiesToXElement(OxyPlot.Wpf.Plot)">
+            <summary>
+            Serializes general plot properties to an XML element for persistence.
+            </summary>
+            <param name="plot">The OxyPlot Plot control whose properties will be serialized.</param>
+            <returns>An XElement containing all serialized general plot properties.</returns>
+        </member>
+        <member name="M:OxyPlotControls.GeneralPlotControl.XElementToGeneralProperties(OxyPlot.Wpf.Plot,System.Xml.Linq.XElement)">
+            <summary>
+            Deserializes general plot properties from an XML element and applies them to the plot.
+            </summary>
+            <param name="plot">The OxyPlot Plot control to apply settings to.</param>
+            <param name="element">The XElement containing serialized general plot properties.</param>
+        </member>
+        <member name="M:OxyPlotControls.GeneralPlotControl.DeserializeFromXElement(System.Xml.Linq.XElement)">
+            <summary>
+            Deserializes a XAML element from an XElement.
+            </summary>
+            <param name="element">The XElement to deserialize.</param>
+            <returns>The deserialized object.</returns>
+        </member>
+        <member name="M:OxyPlotControls.GeneralPlotControl.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:OxyPlotControls.OxyAutomaticColorConverter">
+            <summary>
+            A value converter that handles OxyPlot's automatic color representation.
+            OxyPlot uses ARGB(0,0,0,1) to represent an automatic color, which this converter
+            translates to black for display purposes.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyAutomaticColorConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts an OxyPlot color to a WPF SolidColorBrush, handling the automatic color case.
+            </summary>
+            <param name="value">The color value to convert.</param>
+            <param name="targetType">The target type (not used).</param>
+            <param name="parameter">Additional parameter (not used).</param>
+            <param name="culture">The culture to use for conversion.</param>
+            <returns>A SolidColorBrush representing the color, with automatic colors converted to black.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyAutomaticColorConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a SolidColorBrush back to a Color.
+            </summary>
+            <param name="value">The brush to convert.</param>
+            <param name="targetType">The target type (not used).</param>
+            <param name="parameter">Additional parameter (not used).</param>
+            <param name="culture">The culture to use for conversion.</param>
+            <returns>The Color from the SolidColorBrush.</returns>
+        </member>
+        <member name="T:OxyPlotControls.OxyDefaultFontSizeConverter">
+            <summary>
+            A value converter that provides a default font size when the value is NaN or invalid.
+            Returns 12.0 as the default font size.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.OxyDefaultFontSizeConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a font size value, returning a default of 12.0 for NaN or invalid values.
+            </summary>
+            <param name="value">The font size value to convert.</param>
+            <param name="targetType">The target type (not used).</param>
+            <param name="parameter">Additional parameter (not used).</param>
+            <param name="culture">The culture to use for conversion.</param>
+            <returns>The font size, or 12.0 if the value is NaN, infinite, or invalid.</returns>
+        </member>
+        <member name="M:OxyPlotControls.OxyDefaultFontSizeConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a font size back, returning NaN if the value is the default 12.0.
+            </summary>
+            <param name="value">The font size value to convert back.</param>
+            <param name="targetType">The target type (not used).</param>
+            <param name="parameter">Additional parameter (not used).</param>
+            <param name="culture">The culture to use for conversion.</param>
+            <returns>The font size, or NaN if the value is null, invalid, or 12.0.</returns>
+        </member>
+        <member name="T:OxyPlotControls.SolidColorBrushConverter">
+            <summary>
+            A simple value converter that casts between Brush and SolidColorBrush types.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.SolidColorBrushConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value to a SolidColorBrush.
+            </summary>
+            <param name="value">The value to convert.</param>
+            <param name="targetType">The target type (not used).</param>
+            <param name="parameter">Additional parameter (not used).</param>
+            <param name="culture">The culture to use for conversion.</param>
+            <returns>The value cast to SolidColorBrush, or null if the value is null.</returns>
+        </member>
+        <member name="M:OxyPlotControls.SolidColorBrushConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a SolidColorBrush back to a Brush.
+            </summary>
+            <param name="value">The value to convert back.</param>
+            <param name="targetType">The target type (not used).</param>
+            <param name="parameter">Additional parameter (not used).</param>
+            <param name="culture">The culture to use for conversion.</param>
+            <returns>The value cast to Brush, or null if the value is null.</returns>
+        </member>
+        <member name="T:OxyPlotControls.LegendControl">
+            <summary>
+            A user control that provides UI for editing legend properties of an OxyPlot chart,
+            including title, items, area styling, and position settings.
+            </summary>
+            <summary>
+            LegendControl
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.LegendControl.LegendPropertiesTag">
+            <summary>
+            The XML tag name used for serializing legend properties.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.LegendControl.PlotProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.LegendControl.Plot"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.LegendControl.Plot">
+            <summary>
+            Gets or sets the OxyPlot Plot control that this control edits.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.LegendControl.OrientationOptions">
+            <summary>
+            Gets the available legend orientation options.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.LegendControl.ItemOrderOptions">
+            <summary>
+            Gets the available legend item order options.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.LegendControl.PlacementOptions">
+            <summary>
+            Gets the available legend placement options.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.LegendControl.PositionOptions">
+            <summary>
+            Gets the available legend position options.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.LegendControl.SymbolPlacementOptions">
+            <summary>
+            Gets the available legend symbol placement options.
+            </summary>
+        </member>
+        <member name="F:OxyPlotControls.LegendControl.ExpanderStyleProperty">
+            <summary>
+            Identifies the <see cref="P:OxyPlotControls.LegendControl.ExpanderStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:OxyPlotControls.LegendControl.ExpanderStyle">
+            <summary>
+            Gets or sets the style applied to expander controls within this control.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.LegendControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlotControls.LegendControl"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.LegendControl.OnPlotChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Called when the Plot property changes.
+            Forces a layout update to ensure bindings are properly synchronized.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.LegendControl.LegendPropertyComboBox_SelectionChanged(System.Object,System.Windows.Controls.SelectionChangedEventArgs)">
+            <summary>
+            Handles legend property ComboBox selection changes and invalidates the plot to refresh the display.
+            </summary>
+        </member>
+        <member name="M:OxyPlotControls.LegendControl.LegendPropertiesToXElement(OxyPlot.Wpf.Plot)">
+            <summary>
+            Serializes legend properties to an XML element for persistence.
+            </summary>
+            <param name="plot">The OxyPlot Plot control whose legend properties will be serialized.</param>
+            <returns>An XElement containing all serialized legend properties.</returns>
+        </member>
+        <member name="M:OxyPlotControls.LegendControl.XElementToLegendProperties(OxyPlot.Wpf.Plot,System.Xml.Linq.XElement)">
+            <summary>
+            Deserializes legend properties from an XML element and applies them to the plot.
+            </summary>
+            <param name="plot">The OxyPlot Plot control to apply settings to.</param>
+            <param name="element">The XElement containing serialized legend properties.</param>
+        </member>
+        <member name="M:OxyPlotControls.LegendControl.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+            <summary>
+            GeneratedInternalTypeHelper
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            CreateInstance
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            GetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            SetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
+            <summary>
+            CreateDelegate
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
+            <summary>
+            AddEventHandler
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,12 @@
+<Window x:Class="Demo_OxyPlotControls.OxyPlotPropertiesDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:OxyPlotControls;assembly=OxyPlotControls"
+        mc:Ignorable="d"
+        Title="OxyPlot Properties" Height="700" Width="350" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" ShowInTaskbar="False">
+    <Grid>
+        <controls:OxyPlotPropertiesControl Name="PropertiesControl" Margin="5"></controls:OxyPlotPropertiesControl>
+    </Grid>
+</Window>

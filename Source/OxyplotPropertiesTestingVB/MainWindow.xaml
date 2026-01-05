@@ -1,0 +1,108 @@
+﻿<Window x:Class="MainWindow" x:Name="TestWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Oxyplot_Properties_Testing"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:controls="clr-namespace:OxyplotControls;assembly=OxyplotControls"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="650" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="230"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Margin="5" Orientation="Horizontal">
+            <Button Name="SaveSettingsButton" HorizontalAlignment="Left" Click="SaveSettingsButton_Click">Save Settings</Button>
+            <Button Name="LoadSettingsButton" Margin="5,0,0,0" HorizontalAlignment="Left" Click="LoadSettingsButton_Click">Load Settings</Button>
+            <Button Name="TestButton" Margin="5,0,0,0" HorizontalAlignment="Left" Click="TestButton_Click">Test</Button>
+            <ComboBox x:Name="Combobox1" Margin="5,0,0,0" SelectionChanged="ComboBox_SelectionChanged">
+                <ComboBoxItem>Line Series</ComboBoxItem>
+                <ComboBoxItem>Line Series (Bound)</ComboBoxItem>
+                <ComboBoxItem>Scatter Series</ComboBoxItem>
+                <ComboBoxItem>Scatter Series (Bound)</ComboBoxItem>
+                <ComboBoxItem>Histogram Series</ComboBoxItem>
+                <ComboBoxItem>Histogram Series (Bound)</ComboBoxItem>
+                <ComboBoxItem>Column Series</ComboBoxItem>
+                <ComboBoxItem>Column Series (Bound)</ComboBoxItem>
+                <ComboBoxItem>Bar Series</ComboBoxItem>
+                <ComboBoxItem>Bar Series (Bound)</ComboBoxItem>
+                <ComboBoxItem>Box Plot Series</ComboBoxItem>
+                <ComboBoxItem>Box Plot Series (Bound)</ComboBoxItem>
+                <ComboBoxItem>Area Series</ComboBoxItem>
+                <ComboBoxItem>Area Series (Bound)</ComboBoxItem>
+                <ComboBoxItem>Heat Map Series</ComboBoxItem>
+                <ComboBoxItem>Heat Map Series (Bound)</ComboBoxItem>
+                <ComboBoxItem>Scatter Error Series</ComboBoxItem>
+                <ComboBoxItem>Scatter Error Series (Bound)</ComboBoxItem>
+                <ComboBoxItem>Date Time Series</ComboBoxItem>
+            </ComboBox>
+        </StackPanel>
+
+        <Grid Grid.Column="0" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Canvas Name="TestCanvas">
+                
+            </Canvas>
+            <oxy:Plot Name="TestPlot" BorderBrush="Black" BorderThickness="1" SnapsToDevicePixels="True" Grid.Column="0" Title="Test Title" IsLegendVisible="True" LegendPosition="RightBottom">
+                <oxy:Plot.Axes>
+                    <!--<oxy:LinearAxis Name="YAxis" Position="Left" Title="{Binding ElementName=TestWindow, Path=TestAxisNameBinding}" AxisTitleDistance="20" TitleFontSize="20" MajorGridlineStyle="Solid" MinorGridlineStyle="Dash"/>
+                    <oxy:LinearAxis Name="XAxis" Position="Bottom" Title="Test X" AxisTitleDistance="15" TitleFontSize="20" MajorGridlineStyle="Solid" MinorGridlineStyle="Dash"/>-->
+                    <!--<oxy:LinearColorAxis Name="ColorAxis" Position="Right" PaletteSize="200" HighColor="Red" LowColor="Blue">
+                        <oxy:LinearColorAxis.GradientStops>
+                            <GradientStopCollection>
+                                <GradientStop Color="Red" Offset="0"/>
+                                <GradientStop Color="Yellow" Offset=".5"/>
+                                <GradientStop Color="Green" Offset="1"/>
+                            </GradientStopCollection>
+                        </oxy:LinearColorAxis.GradientStops>
+                    </oxy:LinearColorAxis>-->
+                </oxy:Plot.Axes>
+                <!--<oxy:HeatMapSeries Name="HeatSeries" X0=".5" X1="1.5" Y0=".5" Y1="2.5" CoordinateDefinition="Center" Interpolate="True" LabelFontSize=".2"/>-->
+                <!--<oxy:LineSeries Name="LineSeries1" Title="Test Line Series 1" ItemsSource="{Binding Points1, ElementName=TestWindow}"/>
+                <oxy:LineSeries Name="LineSeries2" Title="Test Series 2" ItemsSource="{Binding Points2, ElementName=TestWindow}"/>-->
+            </oxy:Plot>
+
+            <controls:OxyplotToolbar 
+                Name="OxyplotToolBar" 
+                Plot="{Binding ElementName=TestPlot, Mode=OneTime}" 
+                ToolBarOrientation="Vertical" 
+                Grid.Column="1" 
+                Margin="0,0,4,0"  
+                PropertiesCalled="OxyplotToolBar_PropertiesCalled"/>
+        </Grid>
+
+        <GridSplitter 
+            Grid.Column="0" 
+            Grid.Row="1" 
+            Width="2" 
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Stretch"></GridSplitter>
+        <GridSplitter 
+            Grid.Column="1" 
+            Grid.Row="1" 
+            Width="2" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Stretch"></GridSplitter>
+
+        <Grid Grid.Column="1" Margin="6,0,5,0" Grid.Row="1">
+            <controls:OxyplotPropertiesControl 
+                Name="PropertiesControl" 
+                ShowCloseButton="True"
+                Plot="{Binding ElementName=TestPlot, Mode=OneTime}" 
+                ClosePropertiesCalled="PropertiesControl_ClosePropertiesCalled"/>
+                
+        </Grid>
+
+    </Grid>
+</Window>

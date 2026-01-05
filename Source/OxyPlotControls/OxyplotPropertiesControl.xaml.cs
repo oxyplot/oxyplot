@@ -2,336 +2,435 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using OxyPlot;
-using OxyPlotControls.Controls.General;
-using OxyPlotControls.Controls.Legend;
-using OxyPlotControls.Controls.Selectors;
+using OxyPlot.Wpf;
 
-namespace OxyPlotControls;
-
-/// <summary>
-/// Master properties control for OxyPlot.
-/// Provides unified interface to edit General/Legend/Axes/Series/Annotations properties.
-/// Uses lazy loading to improve initialization performance.
-/// </summary>
-public partial class OxyplotPropertiesControl : UserControl
+namespace OxyPlotControls
 {
-    #region Lazy-loaded Controls
-
-    private GeneralPlotControl? _generalControl;
-    private LegendControl? _legendControl;
-    private AxesControl? _axesControl;
-    private SeriesSelectorControl? _seriesControl;
-    private AnnotationSelectorControl? _annotationsControl;
-
-    #endregion
-
-    public OxyplotPropertiesControl()
-    {
-        InitializeComponent();
-    }
-
-    #region Dependency Properties
-
-    public static readonly DependencyProperty ModelProperty =
-        DependencyProperty.Register(
-            nameof(Model),
-            typeof(PlotModel),
-            typeof(OxyplotPropertiesControl),
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
     /// <summary>
-    /// Gets or sets the PlotModel to edit.
+    /// A comprehensive user control that provides a unified interface for editing all OxyPlot chart properties.
+    /// This control uses lazy loading to improve initialization times by only creating child controls when they are first accessed.
     /// </summary>
-    public PlotModel? Model
+    public partial class OxyPlotPropertiesControl : UserControl
     {
-        get => (PlotModel?)GetValue(ModelProperty);
-        set => SetValue(ModelProperty, value);
-    }
+        /// <summary>
+        /// Identifies the <see cref="Plot"/> dependency property.
+        /// </summary>
+        public static DependencyProperty PlotProperty = DependencyProperty.Register(
+            nameof(Plot), typeof(Plot), typeof(OxyPlotPropertiesControl),
+            new PropertyMetadata(null, InitializePlot));
 
-    public static readonly DependencyProperty ShowCloseButtonProperty =
-        DependencyProperty.Register(
-            nameof(ShowCloseButton),
-            typeof(bool),
-            typeof(OxyplotPropertiesControl),
+        private static void InitializePlot(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d == null) return;
+            if (d.GetType() != typeof(OxyPlotPropertiesControl)) return;
+            var thisControl = (OxyPlotPropertiesControl)d;
+
+            if (e.NewValue == null) return;
+            if (e.NewValue.GetType() != typeof(Plot)) return;
+        }
+
+        /// <summary>
+        /// Gets or sets the OxyPlot Plot control that this control edits.
+        /// </summary>
+        public Plot Plot
+        {
+            get { return (Plot)GetValue(PlotProperty); }
+            set { SetValue(PlotProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="ShowCloseButton"/> dependency property.
+        /// </summary>
+        public static DependencyProperty ShowCloseButtonProperty = DependencyProperty.Register(
+            nameof(ShowCloseButton), typeof(bool), typeof(OxyPlotPropertiesControl),
             new PropertyMetadata(true));
 
-    /// <summary>
-    /// Gets or sets whether to show the close button.
-    /// </summary>
-    public bool ShowCloseButton
-    {
-        get => (bool)GetValue(ShowCloseButtonProperty);
-        set => SetValue(ShowCloseButtonProperty, value);
-    }
-
-    public static readonly DependencyProperty ExpanderStyleProperty =
-        DependencyProperty.Register(
-            nameof(ExpanderStyle),
-            typeof(Style),
-            typeof(OxyplotPropertiesControl),
-            new PropertyMetadata(null));
-
-    /// <summary>
-    /// Gets or sets the style for Expander controls.
-    /// </summary>
-    public Style? ExpanderStyle
-    {
-        get => (Style?)GetValue(ExpanderStyleProperty);
-        set => SetValue(ExpanderStyleProperty, value);
-    }
-
-    public static readonly DependencyProperty TabItemStyleProperty =
-        DependencyProperty.Register(
-            nameof(TabItemStyle),
-            typeof(Style),
-            typeof(OxyplotPropertiesControl),
-            new PropertyMetadata(null));
-
-    /// <summary>
-    /// Gets or sets the style for TabItem controls.
-    /// </summary>
-    public Style? TabItemStyle
-    {
-        get => (Style?)GetValue(TabItemStyleProperty);
-        set => SetValue(TabItemStyleProperty, value);
-    }
-
-    public static readonly DependencyProperty BackButtonStyleProperty =
-        DependencyProperty.Register(
-            nameof(BackButtonStyle),
-            typeof(Style),
-            typeof(OxyplotPropertiesControl),
-            new PropertyMetadata(null));
-
-    /// <summary>
-    /// Gets or sets the style for the back/close button.
-    /// </summary>
-    public Style? BackButtonStyle
-    {
-        get => (Style?)GetValue(BackButtonStyleProperty);
-        set => SetValue(BackButtonStyleProperty, value);
-    }
-
-    public static readonly DependencyProperty PropertyControlComboBoxStyleProperty =
-        DependencyProperty.Register(
-            nameof(PropertyControlComboBoxStyle),
-            typeof(Style),
-            typeof(OxyplotPropertiesControl),
-            new PropertyMetadata(null));
-
-    /// <summary>
-    /// Gets or sets the style for the property control ComboBox.
-    /// </summary>
-    public Style? PropertyControlComboBoxStyle
-    {
-        get => (Style?)GetValue(PropertyControlComboBoxStyleProperty);
-        set => SetValue(PropertyControlComboBoxStyleProperty, value);
-    }
-
-    #endregion
-
-    #region Events
-
-    /// <summary>
-    /// Raised when the close button is clicked.
-    /// </summary>
-    public event EventHandler<EventArgs>? ClosePropertiesCalled;
-
-    private void ClosePropertiesButton_Click(object sender, RoutedEventArgs e)
-    {
-        ClosePropertiesCalled?.Invoke(this, EventArgs.Empty);
-    }
-
-    #endregion
-
-    #region Section Navigation with Lazy Loading
-
-    private void PropertySectionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (PropertySectionComboBox.SelectedItem is not ComboBoxItem item) return;
-
-        var section = item.Tag as string;
-
-        // Hide all loaded controls
-        if (_generalControl != null) _generalControl.Visibility = Visibility.Collapsed;
-        if (_legendControl != null) _legendControl.Visibility = Visibility.Collapsed;
-        if (_axesControl != null) _axesControl.Visibility = Visibility.Collapsed;
-        if (_seriesControl != null) _seriesControl.Visibility = Visibility.Collapsed;
-        if (_annotationsControl != null) _annotationsControl.Visibility = Visibility.Collapsed;
-
-        // Show/create selected section (lazy loading)
-        switch (section)
+        /// <summary>
+        /// Gets or sets whether the close button is visible.
+        /// </summary>
+        public bool ShowCloseButton
         {
-            case "General":
-                if (_generalControl == null)
+            get { return (bool)GetValue(ShowCloseButtonProperty); }
+            set { SetValue(ShowCloseButtonProperty, value); }
+        }
+
+        /// <summary>
+        /// Occurs when the close properties button is clicked.
+        /// </summary>
+        public event Action<OxyPlotPropertiesControl> ClosePropertiesCalled;
+
+        private void SetDefaultStyles()
+        {
+            if (BackButtonStyle == null) BackButtonStyle = (Style)FindResource("CleanButtonStyle");
+            if (PropertyControlComboBoxStyle == null) PropertyControlComboBoxStyle = (Style)FindResource("CleanComboBoxStyle");
+            if (ExpanderStyle == null) ExpanderStyle = (Style)FindResource("ExcelExpanderStyle");
+            if (TabItemStyle == null) TabItemStyle = (Style)FindResource("CustomTabItemStyle");
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="BackButtonStyle"/> dependency property.
+        /// </summary>
+        public static DependencyProperty BackButtonStyleProperty = DependencyProperty.Register(
+            nameof(BackButtonStyle), typeof(Style), typeof(OxyPlotPropertiesControl),
+            new UIPropertyMetadata(null));
+
+        /// <summary>
+        /// Gets or sets the style for the back/close button.
+        /// </summary>
+        public Style BackButtonStyle
+        {
+            get { return (Style)GetValue(BackButtonStyleProperty); }
+            set { SetValue(BackButtonStyleProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="TabItemStyle"/> dependency property.
+        /// </summary>
+        public static DependencyProperty TabItemStyleProperty = DependencyProperty.Register(
+            nameof(TabItemStyle), typeof(Style), typeof(OxyPlotPropertiesControl),
+            new UIPropertyMetadata(null));
+
+        /// <summary>
+        /// Gets or sets the style for tab items.
+        /// </summary>
+        public Style TabItemStyle
+        {
+            get { return (Style)GetValue(TabItemStyleProperty); }
+            set { SetValue(TabItemStyleProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="ExpanderStyle"/> dependency property.
+        /// </summary>
+        public static DependencyProperty ExpanderStyleProperty = DependencyProperty.Register(
+            nameof(ExpanderStyle), typeof(Style), typeof(OxyPlotPropertiesControl),
+            new UIPropertyMetadata(null));
+
+        /// <summary>
+        /// Gets or sets the style for expander controls.
+        /// </summary>
+        public Style ExpanderStyle
+        {
+            get { return (Style)GetValue(ExpanderStyleProperty); }
+            set { SetValue(ExpanderStyleProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="PropertyControlComboBoxStyle"/> dependency property.
+        /// </summary>
+        public static DependencyProperty PropertyControlComboBoxStyleProperty = DependencyProperty.Register(
+            nameof(PropertyControlComboBoxStyle), typeof(Style), typeof(OxyPlotPropertiesControl),
+            new UIPropertyMetadata(null));
+
+        /// <summary>
+        /// Gets or sets the style for the property control combo box.
+        /// </summary>
+        public Style PropertyControlComboBoxStyle
+        {
+            get { return (Style)GetValue(PropertyControlComboBoxStyleProperty); }
+            set { SetValue(PropertyControlComboBoxStyleProperty, value); }
+        }
+
+        // Lazy loading to improve initialization times.
+        private GeneralPlotControl _generalControls;
+        private LegendControl _legendControls;
+        private AxesControl _axesControls;
+        private SeriesSelectorControl _seriesControls;
+        private AnnotationSelectorControl _annotationsControls;
+
+        private Binding _viewPortWidthBinding;
+        private Binding _plotBinding;
+        private Binding _expanderBinding;
+        private Binding _tabItemStyleBinding;
+        private Binding _comboboxStyleBinding;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OxyPlotPropertiesControl"/> class.
+        /// </summary>
+        public OxyPlotPropertiesControl()
+        {
+            GenericControls.PropertyDefaults.DefaultMaxPropertyWidth = 200;
+
+            InitializeComponent();
+
+            // Initialize bindings after InitializeComponent
+            _viewPortWidthBinding = new Binding(nameof(ScrollViewer.ViewportWidth)) { Source = ControlScrollViewer };
+            _plotBinding = new Binding(nameof(Plot)) { Source = this };
+            _expanderBinding = new Binding(nameof(ExpanderStyle)) { Source = this };
+            _tabItemStyleBinding = new Binding(nameof(TabItemStyle)) { Source = this };
+            _comboboxStyleBinding = new Binding(nameof(PropertyControlComboBoxStyle)) { Source = this };
+
+            SetDefaultStyles();
+
+            // Re-trigger the selection change now that bindings are ready
+            // (the initial SelectionChanged fired during InitializeComponent was skipped)
+            PropertyControlComboBox_SelectionChanged(PropertyControlComboBox, null);
+        }
+
+        /// <summary>
+        /// Selects the general settings properties from the control dropdown menu.
+        /// </summary>
+        public void SelectGeneralSettings()
+        {
+            if (PropertyControlComboBox != null) PropertyControlComboBox.SelectedIndex = 0;
+        }
+
+        private string ToEnumName<T>(int value) where T : struct
+        {
+            return ((T)(object)value).ToString();
+        }
+
+        /// <summary>
+        /// Deletes an annotation from the plot.
+        /// </summary>
+        /// <param name="anno">The annotation to delete.</param>
+        public void DeleteAnnotation(OxyPlot.Wpf.Annotation anno)
+        {
+            // Implementation placeholder
+        }
+
+        /// <summary>
+        /// Expands a specific property section and optionally selects a specific object.
+        /// </summary>
+        /// <param name="prop">The property section to expand.</param>
+        /// <param name="selectedObject">Optional object to select within the property section.</param>
+        public void ExpandProperty(PropertyEXP prop, object selectedObject = null)
+        {
+            string str = ToEnumName<PropertyEXP>((int)prop);
+
+            if (str.Contains("General_"))
+            {
+                PropertyControlComboBox.SelectedIndex = 0;
+                switch (prop)
                 {
-                    _generalControl = new GeneralPlotControl { MinWidth = 200, MinHeight = 200 };
-                    BindingOperations.SetBinding(_generalControl, GeneralPlotControl.ModelProperty,
-                        new Binding(nameof(Model)) { Source = this });
-                    PropertyContentGrid.Children.Add(_generalControl);
+                    case PropertyEXP.General_PlotTitle:
+                        _generalControls.PlotTitleEXP.IsExpanded = true;
+                        break;
+                    case PropertyEXP.General_PlotSubtitle:
+                        _generalControls.PlotSubtitleEXP.IsExpanded = true;
+                        break;
+                    case PropertyEXP.General_PlotArea:
+                        _generalControls.PlotAreaEXP.IsExpanded = true;
+                        break;
+                    case PropertyEXP.General_PlotBackground:
+                        _generalControls.PlotBackgroundEXP.IsExpanded = true;
+                        break;
                 }
-                _generalControl.Visibility = Visibility.Visible;
-                break;
-
-            case "Legend":
-                if (_legendControl == null)
+            }
+            else if (str.Contains("Legend_"))
+            {
+                PropertyControlComboBox.SelectedIndex = 1;
+                switch (prop)
                 {
-                    _legendControl = new LegendControl { MinWidth = 200, MinHeight = 200 };
-                    BindingOperations.SetBinding(_legendControl, LegendControl.ModelProperty,
-                        new Binding(nameof(Model)) { Source = this });
-                    PropertyContentGrid.Children.Add(_legendControl);
+                    case PropertyEXP.Legend_Title:
+                        _legendControls.LegendTitleEXP.IsExpanded = true;
+                        break;
+                    case PropertyEXP.Legend_Items:
+                        _legendControls.LegendItemsEXP.IsExpanded = true;
+                        break;
+                    case PropertyEXP.Legend_Area:
+                        _legendControls.LegendAreaEXP.IsExpanded = true;
+                        break;
+                    case PropertyEXP.Legend_Position:
+                        _legendControls.LegendPositionEXP.IsExpanded = true;
+                        break;
                 }
-                _legendControl.Visibility = Visibility.Visible;
-                break;
+            }
+            else if (str.Contains("Axes_"))
+            {
+                if (selectedObject == null) return;
+                PropertyControlComboBox.SelectedIndex = 2;
+                _axesControls.AxesPropertyControlComboBox.SelectedItem = selectedObject;
 
-            case "Axes":
-                if (_axesControl == null)
+                switch (prop)
                 {
-                    _axesControl = new AxesControl { MinWidth = 200, MinHeight = 200 };
-                    BindingOperations.SetBinding(_axesControl, AxesControl.ModelProperty,
-                        new Binding(nameof(Model)) { Source = this });
-                    PropertyContentGrid.Children.Add(_axesControl);
+                    case PropertyEXP.Axes_Options:
+                        _axesControls.AxisPropertiesControl.AxisTabControl.SelectedItem = _axesControls.AxisPropertiesControl.GeneralTab;
+                        _axesControls.AxisPropertiesControl.GeneralEXP.IsExpanded = true;
+                        break;
+                    case PropertyEXP.Axes_Display:
+                        _axesControls.AxisPropertiesControl.AxisTabControl.SelectedItem = _axesControls.AxisPropertiesControl.GeneralTab;
+                        _axesControls.AxisPropertiesControl.DisplayEXP.IsExpanded = true;
+                        break;
+                    case PropertyEXP.Axes_Title:
+                        _axesControls.AxisPropertiesControl.AxisTabControl.SelectedItem = _axesControls.AxisPropertiesControl.LabelsTab;
+                        _axesControls.AxisPropertiesControl.TitleEXP.IsExpanded = true;
+                        break;
+                    case PropertyEXP.Axes_Labels:
+                        _axesControls.AxisPropertiesControl.AxisTabControl.SelectedItem = _axesControls.AxisPropertiesControl.LabelsTab;
+                        _axesControls.AxisPropertiesControl.LabelsEXP.IsExpanded = true;
+                        break;
+                    case PropertyEXP.Axes_MajorGridLines:
+                        _axesControls.AxisPropertiesControl.AxisTabControl.SelectedItem = _axesControls.AxisPropertiesControl.GridLinesTab;
+                        _axesControls.AxisPropertiesControl.MajorGridLinesEXP.IsExpanded = true;
+                        break;
+                    case PropertyEXP.Axes_MinorGridLines:
+                        _axesControls.AxisPropertiesControl.AxisTabControl.SelectedItem = _axesControls.AxisPropertiesControl.GridLinesTab;
+                        _axesControls.AxisPropertiesControl.MinorGridLinesEXP.IsExpanded = true;
+                        break;
+                    case PropertyEXP.Axes_TickOptions:
+                        _axesControls.AxisPropertiesControl.AxisTabControl.SelectedItem = _axesControls.AxisPropertiesControl.GridLinesTab;
+                        _axesControls.AxisPropertiesControl.TickOptionsEXP.IsExpanded = true;
+                        break;
                 }
-                _axesControl.Visibility = Visibility.Visible;
-                break;
+            }
+            else if (str.Contains("Series_"))
+            {
+                PropertyControlComboBox.SelectedIndex = 3;
+                _seriesControls.SeriesPropertyControlComboBox.SelectedItem = selectedObject;
+                _seriesControls.SeriesPropertiesControl.Expand(prop);
+            }
+            else if (str.Contains("Annotations_"))
+            {
+                PropertyControlComboBox.SelectedIndex = 4;
+                _annotationsControls.AnnotationPropertyControlComboBox.SelectedItem = selectedObject;
 
-            case "Series":
-                if (_seriesControl == null)
+                switch (prop)
                 {
-                    _seriesControl = new SeriesSelectorControl { MinWidth = 200, MinHeight = 200 };
-                    BindingOperations.SetBinding(_seriesControl, SeriesSelectorControl.ModelProperty,
-                        new Binding(nameof(Model)) { Source = this });
-                    PropertyContentGrid.Children.Add(_seriesControl);
+                    case PropertyEXP.Annotations_Text:
+                        _annotationsControls.AnnotationPropertiesControl.TextEXP.IsExpanded = true;
+                        break;
+                    case PropertyEXP.Annotations_Display:
+                        _annotationsControls.AnnotationPropertiesControl.DisplayOptionsEXP.IsExpanded = true;
+                        break;
                 }
-                _seriesControl.Visibility = Visibility.Visible;
-                break;
-
-            case "Annotations":
-                if (_annotationsControl == null)
-                {
-                    _annotationsControl = new AnnotationSelectorControl { MinWidth = 200, MinHeight = 200 };
-                    BindingOperations.SetBinding(_annotationsControl, AnnotationSelectorControl.ModelProperty,
-                        new Binding(nameof(Model)) { Source = this });
-                    PropertyContentGrid.Children.Add(_annotationsControl);
-                }
-                _annotationsControl.Visibility = Visibility.Visible;
-                break;
+            }
         }
-    }
 
-    /// <summary>
-    /// Navigates to a specific property expander, optionally selecting an object.
-    /// </summary>
-    /// <param name="expander">The property expander to navigate to.</param>
-    /// <param name="selectedObject">Optional object to select (axis, series, or annotation).</param>
-    public void ExpandProperty(PropertyExpander expander, object? selectedObject = null)
-    {
-        var name = expander.ToString();
-
-        if (name.StartsWith("General_"))
+        private void ClosePropertiesButton_Click(object sender, RoutedEventArgs e)
         {
-            PropertySectionComboBox.SelectedIndex = 0;
+            ClosePropertiesCalled?.Invoke(this);
         }
-        else if (name.StartsWith("Legend_"))
+
+        /// <summary>
+        /// Enumeration of expandable property sections.
+        /// </summary>
+        public enum PropertyEXP
         {
-            PropertySectionComboBox.SelectedIndex = 1;
+            /// <summary>Plot title section.</summary>
+            General_PlotTitle,
+            /// <summary>Plot subtitle section.</summary>
+            General_PlotSubtitle,
+            /// <summary>Plot area section.</summary>
+            General_PlotArea,
+            /// <summary>Plot background section.</summary>
+            General_PlotBackground,
+            /// <summary>Legend title section.</summary>
+            Legend_Title,
+            /// <summary>Legend items section.</summary>
+            Legend_Items,
+            /// <summary>Legend area section.</summary>
+            Legend_Area,
+            /// <summary>Legend position section.</summary>
+            Legend_Position,
+            /// <summary>Axes options section.</summary>
+            Axes_Options,
+            /// <summary>Axes display section.</summary>
+            Axes_Display,
+            /// <summary>Axes title section.</summary>
+            Axes_Title,
+            /// <summary>Axes labels section.</summary>
+            Axes_Labels,
+            /// <summary>Major grid lines section.</summary>
+            Axes_MajorGridLines,
+            /// <summary>Minor grid lines section.</summary>
+            Axes_MinorGridLines,
+            /// <summary>Tick options section.</summary>
+            Axes_TickOptions,
+            /// <summary>Series general section.</summary>
+            Series_General,
+            /// <summary>Series display section.</summary>
+            Series_Display,
+            /// <summary>Series markers section.</summary>
+            Series_Markers,
+            /// <summary>Box and whiskers section.</summary>
+            Series_BoxAndWhiskers,
+            /// <summary>Error bar settings section.</summary>
+            Series_ErrorBarSettings,
+            /// <summary>Annotations text section.</summary>
+            Annotations_Text,
+            /// <summary>Annotations display section.</summary>
+            Annotations_Display
         }
-        else if (name.StartsWith("Axes_"))
+
+        private void PropertyControlComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            PropertySectionComboBox.SelectedIndex = 2;
-            // TODO: Select the specific axis and expand the appropriate section
+            if (PropertyControlsGrid == null) return;
+            // Bindings are initialized after InitializeComponent, so they may be null during initial XAML load
+            if (_viewPortWidthBinding == null) return;
+
+            if (_generalControls != null) _generalControls.Visibility = Visibility.Collapsed;
+            if (_legendControls != null) _legendControls.Visibility = Visibility.Collapsed;
+            if (_axesControls != null) _axesControls.Visibility = Visibility.Collapsed;
+            if (_seriesControls != null) _seriesControls.Visibility = Visibility.Collapsed;
+            if (_annotationsControls != null) _annotationsControls.Visibility = Visibility.Collapsed;
+
+            switch (PropertyControlComboBox.SelectedIndex)
+            {
+                case 0: // General
+                    if (_generalControls == null)
+                    {
+                        _generalControls = new GeneralPlotControl { MinWidth = 200, MinHeight = 200 };
+                        BindingOperations.SetBinding(_generalControls, WidthProperty, _viewPortWidthBinding);
+                        BindingOperations.SetBinding(_generalControls, GeneralPlotControl.PlotProperty, _plotBinding);
+                        BindingOperations.SetBinding(_generalControls, GeneralPlotControl.ExpanderStyleProperty, _expanderBinding);
+                        PropertyControlsGrid.Children.Add(_generalControls);
+                    }
+                    _generalControls.Visibility = Visibility.Visible;
+                    break;
+
+                case 1: // Legend
+                    if (_legendControls == null)
+                    {
+                        _legendControls = new LegendControl { MinWidth = 200, MinHeight = 200 };
+                        BindingOperations.SetBinding(_legendControls, WidthProperty, _viewPortWidthBinding);
+                        BindingOperations.SetBinding(_legendControls, LegendControl.PlotProperty, _plotBinding);
+                        BindingOperations.SetBinding(_legendControls, LegendControl.ExpanderStyleProperty, _expanderBinding);
+                        PropertyControlsGrid.Children.Add(_legendControls);
+                    }
+                    _legendControls.Visibility = Visibility.Visible;
+                    break;
+
+                case 2: // Axes
+                    if (_axesControls == null)
+                    {
+                        _axesControls = new AxesControl { MinWidth = 200, MinHeight = 200 };
+                        BindingOperations.SetBinding(_axesControls, WidthProperty, _viewPortWidthBinding);
+                        BindingOperations.SetBinding(_axesControls, AxesControl.PlotProperty, _plotBinding);
+                        BindingOperations.SetBinding(_axesControls, AxesControl.ExpanderStyleProperty, _expanderBinding);
+                        BindingOperations.SetBinding(_axesControls, AxesControl.TabItemStyleProperty, _tabItemStyleBinding);
+                        BindingOperations.SetBinding(_axesControls, AxesControl.ComboBoxStyleProperty, _comboboxStyleBinding);
+                        PropertyControlsGrid.Children.Add(_axesControls);
+                    }
+                    _axesControls.Visibility = Visibility.Visible;
+                    break;
+
+                case 3: // Series
+                    if (_seriesControls == null)
+                    {
+                        _seriesControls = new SeriesSelectorControl { MinWidth = 200, MinHeight = 200 };
+                        BindingOperations.SetBinding(_seriesControls, WidthProperty, _viewPortWidthBinding);
+                        BindingOperations.SetBinding(_seriesControls, SeriesSelectorControl.PlotProperty, _plotBinding);
+                        BindingOperations.SetBinding(_seriesControls, SeriesSelectorControl.ExpanderStyleProperty, _expanderBinding);
+                        BindingOperations.SetBinding(_seriesControls, SeriesSelectorControl.ComboBoxStyleProperty, _comboboxStyleBinding);
+                        PropertyControlsGrid.Children.Add(_seriesControls);
+                    }
+                    _seriesControls.Visibility = Visibility.Visible;
+                    break;
+
+                case 4: // Annotations
+                    if (_annotationsControls == null)
+                    {
+                        _annotationsControls = new AnnotationSelectorControl { MinWidth = 200, MinHeight = 200 };
+                        BindingOperations.SetBinding(_annotationsControls, WidthProperty, _viewPortWidthBinding);
+                        BindingOperations.SetBinding(_annotationsControls, AnnotationSelectorControl.PlotProperty, _plotBinding);
+                        BindingOperations.SetBinding(_annotationsControls, AnnotationSelectorControl.ExpanderStyleProperty, _expanderBinding);
+                        BindingOperations.SetBinding(_annotationsControls, AnnotationSelectorControl.ComboBoxStyleProperty, _comboboxStyleBinding);
+                        PropertyControlsGrid.Children.Add(_annotationsControls);
+                    }
+                    _annotationsControls.Visibility = Visibility.Visible;
+                    break;
+            }
         }
-        else if (name.StartsWith("Series_"))
-        {
-            PropertySectionComboBox.SelectedIndex = 3;
-            // TODO: Select the specific series and expand the appropriate section
-        }
-        else if (name.StartsWith("Annotations_"))
-        {
-            PropertySectionComboBox.SelectedIndex = 4;
-            // TODO: Select the specific annotation and expand the appropriate section
-        }
     }
-
-    /// <summary>
-    /// Navigates to the General Settings section.
-    /// </summary>
-    public void ShowGeneralSettings()
-    {
-        PropertySectionComboBox.SelectedIndex = 0;
-    }
-
-    /// <summary>
-    /// Navigates to the Legend section.
-    /// </summary>
-    public void ShowLegend()
-    {
-        PropertySectionComboBox.SelectedIndex = 1;
-    }
-
-    /// <summary>
-    /// Navigates to the Axes section.
-    /// </summary>
-    public void ShowAxes()
-    {
-        PropertySectionComboBox.SelectedIndex = 2;
-    }
-
-    /// <summary>
-    /// Navigates to the Series section.
-    /// </summary>
-    public void ShowSeries()
-    {
-        PropertySectionComboBox.SelectedIndex = 3;
-    }
-
-    /// <summary>
-    /// Navigates to the Annotations section.
-    /// </summary>
-    public void ShowAnnotations()
-    {
-        PropertySectionComboBox.SelectedIndex = 4;
-    }
-
-    #endregion
-}
-
-/// <summary>
-/// Enum defining all expandable property sections.
-/// Matches the VB PropertyEXP enum for backward compatibility.
-/// </summary>
-public enum PropertyExpander
-{
-    // General section
-    General_PlotTitle,
-    General_PlotSubtitle,
-    General_PlotArea,
-    General_PlotBackground,
-
-    // Legend section
-    Legend_Title,
-    Legend_Items,
-    Legend_Area,
-    Legend_Position,
-
-    // Axes section
-    Axes_Options,
-    Axes_Display,
-    Axes_Title,
-    Axes_Labels,
-    Axes_MajorGridLines,
-    Axes_MinorGridLines,
-    Axes_TickOptions,
-
-    // Series section
-    Series_General,
-    Series_Display,
-    Series_Markers,
-    Series_BoxAndWhiskers,
-    Series_ErrorBarSettings,
-
-    // Annotations section
-    Annotations_Text,
-    Annotations_Display
 }
