@@ -483,6 +483,78 @@ namespace OxyPlotControls
     }
 
     /// <summary>
+    /// Provides backwards-compatible property access for EllipseAnnotation.
+    /// In the new OxyPlot API, EllipseAnnotation uses X, Y, Width, Height instead of MinimumX/MaximumX/MinimumY/MaximumY.
+    /// </summary>
+    public static class EllipseAnnotationExtensions
+    {
+        /// <summary>Gets the minimum X coordinate (left edge) of the ellipse.</summary>
+        public static double GetMinimumX(this EllipseAnnotation ellipse) => ellipse.X - ellipse.Width / 2;
+
+        /// <summary>Gets the maximum X coordinate (right edge) of the ellipse.</summary>
+        public static double GetMaximumX(this EllipseAnnotation ellipse) => ellipse.X + ellipse.Width / 2;
+
+        /// <summary>Gets the minimum Y coordinate (bottom edge) of the ellipse.</summary>
+        public static double GetMinimumY(this EllipseAnnotation ellipse) => ellipse.Y - ellipse.Height / 2;
+
+        /// <summary>Gets the maximum Y coordinate (top edge) of the ellipse.</summary>
+        public static double GetMaximumY(this EllipseAnnotation ellipse) => ellipse.Y + ellipse.Height / 2;
+
+        /// <summary>Sets the minimum X coordinate (left edge) of the ellipse, keeping maximum X fixed.</summary>
+        public static void SetMinimumX(this EllipseAnnotation ellipse, double value)
+        {
+            double maxX = ellipse.GetMaximumX();
+            ellipse.Width = maxX - value;
+            ellipse.X = (value + maxX) / 2;
+        }
+
+        /// <summary>Sets the maximum X coordinate (right edge) of the ellipse, keeping minimum X fixed.</summary>
+        public static void SetMaximumX(this EllipseAnnotation ellipse, double value)
+        {
+            double minX = ellipse.GetMinimumX();
+            ellipse.Width = value - minX;
+            ellipse.X = (minX + value) / 2;
+        }
+
+        /// <summary>Sets the minimum Y coordinate (bottom edge) of the ellipse, keeping maximum Y fixed.</summary>
+        public static void SetMinimumY(this EllipseAnnotation ellipse, double value)
+        {
+            double maxY = ellipse.GetMaximumY();
+            ellipse.Height = maxY - value;
+            ellipse.Y = (value + maxY) / 2;
+        }
+
+        /// <summary>Sets the maximum Y coordinate (top edge) of the ellipse, keeping minimum Y fixed.</summary>
+        public static void SetMaximumY(this EllipseAnnotation ellipse, double value)
+        {
+            double minY = ellipse.GetMinimumY();
+            ellipse.Height = value - minY;
+            ellipse.Y = (minY + value) / 2;
+        }
+
+        /// <summary>Sets both X bounds of the ellipse at once.</summary>
+        public static void SetBoundsX(this EllipseAnnotation ellipse, double minX, double maxX)
+        {
+            ellipse.Width = maxX - minX;
+            ellipse.X = (minX + maxX) / 2;
+        }
+
+        /// <summary>Sets both Y bounds of the ellipse at once.</summary>
+        public static void SetBoundsY(this EllipseAnnotation ellipse, double minY, double maxY)
+        {
+            ellipse.Height = maxY - minY;
+            ellipse.Y = (minY + maxY) / 2;
+        }
+
+        /// <summary>Sets all bounds of the ellipse at once.</summary>
+        public static void SetBounds(this EllipseAnnotation ellipse, double minX, double maxX, double minY, double maxY)
+        {
+            ellipse.SetBoundsX(minX, maxX);
+            ellipse.SetBoundsY(minY, maxY);
+        }
+    }
+
+    /// <summary>
     /// Converts binding expressions to markup extensions for serialization.
     /// </summary>
     public class BindingConvertor : ExpressionConverter

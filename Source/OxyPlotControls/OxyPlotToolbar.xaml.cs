@@ -799,8 +799,8 @@ namespace OxyPlotControls
                 if (ae.ChangedButton != OxyMouseButton.Left) return;
 
                 _lastScreenPoint = new ScreenPoint(ae.Position.X, ae.Position.Y);
-                var upperRight = ellipse.Transform(ellipse.MaximumX, ellipse.MaximumY);
-                var lowerLeft = ellipse.Transform(ellipse.MinimumX, ellipse.MinimumY);
+                var upperRight = ellipse.Transform(ellipse.GetMaximumX(), ellipse.GetMaximumY());
+                var lowerLeft = ellipse.Transform(ellipse.GetMinimumX(), ellipse.GetMinimumY());
                 var topRight = new ScreenPoint(Math.Abs(upperRight.X - ae.Position.X), Math.Abs(upperRight.Y - ae.Position.Y));
                 var bottomLeft = new ScreenPoint(Math.Abs(lowerLeft.X - ae.Position.X), Math.Abs(lowerLeft.Y - ae.Position.Y));
 
@@ -827,23 +827,20 @@ namespace OxyPlotControls
             {
                 double dx = ae.Position.X - _lastScreenPoint.X;
                 double dy = ae.Position.Y - _lastScreenPoint.Y;
-                var upperRightScreenPoint = ellipse.Transform(ellipse.MaximumX, ellipse.MaximumY);
-                var lowerLeftScreenPoint = ellipse.Transform(ellipse.MinimumX, ellipse.MinimumY);
+                var upperRightScreenPoint = ellipse.Transform(ellipse.GetMaximumX(), ellipse.GetMaximumY());
+                var lowerLeftScreenPoint = ellipse.Transform(ellipse.GetMinimumX(), ellipse.GetMinimumY());
 
                 var upperRightDataPoint = ellipse.InverseTransform(new ScreenPoint(upperRightScreenPoint.X + dx, upperRightScreenPoint.Y + dy));
                 var lowerLeftDataPoint = ellipse.InverseTransform(new ScreenPoint(lowerLeftScreenPoint.X + dx, lowerLeftScreenPoint.Y + dy));
 
-                if (_scaleMaxX) ellipse.MaximumX = upperRightDataPoint.X;
-                if (_scaleMaxY) ellipse.MaximumY = upperRightDataPoint.Y;
-                if (_scaleMinX) ellipse.MinimumX = lowerLeftDataPoint.X;
-                if (_scaleMinY) ellipse.MinimumY = lowerLeftDataPoint.Y;
+                if (_scaleMaxX) ellipse.SetMaximumX(upperRightDataPoint.X);
+                if (_scaleMaxY) ellipse.SetMaximumY(upperRightDataPoint.Y);
+                if (_scaleMinX) ellipse.SetMinimumX(lowerLeftDataPoint.X);
+                if (_scaleMinY) ellipse.SetMinimumY(lowerLeftDataPoint.Y);
 
                 if (_moveStartPoint)
                 {
-                    ellipse.MaximumX = upperRightDataPoint.X;
-                    ellipse.MaximumY = upperRightDataPoint.Y;
-                    ellipse.MinimumX = lowerLeftDataPoint.X;
-                    ellipse.MinimumY = lowerLeftDataPoint.Y;
+                    ellipse.SetBounds(lowerLeftDataPoint.X, upperRightDataPoint.X, lowerLeftDataPoint.Y, upperRightDataPoint.Y);
                 }
 
                 _lastScreenPoint = ae.Position;
@@ -1362,10 +1359,10 @@ namespace OxyPlotControls
                 case AddToolMode.AddEllipseAnnotation:
                     var newEllipse = new EllipseAnnotation { Text = "Ellipse Annotation" };
                     var ellipseDataPoint = ConvertScreenPointToDataPoint(e.Position);
-                    newEllipse.MinimumX = ellipseDataPoint.X;
-                    newEllipse.MaximumX = ellipseDataPoint.X;
-                    newEllipse.MinimumY = ellipseDataPoint.Y;
-                    newEllipse.MaximumY = ellipseDataPoint.Y;
+                    newEllipse.X = ellipseDataPoint.X;
+                    newEllipse.Y = ellipseDataPoint.Y;
+                    newEllipse.Width = 0;
+                    newEllipse.Height = 0;
                     Model.Annotations.Add(newEllipse);
                     SetupAnnotationHandlers(newEllipse);
                     Model.InvalidatePlot(false);
@@ -1389,7 +1386,6 @@ namespace OxyPlotControls
                     if (_targetAddAnnotation == null)
                     {
                         var newPolygon = new PolygonAnnotation { Text = "Polygon Annotation" };
-                        newPolygon.Points = new List<DataPoint>();
                         var dataPointClicked = ConvertScreenPointToDataPoint(e.Position);
                         newPolygon.Points.Add(dataPointClicked);
                         _leaderLine.Points.Add(new Point(e.Position.X, e.Position.Y));
@@ -1499,8 +1495,8 @@ namespace OxyPlotControls
                 }
                 else if (annotation is EllipseAnnotation eAnnotation)
                 {
-                    var ur = eAnnotation.Transform(Math.Max(eAnnotation.MaximumX, eAnnotation.MinimumX), Math.Max(eAnnotation.MaximumY, eAnnotation.MinimumY));
-                    var ll = eAnnotation.Transform(Math.Min(eAnnotation.MinimumX, eAnnotation.MaximumX), Math.Min(eAnnotation.MinimumY, eAnnotation.MaximumY));
+                    var ur = eAnnotation.Transform(Math.Max(eAnnotation.GetMaximumX(), eAnnotation.GetMinimumX()), Math.Max(eAnnotation.GetMaximumY(), eAnnotation.GetMinimumY()));
+                    var ll = eAnnotation.Transform(Math.Min(eAnnotation.GetMinimumX(), eAnnotation.GetMaximumX()), Math.Min(eAnnotation.GetMinimumY(), eAnnotation.GetMaximumY()));
 
                     var topRight = new ScreenPoint(Math.Abs(ur.X - e.Position.X), Math.Abs(ur.Y - e.Position.Y));
                     var bottomLeft = new ScreenPoint(Math.Abs(ll.X - e.Position.X), Math.Abs(ll.Y - e.Position.Y));
@@ -1614,8 +1610,8 @@ namespace OxyPlotControls
                     {
                         var mouseDataPoint = ConvertScreenPointToDataPoint(e.Position);
                         var ellipse = (EllipseAnnotation)_targetAddAnnotation;
-                        ellipse.MaximumX = mouseDataPoint.X;
-                        ellipse.MaximumY = mouseDataPoint.Y;
+                        ellipse.SetMaximumX(mouseDataPoint.X);
+                        ellipse.SetMaximumY(mouseDataPoint.Y);
                     }
                     break;
 
@@ -1688,8 +1684,8 @@ namespace OxyPlotControls
             else if (_addAnnotationToolMode == AddToolMode.AddEllipseAnnotation)
             {
                 var ellipse = (EllipseAnnotation)_targetAddAnnotation;
-                ScreenPoint upperRight = ellipse.Transform(ellipse.MaximumX, ellipse.MaximumY);
-                ScreenPoint lowerLeft = ellipse.Transform(ellipse.MinimumX, ellipse.MinimumY);
+                ScreenPoint upperRight = ellipse.Transform(ellipse.GetMaximumX(), ellipse.GetMaximumY());
+                ScreenPoint lowerLeft = ellipse.Transform(ellipse.GetMinimumX(), ellipse.GetMinimumY());
                 double pixelWidth = Math.Abs(upperRight.X - lowerLeft.X);
                 double pixelHeight = Math.Abs(upperRight.Y - lowerLeft.Y);
                 if (pixelWidth < 10 || pixelHeight < 10)
@@ -1701,13 +1697,11 @@ namespace OxyPlotControls
                     var mouseDataPoint = ConvertScreenPointToDataPoint(e.Position);
                     if (pixelWidth < 10)
                     {
-                        ellipse.MinimumX = mouseDataPoint.X - centerXShift;
-                        ellipse.MaximumX = mouseDataPoint.X + centerXShift;
+                        ellipse.SetBoundsX(mouseDataPoint.X - centerXShift, mouseDataPoint.X + centerXShift);
                     }
                     if (pixelHeight < 10)
                     {
-                        ellipse.MinimumY = mouseDataPoint.Y - centerYShift;
-                        ellipse.MaximumY = mouseDataPoint.Y + centerYShift;
+                        ellipse.SetBoundsY(mouseDataPoint.Y - centerYShift, mouseDataPoint.Y + centerYShift);
                     }
                 }
                 StopAddAnnotation();
