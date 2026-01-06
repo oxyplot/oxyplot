@@ -684,6 +684,7 @@ namespace OxyPlotControls
             arrow.MouseUp += (s, ae) =>
             {
                 arrow.Color = _originalColor;
+                Model?.InvalidatePlot(false);
             };
         }
 
@@ -722,6 +723,7 @@ namespace OxyPlotControls
             text.MouseUp += (s, ae) =>
             {
                 text.Background = _originalColor;
+                Model?.InvalidatePlot(false);
             };
         }
 
@@ -788,6 +790,7 @@ namespace OxyPlotControls
             rect.MouseUp += (s, ae) =>
             {
                 rect.Fill = _originalColor;
+                Model?.InvalidatePlot(false);
             };
         }
 
@@ -851,6 +854,7 @@ namespace OxyPlotControls
             ellipse.MouseUp += (s, ae) =>
             {
                 ellipse.Fill = _originalColor;
+                Model?.InvalidatePlot(false);
             };
         }
 
@@ -893,6 +897,7 @@ namespace OxyPlotControls
             point.MouseUp += (s, ae) =>
             {
                 point.Fill = _originalColor;
+                Model?.InvalidatePlot(false);
             };
         }
 
@@ -989,6 +994,7 @@ namespace OxyPlotControls
             polygon.MouseUp += (s, ae) =>
             {
                 polygon.Fill = _originalColor;
+                Model?.InvalidatePlot(false);
             };
         }
 
@@ -1071,6 +1077,7 @@ namespace OxyPlotControls
             polyline.MouseUp += (s, ae) =>
             {
                 polyline.Color = _originalColor;
+                Model?.InvalidatePlot(false);
             };
         }
 
@@ -1134,6 +1141,7 @@ namespace OxyPlotControls
             {
                 line.Color = _originalColor;
                 CloseLineAnnotationTooltip(line);
+                Model?.InvalidatePlot(false);
             };
         }
 
