@@ -2399,6 +2399,219 @@ namespace OxyPlotControls
                         dataTable.Rows.Add(dataTable.Rows.Count + 1, item.X, item.LowerWhisker, item.BoxBottom, item.Median, item.BoxTop, item.UpperWhisker, item.Tag);
                     }
                 }
+                else if (series is OxyPlot.Series.BarSeries barSeries)
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "BarSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
+
+                    dataTable.TableName = seriesName;
+                    dataTable.Columns.Add("id", typeof(int));
+                    dataTable.Columns.Add(seriesName + "_categoryIndex", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_color", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_value", typeof(string));
+
+                    if (barSeries.ItemsSource != null)
+                    {
+                        var datalist = barSeries.ItemsSource as IEnumerable<OxyPlot.Series.BarItem>;
+                        if (datalist != null)
+                        {
+                            foreach (var seriesItem in datalist.ToList())
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesItem.CategoryIndex, seriesItem.Color.GetColorName(), seriesItem.Value);
+                            }
+                        }
+                        else
+                        {
+                            int c = 0;
+                            foreach (var obj in barSeries.ItemsSource.Cast<object>())
+                            {
+                                string colorVal = "";
+                                if (barSeries.ColorField != null)
+                                {
+                                    PropertyInfo? propColor = obj.GetType().GetProperty(barSeries.ColorField);
+                                    colorVal = Convert.ToString(propColor?.GetValue(obj, null)) ?? "";
+                                }
+
+                                string valueVal = "";
+                                if (barSeries.ValueField != null)
+                                {
+                                    PropertyInfo? propValue = obj.GetType().GetProperty(barSeries.ValueField);
+                                    valueVal = Convert.ToString(propValue?.GetValue(obj, null)) ?? "";
+                                }
+
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, c, colorVal, valueVal);
+                                c++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var seriesItem in barSeries.Items)
+                        {
+                            dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesItem.CategoryIndex, seriesItem.Color.GetColorName(), seriesItem.Value);
+                        }
+                    }
+                }
+                else if (series is OxyPlot.Series.HistogramSeries histogramSeries)
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "HistogramSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
+
+                    dataTable.TableName = seriesName;
+                    dataTable.Columns.Add("id", typeof(int));
+                    dataTable.Columns.Add(seriesName + "_rangeStart", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_rangeEnd", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_area", typeof(string));
+
+                    if (histogramSeries.ItemsSource != null)
+                    {
+                        var datalist = histogramSeries.ItemsSource as IEnumerable<OxyPlot.Series.HistogramItem>;
+                        if (datalist != null)
+                        {
+                            foreach (var seriesValue in datalist.ToList())
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesValue.RangeStart, seriesValue.RangeEnd, seriesValue.Area);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var seriesItem in histogramSeries.Items)
+                        {
+                            dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesItem.RangeStart, seriesItem.RangeEnd, seriesItem.Area);
+                        }
+                    }
+                }
+                else if (series is OxyPlot.Series.HeatMapSeries heatMapSeries)
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "HeatMapSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
+
+                    dataTable.TableName = seriesName;
+                    dataTable.Columns.Add("id", typeof(int));
+                    dataTable.Columns.Add("xy", typeof(string));
+
+                    if (heatMapSeries.Data != null)
+                    {
+                        // Add columns for X values
+                        double x0 = heatMapSeries.X0;
+                        double x1 = heatMapSeries.X1;
+                        int xN = heatMapSeries.Data.GetLength(0) - 1;
+                        double xDelta = xN > 0 ? (x1 - x0) / xN : 0;
+                        dataTable.Columns.Add(x0.ToString(), typeof(string));
+                        for (int i = 1; i < heatMapSeries.Data.GetLength(0); i++)
+                        {
+                            x0 += xDelta;
+                            dataTable.Columns.Add(x0.ToString(), typeof(string));
+                        }
+
+                        // Add rows for Y values
+                        double y0 = heatMapSeries.Y0;
+                        double y1 = heatMapSeries.Y1;
+                        int yN = heatMapSeries.Data.GetLength(1) - 1;
+                        double yDelta = yN > 0 ? (y1 - y0) / yN : 0;
+                        dataTable.Rows.Add();
+                        dataTable.Rows[0][0] = 1;
+                        dataTable.Rows[0][1] = y0;
+
+                        for (int j = 1; j < heatMapSeries.Data.GetLength(1); j++)
+                        {
+                            dataTable.Rows.Add();
+                            y0 += yDelta;
+                            dataTable.Rows[j][0] = j + 1;
+                            dataTable.Rows[j][1] = y0;
+                        }
+
+                        // Fill in matrix values
+                        for (int x = 0; x < heatMapSeries.Data.GetLength(0); x++)
+                        {
+                            for (int y = 0; y < heatMapSeries.Data.GetLength(1); y++)
+                            {
+                                dataTable.Rows[y][x + 2] = heatMapSeries.Data[x, y];
+                            }
+                        }
+                    }
+                }
+                else if (series is OxyPlot.Series.ScatterErrorSeries scatterErrorSeries)
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "ScatterErrorSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
+
+                    dataTable.TableName = seriesName;
+                    dataTable.Columns.Add("id", typeof(int));
+                    dataTable.Columns.Add(seriesName + "_x", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_y", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_errorX", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_errorY", typeof(string));
+
+                    if (scatterErrorSeries.ItemsSource != null)
+                    {
+                        var datalist = scatterErrorSeries.ItemsSource as IEnumerable<OxyPlot.Series.ScatterErrorPoint>;
+                        if (datalist != null)
+                        {
+                            foreach (var seriesValue in datalist.ToList())
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesValue.X, seriesValue.Y, seriesValue.ErrorX, seriesValue.ErrorY);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var obj in scatterErrorSeries.ItemsSource.Cast<object>())
+                            {
+                                PropertyInfo? propX = obj.GetType().GetProperty(scatterErrorSeries.DataFieldX);
+                                string xVal = Convert.ToString(propX?.GetValue(obj, null)) ?? "";
+                                PropertyInfo? propY = obj.GetType().GetProperty(scatterErrorSeries.DataFieldY);
+                                string yVal = Convert.ToString(propY?.GetValue(obj, null)) ?? "";
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, xVal, yVal, "", "");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var seriesValue in scatterErrorSeries.Points)
+                        {
+                            dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesValue.X, seriesValue.Y, seriesValue.ErrorX, seriesValue.ErrorY);
+                        }
+                    }
+                }
+
+                // Handle category axes
+                if (series is OxyPlot.Series.XYAxisSeries xySeries)
+                {
+                    var xCat = xySeries.XAxis as OxyPlot.Axes.CategoryAxis;
+                    if (xCat != null && xCat.Labels.Count > 0)
+                    {
+                        dataTable.Columns.Add("Xcategory", typeof(string));
+                        for (int i = 0; i < Math.Min(dataTable.Rows.Count, xCat.Labels.Count); i++)
+                        {
+                            dataTable.Rows[i]["Xcategory"] = xCat.Labels[i];
+                        }
+                    }
+                    else
+                    {
+                        var yCat = xySeries.YAxis as OxyPlot.Axes.CategoryAxis;
+                        if (yCat != null && yCat.Labels.Count > 0)
+                        {
+                            dataTable.Columns.Add("Ycategory", typeof(string));
+                            for (int i = 0; i < Math.Min(dataTable.Rows.Count, yCat.Labels.Count); i++)
+                            {
+                                dataTable.Rows[i]["Ycategory"] = yCat.Labels[i];
+                            }
+                        }
+                    }
+                }
 
                 if (dataTable.Rows.Count > 0)
                 {
