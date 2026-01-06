@@ -2,7 +2,6 @@ using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using OxyPlot;
-using OxyPlot.Wpf;
 
 namespace OxyPlotControls
 {
@@ -15,21 +14,21 @@ namespace OxyPlotControls
         #region Dependency Properties
 
         /// <summary>
-        /// Identifies the <see cref="Plot"/> dependency property.
+        /// Identifies the <see cref="PlotModel"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty PlotProperty = DependencyProperty.Register(
-            nameof(Plot),
-            typeof(Plot),
+        public static readonly DependencyProperty PlotModelProperty = DependencyProperty.Register(
+            nameof(PlotModel),
+            typeof(PlotModel),
             typeof(SeriesSelectorControl),
-            new PropertyMetadata(null, InitializePlot));
+            new PropertyMetadata(null, InitializePlotModel));
 
         /// <summary>
-        /// Gets or sets the OxyPlot Plot control that this selector is bound to.
+        /// Gets or sets the PlotModel that this selector is bound to.
         /// </summary>
-        public Plot Plot
+        public PlotModel PlotModel
         {
-            get => (Plot)GetValue(PlotProperty);
-            set => SetValue(PlotProperty, value);
+            get => (PlotModel)GetValue(PlotModelProperty);
+            set => SetValue(PlotModelProperty, value);
         }
 
         /// <summary>
@@ -37,16 +36,16 @@ namespace OxyPlotControls
         /// </summary>
         public static readonly DependencyProperty SelectedSeriesProperty = DependencyProperty.Register(
             nameof(SelectedSeries),
-            typeof(OxyPlot.Wpf.Series),
+            typeof(OxyPlot.Series.Series),
             typeof(SeriesSelectorControl),
             new PropertyMetadata(null));
 
         /// <summary>
         /// Gets or sets the currently selected series.
         /// </summary>
-        public OxyPlot.Wpf.Series SelectedSeries
+        public OxyPlot.Series.Series SelectedSeries
         {
-            get => (OxyPlot.Wpf.Series)GetValue(SelectedSeriesProperty);
+            get => (OxyPlot.Series.Series)GetValue(SelectedSeriesProperty);
             set => SetValue(SelectedSeriesProperty, value);
         }
 
@@ -104,25 +103,21 @@ namespace OxyPlotControls
         }
 
         /// <summary>
-        /// Handles changes to the Plot property.
+        /// Handles changes to the PlotModel property.
         /// </summary>
-        private static void InitializePlot(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void InitializePlotModel(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d == null) return;
-            if (d.GetType() != typeof(SeriesSelectorControl)) return;
-            var thisControl = (SeriesSelectorControl)d;
+            if (d is not SeriesSelectorControl thisControl) return;
 
             thisControl.SeriesPropertyControlComboBox.ItemsSource = null;
-            if (e.NewValue == null) return;
-            if (e.NewValue.GetType() != typeof(Plot)) return;
-            var newPlot = (Plot)e.NewValue;
+            if (e.NewValue is not PlotModel newPlotModel) return;
 
             thisControl.AddHandlers();
             if (thisControl.ComboBoxStyle == null) thisControl.SetDefaultComboboxStyle();
 
-            thisControl.SeriesPropertyControlComboBox.ItemsSource = newPlot.Series;
+            thisControl.SeriesPropertyControlComboBox.ItemsSource = newPlotModel.Series;
 
-            if (newPlot.Series.Count > 0) thisControl.SeriesPropertyControlComboBox.SelectedIndex = 0;
+            if (newPlotModel.Series.Count > 0) thisControl.SeriesPropertyControlComboBox.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -130,13 +125,16 @@ namespace OxyPlotControls
         /// </summary>
         private void AddHandlers()
         {
-            Plot.Series.CollectionChanged += Series_CollectionChanged;
+            if (PlotModel?.Series is INotifyCollectionChanged notifyCollection)
+            {
+                notifyCollection.CollectionChanged += Series_CollectionChanged;
+            }
         }
 
         /// <summary>
         /// Handles changes to the series collection.
         /// </summary>
-        private void Series_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void Series_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             // New item was added
             if (e.NewItems != null)
@@ -144,7 +142,7 @@ namespace OxyPlotControls
                 foreach (var newItem in e.NewItems)
                 {
                     SeriesPropertyControlComboBox.SelectedItem = newItem;
-                    SeriesPropertiesControl.Series = newItem as OxyPlot.Wpf.Series;
+                    SeriesPropertiesControl.Series = newItem as OxyPlot.Series.Series;
                     break;
                 }
             }
@@ -152,7 +150,7 @@ namespace OxyPlotControls
             // Item was removed
             if (e.OldItems != null)
             {
-                if (Plot != null && Plot.Series.Count == 0)
+                if (PlotModel != null && PlotModel.Series.Count == 0)
                 {
                     // SeriesPropertiesControl.HideExpanders();
                 }
@@ -171,7 +169,7 @@ namespace OxyPlotControls
             // Early exit if nothing is selected
             if (SeriesPropertyControlComboBox.SelectedItem == null) return;
 
-            var seriesToSelect = SeriesPropertyControlComboBox.SelectedItem as OxyPlot.Wpf.Series;
+            var seriesToSelect = SeriesPropertyControlComboBox.SelectedItem as OxyPlot.Series.Series;
             if (seriesToSelect == null) return;
             SeriesPropertiesControl.Series = seriesToSelect;
         }
@@ -181,30 +179,25 @@ namespace OxyPlotControls
         /// </summary>
         private void MoveSeriesUpButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Plot == null) return;
-            if (sender == null) return;
-            if (sender.GetType() != typeof(Button)) return;
-            var btn = (Button)sender;
-            if (btn.DataContext == null) return;
-            var seriesToMoveUp = btn.DataContext as OxyPlot.Wpf.Series;
-            if (seriesToMoveUp == null) return;
+            if (PlotModel == null) return;
+            if (sender is not Button btn) return;
+            if (btn.DataContext is not OxyPlot.Series.Series seriesToMoveUp) return;
 
-            int index = Plot.Series.IndexOf(seriesToMoveUp);
+            int index = PlotModel.Series.IndexOf(seriesToMoveUp);
             if (index == 0 || index == -1) return;
 
-            // You can't simply swap the series, no that would be too easy.
-            // Instead you have to make a copy of the series, swap on the copy, then add each series back.
-            var oldSeries = new System.Collections.Generic.List<OxyPlot.Wpf.Series>(Plot.Series);
-            Plot.Series.Clear();
+            // Swap series positions
+            var oldSeries = new System.Collections.Generic.List<OxyPlot.Series.Series>(PlotModel.Series);
+            PlotModel.Series.Clear();
             oldSeries[index] = oldSeries[index - 1];
             oldSeries[index - 1] = seriesToMoveUp;
             for (int i = 0; i < oldSeries.Count; i++)
             {
-                Plot.Series.Add(oldSeries[i]);
+                PlotModel.Series.Add(oldSeries[i]);
             }
 
             SeriesPropertyControlComboBox.SelectedIndex = index + 1;
-            Plot.InvalidatePlot(true);
+            PlotModel.InvalidatePlot(true);
         }
 
         /// <summary>
@@ -212,29 +205,24 @@ namespace OxyPlotControls
         /// </summary>
         private void MoveSeriesDownButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Plot == null) return;
-            if (sender == null) return;
-            if (sender.GetType() != typeof(Button)) return;
-            var btn = (Button)sender;
-            if (btn.DataContext == null) return;
+            if (PlotModel == null) return;
+            if (sender is not Button btn) return;
+            if (btn.DataContext is not OxyPlot.Series.Series seriesToMoveDown) return;
 
-            var seriesToMoveDown = btn.DataContext as OxyPlot.Wpf.Series;
-            if (seriesToMoveDown == null) return;
+            int index = PlotModel.Series.IndexOf(seriesToMoveDown);
+            if (index == PlotModel.Series.Count - 1 || index == -1) return;
 
-            int index = Plot.Series.IndexOf(seriesToMoveDown);
-            if (index == Plot.Series.Count - 1 || index == -1) return;
-
-            var oldSeries = new System.Collections.Generic.List<OxyPlot.Wpf.Series>(Plot.Series);
-            Plot.Series.Clear();
+            var oldSeries = new System.Collections.Generic.List<OxyPlot.Series.Series>(PlotModel.Series);
+            PlotModel.Series.Clear();
             oldSeries[index] = oldSeries[index + 1];
             oldSeries[index + 1] = seriesToMoveDown;
             for (int i = 0; i < oldSeries.Count; i++)
             {
-                Plot.Series.Add(oldSeries[i]);
+                PlotModel.Series.Add(oldSeries[i]);
             }
 
             SeriesPropertyControlComboBox.SelectedIndex = index + 1;
-            Plot.InvalidatePlot(true);
+            PlotModel.InvalidatePlot(true);
         }
 
         /// <summary>
@@ -242,24 +230,19 @@ namespace OxyPlotControls
         /// </summary>
         private void DeleteSeriesButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Plot == null) return;
-            if (sender == null) return;
-            if (sender.GetType() != typeof(Button)) return;
-            var btn = (Button)sender;
-            if (btn.DataContext == null) return;
+            if (PlotModel == null) return;
+            if (sender is not Button btn) return;
+            if (btn.DataContext is not OxyPlot.Series.Series seriesToDelete) return;
 
-            var seriesToDelete = btn.DataContext as OxyPlot.Wpf.Series;
-            if (seriesToDelete == null) return;
-
-            int index = Plot.Series.IndexOf(seriesToDelete);
+            int index = PlotModel.Series.IndexOf(seriesToDelete);
             if (index == SeriesPropertyControlComboBox.SelectedIndex)
             {
                 if (index > 0) index -= 1;
-                if (Plot.Series.Count == 1) index = -1;
+                if (PlotModel.Series.Count == 1) index = -1;
             }
-            Plot.Series.Remove(seriesToDelete);
+            PlotModel.Series.Remove(seriesToDelete);
             SeriesPropertyControlComboBox.SelectedIndex = index;
-            Plot.InvalidatePlot(false);
+            PlotModel.InvalidatePlot(false);
 
             SeriesPropertiesControl.CloseExpanders();
         }

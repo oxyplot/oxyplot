@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Media;
 using System.Xml.Linq;
 using OxyPlot;
-using OxyPlot.Wpf;
 
 namespace OxyPlotControls
 {

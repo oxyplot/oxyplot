@@ -190,12 +190,14 @@ namespace OxyPlotControls
         /// </summary>
         /// <param name="plot">The plot to populate with series.</param>
         /// <param name="element">The XElement containing series properties.</param>
-        public static void XElementToSeriesProperties(PlotModel plot, XElement element)
+        /// <param name="version">The serialization format version (1 for legacy, 2 for modern format).</param>
+        public static void XElementToSeriesProperties(PlotModel plot, XElement element, int version = 2)
         {
             // Early Exit
             if (element.Name != SeriesPropertiesTag) return;
 
             // Set up the series
+            // Note: XElementToSeriesProperties handles backward compatibility internally
             plot.Series.Clear();
 
             foreach (var el in element.Elements(SeriesPropertiesTag))
@@ -221,27 +223,11 @@ namespace OxyPlotControls
             var seriesType = series.GetType();
             seriesElement.SetAttributeValue("SeriesType", seriesType.ToString());
 
-            // Serialize general series properties
+            // Serialize general series properties (only properties that exist on core OxyPlot.Series.Series)
             var generalProperties = new XElement("General");
-            generalProperties.SetAttributeValue(nameof(series.Name), series.Name.ToString());
             generalProperties.SetAttributeValue(nameof(series.Title), series.Title);
-            generalProperties.SetAttributeValue(nameof(series.IsEnabled), series.IsEnabled.ToString());
-            generalProperties.SetAttributeValue(nameof(series.Visibility), series.Visibility.ToString());
+            generalProperties.SetAttributeValue(nameof(series.IsVisible), series.IsVisible.ToString());
             generalProperties.SetAttributeValue(nameof(series.RenderInLegend), series.RenderInLegend.ToString());
-
-            var bc = new BrushConverter();
-            generalProperties.SetAttributeValue(nameof(series.Background), bc.ConvertToInvariantString(series.Background));
-            generalProperties.SetAttributeValue(nameof(series.Foreground), bc.ConvertToInvariantString(series.Foreground));
-
-            var fwc = new FontWeightConverter();
-            var tc = new ThicknessConverter();
-            var ffc = new FontFamilyConverter();
-            generalProperties.SetAttributeValue(nameof(series.Color), series.Color.ToString());
-            if (series.FontFamily != null)
-                generalProperties.SetAttributeValue(nameof(series.FontFamily), ffc.ConvertToInvariantString(series.FontFamily));
-            generalProperties.SetAttributeValue(nameof(series.FontSize), series.FontSize.ToString("G17", CultureInfo.InvariantCulture));
-            generalProperties.SetAttributeValue(nameof(series.FontWeight), fwc.ConvertToInvariantString(series.FontWeight));
-            generalProperties.SetAttributeValue(nameof(series.Padding), tc.ConvertToInvariantString(series.Padding));
             generalProperties.SetAttributeValue(nameof(series.TrackerFormatString), series.TrackerFormatString);
             generalProperties.SetAttributeValue(nameof(series.TrackerKey), series.TrackerKey);
 
@@ -454,13 +440,11 @@ namespace OxyPlotControls
             if (element == null) return null;
             if (element.Name != SeriesPropertiesTag) return null;
 
-            // Set up converters
+            // Set up converters (kept for backward compatibility with V1 format)
             var fontWeightConverter = new FontWeightConverter();
             var thicknessConverter = new ThicknessConverter();
-            // OxyColorConverter no longer needed - use OxyColor directly
             var brushConverter = new BrushConverter();
             var fontFamilyConverter = new FontFamilyConverter();
-            var booleanToVisibilityConverter = new BooleanToVisibilityConverter();
 
             // Set up series to return
             OxyPlot.Series.Series series = null;
@@ -489,31 +473,25 @@ namespace OxyPlotControls
             else
                 return null; // not a recognized type
 
-            var bConverter = new BrushConverter();
-
             // Deserialize General Series Properties
             var generalElement = element.Element("General");
             if (generalElement != null)
             {
-                if (GetStringAttribute(generalElement, nameof(series.Name), out var name)) series.Name = name;
                 if (GetStringAttribute(generalElement, nameof(series.Title), out var title)) series.Title = title;
-                if (GetBooleanAttribute(generalElement, nameof(series.IsEnabled), out var isEnabled)) series.IsEnabled = isEnabled;
-                if (generalElement.Attribute(nameof(series.Visibility)) != null)
+
+                // Handle both V1 (Visibility) and V2 (IsVisible) format
+                if (GetBooleanAttribute(generalElement, nameof(series.IsVisible), out var isVisible))
                 {
-                    var visibilityString = generalElement.Attribute(nameof(series.Visibility)).Value;
-                    if (visibilityString == "Visible") series.Visibility = Visibility.Visible;
-                    if (visibilityString == "Hidden") series.Visibility = Visibility.Hidden;
-                    if (visibilityString == "Collapsed") series.Visibility = Visibility.Collapsed;
+                    series.IsVisible = isVisible;
+                }
+                else if (generalElement.Attribute("Visibility") != null)
+                {
+                    // V1 backward compatibility: convert WPF Visibility to IsVisible
+                    var visibilityString = generalElement.Attribute("Visibility")!.Value;
+                    series.IsVisible = visibilityString == "Visible";
                 }
 
                 if (GetBooleanAttribute(generalElement, nameof(series.RenderInLegend), out var renderInLegend)) series.RenderInLegend = renderInLegend;
-                if (GetBrushAttribute(generalElement, nameof(series.Background), bConverter, out var background)) series.Background = background;
-                if (GetBrushAttribute(generalElement, nameof(series.Foreground), bConverter, out var foreground)) series.Foreground = foreground;
-                if (GetColorAttribute(generalElement, nameof(series.Color), out var color)) series.Color = color;
-                if (GetFontFamilyAttribute(generalElement, nameof(series.FontFamily), fontFamilyConverter, out var fontFamily)) series.FontFamily = fontFamily;
-                if (GetDoubleAttribute(generalElement, nameof(series.FontSize), out var fontSize)) series.FontSize = fontSize;
-                if (GetFontWeightAttribute(generalElement, nameof(series.FontWeight), fontWeightConverter, out var fontWeight)) series.FontWeight = fontWeight;
-                if (GetThicknessAttribute(generalElement, nameof(series.Padding), thicknessConverter, out var padding)) series.Padding = padding;
                 if (GetStringAttribute(generalElement, nameof(series.TrackerFormatString), out var trackerFormatString)) series.TrackerFormatString = trackerFormatString;
                 if (GetStringAttribute(generalElement, nameof(series.TrackerKey), out var trackerKey)) series.TrackerKey = trackerKey;
             }
