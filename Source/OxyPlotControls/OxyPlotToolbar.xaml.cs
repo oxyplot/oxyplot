@@ -1414,7 +1414,7 @@ namespace OxyPlotControls
                     if (_targetAddAnnotation == null)
                     {
                         var newPolyline = new PolylineAnnotation { Text = "Polyline Annotation" };
-                        newPolyline.Points = new List<DataPoint>();
+                        // Note: Points is read-only in modern OxyPlot, no need to initialize - it's already an empty list
                         Model.Annotations.Add(newPolyline);
                         SetupAnnotationHandlers(newPolyline);
                         PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newPolyline);

@@ -308,12 +308,12 @@ namespace OxyPlotControls
         /// <summary>
         /// When a new annotation is added or removed externally, update the control.
         /// </summary>
-        private void Annotation_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        private void Annotation_CollectionChanged(object? sender, ElementCollectionChangedEventArgs<Annotation> e)
         {
             // New item was added.
-            if (e.NewItems != null)
+            if (e.AddedItems != null && e.AddedItems.Count > 0)
             {
-                foreach (var newItem in e.NewItems)
+                foreach (var newItem in e.AddedItems)
                 {
                     AnnotationPropertyControlComboBox.SelectedItem = newItem;
                     AnnotationPropertiesControl.Annotation = newItem as TextualAnnotation;
@@ -322,7 +322,7 @@ namespace OxyPlotControls
             }
 
             // Item was removed.
-            if (e.OldItems != null)
+            if (e.RemovedItems != null && e.RemovedItems.Count > 0)
             {
                 if (PlotModel != null && PlotModel.Annotations.Count == 0)
                 {
