@@ -393,12 +393,15 @@ namespace OxyPlotControls
         /// </summary>
         /// <param name="plotModel">The PlotModel to apply settings to.</param>
         /// <param name="element">The XElement containing serialized annotations properties.</param>
-        public static void XElementToAnnotationsProperties(PlotModel plotModel, XElement element)
+        /// <param name="version">The serialization format version (1 for legacy, 2 for modern format).</param>
+        public static void XElementToAnnotationsProperties(PlotModel plotModel, XElement element, int version = 2)
         {
             // Early Exit
             if (element.Name != AnnotationsPropertiesTag) return;
 
             // Set up the annotations
+            // Note: AnnotationControl.XElementToAnnotationProperties handles backward compatibility internally
+            // by using Contains() for type matching and supporting both old and new property names
             plotModel.Annotations.Clear();
             Annotation? tempAnnotation;
             foreach (var el in element.Elements(AnnotationControl.AnnotationPropertiesTag))

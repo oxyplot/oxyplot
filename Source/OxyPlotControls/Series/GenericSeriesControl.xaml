@@ -71,7 +71,7 @@
                     Margin="0 2"
                     DockPanel.Dock="Top"
                     Title="Is Visible"
-                    IsSelected="{Binding ElementName=SeriesProperties, Path=Series.Visibility, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource VisibilityToBoolConverter}}"/>
+                    IsSelected="{Binding ElementName=SeriesProperties, Path=Series.IsVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
                     <!--Render In Legend (DEVELOPER)-->
                     <cntrls:BooleanPropertyControl

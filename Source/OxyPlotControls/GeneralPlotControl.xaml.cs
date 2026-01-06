@@ -371,6 +371,33 @@ namespace OxyPlotControls
     }
 
     /// <summary>
+    /// A value converter that converts OxyThickness to/from a single double value.
+    /// Uses uniform thickness (all sides equal to the double value).
+    /// </summary>
+    public class OxyThicknessToDoubleConverter : IValueConverter
+    {
+        /// <summary>
+        /// Converts an OxyThickness to a double, using the Left value.
+        /// </summary>
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is OxyThickness thickness)
+                return thickness.Left;
+            return 0.0;
+        }
+
+        /// <summary>
+        /// Converts a double to an OxyThickness with uniform values.
+        /// </summary>
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is double d)
+                return new OxyThickness(d);
+            return new OxyThickness(0);
+        }
+    }
+
+    /// <summary>
     /// A value converter that provides a default font size when the value is NaN or invalid.
     /// Returns 12.0 as the default font size.
     /// </summary>

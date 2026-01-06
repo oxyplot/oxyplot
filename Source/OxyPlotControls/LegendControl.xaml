@@ -53,14 +53,14 @@
                     DockPanel.Dock="Top"
                     MaxPropertyWidth="400"
                     Title="Title"
-                    Text="{Binding Plot.LegendTitle, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    Text="{Binding CurrentLegend.LegendTitle, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
                 <!--Title Color-->
                 <cntrls:ColorPropertyControl
                     Margin="0 2"
                     DockPanel.Dock="Top"
                     Title="Color"
-                    SelectedColor="{Binding Plot.LegendTitleColor, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource OxyAutoColorConverter}}"/>
+                    SelectedColor="{Binding CurrentLegend.LegendTitleColor, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource OxyAutoColorConverter}}"/>
 
                 <!--Title Font-->
                 <cntrls:FontSelectorControl
@@ -68,7 +68,7 @@
                     DockPanel.Dock="Top"
                     MaxPropertyWidth="200"
                     Title="Font"
-                    FontFamilyString="{Binding Path=Plot.LegendTitleFont, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    FontFamilyString="{Binding Path=CurrentLegend.LegendTitleFont, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"/>
 
                 <!--Title Font Size-->
@@ -79,16 +79,17 @@
                     Title="Font Size"
                     CanHaveNegative="False"
                     NumericOptions="{StaticResource FontSizeOptions}"
-                    SelectedNumber="{Binding Plot.LegendTitleFontSize, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DefaultFontSizeConverter}}"
+                    SelectedNumber="{Binding CurrentLegend.LegendTitleFontSize, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DefaultFontSizeConverter}}"
                     PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"/>
 
                 <!--Title Font Weight-->
-                <cntrls:FontWeightSelectorControl
+                <cntrls:NumericPropertySelectorControl
                     Margin="0 2"
                     DockPanel.Dock="Top"
                     MaxPropertyWidth="200"
                     Title="Font Weight"
-                    SelectedFontWeight="{Binding Path=Plot.LegendTitleFontWeight, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    NumericOptions="{StaticResource FontWeightOptions}"
+                    SelectedNumber="{Binding Path=CurrentLegend.LegendTitleFontWeight, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"/>
             </DockPanel>
         </Expander>
@@ -107,7 +108,7 @@
                     Margin="0 2"
                     DockPanel.Dock="Top"
                     Title="Text Color"
-                    SelectedColor="{Binding Plot.LegendTextColor, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource OxyAutoColorConverter}}"/>
+                    SelectedColor="{Binding CurrentLegend.LegendTextColor, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource OxyAutoColorConverter}}"/>
 
                 <!--Legend Font-->
                 <cntrls:FontSelectorControl
@@ -115,7 +116,7 @@
                     DockPanel.Dock="Top"
                     MaxPropertyWidth="200"
                     Title="Font"
-                    FontFamilyString="{Binding Path=Plot.LegendFont, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    FontFamilyString="{Binding Path=CurrentLegend.LegendFont, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"/>
 
                 <!--Legend Font Size-->
@@ -125,16 +126,17 @@
                     MaxPropertyWidth="200"
                     Title="Font Size"
                     CanHaveNegative="False"
-                    NumericOptions="{StaticResource FontSizeOptions}" SelectedNumber="{Binding Plot.LegendFontSize, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DefaultFontSizeConverter}}"
+                    NumericOptions="{StaticResource FontSizeOptions}" SelectedNumber="{Binding CurrentLegend.LegendFontSize, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DefaultFontSizeConverter}}"
                     PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"/>
 
                 <!--Legend Font Weight-->
-                <cntrls:FontWeightSelectorControl
+                <cntrls:NumericPropertySelectorControl
                     Margin="0 2"
                     DockPanel.Dock="Top"
                     MaxPropertyWidth="200"
                     Title="Font Weight"
-                    SelectedFontWeight="{Binding Path=Plot.LegendFontWeight, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    NumericOptions="{StaticResource FontWeightOptions}"
+                    SelectedNumber="{Binding Path=CurrentLegend.LegendFontWeight, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"/>
 
                 <!--Item Alignment-->
@@ -143,7 +145,7 @@
                     DockPanel.Dock="Top"
                     MaxPropertyWidth="200"
                     Title="Item Alignment"
-                    Alignment="{Binding Path=Plot.LegendItemAlignment, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    Alignment="{Binding Path=CurrentLegend.LegendItemAlignment, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"/>
 
             </DockPanel>
@@ -163,21 +165,21 @@
                     Margin="0 2"
                     DockPanel.Dock="Top"
                     Title="Legend Visible"
-                    IsSelected="{Binding ElementName=LegendProperties, Path=Plot.IsLegendVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    IsSelected="{Binding ElementName=LegendProperties, Path=PlotModel.IsLegendVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
                 <!--Legend Area Color-->
                 <cntrls:ColorPropertyControl
                     Margin="0 2"
                     DockPanel.Dock="Top"
                     Title="Background Color"
-                    SelectedColor="{Binding Plot.LegendBackground, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource OxyAutoColorConverter}}"/>
+                    SelectedColor="{Binding CurrentLegend.LegendBackground, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource OxyAutoColorConverter}}"/>
 
                 <!--Legend Area Border Color-->
                 <cntrls:ColorPropertyControl
                     Margin="0 2"
                     DockPanel.Dock="Top"
                     Title="Border Color"
-                    SelectedColor="{Binding Plot.LegendBorder, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource OxyAutoColorConverter}}"/>
+                    SelectedColor="{Binding CurrentLegend.LegendBorder, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource OxyAutoColorConverter}}"/>
 
                 <!--Legend Area Border Thickness-->
                 <cntrls:LineWidthSelectorControl
@@ -186,7 +188,7 @@
                     MaxPropertyWidth="200"
                     Title="Border Thickness"
                     WidthOptions="{StaticResource LineWidthOptions}"
-                    SelectedWidth="{Binding Plot.LegendBorderThickness, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    SelectedWidth="{Binding CurrentLegend.LegendBorderThickness, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"/>
 
                 <!--Legend Padding-->
@@ -196,7 +198,7 @@
                     MaxPropertyWidth="200"
                     Title="Padding"
                     NumericOptions="{StaticResource PaddingOptions}"
-                    SelectedNumber="{Binding Path=Plot.LegendPadding, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    SelectedNumber="{Binding Path=CurrentLegend.LegendPadding, ElementName=LegendProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"/>
             </DockPanel>
 
@@ -221,7 +223,7 @@
                     <cntrls:ContentPropertyControl.InnerContent>
                         <ComboBox
                             ItemsSource="{Binding PlacementOptions}"
-                            SelectedValue="{Binding Path=Plot.LegendPlacement, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            SelectedValue="{Binding Path=CurrentLegend.LegendPlacement, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             SelectionChanged="LegendPropertyComboBox_SelectionChanged"/>
                     </cntrls:ContentPropertyControl.InnerContent>
                 </cntrls:ContentPropertyControl>
@@ -236,7 +238,7 @@
                     <cntrls:ContentPropertyControl.InnerContent>
                         <ComboBox
                             ItemsSource="{Binding PositionOptions}"
-                            SelectedValue="{Binding Path=Plot.LegendPosition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            SelectedValue="{Binding Path=CurrentLegend.LegendPosition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             SelectionChanged="LegendPropertyComboBox_SelectionChanged"/>
                     </cntrls:ContentPropertyControl.InnerContent>
                 </cntrls:ContentPropertyControl>
@@ -252,7 +254,7 @@
                     <cntrls:ContentPropertyControl.InnerContent>
                         <ComboBox
                             ItemsSource="{Binding OrientationOptions}"
-                            SelectedValue="{Binding Path=Plot.LegendOrientation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            SelectedValue="{Binding Path=CurrentLegend.LegendOrientation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             SelectionChanged="LegendPropertyComboBox_SelectionChanged"/>
                     </cntrls:ContentPropertyControl.InnerContent>
                 </cntrls:ContentPropertyControl>

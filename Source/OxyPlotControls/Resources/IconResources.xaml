@@ -318,6 +318,19 @@
         <sys:Double>10</sys:Double>
     </x:Array>
     
+    <!-- OpenType font weight values: 100=Thin, 300=Light, 400=Normal, 500=Medium, 600=SemiBold, 700=Bold, 800=ExtraBold, 900=Black -->
+    <x:Array Type="{x:Type sys:Double}" x:Key="FontWeightOptions">
+        <sys:Double>100</sys:Double>
+        <sys:Double>200</sys:Double>
+        <sys:Double>300</sys:Double>
+        <sys:Double>400</sys:Double>
+        <sys:Double>500</sys:Double>
+        <sys:Double>600</sys:Double>
+        <sys:Double>700</sys:Double>
+        <sys:Double>800</sys:Double>
+        <sys:Double>900</sys:Double>
+    </x:Array>
+
     <x:Array Type="{x:Type sys:Double}" x:Key="FontSizeOptions">
         <sys:Double>8</sys:Double>
         <sys:Double>9</sys:Double>
