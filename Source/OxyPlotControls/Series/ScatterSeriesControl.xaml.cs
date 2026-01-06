@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using OxyPlot;
+using OxyPlot.Series;
 
 namespace OxyPlotControls
 {
@@ -38,16 +39,16 @@ namespace OxyPlotControls
         /// </summary>
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
             nameof(Series),
-            typeof(OxyPlot.Wpf.ScatterSeries<OxyPlot.Series.ScatterPoint>),
+            typeof(ScatterSeries),
             typeof(ScatterSeriesControl),
             new PropertyMetadata(null, OnSeriesChanged));
 
         /// <summary>
         /// Gets or sets the scatter series whose properties are being edited.
         /// </summary>
-        public OxyPlot.Wpf.ScatterSeries<OxyPlot.Series.ScatterPoint> Series
+        public ScatterSeries? Series
         {
-            get => (OxyPlot.Wpf.ScatterSeries<OxyPlot.Series.ScatterPoint>)GetValue(SeriesProperty);
+            get => (ScatterSeries?)GetValue(SeriesProperty);
             set => SetValue(SeriesProperty, value);
         }
 
@@ -62,9 +63,9 @@ namespace OxyPlotControls
         /// <summary>
         /// Gets or sets the style to apply to expanders in this control.
         /// </summary>
-        public Style ExpanderStyle
+        public Style? ExpanderStyle
         {
-            get => (Style)GetValue(ExpanderStyleProperty);
+            get => (Style?)GetValue(ExpanderStyleProperty);
             set => SetValue(ExpanderStyleProperty, value);
         }
 
@@ -131,12 +132,12 @@ namespace OxyPlotControls
     /// </summary>
     public class ScatterSeriesMarkerFillConverter : IMultiValueConverter
     {
-        private OxyPlot.Series.ScatterSeries _series;
+        private ScatterSeries? _series;
 
         /// <summary>
         /// Converts a marker fill color and series to a SolidColorBrush.
         /// </summary>
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             // Get Color
             if (values[0] == null) return null;
@@ -144,9 +145,9 @@ namespace OxyPlotControls
             var c = (Color)values[0];
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 
-            // Get Series (this should only be set on convert with one-way binding)
+            // Get Series directly (core type)
             if (values[1] == null) return new SolidColorBrush(c);
-            _series = ((OxyPlot.Wpf.ScatterSeries<OxyPlot.Series.ScatterPoint>)values[1]).InternalSeries as OxyPlot.Series.ScatterSeries;
+            _series = values[1] as ScatterSeries;
             if (_series == null) return new SolidColorBrush(c);
 
             // Convert
@@ -164,9 +165,9 @@ namespace OxyPlotControls
         /// </summary>
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             // Get color value
-            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             var c = ((SolidColorBrush)value).Color;
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 
@@ -185,12 +186,12 @@ namespace OxyPlotControls
     /// </summary>
     public class ScatterSeriesMarkerStrokeConverter : IMultiValueConverter
     {
-        private OxyPlot.Series.ScatterSeries _series;
+        private ScatterSeries? _series;
 
         /// <summary>
         /// Converts a marker stroke color and series to a SolidColorBrush.
         /// </summary>
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             // Get Color
             if (values[0] == null) return null;
@@ -198,9 +199,9 @@ namespace OxyPlotControls
             var c = (Color)values[0];
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 
-            // Get Series (this should only be set on convert with one-way binding)
+            // Get Series directly (core type)
             if (values[1] == null) return new SolidColorBrush(c);
-            _series = ((OxyPlot.Wpf.ScatterSeries<OxyPlot.Series.ScatterPoint>)values[1]).InternalSeries as OxyPlot.Series.ScatterSeries;
+            _series = values[1] as ScatterSeries;
             if (_series == null) return new SolidColorBrush(c);
 
             // Convert
@@ -218,9 +219,9 @@ namespace OxyPlotControls
         /// </summary>
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             // Get color value
-            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             var c = ((SolidColorBrush)value).Color;
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 

@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using OxyPlot;
+using OxyPlot.Series;
 
 namespace OxyPlotControls
 {
@@ -52,16 +53,16 @@ namespace OxyPlotControls
         /// </summary>
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
             nameof(Series),
-            typeof(OxyPlot.Wpf.BoxPlotSeries),
+            typeof(BoxPlotSeries),
             typeof(BoxPlotSeriesControl),
             new PropertyMetadata(null, OnSeriesChanged));
 
         /// <summary>
         /// Gets or sets the box plot series whose properties are being edited.
         /// </summary>
-        public OxyPlot.Wpf.BoxPlotSeries Series
+        public BoxPlotSeries? Series
         {
-            get => (OxyPlot.Wpf.BoxPlotSeries)GetValue(SeriesProperty);
+            get => (BoxPlotSeries?)GetValue(SeriesProperty);
             set => SetValue(SeriesProperty, value);
         }
 
@@ -76,9 +77,9 @@ namespace OxyPlotControls
         /// <summary>
         /// Gets or sets the style to apply to expanders in this control.
         /// </summary>
-        public Style ExpanderStyle
+        public Style? ExpanderStyle
         {
-            get => (Style)GetValue(ExpanderStyleProperty);
+            get => (Style?)GetValue(ExpanderStyleProperty);
             set => SetValue(ExpanderStyleProperty, value);
         }
 
@@ -113,7 +114,6 @@ namespace OxyPlotControls
         /// </summary>
         public void CloseExpanders()
         {
-            // LabelingEXP.IsExpanded = false;
             DisplayEXP.IsExpanded = false;
         }
 
@@ -126,7 +126,6 @@ namespace OxyPlotControls
             switch (expansionZone)
             {
                 case OxyPlotPropertiesControl.PropertyEXP.Series_General:
-                    // LabelingEXP.IsExpanded = true;
                     DisplayEXP.IsExpanded = true;
                     break;
                 case OxyPlotPropertiesControl.PropertyEXP.Series_Display:
@@ -141,12 +140,12 @@ namespace OxyPlotControls
     /// </summary>
     public class BoxPlotSeriesFillConverter : IMultiValueConverter
     {
-        private OxyPlot.Series.BoxPlotSeries _series;
+        private BoxPlotSeries? _series;
 
         /// <summary>
         /// Converts a fill color and series to a SolidColorBrush.
         /// </summary>
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             // Get Color
             if (values[0] == null) return null;
@@ -154,17 +153,14 @@ namespace OxyPlotControls
             var c = (Color)values[0];
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 
-            // Get Series (this should only be set on convert with one-way binding)
+            // Get Series directly (core type)
             if (values[1] == null) return new SolidColorBrush(c);
-            _series = ((OxyPlot.Wpf.BoxPlotSeries)values[1]).InternalSeries as OxyPlot.Series.BoxPlotSeries;
+            _series = values[1] as BoxPlotSeries;
             if (_series == null) return new SolidColorBrush(c);
 
             // Convert
             if (oxyCol.IsAutomatic())
             {
-                // BoxPlotSeries uses GetSelectableFillColor(_series.Fill) to get the selectable color.
-                // However, it passes selected index of -1 which essentially returns the original color.
-                // Such a backwards way of filling the boxplot rectangle vs other methods.
                 var fillColor = _series.Fill;
                 return new SolidColorBrush(Color.FromArgb(fillColor.A, fillColor.R, fillColor.G, fillColor.B));
             }
@@ -177,9 +173,9 @@ namespace OxyPlotControls
         /// </summary>
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             // Get color value
-            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             var c = ((SolidColorBrush)value).Color;
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 

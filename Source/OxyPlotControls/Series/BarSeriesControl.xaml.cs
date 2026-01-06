@@ -6,6 +6,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Xml.Linq;
 using OxyPlot;
+using OxyPlot.Series;
 using static OxyPlotControls.OxyPlotSettingsSerializer;
 
 namespace OxyPlotControls
@@ -31,16 +32,16 @@ namespace OxyPlotControls
         /// </summary>
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
             nameof(Series),
-            typeof(OxyPlot.Wpf.BarSeriesBase),
+            typeof(BarSeriesBase),
             typeof(BarSeriesControl),
             new PropertyMetadata(null, OnSeriesChanged));
 
         /// <summary>
         /// Gets or sets the bar series whose properties are being edited.
         /// </summary>
-        public OxyPlot.Wpf.BarSeriesBase Series
+        public BarSeriesBase? Series
         {
-            get => (OxyPlot.Wpf.BarSeriesBase)GetValue(SeriesProperty);
+            get => (BarSeriesBase?)GetValue(SeriesProperty);
             set => SetValue(SeriesProperty, value);
         }
 
@@ -55,9 +56,9 @@ namespace OxyPlotControls
         /// <summary>
         /// Gets or sets the style to apply to expanders in this control.
         /// </summary>
-        public Style ExpanderStyle
+        public Style? ExpanderStyle
         {
-            get => (Style)GetValue(ExpanderStyleProperty);
+            get => (Style?)GetValue(ExpanderStyleProperty);
             set => SetValue(ExpanderStyleProperty, value);
         }
 
@@ -92,7 +93,6 @@ namespace OxyPlotControls
         /// </summary>
         public void CloseExpanders()
         {
-            // LabelingEXP.IsExpanded = false;
             DisplayEXP.IsExpanded = false;
         }
 
@@ -105,7 +105,6 @@ namespace OxyPlotControls
             switch (expansionZone)
             {
                 case OxyPlotPropertiesControl.PropertyEXP.Series_General:
-                    // LabelingEXP.IsExpanded = true;
                     DisplayEXP.IsExpanded = true;
                     break;
                 case OxyPlotPropertiesControl.PropertyEXP.Series_Display:
@@ -121,72 +120,55 @@ namespace OxyPlotControls
         /// </summary>
         /// <param name="barSeries">The bar series to populate with properties.</param>
         /// <param name="element">The XElement containing bar series properties.</param>
-        public static void XElementToBarSeriesProperties(OxyPlot.Wpf.BarSeries barSeries, XElement element)
+        public static void XElementToBarSeriesProperties(BarSeries barSeries, XElement element)
         {
             // Early Exit
             if (barSeries == null) return;
             if (element.Name != BarSeriesPropertiesTag) return;
-
-            // get enabled or not
-            if (GetBooleanAttribute(element, "IsEnabled", out bool isEnabled)) barSeries.IsEnabled = isEnabled;
-
-            // Set up converters
-            var fontWeightConverter = new FontWeightConverter();
-            var thicknessConverter = new ThicknessConverter();
-            var oxycolorConverter = new OxyPlot.Wpf.OxyColorConverter();
-            var brushConverter = new BrushConverter();
 
             // Labeling Properties
             var labelingElement = element.Element("Labeling");
             if (labelingElement != null)
             {
                 if (labelingElement.Attribute("Title") != null)
-                    barSeries.Title = labelingElement.Attribute("Title").Value;
+                    barSeries.Title = labelingElement.Attribute("Title")!.Value;
                 if (labelingElement.Attribute("LabelPlacement") != null)
                 {
-                    if (OxyPlotSettingsSerializer.GetEnumAttribute(labelingElement, "LabelPlacement", out OxyPlot.Series.LabelPlacement placement))
+                    if (GetEnumAttribute(labelingElement, "LabelPlacement", out LabelPlacement placement))
                         barSeries.LabelPlacement = placement;
                 }
-                if (labelingElement.Attribute("TextColor") != null)
-                    barSeries.Foreground = (Brush)brushConverter.ConvertFromString(labelingElement.Attribute("TextColor").Value);
                 if (labelingElement.Attribute("Font") != null)
-                    barSeries.InternalSeries.Font = labelingElement.Attribute("Font").Value;
+                    barSeries.Font = labelingElement.Attribute("Font")!.Value;
                 if (labelingElement.Attribute("FontSize") != null)
                 {
-                    if (double.TryParse(labelingElement.Attribute("FontSize").Value, out double fontSize))
+                    if (double.TryParse(labelingElement.Attribute("FontSize")!.Value, out double fontSize))
                         barSeries.FontSize = fontSize;
                 }
-                if (labelingElement.Attribute("FontWeight") != null)
-                    barSeries.FontWeight = (FontWeight)fontWeightConverter.ConvertFromString(labelingElement.Attribute("FontWeight").Value);
-                if (labelingElement.Attribute("Padding") != null)
-                    barSeries.Padding = (Thickness)thicknessConverter.ConvertFromString(labelingElement.Attribute("Padding").Value);
                 if (labelingElement.Attribute("RenderInLegend") != null)
-                    barSeries.RenderInLegend = Convert.ToBoolean(labelingElement.Attribute("RenderInLegend").Value);
+                    barSeries.RenderInLegend = Convert.ToBoolean(labelingElement.Attribute("RenderInLegend")!.Value);
                 if (labelingElement.Attribute("XAxisKey") != null)
-                    barSeries.XAxisKey = labelingElement.Attribute("XAxisKey").Value;
+                    barSeries.XAxisKey = labelingElement.Attribute("XAxisKey")!.Value;
                 if (labelingElement.Attribute("YAxisKey") != null)
-                    barSeries.YAxisKey = labelingElement.Attribute("YAxisKey").Value;
+                    barSeries.YAxisKey = labelingElement.Attribute("YAxisKey")!.Value;
                 if (labelingElement.Attribute("TrackerKey") != null)
-                    barSeries.TrackerKey = labelingElement.Attribute("TrackerKey").Value;
+                    barSeries.TrackerKey = labelingElement.Attribute("TrackerKey")!.Value;
                 if (labelingElement.Attribute("TrackerFormat") != null)
-                    barSeries.TrackerFormatString = labelingElement.Attribute("TrackerFormat").Value;
+                    barSeries.TrackerFormatString = labelingElement.Attribute("TrackerFormat")!.Value;
                 if (labelingElement.Attribute("LabelFormat") != null)
-                    barSeries.LabelFormatString = labelingElement.Attribute("LabelFormat").Value;
+                    barSeries.LabelFormatString = labelingElement.Attribute("LabelFormat")!.Value;
             }
 
             // Display Properties
             var displayElement = element.Element("Display");
             if (displayElement != null)
             {
-                if (displayElement.Attribute("Background") != null)
-                    barSeries.Background = (Brush)brushConverter.ConvertFromString(displayElement.Attribute("Background").Value);
-                if (displayElement.Attribute("Color") != null)
-                    barSeries.Color = (Color)ColorConverter.ConvertFromString(displayElement.Attribute("Color").Value);
-                if (displayElement.Attribute("Fill") != null)
-                    barSeries.FillColor = (Color)ColorConverter.ConvertFromString(displayElement.Attribute("Fill").Value);
+                if (GetColorAttribute(displayElement, "Fill", out var fill))
+                    barSeries.FillColor = OxyColor.FromArgb(fill.A, fill.R, fill.G, fill.B);
+                if (GetColorAttribute(displayElement, "Stroke", out var stroke))
+                    barSeries.StrokeColor = OxyColor.FromArgb(stroke.A, stroke.R, stroke.G, stroke.B);
                 if (displayElement.Attribute("LineThickness") != null)
                 {
-                    if (double.TryParse(displayElement.Attribute("LineThickness").Value, out double strokeThickness))
+                    if (double.TryParse(displayElement.Attribute("LineThickness")!.Value, out double strokeThickness))
                         barSeries.StrokeThickness = strokeThickness;
                 }
             }
@@ -197,20 +179,16 @@ namespace OxyPlotControls
         /// </summary>
         /// <param name="barSeries">The bar series to serialize.</param>
         /// <returns>An XElement containing the bar series properties.</returns>
-        public static XElement BarSeriesPropertiesToXElement(OxyPlot.Wpf.BarSeries barSeries)
+        public static XElement BarSeriesPropertiesToXElement(BarSeries barSeries)
         {
             var properties = new XElement(BarSeriesPropertiesTag);
-            properties.SetAttributeValue("IsEnabled", barSeries.IsEnabled.ToString());
 
             // Labeling properties
             var labelProps = new XElement("Labeling");
             labelProps.SetAttributeValue("Title", barSeries.Title);
             labelProps.SetAttributeValue("LabelPlacement", barSeries.LabelPlacement.ToString());
-            labelProps.SetAttributeValue("TextColor", barSeries.Foreground.ToString());
-            labelProps.SetAttributeValue("Font", barSeries.FontFamily);
+            labelProps.SetAttributeValue("Font", barSeries.Font);
             labelProps.SetAttributeValue("FontSize", barSeries.FontSize);
-            labelProps.SetAttributeValue("FontWeight", barSeries.FontWeight.ToString());
-            labelProps.SetAttributeValue("Padding", barSeries.Padding.ToString());
             labelProps.SetAttributeValue("RenderInLegend", barSeries.RenderInLegend);
             labelProps.SetAttributeValue("XAxisKey", barSeries.XAxisKey);
             labelProps.SetAttributeValue("YAxisKey", barSeries.YAxisKey);
@@ -220,9 +198,8 @@ namespace OxyPlotControls
             properties.Add(labelProps);
 
             var displayProps = new XElement("Display");
-            displayProps.SetAttributeValue("Background", barSeries.Background);
-            displayProps.SetAttributeValue("Color", barSeries.Foreground);
-            displayProps.SetAttributeValue("Fill", barSeries.FillColor);
+            displayProps.SetAttributeValue("Fill", barSeries.FillColor.ToString());
+            displayProps.SetAttributeValue("Stroke", barSeries.StrokeColor.ToString());
             displayProps.SetAttributeValue("LineThickness", barSeries.StrokeThickness);
             properties.Add(displayProps);
 
@@ -237,12 +214,12 @@ namespace OxyPlotControls
     /// </summary>
     public class BarSeriesFillConverter : IMultiValueConverter
     {
-        private OxyPlot.Series.BarSeriesBase _series;
+        private BarSeriesBase? _series;
 
         /// <summary>
         /// Converts a fill color and series to a SolidColorBrush.
         /// </summary>
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             // Get Color
             if (values[0] == null) return null;
@@ -250,9 +227,9 @@ namespace OxyPlotControls
             var c = (Color)values[0];
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 
-            // Get Series (this should only be set on convert with one-way binding)
+            // Get Series directly (core type)
             if (values[1] == null) return new SolidColorBrush(c);
-            _series = ((OxyPlot.Wpf.BarSeriesBase)values[1]).InternalSeries as OxyPlot.Series.BarSeriesBase;
+            _series = values[1] as BarSeriesBase;
             if (_series == null) return new SolidColorBrush(c);
 
             // Convert
@@ -270,9 +247,9 @@ namespace OxyPlotControls
         /// </summary>
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             // Get color value
-            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             var c = ((SolidColorBrush)value).Color;
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 

@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using OxyPlot;
+using OxyPlot.Series;
 
 namespace OxyPlotControls
 {
@@ -32,8 +33,8 @@ namespace OxyPlotControls
         /// <summary>
         /// Gets the list of available line legend positions.
         /// </summary>
-        public static List<OxyPlot.Series.LineLegendPosition> LineLegendPositionOptions { get; } =
-            new List<OxyPlot.Series.LineLegendPosition>((OxyPlot.Series.LineLegendPosition[])Enum.GetValues(typeof(OxyPlot.Series.LineLegendPosition)));
+        public static List<LineLegendPosition> LineLegendPositionOptions { get; } =
+            new List<LineLegendPosition>((LineLegendPosition[])Enum.GetValues(typeof(LineLegendPosition)));
 
         /// <summary>
         /// Gets the list of available line join options.
@@ -55,16 +56,16 @@ namespace OxyPlotControls
         /// </summary>
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
             nameof(Series),
-            typeof(OxyPlot.Wpf.LineSeries),
+            typeof(LineSeries),
             typeof(LineSeriesControl),
             new PropertyMetadata(null, OnSeriesChanged));
 
         /// <summary>
         /// Gets or sets the line series whose properties are being edited.
         /// </summary>
-        public OxyPlot.Wpf.LineSeries Series
+        public LineSeries? Series
         {
-            get => (OxyPlot.Wpf.LineSeries)GetValue(SeriesProperty);
+            get => (LineSeries?)GetValue(SeriesProperty);
             set => SetValue(SeriesProperty, value);
         }
 
@@ -79,9 +80,9 @@ namespace OxyPlotControls
         /// <summary>
         /// Gets or sets the style to apply to expanders in this control.
         /// </summary>
-        public Style ExpanderStyle
+        public Style? ExpanderStyle
         {
-            get => (Style)GetValue(ExpanderStyleProperty);
+            get => (Style?)GetValue(ExpanderStyleProperty);
             set => SetValue(ExpanderStyleProperty, value);
         }
 
@@ -116,7 +117,6 @@ namespace OxyPlotControls
         /// </summary>
         public void CloseExpanders()
         {
-            // LabelingEXP.IsExpanded = false;
             DisplayEXP.IsExpanded = false;
             MarkersEXP.IsExpanded = false;
         }
@@ -130,7 +130,6 @@ namespace OxyPlotControls
             switch (expansionZone)
             {
                 case OxyPlotPropertiesControl.PropertyEXP.Series_General:
-                    // LabelingEXP.IsExpanded = true;
                     DisplayEXP.IsExpanded = true;
                     break;
                 case OxyPlotPropertiesControl.PropertyEXP.Series_Display:
@@ -148,12 +147,12 @@ namespace OxyPlotControls
     /// </summary>
     public class LineSeriesColorConverter : IMultiValueConverter
     {
-        private OxyPlot.Series.LineSeries _series;
+        private LineSeries? _series;
 
         /// <summary>
         /// Converts a color and series to a SolidColorBrush.
         /// </summary>
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             // Get Color
             if (values[0] == null) return null;
@@ -161,9 +160,9 @@ namespace OxyPlotControls
             var c = (Color)values[0];
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 
-            // Get Series (this should only be set on convert with one-way binding)
+            // Get Series directly (core type, not wrapper)
             if (values[1] == null) return new SolidColorBrush(c);
-            _series = ((OxyPlot.Wpf.LineSeries)values[1]).InternalSeries as OxyPlot.Series.LineSeries;
+            _series = values[1] as LineSeries;
             if (_series == null) return new SolidColorBrush(c);
 
             // Convert
@@ -181,9 +180,9 @@ namespace OxyPlotControls
         /// </summary>
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             // Get color value
-            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             var c = ((SolidColorBrush)value).Color;
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 
@@ -202,12 +201,12 @@ namespace OxyPlotControls
     /// </summary>
     public class AreaSeriesColor2Converter : IMultiValueConverter
     {
-        private OxyPlot.Series.AreaSeries _series;
+        private AreaSeries? _series;
 
         /// <summary>
         /// Converts a color and series to a SolidColorBrush.
         /// </summary>
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             // Get Color
             if (values[0] == null) return null;
@@ -215,9 +214,9 @@ namespace OxyPlotControls
             var c = (Color)values[0];
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 
-            // Get Series (this should only be set on convert with one-way binding)
+            // Get Series directly
             if (values[1] == null) return new SolidColorBrush(c);
-            _series = ((OxyPlot.Wpf.AreaSeries)values[1]).InternalSeries as OxyPlot.Series.AreaSeries;
+            _series = values[1] as AreaSeries;
             if (_series == null) return new SolidColorBrush(c);
 
             // Convert
@@ -235,9 +234,9 @@ namespace OxyPlotControls
         /// </summary>
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             // Get color value
-            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             var c = ((SolidColorBrush)value).Color;
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 
@@ -256,12 +255,12 @@ namespace OxyPlotControls
     /// </summary>
     public class AreaSeriesFillConverter : IMultiValueConverter
     {
-        private OxyPlot.Series.AreaSeries _series;
+        private AreaSeries? _series;
 
         /// <summary>
         /// Converts a fill color and series to a SolidColorBrush.
         /// </summary>
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             // Get Color
             if (values[0] == null) return null;
@@ -269,9 +268,9 @@ namespace OxyPlotControls
             var c = (Color)values[0];
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 
-            // Get Series (this should only be set on convert with one-way binding)
+            // Get Series directly
             if (values[1] == null) return new SolidColorBrush(c);
-            _series = ((OxyPlot.Wpf.AreaSeries)values[1]).InternalSeries as OxyPlot.Series.AreaSeries;
+            _series = values[1] as AreaSeries;
             if (_series == null) return new SolidColorBrush(c);
 
             // Convert
@@ -289,9 +288,9 @@ namespace OxyPlotControls
         /// </summary>
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             // Get color value
-            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             var c = ((SolidColorBrush)value).Color;
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 
@@ -310,12 +309,12 @@ namespace OxyPlotControls
     /// </summary>
     public class LineSeriesMarkerFillConverter : IMultiValueConverter
     {
-        private OxyPlot.Series.LineSeries _series;
+        private LineSeries? _series;
 
         /// <summary>
         /// Converts a marker fill color and series to a SolidColorBrush.
         /// </summary>
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             // Get Color
             if (values[0] == null) return null;
@@ -323,9 +322,9 @@ namespace OxyPlotControls
             var c = (Color)values[0];
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 
-            // Get Series (this should only be set on convert with one-way binding)
+            // Get Series directly
             if (values[1] == null) return new SolidColorBrush(c);
-            _series = ((OxyPlot.Wpf.LineSeries)values[1]).InternalSeries as OxyPlot.Series.LineSeries;
+            _series = values[1] as LineSeries;
             if (_series == null) return new SolidColorBrush(c);
 
             // Convert
@@ -343,13 +342,13 @@ namespace OxyPlotControls
         /// </summary>
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             // Get color value
-            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             var c = ((SolidColorBrush)value).Color;
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 
-            if (OxyColor.ColorDifference(oxyCol, ((OxyPlot.Series.LineSeries)_series).ActualMarkerFill) == 0)
+            if (OxyColor.ColorDifference(oxyCol, _series.ActualMarkerFill) == 0)
             {
                 var actualColor = _series.ActualMarkerFill;
                 return new object[] { Color.FromArgb(actualColor.A, actualColor.R, actualColor.G, actualColor.B), _series };
@@ -364,12 +363,12 @@ namespace OxyPlotControls
     /// </summary>
     public class LineSeriesMarkerStrokeConverter : IMultiValueConverter
     {
-        private OxyPlot.Series.LineSeries _series;
+        private LineSeries? _series;
 
         /// <summary>
         /// Converts a marker stroke color and series to a SolidColorBrush.
         /// </summary>
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             // Get Color
             if (values[0] == null) return null;
@@ -377,9 +376,9 @@ namespace OxyPlotControls
             var c = (Color)values[0];
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 
-            // Get Series (this should only be set on convert with one-way binding)
+            // Get Series directly
             if (values[1] == null) return new SolidColorBrush(c);
-            _series = ((OxyPlot.Wpf.LineSeries)values[1]).InternalSeries as OxyPlot.Series.LineSeries;
+            _series = values[1] as LineSeries;
             if (_series == null) return new SolidColorBrush(c);
 
             // Convert
@@ -397,9 +396,9 @@ namespace OxyPlotControls
         /// </summary>
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (_series == null) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             // Get color value
-            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null };
+            if (value.GetType() != typeof(SolidColorBrush)) return new object[] { Color.FromArgb(255, 0, 0, 0), null! };
             var c = ((SolidColorBrush)value).Color;
             var oxyCol = OxyColor.FromArgb(c.A, c.R, c.G, c.B);
 

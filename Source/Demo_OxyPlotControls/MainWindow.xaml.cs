@@ -330,7 +330,7 @@ namespace Demo_OxyPlotControls
 
                 case BoxPlotSeries boxPlotSeries when data is List<BoxPlotItem> items:
                     boxPlotSeries.Items.Clear();
-                    boxPlotSeries.Items.AddRange(items);
+                    foreach (var item in items) boxPlotSeries.Items.Add(item);
                     break;
 
                 case HeatMapSeries heatMapSeries when data is double[,] heatData:
@@ -375,10 +375,10 @@ namespace Demo_OxyPlotControls
 
                 case HistogramSeries histogramSeries:
                     histogramSeries.Items.Clear();
-                    histogramSeries.Items.Add(new HistogramItem(0, 200, 400));
-                    histogramSeries.Items.Add(new HistogramItem(200, 400, 100));
-                    histogramSeries.Items.Add(new HistogramItem(400, 600, 800));
-                    histogramSeries.Items.Add(new HistogramItem(600, 800, 2000));
+                    histogramSeries.Items.Add(new HistogramItem(0, 200, 400, 2));
+                    histogramSeries.Items.Add(new HistogramItem(200, 400, 100, 1));
+                    histogramSeries.Items.Add(new HistogramItem(400, 600, 800, 4));
+                    histogramSeries.Items.Add(new HistogramItem(600, 800, 2000, 10));
                     break;
 
                 case BarSeries barSeries:
@@ -579,11 +579,11 @@ namespace Demo_OxyPlotControls
 
             var items = new List<HistogramItem>
             {
-                new HistogramItem(0, 200, 400),
-                new HistogramItem(200, 400, 100),
-                new HistogramItem(400, 600, 800),
-                new HistogramItem(600, 800, 2000),
-                new HistogramItem(800, 1000, 600)
+                new HistogramItem(0, 200, 400, 2),
+                new HistogramItem(200, 400, 100, 1),
+                new HistogramItem(400, 600, 800, 4),
+                new HistogramItem(600, 800, 2000, 10),
+                new HistogramItem(800, 1000, 600, 3)
             };
 
             series.Items.AddRange(items);
@@ -680,7 +680,7 @@ namespace Demo_OxyPlotControls
                 new BoxPlotItem(3, 58, 68, 74, 84, 92)
             };
 
-            series.Items.AddRange(items);
+            foreach (var item in items) series.Items.Add(item);
             RegisterDemoData(series.Title, items);
 
             model.Series.Add(series);
