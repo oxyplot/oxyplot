@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Xml;
 using System.Xml.Linq;
 using OxyPlot;
@@ -18,103 +18,74 @@ using Numerics.Data;
 namespace Demo_OxyPlotControls
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml.
-    /// Demonstrates OxyPlot controls with various series types.
+    /// Modern MVVM demo for OxyPlotControls.
+    /// Uses PlotView with PlotModel binding instead of legacy OxyPlot.Wpf.Plot.
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        /// <summary>
-        /// Dependency property for the test axis name binding property.
-        /// </summary>
-        public static readonly DependencyProperty TestAxisNameBindingProperty =
-            DependencyProperty.Register(nameof(TestAxisNameBinding), typeof(string), typeof(MainWindow), new FrameworkPropertyMetadata("Test Y"));
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
+        #region Properties
+
+        private PlotModel _plotModel;
 
         /// <summary>
-        /// Gets or sets the test axis name binding value.
+        /// Gets or sets the PlotModel bound to the PlotView.
+        /// This is the modern MVVM approach for OxyPlot.
         /// </summary>
-        public string TestAxisNameBinding
+        public PlotModel PlotModel
         {
-            get { return (string)GetValue(TestAxisNameBindingProperty); }
-            set { SetValue(TestAxisNameBindingProperty, value); }
+            get => _plotModel;
+            set
+            {
+                _plotModel = value;
+                OnPropertyChanged();
+            }
         }
 
         /// <summary>
-        /// Gets the first set of data points for testing.
-        /// </summary>
-        public ObservableCollection<DataPoint> Points1 { get; } = new ObservableCollection<DataPoint>(new[] { new DataPoint(0, 0), new DataPoint(1, 2), new DataPoint(2, 3), new DataPoint(4, 5) });
-
-        /// <summary>
-        /// Gets the second set of data points for testing.
-        /// </summary>
-        public ObservableCollection<DataPoint> Points2 { get; } = new ObservableCollection<DataPoint>(new[] { new DataPoint(0, 0), new DataPoint(1, 2), new DataPoint(2, 3), new DataPoint(4, 5) });
-
-        /// <summary>
-        /// Gets the third set of data points for testing.
-        /// </summary>
-        public ObservableCollection<DataPoint> Points3 { get; } = new ObservableCollection<DataPoint>(new[] { new DataPoint(0, 0), new DataPoint(1, 2), new DataPoint(2, 3), new DataPoint(4, 5) });
-
-        /// <summary>
-        /// Gets the fourth set of data points for testing.
-        /// </summary>
-        public ObservableCollection<DataPoint> Points4 { get; } = new ObservableCollection<DataPoint>(new[] { new DataPoint(0, 0), new DataPoint(1, 2), new DataPoint(2, 3), new DataPoint(4, 5) });
-
-        /// <summary>
-        /// Gets the area points collection for testing.
-        /// </summary>
-        public ObservableCollection<AreaPoint> AreaPoints { get; } = new ObservableCollection<AreaPoint>();
-
-        /// <summary>
-        /// Gets the scatter points collection for testing.
-        /// </summary>
-        public ObservableCollection<ScatterPoint> ScatterPoints { get; } = new ObservableCollection<ScatterPoint>();
-
-        /// <summary>
         /// Registry to store demo data for series, keyed by series title.
-        /// This allows restoring data after loading XML settings.
         /// </summary>
-        private readonly Dictionary<string, object> _demoDataRegistry = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> _demoDataRegistry = new();
 
         /// <summary>
         /// Registry to store category axis labels, keyed by axis key.
         /// </summary>
-        private readonly Dictionary<string, System.Collections.IEnumerable> _categoryAxisLabelsRegistry = new Dictionary<string, System.Collections.IEnumerable>();
+        private readonly Dictionary<string, IEnumerable<string>> _categoryAxisLabelsRegistry = new();
+
+        #endregion
+
+        #region Construction
 
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
         /// </summary>
         public MainWindow()
         {
+            // Initialize with a default PlotModel
+            _plotModel = new PlotModel { Title = "OxyPlotControls Demo" };
+
             InitializeComponent();
+            DataContext = this;
 
             // Trigger line series in combobox (unbound)
             Combobox1.SelectedIndex = 0;
         }
 
-        private List<DataPoint> CreateNormalDist(double x0, double x1, double mean, double variance, int n = 1001)
-        {
-            var result = new List<DataPoint>();
+        #endregion
 
-            for (int i = 0; i < n; i++)
-            {
-                double x = x0 + ((x1 - x0) * i / (n - 1));
-                double f = 1.0 / Math.Sqrt(2 * Math.PI * variance) * Math.Exp(-(x - mean) * (x - mean) / 2 / variance);
-                result.Add(new DataPoint(x, f));
-            }
+        #region Event Handlers
 
-            return result;
-        }
-
-        private void MainWindow_ContentRendered(object sender, EventArgs e)
-        {
-            // Content rendered event handler
-        }
-
-        private void PlotPropertiesUpdated(Plot targetPlot)
-        {
-            Console.WriteLine("Plot Properties");
-        }
-
-        private void OxyPlotToolBar_PropertiesCalled(OxyPlot.Wpf.Plot targetPlot, bool openProperties, OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP? propertyExpander, object selectedObject)
+        private void OxyPlotToolBar_PropertiesCalled(PlotView targetPlotView, bool openProperties, OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP? propertyExpander, object selectedObject)
         {
             if (propertyExpander.HasValue)
             {
@@ -122,307 +93,295 @@ namespace Demo_OxyPlotControls
             }
         }
 
+        private void PropertiesControl_ClosePropertiesCalled(OxyPlotControls.OxyPlotPropertiesControl propertiesControl)
+        {
+            MessageBox.Show("Properties panel close requested.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
         private void SaveSettingsButton_Click(object sender, RoutedEventArgs e)
         {
             string saveFile = GenericControls.GeneralMethods.FileSaveDialog("Plot Settings(*.xml) |*.xml", true);
             if (string.IsNullOrEmpty(saveFile)) return;
 
-            // Save plot data
             try
             {
                 if (File.Exists(saveFile)) File.Delete(saveFile);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error attempting to delete existing file '" + saveFile + "'.\n\n" + ex.Message);
+                MessageBox.Show($"Error attempting to delete existing file '{saveFile}'.\n\n{ex.Message}");
                 return;
             }
 
-            using (XmlWriter writer = XmlWriter.Create(saveFile, new XmlWriterSettings { Indent = true }))
-            {
-                OxyPlotControls.OxyPlotSettingsSerializer.ToXelement(TestPlot).WriteTo(writer);
-            }
+            using var writer = XmlWriter.Create(saveFile, new XmlWriterSettings { Indent = true });
+            OxyPlotControls.OxyPlotSettingsSerializer.ToXelement(PlotModel).WriteTo(writer);
+            UpdateStatus($"Settings saved to {Path.GetFileName(saveFile)}");
         }
 
         private void LoadSettingsButton_Click(object sender, RoutedEventArgs e)
         {
             string fileToOpen = GenericControls.GeneralMethods.FileOpenDialog("Plot Settings(*.xml) |*.xml");
             if (string.IsNullOrEmpty(fileToOpen)) return;
-            if (System.IO.Path.GetExtension(fileToOpen) != ".xml") return;
+            if (Path.GetExtension(fileToOpen) != ".xml") return;
 
-            // Open plot data
             if (File.Exists(fileToOpen))
             {
                 var document = new XmlDocument();
                 document.Load(fileToOpen);
 
-                // For testing load - Clear the axes, annotations, and series
-                TestPlot.Annotations.Clear();
-                TestPlot.Series.Clear();
-                TestPlot.Axes.Clear();
-
-                OxyPlotControls.OxyPlotSettingsSerializer.FromXelement(TestPlot, XElement.Parse(document.GetElementsByTagName(OxyPlotControls.OxyPlotSettingsSerializer.OxyplotPropertiesTag)[0].OuterXml));
+                // Create a new PlotModel and apply the settings
+                var newModel = new PlotModel();
+                OxyPlotControls.OxyPlotSettingsSerializer.FromXelement(newModel, XElement.Parse(document.GetElementsByTagName(OxyPlotControls.OxyPlotSettingsSerializer.OxyplotPropertiesTag)[0].OuterXml));
 
                 // Repopulate series data from the registry
-                RepopulateAllSeriesData();
+                RepopulateAllSeriesData(newModel);
 
                 // Repopulate category axis labels
-                RepopulateCategoryAxisLabels();
+                RepopulateCategoryAxisLabels(newModel);
 
-                TestPlot.ResetAllAxes();
-                TestPlot.InvalidatePlot(true);
+                PlotModel = newModel;
+                PlotModel.InvalidatePlot(true);
+                UpdateStatus($"Settings loaded from {Path.GetFileName(fileToOpen)}");
             }
         }
 
-        /// <summary>
-        /// Repopulates all series with demo data after loading XML settings.
-        /// </summary>
-        private void RepopulateAllSeriesData()
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            foreach (var series in TestPlot.Series)
+            if (Combobox1.SelectedItem is not ComboBoxItem selectedItem) return;
+            if (selectedItem.Content == null) return;
+
+            var selection = selectedItem.Content.ToString();
+            switch (selection)
+            {
+                case "Line Series":
+                    CreateLineSeries(false);
+                    break;
+                case "Line Series (Bound)":
+                    CreateLineSeries(true);
+                    break;
+                case "Scatter Series":
+                    CreateScatterSeries(false);
+                    break;
+                case "Scatter Series (Bound)":
+                    CreateScatterSeries(true);
+                    break;
+                case "Histogram Series":
+                    CreateHistogramSeries(false);
+                    break;
+                case "Histogram Series (Bound)":
+                    CreateHistogramSeries(true);
+                    break;
+                case "Bar Series":
+                    CreateBarSeries(false);
+                    break;
+                case "Bar Series (Bound)":
+                    CreateBarSeries(true);
+                    break;
+                case "Box Plot Series":
+                    CreateBoxPlotSeries(false);
+                    break;
+                case "Box Plot Series (Bound)":
+                    CreateBoxPlotSeries(true);
+                    break;
+                case "Area Series":
+                    CreateAreaSeries(false);
+                    break;
+                case "Area Series (Bound)":
+                    CreateAreaSeries(true);
+                    break;
+                case "Heat Map Series":
+                    CreateHeatMapSeries(false);
+                    break;
+                case "Heat Map Series (Bound)":
+                    CreateHeatMapSeries(true);
+                    break;
+                case "Scatter Error Series":
+                    CreateScatterErrorSeries(false);
+                    break;
+                case "Scatter Error Series (Bound)":
+                    CreateScatterErrorSeries(true);
+                    break;
+                case "Date Time Series":
+                    CreateDateTimeSeries();
+                    break;
+                case "Pie Series":
+                    CreatePieSeries();
+                    break;
+                case "Stem Series":
+                    CreateStemSeries();
+                    break;
+                case "Two Color Line Series":
+                    CreateTwoColorLineSeries();
+                    break;
+                case "Step Series":
+                    CreateStepSeries();
+                    break;
+            }
+        }
+
+        #endregion
+
+        #region Helper Methods
+
+        private void UpdateStatus(string message)
+        {
+            if (StatusText != null)
+            {
+                StatusText.Text = message;
+            }
+        }
+
+        private List<DataPoint> CreateNormalDistribution(double x0, double x1, double mean, double variance, int n = 1001)
+        {
+            var result = new List<DataPoint>();
+            for (int i = 0; i < n; i++)
+            {
+                double x = x0 + ((x1 - x0) * i / (n - 1));
+                double f = 1.0 / Math.Sqrt(2 * Math.PI * variance) * Math.Exp(-(x - mean) * (x - mean) / 2 / variance);
+                result.Add(new DataPoint(x, f));
+            }
+            return result;
+        }
+
+        private void RegisterDemoData(string title, object data)
+        {
+            if (!string.IsNullOrEmpty(title))
+            {
+                _demoDataRegistry[title] = data;
+            }
+        }
+
+        private void RegisterCategoryAxisLabels(string axisKey, IEnumerable<string> labels)
+        {
+            _categoryAxisLabelsRegistry[string.IsNullOrEmpty(axisKey) ? "default" : axisKey] = labels;
+        }
+
+        private void RepopulateAllSeriesData(PlotModel model)
+        {
+            foreach (var series in model.Series)
             {
                 RepopulateSeriesData(series);
             }
         }
 
-        /// <summary>
-        /// Repopulates category axis labels from the registry.
-        /// </summary>
-        private void RepopulateCategoryAxisLabels()
+        private void RepopulateCategoryAxisLabels(PlotModel model)
         {
-            foreach (var axis in TestPlot.Axes)
+            foreach (var axis in model.Axes)
             {
-                if (axis is OxyPlot.Wpf.CategoryAxis catAxis)
+                if (axis is CategoryAxis catAxis)
                 {
                     string axisKey = string.IsNullOrEmpty(catAxis.Key) ? "default" : catAxis.Key;
-
-                    if (_categoryAxisLabelsRegistry.ContainsKey(axisKey))
+                    if (_categoryAxisLabelsRegistry.TryGetValue(axisKey, out var labels))
                     {
-                        catAxis.ItemsSource = _categoryAxisLabelsRegistry[axisKey];
+                        catAxis.Labels.Clear();
+                        foreach (var label in labels)
+                        {
+                            catAxis.Labels.Add(label);
+                        }
                     }
                 }
             }
         }
 
-        /// <summary>
-        /// Repopulates a single series with demo data.
-        /// First tries to match by title, then falls back to type-based defaults.
-        /// </summary>
-        private void RepopulateSeriesData(OxyPlot.Wpf.Series series)
+        private void RepopulateSeriesData(OxyPlot.Series.Series series)
         {
-            string title = series.Title;
-
-            // Try to find data in registry by title
-            if (!string.IsNullOrEmpty(title) && _demoDataRegistry.ContainsKey(title))
+            string? title = series.Title;
+            if (!string.IsNullOrEmpty(title) && _demoDataRegistry.TryGetValue(title, out var storedData))
             {
-                var storedData = _demoDataRegistry[title];
                 ApplyDataToSeries(series, storedData);
                 return;
             }
-
-            // Fall back to generating type-appropriate demo data
             GenerateDefaultDemoData(series);
         }
 
-        /// <summary>
-        /// Applies stored data to a series.
-        /// </summary>
-        private void ApplyDataToSeries(OxyPlot.Wpf.Series series, object data)
+        private void ApplyDataToSeries(OxyPlot.Series.Series series, object data)
         {
             switch (series)
             {
-                // AreaSeries must come before LineSeries since it extends LineSeries
-                case OxyPlot.Wpf.AreaSeries areaSeries:
-                    if (data is List<DummyMultiPurposePoint> areaPoints)
-                    {
-                        areaSeries.ItemsSource = areaPoints;
-                    }
-                    else if (data is List<DataPoint> areaDataPoints)
-                    {
-                        var internalSeries = (OxyPlot.Series.AreaSeries)areaSeries.InternalSeries;
-                        internalSeries.Points.Clear();
-                        foreach (var p in areaDataPoints)
-                        {
-                            internalSeries.Points.Add(p);
-                        }
-                    }
+                case AreaSeries areaSeries when data is List<DataPoint> points:
+                    areaSeries.Points.Clear();
+                    areaSeries.Points.AddRange(points);
                     break;
 
-                case OxyPlot.Wpf.LineSeries lineSeries:
-                    if (data is List<DummyMultiPurposePoint> linePoints)
-                    {
-                        lineSeries.ItemsSource = linePoints;
-                    }
-                    else if (data is List<DataPoint> dataPoints)
-                    {
-                        var internalSeries = (OxyPlot.Series.LineSeries)lineSeries.InternalSeries;
-                        internalSeries.Points.Clear();
-                        foreach (var p in dataPoints)
-                        {
-                            internalSeries.Points.Add(p);
-                        }
-                    }
-                    else if (data is System.Collections.IEnumerable enumerable)
-                    {
-                        // General IEnumerable (e.g., TimeSeries) - use as ItemsSource
-                        lineSeries.ItemsSource = enumerable;
-                    }
+                case LineSeries lineSeries when data is List<DataPoint> points:
+                    lineSeries.Points.Clear();
+                    lineSeries.Points.AddRange(points);
                     break;
 
-                case OxyPlot.Wpf.ScatterErrorSeries scatterErrorSeries:
-                    if (data is List<DummyMultiPurposePoint> scatterErrorPoints)
-                    {
-                        scatterErrorSeries.ItemsSource = scatterErrorPoints;
-                    }
-                    else if (data is List<ScatterErrorPoint> errorPoints)
-                    {
-                        var internalSeries = (OxyPlot.Series.ScatterErrorSeries)scatterErrorSeries.InternalSeries;
-                        internalSeries.Points.Clear();
-                        foreach (var p in errorPoints)
-                        {
-                            internalSeries.Points.Add(p);
-                        }
-                    }
+                case ScatterSeries scatterSeries when data is List<ScatterPoint> points:
+                    scatterSeries.Points.Clear();
+                    scatterSeries.Points.AddRange(points);
                     break;
 
-                case OxyPlot.Wpf.ScatterPointSeries scatterSeries:
-                    if (data is List<DummyMultiPurposePoint> scatterPoints)
-                    {
-                        scatterSeries.ItemsSource = scatterPoints;
-                    }
-                    else if (data is List<ScatterPoint> points)
-                    {
-                        var internalSeries = (OxyPlot.Series.ScatterSeries)scatterSeries.InternalSeries;
-                        internalSeries.Points.Clear();
-                        foreach (var p in points)
-                        {
-                            internalSeries.Points.Add(p);
-                        }
-                    }
+                case ScatterErrorSeries scatterErrorSeries when data is List<ScatterErrorPoint> points:
+                    scatterErrorSeries.Points.Clear();
+                    scatterErrorSeries.Points.AddRange(points);
                     break;
 
-                case OxyPlot.Wpf.HistogramSeries histogramSeries:
-                    if (data is List<HistogramItem> histogramItems)
-                    {
-                        histogramSeries.ItemsSource = histogramItems;
-                    }
+                case HistogramSeries histogramSeries when data is List<HistogramItem> items:
+                    histogramSeries.Items.Clear();
+                    histogramSeries.Items.AddRange(items);
                     break;
 
-                case OxyPlot.Wpf.ColumnSeries columnSeries:
-                    if (data is List<ColumnItem> columnItems)
-                    {
-                        columnSeries.ItemsSource = columnItems;
-                    }
+                case BarSeries barSeries when data is List<BarItem> items:
+                    barSeries.Items.Clear();
+                    barSeries.Items.AddRange(items);
                     break;
 
-                case OxyPlot.Wpf.BarSeries barSeries:
-                    if (data is List<DummyMultiPurposePoint> barPoints)
-                    {
-                        barSeries.ItemsSource = barPoints;
-                    }
-                    else if (data is List<BarItem> barItems)
-                    {
-                        barSeries.Items.Clear();
-                        foreach (var item in barItems)
-                        {
-                            barSeries.Items.Add(item);
-                        }
-                    }
+                case BoxPlotSeries boxPlotSeries when data is List<BoxPlotItem> items:
+                    boxPlotSeries.Items.Clear();
+                    boxPlotSeries.Items.AddRange(items);
                     break;
 
-                case OxyPlot.Wpf.BoxPlotSeries boxPlotSeries:
-                    if (data is List<BoxPlotItem> boxPlotItems)
-                    {
-                        boxPlotSeries.ItemsSource = boxPlotItems;
-                    }
-                    break;
-
-                case OxyPlot.Wpf.HeatMapSeries heatMapSeries:
-                    if (data is double[,] heatMapData)
-                    {
-                        heatMapSeries.Data = heatMapData;
-                    }
+                case HeatMapSeries heatMapSeries when data is double[,] heatData:
+                    heatMapSeries.Data = heatData;
                     break;
             }
         }
 
-        /// <summary>
-        /// Generates default demo data for a series based on its type.
-        /// </summary>
-        private void GenerateDefaultDemoData(OxyPlot.Wpf.Series series)
+        private void GenerateDefaultDemoData(OxyPlot.Series.Series series)
         {
             switch (series)
             {
-                // AreaSeries must come before LineSeries since it extends LineSeries
-                case OxyPlot.Wpf.AreaSeries areaSeries:
-                    var areaInternal = (OxyPlot.Series.AreaSeries)areaSeries.InternalSeries;
-                    areaInternal.Points.Clear();
-                    foreach (var p in CreateNormalDist(-5, 5, 0, 1))
-                    {
-                        areaInternal.Points.Add(p);
-                    }
+                case AreaSeries areaSeries:
+                    areaSeries.Points.Clear();
+                    areaSeries.Points.AddRange(CreateNormalDistribution(-5, 5, 0, 1));
                     break;
 
-                case OxyPlot.Wpf.LineSeries lineSeries:
-                    var lineInternal = (OxyPlot.Series.LineSeries)lineSeries.InternalSeries;
-                    lineInternal.Points.Clear();
-                    foreach (var p in CreateNormalDist(-5, 5, 0, 1))
-                    {
-                        lineInternal.Points.Add(p);
-                    }
+                case LineSeries lineSeries:
+                    lineSeries.Points.Clear();
+                    lineSeries.Points.AddRange(CreateNormalDistribution(-5, 5, 0, 1));
                     break;
 
-                case OxyPlot.Wpf.ScatterErrorSeries scatterErrorSeries:
-                    var scatterErrorInternal = (OxyPlot.Series.ScatterErrorSeries)scatterErrorSeries.InternalSeries;
-                    scatterErrorInternal.Points.Clear();
+                case ScatterSeries scatterSeries:
+                    scatterSeries.Points.Clear();
                     var r1 = new Random(314);
-                    for (int i = 0; i < 30; i++)
+                    for (int i = 0; i < 50; i++)
                     {
-                        double x = r1.NextDouble();
-                        double y = r1.NextDouble();
-                        int size = r1.Next(5, 15);
-                        int colorValue = r1.Next(100, 1000);
-                        scatterErrorInternal.Points.Add(new ScatterErrorPoint(x, y, x / 5, x / 10, y / 5, y / 10, size, colorValue));
+                        scatterSeries.Points.Add(new ScatterPoint(r1.NextDouble(), r1.NextDouble(), r1.Next(5, 15), r1.Next(100, 1000)));
                     }
                     break;
 
-                case OxyPlot.Wpf.ScatterPointSeries scatterSeries:
-                    var scatterInternal = (OxyPlot.Series.ScatterSeries)scatterSeries.InternalSeries;
-                    scatterInternal.Points.Clear();
+                case ScatterErrorSeries scatterErrorSeries:
+                    scatterErrorSeries.Points.Clear();
                     var r2 = new Random(314);
-                    for (int i = 0; i < 50; i++)
+                    for (int i = 0; i < 30; i++)
                     {
                         double x = r2.NextDouble();
                         double y = r2.NextDouble();
-                        int size = r2.Next(5, 15);
-                        int colorValue = r2.Next(100, 1000);
-                        scatterInternal.Points.Add(new ScatterPoint(x, y, size, colorValue));
+                        scatterErrorSeries.Points.Add(new ScatterErrorPoint(x, y, x / 5, x / 10, y / 5, y / 10, r2.Next(5, 15), r2.Next(100, 1000)));
                     }
                     break;
 
-                case OxyPlot.Wpf.HistogramSeries histogramSeries:
-                    var histItems = new List<HistogramItem>
-                    {
-                        new HistogramItem(0, 200, 400),
-                        new HistogramItem(200, 400, 100),
-                        new HistogramItem(400, 600, 800),
-                        new HistogramItem(600, 800, 2000)
-                    };
-                    histogramSeries.ItemsSource = histItems;
+                case HistogramSeries histogramSeries:
+                    histogramSeries.Items.Clear();
+                    histogramSeries.Items.Add(new HistogramItem(0, 200, 400));
+                    histogramSeries.Items.Add(new HistogramItem(200, 400, 100));
+                    histogramSeries.Items.Add(new HistogramItem(400, 600, 800));
+                    histogramSeries.Items.Add(new HistogramItem(600, 800, 2000));
                     break;
 
-                case OxyPlot.Wpf.ColumnSeries columnSeries:
-                    var colItems = new List<ColumnItem>
-                    {
-                        new ColumnItem(30, 0),
-                        new ColumnItem(80, 1),
-                        new ColumnItem(10, 2),
-                        new ColumnItem(50, 3)
-                    };
-                    columnSeries.ItemsSource = colItems;
-                    break;
-
-                case OxyPlot.Wpf.BarSeries barSeries:
+                case BarSeries barSeries:
                     barSeries.Items.Clear();
                     barSeries.Items.Add(new BarItem(20));
                     barSeries.Items.Add(new BarItem(35));
@@ -431,23 +390,19 @@ namespace Demo_OxyPlotControls
                     barSeries.Items.Add(new BarItem(30));
                     break;
 
-                case OxyPlot.Wpf.BoxPlotSeries boxPlotSeries:
-                    var boxItems = new List<BoxPlotItem>
-                    {
-                        new BoxPlotItem(0, 3, 5, 7, 20, 30),
-                        new BoxPlotItem(1, 4, 12, 14, 30, 40),
-                        new BoxPlotItem(2, 7, 10, 12, 25, 35),
-                        new BoxPlotItem(3, 12, 15, 17, 30, 40)
-                    };
-                    boxPlotSeries.ItemsSource = boxItems;
+                case BoxPlotSeries boxPlotSeries:
+                    boxPlotSeries.Items.Clear();
+                    boxPlotSeries.Items.Add(new BoxPlotItem(0, 3, 5, 7, 20, 30));
+                    boxPlotSeries.Items.Add(new BoxPlotItem(1, 4, 12, 14, 30, 40));
+                    boxPlotSeries.Items.Add(new BoxPlotItem(2, 7, 10, 12, 25, 35));
+                    boxPlotSeries.Items.Add(new BoxPlotItem(3, 12, 15, 17, 30, 40));
                     break;
 
-                case OxyPlot.Wpf.HeatMapSeries heatMapSeries:
-                    // Generate 2D normal distribution
+                case HeatMapSeries heatMapSeries:
                     var singleData = new double[100];
                     for (int x = 0; x < 100; x++)
                     {
-                        singleData[x] = Math.Exp(((1.0 / 2) * -1) * Math.Pow(((double)x - 50) / 20, 2));
+                        singleData[x] = Math.Exp(-0.5 * Math.Pow((x - 50.0) / 20, 2));
                     }
                     var heatData = new double[100, 100];
                     for (int x = 0; x < 100; x++)
@@ -462,492 +417,333 @@ namespace Demo_OxyPlotControls
             }
         }
 
-        /// <summary>
-        /// Registers demo data for a series in the registry.
-        /// </summary>
-        private void RegisterDemoData(string title, object data)
-        {
-            if (string.IsNullOrEmpty(title)) return;
-            _demoDataRegistry[title] = data;
-        }
+        #endregion
 
-        /// <summary>
-        /// Registers category axis labels in the registry.
-        /// </summary>
-        private void RegisterCategoryAxisLabels(string axisKey, System.Collections.IEnumerable labels)
-        {
-            if (string.IsNullOrEmpty(axisKey)) axisKey = "default";
-            _categoryAxisLabelsRegistry[axisKey] = labels;
-        }
+        #region Series Creation Methods
 
-        private void PropertiesControl_ClosePropertiesCalled(OxyPlotControls.OxyPlotPropertiesControl propertiesControl)
+        private PlotModel CreateBasePlotModel(string title)
         {
-            MessageBox.Show("I am not going to close. Sorry not sorry.");
-        }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (((ComboBoxItem)Combobox1.SelectedItem)?.Content == null)
+            return new PlotModel
             {
-                return;
-            }
-
-            switch (((ComboBoxItem)Combobox1.SelectedItem).Content.ToString())
-            {
-                case "Line Series":
-                    LineSeries_Create(false);
-                    break;
-                case "Line Series (Bound)":
-                    LineSeries_Create(true);
-                    break;
-                case "Scatter Series":
-                    ScatterSeries_Create(false);
-                    break;
-                case "Scatter Series (Bound)":
-                    ScatterSeries_Create(true);
-                    break;
-                case "Histogram Series":
-                    HistogramSeries_Create(false);
-                    break;
-                case "Histogram Series (Bound)":
-                    HistogramSeries_Create(true);
-                    break;
-                case "Column Series":
-                    ColumnSeries_Create(false);
-                    break;
-                case "Column Series (Bound)":
-                    ColumnSeries_Create(true);
-                    break;
-                case "Bar Series":
-                    BarSeries_Create(false);
-                    break;
-                case "Bar Series (Bound)":
-                    BarSeries_Create(true);
-                    break;
-                case "Area Series":
-                    AreaSeries_Create(false);
-                    break;
-                case "Area Series (Bound)":
-                    AreaSeries_Create(true);
-                    break;
-                case "Heat Map Series":
-                    HeatMapSeries_Create(false);
-                    break;
-                case "Heat Map Series (Bound)":
-                    HeatMapSeries_Create(true);
-                    break;
-                case "Scatter Error Series":
-                    ScatterErrorSeries_Create(false);
-                    break;
-                case "Scatter Error Series (Bound)":
-                    ScatterErrorSeries_Create(true);
-                    break;
-                case "Box Plot Series":
-                    BoxPlotSeries_Create(false);
-                    break;
-                case "Box Plot Series (Bound)":
-                    BoxPlotSeries_Create(true);
-                    break;
-                case "Date Time Series":
-                    DateTimeSeries_Create(false);
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Dummy class for testing binding of series.
-        /// </summary>
-        private class DummyMultiPurposePoint
-        {
-            public double Xval { get; set; }
-            public double Yval { get; set; }
-            public double X2val { get; set; }
-            public double Y2val { get; set; }
-            public double SizeVal { get; set; }
-            public double ColorVal { get; set; }
-            public double XLowerError { get; set; }
-            public double XUpperError { get; set; }
-            public double YLowerError { get; set; }
-            public double YUpperError { get; set; }
-            public string LabelVal { get; set; }
-            public double Position { get; set; }
-            public double LowerWhisker { get; set; }
-            public double BoxMinimum { get; set; }
-            public double Median { get; set; }
-            public double BoxMaximum { get; set; }
-            public double UpperWhisker { get; set; }
-            public OxyColor Color { get; set; }
-        }
-
-        private void LineSeries_Create(bool boundBool)
-        {
-            TestPlot.Series.Clear();
-            TestPlot.Axes.Clear();
-            TestPlot.ActualModel.Series.Clear();
-            TestPlot.ActualModel.Axes.Clear();
-
-            TestPlot.Title = "Line Series";
-
-            var yAxis = new OxyPlot.Wpf.LinearAxis
-            {
-                AxisTitleDistance = 20,
-                TitleFontSize = 20,
-                Position = AxisPosition.Left,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test Y",
-                Key = "y"
+                Title = title,
+                IsLegendVisible = true
             };
+        }
 
-            var xAxis = new OxyPlot.Wpf.LinearAxis
+        private void AddStandardAxes(PlotModel model, string xTitle = "X Axis", string yTitle = "Y Axis")
+        {
+            model.Axes.Add(new LinearAxis
             {
-                AxisTitleDistance = 20,
                 Position = AxisPosition.Bottom,
-                TitleFontSize = 20,
+                Title = xTitle,
+                Key = "x",
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test X",
-                Key = "x"
-            };
+                TitleFontSize = 16,
+                AxisTitleDistance = 15
+            });
 
-            TestPlot.Axes.Add(xAxis);
-            TestPlot.Axes.Add(yAxis);
-
-            var lineSeries1 = new OxyPlot.Wpf.LineSeries { Title = "Test Line Series 1" };
-
-            if (boundBool)
+            model.Axes.Add(new LinearAxis
             {
-                var lst = new List<DummyMultiPurposePoint>();
-                lineSeries1.DataFieldX = "Xval";
-                lineSeries1.DataFieldY = "Yval";
-
-                foreach (var p in CreateNormalDist(-10, 10, 0, 2))
-                {
-                    lst.Add(new DummyMultiPurposePoint { Xval = p.X, Yval = p.Y });
-                }
-
-                lineSeries1.ItemsSource = lst;
-                RegisterDemoData(lineSeries1.Title, lst);
-            }
-            else
-            {
-                var points1 = new List<DataPoint>();
-                foreach (var p in CreateNormalDist(-5, 5, 0, 1))
-                {
-                    ((OxyPlot.Series.LineSeries)lineSeries1.InternalSeries).Points.Add(p);
-                    points1.Add(p);
-                }
-                RegisterDemoData(lineSeries1.Title, points1);
-            }
-
-            var lineSeries2 = new OxyPlot.Wpf.LineSeries { Title = "Test Line Series 2" };
-
-            if (boundBool)
-            {
-                var lst = new List<DummyMultiPurposePoint>();
-                lineSeries2.DataFieldX = "Xval";
-                lineSeries2.DataFieldY = "Yval";
-
-                foreach (var p in CreateNormalDist(-4, 4, 0, 0.5))
-                {
-                    lst.Add(new DummyMultiPurposePoint { Xval = p.X, Yval = p.Y });
-                }
-
-                lineSeries2.ItemsSource = lst;
-                RegisterDemoData(lineSeries2.Title, lst);
-            }
-            else
-            {
-                var points2 = new List<DataPoint>();
-                foreach (var p in CreateNormalDist(-2, 2, 0, 0.25))
-                {
-                    ((OxyPlot.Series.LineSeries)lineSeries2.InternalSeries).Points.Add(p);
-                    points2.Add(p);
-                }
-                RegisterDemoData(lineSeries2.Title, points2);
-            }
-
-            TestPlot.Series.Add(lineSeries1);
-            TestPlot.Series.Add(lineSeries2);
-
-            TestPlot.ResetAllAxes();
-            TestPlot.InvalidatePlot(true);
+                Position = AxisPosition.Left,
+                Title = yTitle,
+                Key = "y",
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dash,
+                TitleFontSize = 16,
+                AxisTitleDistance = 15
+            });
         }
 
-        private void ScatterSeries_Create(bool boundBool)
+        private void CreateLineSeries(bool bound)
         {
-            TestPlot.Series.Clear();
-            TestPlot.Axes.Clear();
+            var model = CreateBasePlotModel("Line Series Demo");
+            AddStandardAxes(model);
 
-            TestPlot.Title = "Scatter Series";
-
-            var yAxis = new OxyPlot.Wpf.LinearAxis
+            var series1 = new LineSeries
             {
-                AxisTitleDistance = 20,
-                TitleFontSize = 20,
-                Position = AxisPosition.Left,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test Y",
-                Key = "y"
+                Title = "Normal Distribution 1",
+                Color = OxyColors.Blue,
+                StrokeThickness = 2
             };
 
-            var xAxis = new OxyPlot.Wpf.LinearAxis
+            var series2 = new LineSeries
             {
-                AxisTitleDistance = 20,
-                Position = AxisPosition.Bottom,
-                TitleFontSize = 20,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test X",
-                Key = "x"
+                Title = "Normal Distribution 2",
+                Color = OxyColors.Red,
+                StrokeThickness = 2,
+                LineStyle = LineStyle.Dash
             };
 
-            TestPlot.Axes.Add(xAxis);
-            TestPlot.Axes.Add(yAxis);
+            var points1 = CreateNormalDistribution(-5, 5, 0, 1);
+            var points2 = CreateNormalDistribution(-4, 4, 0, 0.5);
 
-            var scatterSeries = new OxyPlot.Wpf.ScatterPointSeries
+            series1.Points.AddRange(points1);
+            series2.Points.AddRange(points2);
+
+            RegisterDemoData(series1.Title, points1);
+            RegisterDemoData(series2.Title, points2);
+
+            model.Series.Add(series1);
+            model.Series.Add(series2);
+
+            PlotModel = model;
+            UpdateStatus($"Displaying Line Series{(bound ? " (Bound)" : "")} - 2 series with normal distributions");
+        }
+
+        private void CreateScatterSeries(bool bound)
+        {
+            var model = CreateBasePlotModel("Scatter Series Demo");
+            AddStandardAxes(model);
+
+            var series = new ScatterSeries
             {
-                MarkerType = MarkerType.Circle,
-                Title = "Scatter Series"
+                Title = "Random Scatter Points",
+                MarkerType = MarkerType.Circle
             };
 
             var r = new Random(314);
+            var points = new List<ScatterPoint>();
 
-            if (boundBool)
+            for (int i = 0; i < 100; i++)
             {
-                var lst = new List<DummyMultiPurposePoint>();
-                scatterSeries.DataFieldX = "Xval";
-                scatterSeries.DataFieldY = "Yval";
-                scatterSeries.DataFieldSize = "SizeVal";
-                scatterSeries.DataFieldValue = "ColorVal";
-
-                for (int i = 0; i < 50; i++)
-                {
-                    lst.Add(new DummyMultiPurposePoint
-                    {
-                        Xval = r.NextDouble(),
-                        Yval = r.NextDouble(),
-                        SizeVal = r.Next(1, 5),
-                        ColorVal = r.Next(50, 500)
-                    });
-                }
-
-                scatterSeries.ItemsSource = lst;
-                RegisterDemoData(scatterSeries.Title, lst);
-            }
-            else
-            {
-                var points = new List<ScatterPoint>();
-                for (int i = 0; i < 100; i++)
-                {
-                    double x = r.NextDouble();
-                    double y = r.NextDouble();
-                    int size = r.Next(5, 15);
-                    int colorValue = r.Next(100, 1000);
-
-                    var pt = new ScatterPoint(x, y, size, colorValue);
-                    ((OxyPlot.Series.ScatterSeries)scatterSeries.InternalSeries).Points.Add(pt);
-                    points.Add(pt);
-                }
-                RegisterDemoData(scatterSeries.Title, points);
+                var pt = new ScatterPoint(r.NextDouble(), r.NextDouble(), r.Next(5, 15), r.Next(100, 1000));
+                points.Add(pt);
+                series.Points.Add(pt);
             }
 
-            TestPlot.Series.Add(scatterSeries);
+            RegisterDemoData(series.Title, points);
 
-            // Add the color Axis
-            var lca = new OxyPlot.Wpf.LinearColorAxis { Position = AxisPosition.Right };
-            lca.PaletteSize = 200;
-            lca.LowColor = Colors.Blue;
-            lca.HighColor = Colors.Red;
-
-            var gList = new List<GradientStop>
+            // Add color axis
+            model.Axes.Add(new LinearColorAxis
             {
-                new GradientStop(Colors.Red, 0),
-                new GradientStop(Colors.Yellow, 0.5),
-                new GradientStop(Colors.Green, 1)
-            };
-            lca.GradientStops = new GradientStopCollection(gList);
-            TestPlot.Axes.Add(lca);
+                Position = AxisPosition.Right,
+                Palette = OxyPalettes.Rainbow(200),
+                Title = "Color Value"
+            });
 
-            TestPlot.ResetAllAxes();
-            TestPlot.InvalidatePlot(true);
+            model.Series.Add(series);
+            PlotModel = model;
+            UpdateStatus($"Displaying Scatter Series{(bound ? " (Bound)" : "")} - 100 random points with size and color mapping");
         }
 
-        private void ScatterErrorSeries_Create(bool boundBool)
+        private void CreateScatterErrorSeries(bool bound)
         {
-            TestPlot.Series.Clear();
-            TestPlot.Axes.Clear();
+            var model = CreateBasePlotModel("Scatter Error Series Demo");
+            AddStandardAxes(model);
 
-            TestPlot.Title = "Scatter Series";
-
-            var yAxis = new OxyPlot.Wpf.LinearAxis
+            var series = new ScatterErrorSeries
             {
-                AxisTitleDistance = 20,
-                TitleFontSize = 20,
-                Position = AxisPosition.Left,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test Y",
-                Key = "y"
-            };
-
-            var xAxis = new OxyPlot.Wpf.LinearAxis
-            {
-                AxisTitleDistance = 20,
-                Position = AxisPosition.Bottom,
-                TitleFontSize = 20,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test X",
-                Key = "x"
-            };
-
-            TestPlot.Axes.Add(xAxis);
-            TestPlot.Axes.Add(yAxis);
-
-            var scatterErrorSeries = new OxyPlot.Wpf.ScatterErrorSeries
-            {
-                MarkerType = MarkerType.Circle,
-                Title = "Scatter Error Series"
+                Title = "Measurements with Error Bars",
+                MarkerType = MarkerType.Circle
             };
 
             var r = new Random(314);
+            var points = new List<ScatterErrorPoint>();
 
-            if (boundBool)
+            for (int i = 0; i < 30; i++)
             {
-                var lst = new List<DummyMultiPurposePoint>();
-                scatterErrorSeries.DataFieldX = "Xval";
-                scatterErrorSeries.DataFieldY = "Yval";
-                scatterErrorSeries.DataFieldSize = "SizeVal";
-                scatterErrorSeries.DataFieldValue = "ColorVal";
-                scatterErrorSeries.DataFieldLowerErrorX = "XLowerError";
-                scatterErrorSeries.DataFieldUpperErrorX = "XUpperError";
-                scatterErrorSeries.DataFieldLowerErrorY = "YLowerError";
-                scatterErrorSeries.DataFieldUpperErrorY = "YUpperError";
-
-                for (int i = 0; i < 20; i++)
-                {
-                    var dsp = new DummyMultiPurposePoint
-                    {
-                        Xval = r.NextDouble(),
-                        Yval = r.NextDouble(),
-                        SizeVal = r.Next(5, 15),
-                        ColorVal = r.Next(100, 1000)
-                    };
-                    dsp.XLowerError = dsp.Xval - (dsp.Xval / 10);
-                    dsp.XUpperError = dsp.Xval + (dsp.Xval / 5);
-                    dsp.YUpperError = dsp.Yval + (dsp.Yval / 5);
-                    dsp.YLowerError = dsp.Yval - (dsp.Yval / 10);
-                    lst.Add(dsp);
-                }
-
-                scatterErrorSeries.ItemsSource = lst;
-                RegisterDemoData(scatterErrorSeries.Title, lst);
-            }
-            else
-            {
-                var points = new List<ScatterErrorPoint>();
-                for (int i = 0; i < 50; i++)
-                {
-                    double x = r.NextDouble();
-                    double y = r.NextDouble();
-                    int size = r.Next(5, 15);
-                    int colorValue = r.Next(100, 1000);
-
-                    var pt = new ScatterErrorPoint(x, y, x - (x / 5), x + (x / 10), y - (y / 5), y + (y / 10), size, colorValue);
-                    ((OxyPlot.Series.ScatterErrorSeries)scatterErrorSeries.InternalSeries).Points.Add(pt);
-                    points.Add(pt);
-                }
-                RegisterDemoData(scatterErrorSeries.Title, points);
+                double x = r.NextDouble();
+                double y = r.NextDouble();
+                var pt = new ScatterErrorPoint(x, y, x / 5, x / 10, y / 5, y / 10, r.Next(5, 15), r.Next(100, 1000));
+                points.Add(pt);
+                series.Points.Add(pt);
             }
 
-            TestPlot.Series.Add(scatterErrorSeries);
+            RegisterDemoData(series.Title, points);
 
-            // Add the color Axis
-            var lca = new OxyPlot.Wpf.LinearColorAxis { Position = AxisPosition.Right };
-            lca.PaletteSize = 200;
-            lca.LowColor = Colors.Blue;
-            lca.HighColor = Colors.Red;
-
-            var gList = new List<GradientStop>
+            model.Axes.Add(new LinearColorAxis
             {
-                new GradientStop(Colors.Red, 0),
-                new GradientStop(Colors.Yellow, 0.5),
-                new GradientStop(Colors.Green, 1)
-            };
-            lca.GradientStops = new GradientStopCollection(gList);
-            TestPlot.Axes.Add(lca);
+                Position = AxisPosition.Right,
+                Palette = OxyPalettes.Hot(200),
+                Title = "Uncertainty Level"
+            });
 
-            TestPlot.ResetAllAxes();
-            TestPlot.InvalidatePlot(true);
+            model.Series.Add(series);
+            PlotModel = model;
+            UpdateStatus($"Displaying Scatter Error Series{(bound ? " (Bound)" : "")} - 30 points with X/Y error bars");
         }
 
-        private void HeatMapSeries_Create(bool boundBool)
+        private void CreateHistogramSeries(bool bound)
         {
-            TestPlot.Series.Clear();
-            TestPlot.Axes.Clear();
+            var model = CreateBasePlotModel("Histogram Series Demo");
+            AddStandardAxes(model, "Value Range", "Frequency");
 
-            TestPlot.Title = "Heat Map";
-
-            var yAxis = new OxyPlot.Wpf.LinearAxis
+            var series = new HistogramSeries
             {
-                AxisTitleDistance = 20,
-                TitleFontSize = 20,
+                Title = "Sample Distribution",
+                FillColor = OxyColors.SteelBlue,
+                StrokeColor = OxyColors.Black,
+                StrokeThickness = 1
+            };
+
+            var items = new List<HistogramItem>
+            {
+                new HistogramItem(0, 200, 400),
+                new HistogramItem(200, 400, 100),
+                new HistogramItem(400, 600, 800),
+                new HistogramItem(600, 800, 2000),
+                new HistogramItem(800, 1000, 600)
+            };
+
+            series.Items.AddRange(items);
+            RegisterDemoData(series.Title, items);
+
+            model.Series.Add(series);
+            PlotModel = model;
+            UpdateStatus($"Displaying Histogram Series{(bound ? " (Bound)" : "")} - 5 bins showing frequency distribution");
+        }
+
+        private void CreateBarSeries(bool bound)
+        {
+            var model = CreateBasePlotModel("Bar Series Demo");
+
+            var categoryLabels = new[] { "Apple Cake", "Baumkuchen", "Bundt Cake", "Chocolate Cake", "Carrot Cake" };
+
+            model.Axes.Add(new CategoryAxis
+            {
                 Position = AxisPosition.Left,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test Y",
-                Key = "y"
-            };
+                Key = "category",
+                Title = "Cake Type",
+                ItemsSource = categoryLabels
+            });
 
-            var xAxis = new OxyPlot.Wpf.LinearAxis
+            model.Axes.Add(new LinearAxis
             {
-                AxisTitleDistance = 20,
                 Position = AxisPosition.Bottom,
-                TitleFontSize = 20,
+                Title = "Popularity (%)",
+                MinimumPadding = 0,
+                AbsoluteMinimum = 0
+            });
+
+            RegisterCategoryAxisLabels("category", categoryLabels);
+
+            var series = new BarSeries
+            {
+                Title = "Cake Popularity",
+                FillColor = OxyColors.CornflowerBlue
+            };
+
+            var r = new Random(314);
+            var values = Enumerable.Range(0, 5).Select(_ => r.NextDouble()).ToArray();
+            var sum = values.Sum();
+            var items = values.Select(v => new BarItem(v / sum * 100)).ToList();
+
+            series.Items.AddRange(items);
+            RegisterDemoData(series.Title, items);
+
+            model.Series.Add(series);
+            PlotModel = model;
+            UpdateStatus($"Displaying Bar Series{(bound ? " (Bound)" : "")} - 5 categories showing popularity percentages");
+        }
+
+        private void CreateBoxPlotSeries(bool bound)
+        {
+            var model = CreateBasePlotModel("Box Plot Series Demo");
+
+            var categoryLabels = new[] { "Math", "Science", "English", "History" };
+
+            model.Axes.Add(new CategoryAxis
+            {
+                Position = AxisPosition.Bottom,
+                Key = "category",
+                Title = "Subject",
+                IsTickCentered = true,
+                ItemsSource = categoryLabels
+            });
+
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Title = "Score",
                 MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test X",
-                Key = "x"
-            };
+                MinorGridlineStyle = LineStyle.Dash
+            });
 
-            TestPlot.Axes.Add(xAxis);
-            TestPlot.Axes.Add(yAxis);
+            RegisterCategoryAxisLabels("category", categoryLabels);
 
-            // Add the color Axis
-            var lca = new OxyPlot.Wpf.LinearColorAxis { Position = AxisPosition.Right };
-            lca.PaletteSize = 200;
-            lca.LowColor = Colors.Blue;
-            lca.HighColor = Colors.Red;
-
-            var gList = new List<GradientStop>
+            var series = new BoxPlotSeries
             {
-                new GradientStop(Colors.Red, 0),
-                new GradientStop(Colors.Yellow, 0.5),
-                new GradientStop(Colors.Green, 1)
+                Title = "Test Scores by Subject",
+                BoxWidth = 0.4,
+                WhiskerWidth = 0.3,
+                Stroke = OxyColors.Black,
+                StrokeThickness = 1,
+                Fill = OxyColors.LightSteelBlue
             };
-            lca.GradientStops = new GradientStopCollection(gList);
-            TestPlot.Axes.Add(lca);
 
-            var wpfHeatMapSeries = new OxyPlot.Wpf.HeatMapSeries
+            var items = new List<BoxPlotItem>
             {
-                X0 = 0,
-                X1 = 99,
-                Y0 = 0,
-                Y1 = 99,
-                Interpolate = true,
-                Title = "Heat Map Series"
+                new BoxPlotItem(0, 60, 70, 75, 85, 95) { Outliers = new List<double> { 50, 98 } },
+                new BoxPlotItem(1, 55, 65, 72, 82, 90),
+                new BoxPlotItem(2, 50, 60, 68, 78, 88) { Outliers = new List<double> { 45, 92 } },
+                new BoxPlotItem(3, 58, 68, 74, 84, 92)
             };
 
-            // Generate 1d normal distribution
+            series.Items.AddRange(items);
+            RegisterDemoData(series.Title, items);
+
+            model.Series.Add(series);
+            PlotModel = model;
+            UpdateStatus($"Displaying Box Plot Series{(bound ? " (Bound)" : "")} - 4 subjects with statistical summaries and outliers");
+        }
+
+        private void CreateAreaSeries(bool bound)
+        {
+            var model = CreateBasePlotModel("Area Series Demo");
+            AddStandardAxes(model);
+
+            var series = new AreaSeries
+            {
+                Title = "Probability Density",
+                Fill = OxyColor.FromAColor(128, OxyColors.Green),
+                Color = OxyColors.DarkGreen,
+                StrokeThickness = 2
+            };
+
+            var points = CreateNormalDistribution(-5, 5, 0, 1);
+            series.Points.AddRange(points);
+            RegisterDemoData(series.Title, points);
+
+            model.Series.Add(series);
+            PlotModel = model;
+            UpdateStatus($"Displaying Area Series{(bound ? " (Bound)" : "")} - Normal distribution with filled area");
+        }
+
+        private void CreateHeatMapSeries(bool bound)
+        {
+            var model = CreateBasePlotModel("Heat Map Series Demo");
+
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                Title = "X",
+                Minimum = 0,
+                Maximum = 99
+            });
+
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Title = "Y",
+                Minimum = 0,
+                Maximum = 99
+            });
+
+            model.Axes.Add(new LinearColorAxis
+            {
+                Position = AxisPosition.Right,
+                Palette = OxyPalettes.Viridis(256),
+                Title = "Intensity"
+            });
+
+            // Generate 2D Gaussian distribution
             var singleData = new double[100];
             for (int x = 0; x < 100; x++)
             {
-                singleData[x] = Math.Exp(((1.0 / 2) * -1) * Math.Pow(((double)x - 50) / 20, 2));
+                singleData[x] = Math.Exp(-0.5 * Math.Pow((x - 50.0) / 20, 2));
             }
 
-            // Generate 2d normal distribution
             var data = new double[100, 100];
             for (int x = 0; x < 100; x++)
             {
@@ -957,501 +753,204 @@ namespace Demo_OxyPlotControls
                 }
             }
 
-            wpfHeatMapSeries.Data = data;
-            RegisterDemoData(wpfHeatMapSeries.Title, data);
+            var series = new HeatMapSeries
+            {
+                Title = "2D Gaussian Distribution",
+                X0 = 0,
+                X1 = 99,
+                Y0 = 0,
+                Y1 = 99,
+                Data = data,
+                Interpolate = true,
+                RenderMethod = HeatMapRenderMethod.Bitmap
+            };
 
-            // Change render method
-            ((OxyPlot.Series.HeatMapSeries)wpfHeatMapSeries.InternalSeries).RenderMethod = HeatMapRenderMethod.Bitmap;
+            RegisterDemoData(series.Title, data);
 
-            TestPlot.Series.Add(wpfHeatMapSeries);
-
-            TestPlot.ResetAllAxes();
-            TestPlot.InvalidatePlot(true);
+            model.Series.Add(series);
+            PlotModel = model;
+            UpdateStatus($"Displaying Heat Map Series{(bound ? " (Bound)" : "")} - 100x100 2D Gaussian distribution");
         }
 
-        private void HistogramSeries_Create(bool boundBool)
+        private void CreateDateTimeSeries()
         {
-            TestPlot.Series.Clear();
-            TestPlot.Axes.Clear();
+            var model = CreateBasePlotModel("Date Time Series Demo");
 
-            TestPlot.Title = "Histogram Series";
-
-            var yAxis = new OxyPlot.Wpf.LinearAxis
+            model.Axes.Add(new DateTimeAxis
             {
-                AxisTitleDistance = 20,
-                TitleFontSize = 20,
-                Position = AxisPosition.Left,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test Y",
-                Key = "y"
-            };
-
-            var xAxis = new OxyPlot.Wpf.LinearAxis
-            {
-                AxisTitleDistance = 20,
                 Position = AxisPosition.Bottom,
-                TitleFontSize = 20,
+                Title = "Date",
+                StringFormat = "yyyy-MM-dd",
                 MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test X",
-                Key = "x"
-            };
+                MinorGridlineStyle = LineStyle.Dash
+            });
 
-            TestPlot.Axes.Add(xAxis);
-            TestPlot.Axes.Add(yAxis);
-
-            var histogramSeries = new OxyPlot.Wpf.HistogramSeries { Title = "Histogram Series" };
-
-            var vals = new List<HistogramItem>();
-
-            if (boundBool)
+            model.Axes.Add(new LinearAxis
             {
-                vals.Add(new HistogramItem(200, 400, 100));
-                vals.Add(new HistogramItem(0, 200, 500));
-                vals.Add(new HistogramItem(400, 600, 800));
-                vals.Add(new HistogramItem(600, 800, 2000));
+                Position = AxisPosition.Left,
+                Title = "Flow (cfs)",
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dash
+            });
 
-                histogramSeries.ItemsSource = vals;
-            }
-            else
+            try
             {
-                // Adding items to the WPF series doesn't work. They have to be added to the internal series.
-                var internalSeries = (OxyPlot.Series.HistogramSeries)histogramSeries.InternalSeries;
-                vals.Add(new HistogramItem(0, 200, 400));
-                vals.Add(new HistogramItem(200, 400, 100));
-                vals.Add(new HistogramItem(400, 600, 800));
-                vals.Add(new HistogramItem(600, 800, 2000));
-                foreach (var item in vals)
+                using var resource = Assembly.GetExecutingAssembly().GetManifestResourceStream("Demo_OxyPlotControls.USGS_01134500.xml");
+                if (resource != null)
                 {
-                    internalSeries.Items.Add(item);
+                    using var reader = new StreamReader(resource);
+                    var timeSeries = new TimeSeries(XElement.Parse(reader.ReadToEnd()));
+
+                    var series = new LineSeries
+                    {
+                        Title = "USGS Stream Flow Data",
+                        Color = OxyColors.Blue,
+                        StrokeThickness = 1
+                    };
+
+                    foreach (var item in timeSeries)
+                    {
+                        series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(item.Index), item.Value));
+                    }
+
+                    model.Series.Add(series);
+                    UpdateStatus("Displaying Date Time Series - USGS stream flow data over time");
                 }
             }
+            catch (Exception ex)
+            {
+                UpdateStatus($"Error loading time series data: {ex.Message}");
+            }
 
-            RegisterDemoData(histogramSeries.Title, vals);
-            TestPlot.Series.Add(histogramSeries);
-
-            TestPlot.ResetAllAxes();
-            TestPlot.InvalidatePlot(true);
+            PlotModel = model;
         }
 
-        private void BoxPlotSeries_Create(bool boundBool)
+        private void CreatePieSeries()
         {
-            TestPlot.Series.Clear();
-            TestPlot.Axes.Clear();
-
-            TestPlot.Title = "Box Plot Series";
-
-            var yAxis = new OxyPlot.Wpf.LinearAxis
+            var model = new PlotModel
             {
-                AxisTitleDistance = 20,
-                TitleFontSize = 20,
-                Position = AxisPosition.Left,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test Y",
-                Key = "y"
+                Title = "Pie Series Demo"
             };
 
-            var categoryLabels = new[] { "Math", "Science", "English", "History" };
-            var xAxis = new OxyPlot.Wpf.CategoryAxis
+            var series = new PieSeries
             {
-                ItemsSource = categoryLabels,
-                IsTickCentered = true,
-                AxisTitleDistance = 20,
-                Position = AxisPosition.Bottom,
-                TitleFontSize = 20,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test X",
-                Key = "x"
-            };
-
-            RegisterCategoryAxisLabels(xAxis.Key, categoryLabels);
-
-            var boxPlotSeries = new OxyPlot.Wpf.BoxPlotSeries
-            {
-                BoxWidth = 0.5,
-                WhiskerWidth = 0.5,
                 StrokeThickness = 2,
-                Title = "Box Plot Series"
+                Stroke = OxyColors.White,
+                InsideLabelPosition = 0.5,
+                AngleSpan = 360,
+                StartAngle = 0
             };
 
-            var items = new List<BoxPlotItem>();
+            series.Slices.Add(new PieSlice("Desktop", 45) { Fill = OxyColors.SteelBlue });
+            series.Slices.Add(new PieSlice("Mobile", 35) { Fill = OxyColors.Coral });
+            series.Slices.Add(new PieSlice("Tablet", 15) { Fill = OxyColors.MediumSeaGreen });
+            series.Slices.Add(new PieSlice("Other", 5) { Fill = OxyColors.DarkSlateGray });
 
-            if (boundBool)
-            {
-                var outliers = new List<double> { 2, 45, 55, 60 };
-                var outliers2 = new List<double> { 5, 52, 70 };
-
-                items.Add(new BoxPlotItem(0, 12, 15, 17, 30, 40));
-                items.Add(new BoxPlotItem(1, 7, 10, 12, 25, 35) { Outliers = outliers2 });
-                items.Add(new BoxPlotItem(2, 4, 12, 14, 30, 40));
-                items.Add(new BoxPlotItem(3, 3, 5, 7, 20, 30) { Outliers = outliers });
-
-                boxPlotSeries.ItemsSource = items;
-            }
-            else
-            {
-                var outliers = new List<double> { 2, 50 };
-                var outliers2 = new List<double> { 60 };
-
-                items.Add(new BoxPlotItem(0, 3, 5, 7, 20, 30) { Outliers = outliers });
-                items.Add(new BoxPlotItem(1, 4, 12, 14, 30, 40) { Outliers = outliers2 });
-                items.Add(new BoxPlotItem(2, 7, 10, 12, 25, 35));
-                items.Add(new BoxPlotItem(3, 12, 15, 17, 30, 40));
-
-                foreach (var item in items)
-                {
-                    boxPlotSeries.Items.Add(item);
-                }
-            }
-
-            RegisterDemoData(boxPlotSeries.Title, items);
-
-            TestPlot.Axes.Add(xAxis);
-            TestPlot.Axes.Add(yAxis);
-            TestPlot.Series.Add(boxPlotSeries);
-
-            TestPlot.ResetAllAxes();
-            TestPlot.InvalidatePlot(true);
+            model.Series.Add(series);
+            PlotModel = model;
+            UpdateStatus("Displaying Pie Series - Device usage breakdown (4 slices)");
         }
 
-        private void ColumnSeries_Create(bool boundBool)
+        private void CreateStemSeries()
         {
-            TestPlot.Series.Clear();
-            TestPlot.Axes.Clear();
+            var model = CreateBasePlotModel("Stem Series Demo");
+            AddStandardAxes(model, "Sample Index", "Value");
 
-            TestPlot.Title = "Column Series";
-
-            var yAxis = new OxyPlot.Wpf.LinearAxis
+            var series = new StemSeries
             {
-                AxisTitleDistance = 20,
-                TitleFontSize = 20,
-                Position = AxisPosition.Left,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test Y",
-                Key = "y"
+                Title = "Discrete Signal",
+                Color = OxyColors.Navy,
+                MarkerType = MarkerType.Circle,
+                MarkerSize = 5,
+                MarkerFill = OxyColors.SteelBlue,
+                MarkerStroke = OxyColors.Navy,
+                StrokeThickness = 1.5
             };
 
-            var categoryLabels = new[] { "Math", "Science", "English", "History" };
-            var xAxis = new OxyPlot.Wpf.CategoryAxis
+            // Generate a discrete sine wave signal
+            for (int i = 0; i < 30; i++)
             {
-                ItemsSource = categoryLabels,
-                AxisTitleDistance = 20,
-                Position = AxisPosition.Bottom,
-                TitleFontSize = 20,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test X",
-                Key = "x"
-            };
-
-            RegisterCategoryAxisLabels(xAxis.Key, categoryLabels);
-
-            TestPlot.Axes.Add(xAxis);
-            TestPlot.Axes.Add(yAxis);
-
-            var colSeries = new OxyPlot.Wpf.ColumnSeries { Title = "Column Series" };
-
-            var vals = new List<ColumnItem>();
-
-            if (boundBool)
-            {
-                colSeries.ValueField = "Value";
-                colSeries.ColorField = "Color";
-
-                vals.Add(new ColumnItem(50, 0) { Color = OxyColors.Red });
-                vals.Add(new ColumnItem(10, 1));
-                vals.Add(new ColumnItem(30, 2));
-                vals.Add(new ColumnItem(20, 3));
-
-                colSeries.ItemsSource = vals;
-            }
-            else
-            {
-                vals.Add(new ColumnItem(30, 0));
-                vals.Add(new ColumnItem(80, 1));
-                vals.Add(new ColumnItem(10, 2) { Color = OxyColors.Red });
-                vals.Add(new ColumnItem(50, 3));
-
-                foreach (var item in vals)
-                {
-                    colSeries.Items.Add(item);
-                }
+                double x = i;
+                double y = Math.Sin(i * 0.3) * (1 + 0.5 * Math.Sin(i * 0.1));
+                series.Points.Add(new DataPoint(x, y));
             }
 
-            RegisterDemoData(colSeries.Title, vals);
-            TestPlot.Series.Add(colSeries);
-
-            TestPlot.ResetAllAxes();
-            TestPlot.InvalidatePlot(true);
+            model.Series.Add(series);
+            PlotModel = model;
+            UpdateStatus("Displaying Stem Series - Discrete modulated sine wave signal (30 samples)");
         }
 
-        private void BarSeries_Create(bool boundBool)
+        private void CreateTwoColorLineSeries()
         {
-            TestPlot.Series.Clear();
-            TestPlot.Axes.Clear();
+            var model = CreateBasePlotModel("Two Color Line Series Demo");
+            AddStandardAxes(model, "X", "Y");
 
-            TestPlot.Title = "Bar Series";
-
-            var yAxis = new OxyPlot.Wpf.LinearAxis
+            var series = new TwoColorLineSeries
             {
-                AxisTitleDistance = 20,
-                TitleFontSize = 20,
-                Position = AxisPosition.Bottom,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test Y",
-                Key = "y"
+                Title = "Temperature Variation",
+                Color = OxyColors.Red,
+                Color2 = OxyColors.Blue,
+                Limit = 0,
+                StrokeThickness = 2
             };
 
-            var categoryLabels = new[] { "Apple cake", "Baumkuchen", "Bundt Cake", "Chocolate cake", "Carrot cake" };
-            var xAxis = new OxyPlot.Wpf.CategoryAxis
+            // Generate data that crosses zero
+            for (int i = 0; i < 100; i++)
             {
-                ItemsSource = categoryLabels,
-                AxisTitleDistance = 20,
-                Position = AxisPosition.Left,
-                TitleFontSize = 20,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test X",
-                Key = "x"
-            };
-
-            RegisterCategoryAxisLabels(xAxis.Key, categoryLabels);
-
-            TestPlot.Axes.Add(xAxis);
-            TestPlot.Axes.Add(yAxis);
-
-            var barSeries = new OxyPlot.Wpf.BarSeries { Title = "Bar Series" };
-
-            var rand = new Random(314);
-            var cakePopularity = new double[5];
-
-            for (int i = 0; i < 5; i++)
-            {
-                cakePopularity[i] = rand.NextDouble();
+                double x = i;
+                double y = Math.Sin(i * 0.1) * 5 + Math.Cos(i * 0.05) * 3;
+                series.Points.Add(new DataPoint(x, y));
             }
 
-            double sum = cakePopularity.Sum();
-
-            if (boundBool)
+            // Add a reference line at the limit
+            model.Annotations.Add(new OxyPlot.Annotations.LineAnnotation
             {
-                barSeries.ValueField = "Xval";
-                barSeries.ColorField = "Color";
+                Type = OxyPlot.Annotations.LineAnnotationType.Horizontal,
+                Y = 0,
+                Color = OxyColors.Gray,
+                StrokeThickness = 1,
+                LineStyle = LineStyle.Dash,
+                Text = "Threshold (0)"
+            });
 
-                var lst = new List<DummyMultiPurposePoint>();
-
-                for (int i = 0; i < 5; i++)
-                {
-                    lst.Add(new DummyMultiPurposePoint
-                    {
-                        Xval = cakePopularity[i] / sum * 100,
-                        Color = OxyColors.Red
-                    });
-                }
-
-                barSeries.ItemsSource = lst;
-                barSeries.LabelPlacement = LabelPlacement.Inside;
-                barSeries.LabelFormatString = "{0:.00}%";
-                RegisterDemoData(barSeries.Title, lst);
-            }
-            else
-            {
-                var items = new List<BarItem>();
-                items.Add(new BarItem(cakePopularity[0] / sum * 100));
-                items.Add(new BarItem(cakePopularity[1] / sum * 100));
-                items.Add(new BarItem(cakePopularity[2] / sum * 100));
-                items.Add(new BarItem(cakePopularity[3] / sum * 100));
-                items.Add(new BarItem(cakePopularity[4] / sum * 100));
-
-                foreach (var item in items)
-                {
-                    barSeries.Items.Add(item);
-                }
-                RegisterDemoData(barSeries.Title, items);
-            }
-
-            TestPlot.Series.Add(barSeries);
-
-            TestPlot.ResetAllAxes();
-            TestPlot.InvalidatePlot(true);
+            model.Series.Add(series);
+            PlotModel = model;
+            UpdateStatus("Displaying Two Color Line Series - Values above/below threshold shown in different colors");
         }
 
-        private void AreaSeries_Create(bool boundBool)
+        private void CreateStepSeries()
         {
-            TestPlot.Series.Clear();
-            TestPlot.Axes.Clear();
-            TestPlot.ActualModel.Series.Clear();
-            TestPlot.ActualModel.Axes.Clear();
+            var model = CreateBasePlotModel("Step Series Demo");
+            AddStandardAxes(model, "Time", "Level");
 
-            TestPlot.Title = "Area Series";
-
-            var yAxis = new OxyPlot.Wpf.LinearAxis
+            var series = new StairStepSeries
             {
-                AxisTitleDistance = 20,
-                TitleFontSize = 20,
-                Position = AxisPosition.Left,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test Y",
-                Key = "y"
+                Title = "Digital Signal",
+                Color = OxyColors.Purple,
+                StrokeThickness = 2,
+                MarkerType = MarkerType.Circle,
+                MarkerSize = 4,
+                MarkerFill = OxyColors.Purple
             };
 
-            var xAxis = new OxyPlot.Wpf.LinearAxis
+            // Generate a step function (like a digital signal)
+            var r = new Random(42);
+            double currentLevel = 0;
+            for (int i = 0; i < 20; i++)
             {
-                AxisTitleDistance = 20,
-                Position = AxisPosition.Bottom,
-                TitleFontSize = 20,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test X",
-                Key = "x"
-            };
-
-            TestPlot.Axes.Add(xAxis);
-            TestPlot.Axes.Add(yAxis);
-
-            var areaSeries1 = new OxyPlot.Wpf.AreaSeries
-            {
-                Title = "Area Series",
-                Fill = Colors.Green
-            };
-
-            if (boundBool)
-            {
-                var lst = new List<DummyMultiPurposePoint>();
-                areaSeries1.DataFieldX = "Xval";
-                areaSeries1.DataFieldY = "Yval";
-                areaSeries1.DataFieldX2 = "X2val";
-                areaSeries1.DataFieldY2 = "Y2val";
-
-                foreach (var p in CreateNormalDist(-10, 10, 0, 2))
+                series.Points.Add(new DataPoint(i, currentLevel));
+                if (r.NextDouble() > 0.5)
                 {
-                    lst.Add(new DummyMultiPurposePoint
-                    {
-                        Xval = p.X,
-                        Yval = p.Y,
-                        X2val = p.X / 2,
-                        Y2val = p.Y / 2
-                    });
+                    currentLevel = currentLevel == 0 ? 1 : 0;
                 }
-
-                areaSeries1.ItemsSource = lst;
-                RegisterDemoData(areaSeries1.Title, lst);
-            }
-            else
-            {
-                var points = new List<DataPoint>();
-                foreach (var p in CreateNormalDist(-5, 5, 0, 1))
-                {
-                    ((OxyPlot.Series.AreaSeries)areaSeries1.InternalSeries).Points.Add(p);
-                    points.Add(p);
-                }
-                RegisterDemoData(areaSeries1.Title, points);
+                series.Points.Add(new DataPoint(i + 0.999, currentLevel));
             }
 
-            TestPlot.Series.Add(areaSeries1);
-
-            TestPlot.ResetAllAxes();
-            TestPlot.InvalidatePlot(true);
+            model.Series.Add(series);
+            PlotModel = model;
+            UpdateStatus("Displaying Step Series - Digital signal with step transitions (20 samples)");
         }
 
-        private void DateTimeSeries_Create(bool boundBool)
-        {
-            TestPlot.Series.Clear();
-            TestPlot.Axes.Clear();
-
-            TestPlot.Title = "Date Time Series";
-
-            var yAxis = new OxyPlot.Wpf.LinearAxis
-            {
-                AxisTitleDistance = 20,
-                TitleFontSize = 20,
-                Position = AxisPosition.Left,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test Y",
-                Key = "y"
-            };
-
-            var xAxis = new OxyPlot.Wpf.DateTimeAxis
-            {
-                AxisTitleDistance = 20,
-                Position = AxisPosition.Bottom,
-                TitleFontSize = 20,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dash,
-                Title = "Test X",
-                Key = "x"
-            };
-
-            TestPlot.Axes.Add(xAxis);
-            TestPlot.Axes.Add(yAxis);
-
-            using (var resource = Assembly.GetExecutingAssembly().GetManifestResourceStream("Demo_OxyPlotControls.USGS_01134500.xml"))
-            {
-                var s = new StreamReader(resource);
-                var t = new TimeSeries(XElement.Parse(s.ReadToEnd()));
-
-                var l = new OxyPlot.Wpf.LineSeries
-                {
-                    Title = "Time Series Data",
-                    Color = Colors.Blue,
-                    MarkerFill = Colors.Transparent,
-                    StrokeThickness = 1,
-                    LineStyle = LineStyle.Solid
-                };
-
-                l.ItemsSource = t;
-                l.DataFieldX = "Index";
-                l.DataFieldY = "Value";
-                RegisterDemoData(l.Title, t);
-
-                TestPlot.Series.Add(l);
-                TestPlot.InvalidatePlot(true);
-            }
-        }
-
-        /// <summary>
-        /// Represents an area point with two data points.
-        /// </summary>
-        public class AreaPoint
-        {
-            /// <summary>
-            /// Gets or sets the X1 coordinate.
-            /// </summary>
-            public double X1 { get; set; }
-
-            /// <summary>
-            /// Gets or sets the X2 coordinate.
-            /// </summary>
-            public double X2 { get; set; }
-
-            /// <summary>
-            /// Gets or sets the Y1 coordinate.
-            /// </summary>
-            public double Y1 { get; set; }
-
-            /// <summary>
-            /// Gets or sets the Y2 coordinate.
-            /// </summary>
-            public double Y2 { get; set; }
-
-            /// <summary>
-            /// Initializes a new instance of the AreaPoint class.
-            /// </summary>
-            /// <param name="p1">The first data point.</param>
-            /// <param name="p2">The second data point.</param>
-            public AreaPoint(DataPoint p1, DataPoint p2)
-            {
-                X1 = p1.X;
-                X2 = p2.X;
-                Y1 = p1.Y;
-                Y2 = p2.Y;
-            }
-        }
+        #endregion
     }
 }

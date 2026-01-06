@@ -29,11 +29,7 @@
     <Resource Include="Resources\*.ico" />
   </ItemGroup>
 
-  <!-- XAML resource dictionaries -->
-  <ItemGroup>
-    <Page Include="Expander\ExpanderStyle.xaml" />
-    <Page Include="Resources\IconResources.xaml" />
-  </ItemGroup>
+  <!-- XAML resource dictionaries are automatically included by the SDK -->
   <ItemGroup>
     <Reference Include="DatabaseManager">
       <HintPath>..\..\..\database-management\DatabaseManager\bin\Debug\net9.0\DatabaseManager.dll</HintPath>
