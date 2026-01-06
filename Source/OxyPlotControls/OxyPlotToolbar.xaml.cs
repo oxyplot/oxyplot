@@ -271,20 +271,12 @@ namespace OxyPlotControls
 
         private TextBox? _textBox = null;
         private ContextMenu? _contextMenu = null;
-        private EditTextTarget _editTarget = EditTextTarget.None;
+        private Canvas? _textBoxCanvas = null;
+        private DockPanel? _textBoxDockPanel = null;
+        private OxyColor _currentTextColor = OxyColors.Black;
+        private OxyColor _currentStrokeColor = OxyColors.Black;
         private object? _editTargetObject = null;
-
-        /// <summary>
-        /// Enumeration for the current text editing target.
-        /// </summary>
-        private enum EditTextTarget
-        {
-            None,
-            Title,
-            Subtitle,
-            AxisTitle,
-            AnnotationText
-        }
+        private string? _editPropertyName = null;
 
         /// <summary>
         /// Enumeration for adding annotation tool mode.
@@ -1765,62 +1757,148 @@ namespace OxyPlotControls
                 _contextMenu.Items.Add(formatPlotItem);
             }
 
-            // TITLE AREA hit test - check if click is in title/subtitle area
-            if (Model.TitleArea.Contains(e.Position))
+            // TEXT HIT TEST - use InputHitTest to find TextBlock elements
+            var plotCanvas = GetPlotViewCanvas();
+            if (plotCanvas != null)
             {
-                // Determine if title or subtitle was clicked based on Y position
-                var titleArea = Model.TitleArea;
-                double midY = titleArea.Top + titleArea.Height / 2;
-                bool isSubtitle = !string.IsNullOrEmpty(Model.Subtitle) && e.Position.Y > midY;
+                var textResult = plotCanvas.InputHitTest(new Point(e.Position.X, e.Position.Y));
+                if (textResult != null && textResult.GetType() == typeof(TextBlock))
+                {
+                    var txtblock = (TextBlock)textResult;
 
-                if (leftClickBool)
-                {
-                    if (isSubtitle)
+                    // CHART TITLE SELECTED
+                    if (Model.Title == txtblock.Text && Model.TitleArea.Contains(new ScreenPoint(e.Position.X, e.Position.Y)))
                     {
-                        PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Model.TitleArea);
-                        CreateEditTextBox(EditTextTarget.Subtitle, Model.Subtitle ?? "", e.Position);
-                    }
-                    else if (!string.IsNullOrEmpty(Model.Title))
-                    {
-                        PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotTitle, Model.TitleArea);
-                        CreateEditTextBox(EditTextTarget.Title, Model.Title, e.Position);
-                    }
-                    return;
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(Model.Title))
-                    {
-                        var editTitleItem = new MenuItem { Header = "Edit Plot Title", Icon = CreateMenuIcon("EditTextbox.png") };
-                        editTitleItem.Click += (s, args) =>
+                        if (leftClickBool)
                         {
                             PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotTitle, Model.TitleArea);
-                            CreateEditTextBox(EditTextTarget.Title, Model.Title, e.Position);
-                        };
-                        var formatTitleItem = new MenuItem { Header = "Format Plot Title", Icon = CreateMenuIcon("Format.png") };
-                        formatTitleItem.Click += (s, args) =>
+                            CreateEditTBX(txtblock, Model, "Title", 0, plotCanvas);
+                            return;
+                        }
+                        else
                         {
-                            PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.General_PlotTitle, Model.TitleArea);
-                        };
-                        _contextMenu.Items.Add(editTitleItem);
-                        _contextMenu.Items.Add(formatTitleItem);
+                            var editTitleItem = new MenuItem { Header = "Edit Plot Title", Icon = CreateMenuIcon("EditTextbox.png") };
+                            editTitleItem.Click += (s, args) =>
+                            {
+                                PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotTitle, Model.TitleArea);
+                                CreateEditTBX(txtblock, Model, "Title", 0, plotCanvas);
+                            };
+                            var formatTitleItem = new MenuItem { Header = "Format Plot Title", Icon = CreateMenuIcon("Format.png") };
+                            formatTitleItem.Click += (s, args) =>
+                            {
+                                PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.General_PlotTitle, Model.TitleArea);
+                                PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Model.TitleArea);
+                            };
+                            _contextMenu.Items.Add(editTitleItem);
+                            _contextMenu.Items.Add(formatTitleItem);
+                        }
                     }
 
-                    if (!string.IsNullOrEmpty(Model.Subtitle))
+                    // CHART SUBTITLE SELECTED
+                    if (Model.Subtitle == txtblock.Text && Model.TitleArea.Contains(new ScreenPoint(e.Position.X, e.Position.Y)))
                     {
-                        var editSubtitleItem = new MenuItem { Header = "Edit Plot Subtitle", Icon = CreateMenuIcon("EditTextbox.png") };
-                        editSubtitleItem.Click += (s, args) =>
+                        if (leftClickBool)
                         {
                             PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Model.TitleArea);
-                            CreateEditTextBox(EditTextTarget.Subtitle, Model.Subtitle, e.Position);
-                        };
-                        var formatSubtitleItem = new MenuItem { Header = "Format Plot Subtitle", Icon = CreateMenuIcon("Format.png") };
-                        formatSubtitleItem.Click += (s, args) =>
+                            CreateEditTBX(txtblock, Model, "Subtitle", 0, plotCanvas);
+                            return;
+                        }
+                        else
                         {
-                            PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Model.TitleArea);
-                        };
-                        _contextMenu.Items.Add(editSubtitleItem);
-                        _contextMenu.Items.Add(formatSubtitleItem);
+                            var editSubtitleItem = new MenuItem { Header = "Edit Plot Subtitle", Icon = CreateMenuIcon("EditTextbox.png") };
+                            editSubtitleItem.Click += (s, args) =>
+                            {
+                                PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Model.TitleArea);
+                                CreateEditTBX(txtblock, Model, "Subtitle", 0, plotCanvas);
+                            };
+                            var formatSubtitleItem = new MenuItem { Header = "Format Plot Subtitle", Icon = CreateMenuIcon("Format.png") };
+                            formatSubtitleItem.Click += (s, args) =>
+                            {
+                                PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Model.TitleArea);
+                            };
+                            _contextMenu.Items.Add(editSubtitleItem);
+                            _contextMenu.Items.Add(formatSubtitleItem);
+                        }
+                    }
+
+                    // AXES TITLES SELECTED
+                    if (Model.PlotAndAxisArea.Contains(new ScreenPoint(e.Position.X, e.Position.Y)))
+                    {
+                        var axes = Model.Axes.Where(x => x.Title != null && txtblock.Text.Contains(x.Title)).ToList();
+
+                        if (axes.Count == 1)
+                        {
+                            var ax = axes.First();
+
+                            if (leftClickBool)
+                            {
+                                PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Title, ax);
+                                if (ax.IsVertical())
+                                {
+                                    CreateEditTBX(txtblock, ax, "Title", -90, plotCanvas);
+                                }
+                                else
+                                {
+                                    CreateEditTBX(txtblock, ax, "Title", 0, plotCanvas);
+                                }
+                                return;
+                            }
+                            else
+                            {
+                                var editAxisTitleItem = new MenuItem { Header = "Edit Axis Title", Icon = CreateMenuIcon("EditTextbox.png") };
+                                editAxisTitleItem.Click += (s, args) =>
+                                {
+                                    PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Title, ax);
+                                    if (ax.IsVertical())
+                                    {
+                                        CreateEditTBX(txtblock, ax, "Title", -90, plotCanvas);
+                                    }
+                                    else
+                                    {
+                                        CreateEditTBX(txtblock, ax, "Title", 0, plotCanvas);
+                                    }
+                                };
+                                var formatAxisItem = new MenuItem { Header = "Format Axis: " + ax.Title, Icon = CreateMenuIcon("Format.png") };
+                                formatAxisItem.Click += (s, args) =>
+                                {
+                                    PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Axes_Options, ax);
+                                    PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Display, ax);
+                                };
+                                _contextMenu.Items.Add(editAxisTitleItem);
+                                _contextMenu.Items.Add(formatAxisItem);
+                            }
+                        }
+                    }
+
+                    // ANNOTATION TEXT SELECTED
+                    foreach (var anno in Model.Annotations)
+                    {
+                        if (anno is TextualAnnotation textAnno && textAnno.Text == txtblock.Text)
+                        {
+                            if (leftClickBool)
+                            {
+                                PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Annotations_Options, anno);
+                                CreateEditTBX(txtblock, anno, "Text", textAnno.TextRotation, plotCanvas);
+                                return;
+                            }
+                            else
+                            {
+                                var editAnnoItem = new MenuItem { Header = "Edit Annotation Text", Icon = CreateMenuIcon("EditTextbox.png") };
+                                editAnnoItem.Click += (s, args) =>
+                                {
+                                    PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Annotations_Options, anno);
+                                    CreateEditTBX(txtblock, anno, "Text", textAnno.TextRotation, plotCanvas);
+                                };
+                                var formatAnnoItem = new MenuItem { Header = "Format Annotation", Icon = CreateMenuIcon("Format.png") };
+                                formatAnnoItem.Click += (s, args) =>
+                                {
+                                    PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Options, anno);
+                                };
+                                _contextMenu.Items.Add(editAnnoItem);
+                                _contextMenu.Items.Add(formatAnnoItem);
+                            }
+                            break;
+                        }
                     }
                 }
             }
@@ -1893,30 +1971,13 @@ namespace OxyPlotControls
                 {
                     if (leftClickBool)
                     {
-                        // If axis has a title, allow editing it directly
-                        if (!string.IsNullOrEmpty(axis.Title))
-                        {
-                            PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Display, axis);
-                            CreateEditTextBox(EditTextTarget.AxisTitle, axis.Title, e.Position, axis);
-                        }
-                        else
-                        {
-                            PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Options, axis);
-                            PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Display, axis);
-                        }
+                        // Open axis properties (title editing is handled via TextBlock hit test above)
+                        PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Options, axis);
+                        PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Display, axis);
                         return;
                     }
                     else
                     {
-                        // Edit axis title menu item
-                        var editAxisTitleItem = new MenuItem { Header = "Edit Axis Title", Icon = CreateMenuIcon("EditTextbox.png") };
-                        editAxisTitleItem.Click += (s, args) =>
-                        {
-                            PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Display, axis);
-                            CreateEditTextBox(EditTextTarget.AxisTitle, axis.Title ?? "", e.Position, axis);
-                        };
-                        _contextMenu.Items.Add(editAxisTitleItem);
-
                         // Format axis menu item
                         var formatAxisItem = new MenuItem { Header = "Format Axis: " + axis.Title, Icon = CreateMenuIcon("Format.png") };
                         formatAxisItem.Click += (s, args) =>
@@ -1976,203 +2037,358 @@ namespace OxyPlotControls
 
         #endregion
 
-        #region CreateEditTextBox
+        #region CreateEditTBX
 
         /// <summary>
         /// Creates an in-place text box for editing text on the plot.
-        /// Supports plot titles, subtitles, axis titles, and annotation text.
+        /// Supports plot titles, axis titles, and all annotation types.
         /// </summary>
-        /// <param name="target">The type of text element being edited.</param>
-        /// <param name="initialText">The initial text to display in the text box.</param>
-        /// <param name="position">The screen position where the click occurred.</param>
-        /// <param name="targetObject">Optional target object (e.g., axis or annotation).</param>
-        private void CreateEditTextBox(EditTextTarget target, string initialText, ScreenPoint position, object? targetObject = null)
+        /// <param name="existingTextblock">The existing TextBlock element being edited.</param>
+        /// <param name="targetObject">The object containing the text property (PlotModel, Axis, or Annotation).</param>
+        /// <param name="propertyName">The name of the property to update (e.g., "Title", "Subtitle", "Text").</param>
+        /// <param name="angle">The rotation angle for the text box.</param>
+        /// <param name="canvas">The canvas for positioning.</param>
+        private void CreateEditTBX(TextBlock existingTextblock, object targetObject, string propertyName, double angle, Canvas canvas)
         {
             if (Model == null || PlotView == null) return;
 
-            // Remove any existing textbox
-            RemoveEditTextBox();
+            IInputElement txtblckAsInputElem = existingTextblock as IInputElement;
+            _currentTextColor = OxyColors.Black;
+            _currentStrokeColor = OxyColors.Black;
 
-            // Store edit target info
-            _editTarget = target;
-            _editTargetObject = targetObject;
-
-            // Get the area to position the textbox
-            OxyRect editArea;
-            double fontSize = 14;
-            string fontFamily = "Segoe UI";
-            FontWeight fontWeight = System.Windows.FontWeights.Normal;
-
-            switch (target)
+            Point point;
+            try
             {
-                case EditTextTarget.Title:
-                    editArea = Model.TitleArea;
-                    fontSize = Model.TitleFontSize > 0 ? Model.TitleFontSize : 18;
-                    fontFamily = !string.IsNullOrEmpty(Model.TitleFont) ? Model.TitleFont : Model.DefaultFont ?? "Segoe UI";
-                    fontWeight = System.Windows.FontWeights.Bold;
-                    break;
-                case EditTextTarget.Subtitle:
-                    editArea = Model.TitleArea;
-                    fontSize = Model.SubtitleFontSize > 0 ? Model.SubtitleFontSize : 14;
-                    fontFamily = !string.IsNullOrEmpty(Model.SubtitleFont) ? Model.SubtitleFont : Model.DefaultFont ?? "Segoe UI";
-                    break;
-                case EditTextTarget.AxisTitle:
-                    if (targetObject is OxyPlot.Axes.Axis axis)
-                    {
-                        // Use position for axis title - it's usually at the center of the axis
-                        editArea = new OxyRect(position.X - 100, position.Y - 12, 200, 24);
-                        fontSize = axis.TitleFontSize > 0 ? axis.TitleFontSize : 14;
-                        fontFamily = !string.IsNullOrEmpty(axis.TitleFont) ? axis.TitleFont : Model.DefaultFont ?? "Segoe UI";
-                        fontWeight = System.Windows.FontWeights.Bold;
-                    }
-                    else
-                    {
-                        return;
-                    }
-                    break;
-                case EditTextTarget.AnnotationText:
-                    // For annotations, position near the click point
-                    editArea = new OxyRect(position.X - 100, position.Y - 12, 200, 24);
-                    break;
-                default:
-                    return;
+                point = GetPosition((Visual)txtblckAsInputElem, canvas);
+            }
+            catch
+            {
+                return;
             }
 
-            // Create the textbox
-            _textBox = new TextBox
+            double left = point.X;
+            double top = point.Y;
+            double width = existingTextblock.ActualWidth;
+            double height = existingTextblock.ActualHeight;
+            double fontsize = existingTextblock.FontSize;
+            FontFamily fontFamily = existingTextblock.FontFamily;
+            FontWeight fontWeight = existingTextblock.FontWeight;
+            Brush foreColor = existingTextblock.Foreground;
+
+            // Store target info
+            _editTargetObject = targetObject;
+            _editPropertyName = propertyName;
+
+            // Create canvas for the textbox overlay
+            _textBoxCanvas = new Canvas { Name = "TextBoxCanvas" };
+            _textBoxCanvas.Background = new SolidColorBrush(Colors.Transparent);
+            _textBoxDockPanel = new DockPanel();
+
+            // Get the parent grid from PlotView
+            var plotParent = GetPlotViewParentGrid();
+            if (plotParent == null) return;
+            plotParent.Children.Add(_textBoxCanvas);
+
+            // Set initial text box settings
+            _textBox = new TextBox();
+            _textBox.Background = PlotView.Background;
+            _textBox.TextAlignment = TextAlignment.Center;
+            _textBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            _textBox.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            _textBox.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Stretch;
+            _textBox.VerticalContentAlignment = System.Windows.VerticalAlignment.Stretch;
+            _textBox.Padding = new Thickness(-2);
+            _textBox.FontSize = fontsize;
+            _textBox.FontFamily = fontFamily;
+            _textBox.FontWeight = fontWeight;
+            _textBox.Foreground = foreColor;
+            TextOptions.SetTextFormattingMode(_textBox, TextFormattingMode.Display);
+
+            // Normalize all angles to 0-360
+            if (angle < 0 || angle >= 360)
             {
-                Text = initialText,
-                FontSize = fontSize,
-                FontFamily = new FontFamily(fontFamily),
-                FontWeight = fontWeight,
-                TextAlignment = TextAlignment.Center,
-                HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-                VerticalAlignment = System.Windows.VerticalAlignment.Center,
-                HorizontalContentAlignment = System.Windows.HorizontalAlignment.Stretch,
-                VerticalContentAlignment = System.Windows.VerticalAlignment.Center,
-                Padding = new Thickness(2),
-                BorderThickness = new Thickness(1),
-                BorderBrush = new SolidColorBrush(Colors.DodgerBlue),
-                Background = new SolidColorBrush(Colors.White),
-                MinWidth = 100
+                angle = angle % 360;
+                if (angle < 0)
+                {
+                    angle += 360;
+                }
+            }
+
+            // Determine what type of element was selected
+            if (targetObject == Model && (propertyName == "Title" || propertyName == "Subtitle"))
+            {
+                // It must be a title or subtitle
+                _textBoxDockPanel.RenderTransform = new RotateTransform(angle, 0, 0);
+                _textBoxDockPanel.Width = Model.PlotArea.Width;
+                _textBoxDockPanel.Height = height;
+                Canvas.SetLeft(_textBoxDockPanel, Model.PlotArea.Left);
+                Canvas.SetTop(_textBoxDockPanel, top);
+
+                string title = propertyName == "Title" ? Model.Title ?? "" : Model.Subtitle ?? "";
+                _currentTextColor = propertyName == "Title" ? Model.TitleColor : Model.SubtitleColor;
+                if (propertyName == "Title")
+                    Model.TitleColor = OxyColors.Transparent;
+                else
+                    Model.SubtitleColor = OxyColors.Transparent;
+                _textBox.Text = title;
+            }
+            else if (targetObject is OxyPlot.Axes.Axis axis)
+            {
+                if (angle == 0)
+                {
+                    _textBoxDockPanel.RenderTransform = new RotateTransform(angle, 0, 0);
+                    _textBoxDockPanel.Width = Model.PlotArea.Width;
+                    _textBoxDockPanel.Height = height;
+                    Canvas.SetLeft(_textBoxDockPanel, Model.PlotArea.Left);
+                    Canvas.SetTop(_textBoxDockPanel, top);
+                }
+                else if (angle == 270 || angle == -90) // Vertical text - flowing up
+                {
+                    _textBoxDockPanel.RenderTransform = new RotateTransform(270, 0, 0);
+                    _textBoxDockPanel.Width = Model.PlotArea.Height;
+                    _textBoxDockPanel.Height = height;
+                    Canvas.SetTop(_textBoxDockPanel, Model.PlotArea.Bottom);
+                    Canvas.SetLeft(_textBoxDockPanel, left);
+                }
+
+                string title = axis.Title ?? "";
+                _currentTextColor = axis.TitleColor;
+                axis.TitleColor = OxyColors.Transparent;
+                _textBox.Text = title;
+            }
+            else if (targetObject is ArrowAnnotation arrowAnno)
+            {
+                _textBoxDockPanel.RenderTransform = new RotateTransform(0, 0, 0);
+                _textBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.Padding = new Thickness(0);
+
+                _currentTextColor = arrowAnno.TextColor;
+                arrowAnno.TextColor = OxyColors.Transparent;
+
+                var startPoint = arrowAnno.Transform(arrowAnno.StartPoint);
+                _textBoxDockPanel.Width = existingTextblock.Width + 2;
+                Canvas.SetTop(_textBoxDockPanel, startPoint.Y - height);
+                Canvas.SetLeft(_textBoxDockPanel, startPoint.X);
+                _textBox.Text = arrowAnno.Text ?? "";
+            }
+            else if (targetObject is LineAnnotation lineAnno)
+            {
+                _textBox.HorizontalAlignment = lineAnno.TextHorizontalAlignment.ToHorizontalAlignment();
+                _textBox.HorizontalContentAlignment = lineAnno.TextHorizontalAlignment.ToHorizontalAlignment();
+                _textBox.VerticalAlignment = lineAnno.TextVerticalAlignment.ToVerticalAlignment();
+                _textBox.VerticalContentAlignment = lineAnno.TextVerticalAlignment.ToVerticalAlignment();
+                _textBox.Padding = new Thickness(0);
+                _currentTextColor = lineAnno.TextColor;
+                lineAnno.TextColor = OxyColors.Transparent;
+
+                _textBoxDockPanel.RenderTransform = new RotateTransform(0, 0, 0);
+                _textBoxDockPanel.Width = existingTextblock.ActualWidth + 2;
+                _textBox.Width = _textBoxDockPanel.Width;
+                Canvas.SetLeft(_textBoxDockPanel, left);
+                Canvas.SetTop(_textBoxDockPanel, top);
+                _textBox.Text = lineAnno.Text ?? "";
+            }
+            else if (targetObject is TextualAnnotation textAnno)
+            {
+                // Generic handler for TextAnnotation, RectangleAnnotation, EllipseAnnotation,
+                // PointAnnotation, PolygonAnnotation, PolylineAnnotation
+                _currentTextColor = textAnno.TextColor;
+                textAnno.TextColor = OxyColors.Transparent;
+
+                if (targetObject is TextAnnotation ta)
+                {
+                    _currentStrokeColor = ta.Stroke;
+                    ta.Stroke = OxyColors.Transparent;
+                }
+
+                _textBox.Width = existingTextblock.Width;
+                _textBox.TextAlignment = TextAlignment.Left;
+                _textBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.Padding = new Thickness(0);
+                _textBoxDockPanel.RenderTransform = new RotateTransform(0, 0, 0);
+                _textBoxDockPanel.Width = _textBox.Width;
+                _textBoxDockPanel.Height = height;
+                Canvas.SetLeft(_textBoxDockPanel, left);
+                Canvas.SetTop(_textBoxDockPanel, top);
+                _textBox.Text = textAnno.Text ?? "";
+            }
+
+            // Add the textbox to the dock panel and canvas
+            _textBoxDockPanel.Children.Add(_textBox);
+            _textBoxCanvas.Children.Add(_textBoxDockPanel);
+
+            // Focus color from template is controlling here
+            _textBox.BorderThickness = new Thickness(1);
+            _textBox.Focus();
+
+            // Put the cursor at the end of the textbox
+            if (_textBox.Text != null && _textBox.Text.Length > 0)
+            {
+                _textBox.SelectionStart = _textBox.Text.Length;
+            }
+
+            // Store reference to parent for cleanup
+            var parentGrid = plotParent;
+
+            // If the plot size changes, remove the textbox overlay
+            PlotView.SizeChanged += OnPlotViewSizeChanged;
+
+            // On key enter, remove the textbox overlay
+            _textBox.PreviewKeyDown += (s, args) =>
+            {
+                if (args.Key == Key.Enter)
+                {
+                    RemoveEditTBX(parentGrid);
+                }
             };
 
-            // Position the textbox
-            double left, top, width;
-            if (target == EditTextTarget.Title || target == EditTextTarget.Subtitle)
+            // On lost focus, remove the textbox overlay
+            _textBox.LostFocus += (s, args) =>
             {
-                // Center in the plot area for title/subtitle
-                left = Model.PlotArea.Left;
-                width = Model.PlotArea.Width;
-                if (target == EditTextTarget.Title)
-                {
-                    top = editArea.Top + 5;
-                }
-                else
-                {
-                    // Subtitle is below title
-                    top = editArea.Top + editArea.Height / 2 + 5;
-                }
-                _textBox.Width = width;
-            }
-            else
-            {
-                left = editArea.Left;
-                top = editArea.Top;
-                width = editArea.Width;
-                _textBox.MinWidth = width;
-            }
-
-            Canvas.SetLeft(_textBox, left);
-            Canvas.SetTop(_textBox, top);
-
-            // Add to overlay canvas
-            _overlayCanvas.Children.Add(_textBox);
-
-            // Set up event handlers
-            _textBox.PreviewKeyDown += EditTextBox_PreviewKeyDown;
-            _textBox.LostFocus += EditTextBox_LostFocus;
-
-            // Focus and select all text
-            _textBox.Focus();
-            _textBox.SelectAll();
+                RemoveEditTBX(parentGrid);
+            };
         }
 
         /// <summary>
-        /// Handles the PreviewKeyDown event for the edit text box.
+        /// Handles plot view size change - removes the edit textbox.
         /// </summary>
-        private void EditTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void OnPlotViewSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            var parentGrid = GetPlotViewParentGrid();
+            if (parentGrid != null)
             {
-                ApplyEditTextBoxChanges();
-                RemoveEditTextBox();
-                e.Handled = true;
-            }
-            else if (e.Key == Key.Escape)
-            {
-                RemoveEditTextBox();
-                e.Handled = true;
+                RemoveEditTBX(parentGrid);
             }
         }
 
         /// <summary>
-        /// Handles the LostFocus event for the edit text box.
+        /// Removes the edit textbox and restores colors.
         /// </summary>
-        private void EditTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            ApplyEditTextBoxChanges();
-            RemoveEditTextBox();
-        }
-
-        /// <summary>
-        /// Applies the changes from the edit text box to the model.
-        /// </summary>
-        private void ApplyEditTextBoxChanges()
+        private void RemoveEditTBX(Grid? parentGrid)
         {
             if (_textBox == null || Model == null) return;
 
+            // Apply the text change
             string newText = _textBox.Text ?? "";
 
-            switch (_editTarget)
+            if (_editTargetObject == Model)
             {
-                case EditTextTarget.Title:
+                if (_editPropertyName == "Title")
+                {
                     Model.Title = newText;
-                    break;
-                case EditTextTarget.Subtitle:
+                    Model.TitleColor = _currentTextColor;
+                }
+                else if (_editPropertyName == "Subtitle")
+                {
                     Model.Subtitle = newText;
-                    break;
-                case EditTextTarget.AxisTitle:
-                    if (_editTargetObject is OxyPlot.Axes.Axis axis)
-                    {
-                        axis.Title = newText;
-                    }
-                    break;
-                case EditTextTarget.AnnotationText:
-                    if (_editTargetObject is TextualAnnotation textAnnotation)
-                    {
-                        textAnnotation.Text = newText;
-                    }
-                    break;
+                    Model.SubtitleColor = _currentTextColor;
+                }
             }
+            else if (_editTargetObject is OxyPlot.Axes.Axis axis)
+            {
+                axis.Title = newText;
+                axis.TitleColor = _currentTextColor;
+            }
+            else if (_editTargetObject is ArrowAnnotation arrowAnno)
+            {
+                arrowAnno.Text = newText;
+                arrowAnno.TextColor = _currentTextColor;
+            }
+            else if (_editTargetObject is LineAnnotation lineAnno)
+            {
+                lineAnno.Text = newText;
+                lineAnno.TextColor = _currentTextColor;
+            }
+            else if (_editTargetObject is TextAnnotation textAnno)
+            {
+                textAnno.Text = newText;
+                textAnno.TextColor = _currentTextColor;
+                textAnno.Stroke = _currentStrokeColor;
+            }
+            else if (_editTargetObject is TextualAnnotation textualAnno)
+            {
+                textualAnno.Text = newText;
+                textualAnno.TextColor = _currentTextColor;
+            }
+
+            // Remove the canvas overlay
+            if (parentGrid != null && _textBoxCanvas != null)
+            {
+                parentGrid.Children.Remove(_textBoxCanvas);
+            }
+
+            // Cleanup
+            if (PlotView != null)
+            {
+                PlotView.SizeChanged -= OnPlotViewSizeChanged;
+            }
+
+            _textBox = null;
+            _textBoxCanvas = null;
+            _textBoxDockPanel = null;
+            _editTargetObject = null;
+            _editPropertyName = null;
 
             Model.InvalidatePlot(false);
         }
 
         /// <summary>
-        /// Removes the edit text box from the overlay canvas.
+        /// Gets the parent Grid of the PlotView for adding overlays.
         /// </summary>
-        private void RemoveEditTextBox()
+        private Grid? GetPlotViewParentGrid()
         {
-            if (_textBox != null)
+            if (PlotView == null) return null;
+
+            // Try to find the internal grid in the PlotView
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(PlotView); i++)
             {
-                _textBox.PreviewKeyDown -= EditTextBox_PreviewKeyDown;
-                _textBox.LostFocus -= EditTextBox_LostFocus;
-                _overlayCanvas.Children.Remove(_textBox);
-                _textBox = null;
+                var child = VisualTreeHelper.GetChild(PlotView, i);
+                if (child is Grid grid)
+                {
+                    return grid;
+                }
             }
-            _editTarget = EditTextTarget.None;
-            _editTargetObject = null;
+
+            // Fallback: use the PlotView's parent if it's a Grid
+            if (VisualTreeHelper.GetParent(PlotView) is Grid parentGrid)
+            {
+                return parentGrid;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the Canvas from the PlotView for hit testing.
+        /// </summary>
+        private Canvas? GetPlotViewCanvas()
+        {
+            if (PlotView == null) return null;
+
+            // The PlotView uses a Canvas as its plotPresenter
+            // We need to find it in the visual tree
+            foreach (var canvas in FindVisualChildren<Canvas>(PlotView))
+            {
+                return canvas;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the position of a visual element relative to a canvas.
+        /// </summary>
+        private Point GetPosition(Visual element, Canvas canvas)
+        {
+            var positionTransform = element.TransformToAncestor(canvas);
+            var areaPosition = positionTransform.Transform(new Point(0, 0));
+            return areaPosition;
         }
 
         #endregion
