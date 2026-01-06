@@ -16,7 +16,7 @@ namespace OxyPlotControls
         /// Identifies the <see cref="PlotModel"/> dependency property.
         /// </summary>
         public static DependencyProperty PlotModelProperty = DependencyProperty.Register(
-            nameof(PlotModel), typeof(PlotModel), typeof(OxyPlotPropertiesControl),
+            nameof(PlotModel), typeof(OxyPlot.PlotModel), typeof(OxyPlotPropertiesControl),
             new PropertyMetadata(null, InitializePlotModel));
 
         private static void InitializePlotModel(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -26,7 +26,8 @@ namespace OxyPlotControls
             var thisControl = (OxyPlotPropertiesControl)d;
 
             if (e.NewValue == null) return;
-            if (e.NewValue is not PlotModel) return;
+            // Use fully qualified type name to avoid ambiguity with the PlotModel property
+            if (e.NewValue is not OxyPlot.PlotModel) return;
         }
 
         /// <summary>

@@ -352,20 +352,25 @@ namespace OxyPlotControls
         /// <returns>A new axis with the same properties.</returns>
         public static Axis CloneAxis(this Axis axis)
         {
+            // Note: Derived types must be listed before their base types to avoid unreachable patterns
+            // Many axis types inherit from LinearAxis, so they must come first
             Axis newAxis = axis switch
             {
-                LinearAxis => new LinearAxis(),
-                LogarithmicAxis => new LogarithmicAxis(),
+                // LinearAxis derivatives (must come before LinearAxis)
                 DateTimeAxis => new DateTimeAxis(),
                 TimeSpanAxis => new TimeSpanAxis(),
                 CategoryAxis => new CategoryAxis(),
                 AngleAxis => new AngleAxis(),
                 MagnitudeAxis => new MagnitudeAxis(),
+                NormalProbabilityAxis => new NormalProbabilityAxis(),
+                GumbelProbabilityAxis => new GumbelProbabilityAxis(),
+                // ColorAxis derivatives
                 LinearColorAxis => new LinearColorAxis(),
                 LogarithmicColorAxis => new LogarithmicColorAxis(),
                 RangeColorAxis => new RangeColorAxis(),
-                NormalProbabilityAxis => new NormalProbabilityAxis(),
-                GumbelProbabilityAxis => new GumbelProbabilityAxis(),
+                // Base types last
+                LogarithmicAxis => new LogarithmicAxis(),
+                LinearAxis => new LinearAxis(),
                 _ => new LinearAxis()
             };
 
@@ -409,20 +414,24 @@ namespace OxyPlotControls
         /// <returns>A human-readable name for the axis type.</returns>
         public static string GetAxisTypeName(this Axis axis)
         {
+            // Note: Derived types must be listed before their base types to avoid unreachable patterns
             return axis switch
             {
-                LinearAxis => "Linear",
-                LogarithmicAxis => "Logarithmic",
+                // LinearAxis derivatives (must come before LinearAxis)
                 DateTimeAxis => "Date/Time",
                 TimeSpanAxis => "Time Span",
                 CategoryAxis => "Category",
                 AngleAxis => "Angle",
                 MagnitudeAxis => "Magnitude",
+                NormalProbabilityAxis => "Normal Probability",
+                GumbelProbabilityAxis => "Gumbel Probability",
+                // ColorAxis derivatives
                 LinearColorAxis => "Linear Color",
                 LogarithmicColorAxis => "Logarithmic Color",
                 RangeColorAxis => "Range Color",
-                NormalProbabilityAxis => "Normal Probability",
-                GumbelProbabilityAxis => "Gumbel Probability",
+                // Base types last
+                LogarithmicAxis => "Logarithmic",
+                LinearAxis => "Linear",
                 _ => axis.GetType().Name
             };
         }
