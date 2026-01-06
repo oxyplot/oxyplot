@@ -161,7 +161,8 @@ namespace OxyPlotControls
                 switch (extension)
                 {
                     case ".png":
-                        var pngExporter = new PngExporter { Width = imageWidth, Height = imageHeight, Background = _model.Background };
+                        // Note: PngExporter in OxyPlot.Wpf uses the model's background automatically
+                        var pngExporter = new PngExporter { Width = imageWidth, Height = imageHeight };
                         pngExporter.ExportToFile(_model, saveFile);
                         break;
                     case ".svg":
