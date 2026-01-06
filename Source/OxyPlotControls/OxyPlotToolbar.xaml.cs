@@ -2001,7 +2001,7 @@ namespace OxyPlotControls
             OxyRect editArea;
             double fontSize = 14;
             string fontFamily = "Segoe UI";
-            FontWeight fontWeight = FontWeights.Normal;
+            FontWeight fontWeight = System.Windows.FontWeights.Normal;
 
             switch (target)
             {
@@ -2009,7 +2009,7 @@ namespace OxyPlotControls
                     editArea = Model.TitleArea;
                     fontSize = Model.TitleFontSize > 0 ? Model.TitleFontSize : 18;
                     fontFamily = !string.IsNullOrEmpty(Model.TitleFont) ? Model.TitleFont : Model.DefaultFont ?? "Segoe UI";
-                    fontWeight = FontWeights.Bold;
+                    fontWeight = System.Windows.FontWeights.Bold;
                     break;
                 case EditTextTarget.Subtitle:
                     editArea = Model.TitleArea;
@@ -2023,7 +2023,7 @@ namespace OxyPlotControls
                         editArea = new OxyRect(position.X - 100, position.Y - 12, 200, 24);
                         fontSize = axis.TitleFontSize > 0 ? axis.TitleFontSize : 14;
                         fontFamily = !string.IsNullOrEmpty(axis.TitleFont) ? axis.TitleFont : Model.DefaultFont ?? "Segoe UI";
-                        fontWeight = FontWeights.Bold;
+                        fontWeight = System.Windows.FontWeights.Bold;
                     }
                     else
                     {
@@ -2046,10 +2046,10 @@ namespace OxyPlotControls
                 FontFamily = new FontFamily(fontFamily),
                 FontWeight = fontWeight,
                 TextAlignment = TextAlignment.Center,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                VerticalContentAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
+                VerticalAlignment = System.Windows.VerticalAlignment.Center,
+                HorizontalContentAlignment = System.Windows.HorizontalAlignment.Stretch,
+                VerticalContentAlignment = System.Windows.VerticalAlignment.Center,
                 Padding = new Thickness(2),
                 BorderThickness = new Thickness(1),
                 BorderBrush = new SolidColorBrush(Colors.DodgerBlue),
