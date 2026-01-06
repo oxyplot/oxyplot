@@ -329,7 +329,7 @@ namespace OxyPlotControls
                 if (OxyPlotSettingsSerializer.GetDoubleAttribute(itemsElement, nameof(legend.LegendColumnSpacing), out double legendColumnSpacing))
                     legend.LegendColumnSpacing = legendColumnSpacing;
 
-                if (OxyPlotSettingsSerializer.GetEnumAttribute(itemsElement, nameof(legend.LegendItemAlignment), out HorizontalAlignment legendItemAlignment))
+                if (OxyPlotSettingsSerializer.GetEnumAttribute(itemsElement, nameof(legend.LegendItemAlignment), out OxyPlot.HorizontalAlignment legendItemAlignment))
                     legend.LegendItemAlignment = legendItemAlignment;
 
                 if (OxyPlotSettingsSerializer.GetEnumAttribute(itemsElement, nameof(legend.LegendItemOrder), out LegendItemOrder legendItemOrder))
@@ -350,9 +350,9 @@ namespace OxyPlotControls
                         legend.LegendTextColor = OxyColor.FromArgb(wpfColor.A, wpfColor.R, wpfColor.G, wpfColor.B);
                     // WPF HorizontalAlignment maps to OxyPlot HorizontalAlignment
                     if (OxyPlotSettingsSerializer.GetEnumAttribute(itemsElement, "LegendItemAlignment", out System.Windows.HorizontalAlignment wpfAlignment))
-                        legend.LegendItemAlignment = (HorizontalAlignment)(int)wpfAlignment;
+                        legend.LegendItemAlignment = (OxyPlot.HorizontalAlignment)(int)wpfAlignment;
                     if (OxyPlotSettingsSerializer.GetEnumAttribute(itemsElement, "ItemAlignment", out wpfAlignment))
-                        legend.LegendItemAlignment = (HorizontalAlignment)(int)wpfAlignment;
+                        legend.LegendItemAlignment = (OxyPlot.HorizontalAlignment)(int)wpfAlignment;
                 }
             }
         }

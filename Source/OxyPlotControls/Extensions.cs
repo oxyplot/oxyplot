@@ -434,18 +434,24 @@ namespace OxyPlotControls
         /// <returns>A human-readable name for the series type.</returns>
         public static string GetSeriesTypeName(this Series series)
         {
+            // Note: Derived types must be listed before their base types to avoid unreachable patterns
             return series switch
             {
+                // LineSeries derivatives (must come before LineSeries)
+                StairStepSeries => "Stair Step",
+                TwoColorLineSeries => "Two Color Line",
+                StemSeries => "Stem",
                 LineSeries => "Line",
-                ScatterSeries => "Scatter",
+                // AreaSeries derivatives (must come before AreaSeries)
+                TwoColorAreaSeries => "Two Color Area",
                 AreaSeries => "Area",
+                // ScatterSeries derivatives (must come before ScatterSeries)
+                ScatterErrorSeries => "Scatter Error",
+                ScatterSeries => "Scatter",
+                // Other series types
                 BarSeries => "Bar",
                 BoxPlotSeries => "Box Plot",
                 PieSeries => "Pie",
-                StemSeries => "Stem",
-                StairStepSeries => "Stair Step",
-                TwoColorLineSeries => "Two Color Line",
-                TwoColorAreaSeries => "Two Color Area",
                 LinearBarSeries => "Column",  // LinearBarSeries is the modern equivalent of ColumnSeries
                 RectangleBarSeries => "Rectangle Bar",
                 CandleStickSeries => "Candle Stick",
@@ -453,7 +459,6 @@ namespace OxyPlotControls
                 ContourSeries => "Contour",
                 HeatMapSeries => "Heat Map",
                 HistogramSeries => "Histogram",
-                ScatterErrorSeries => "Scatter Error",
                 _ => series.GetType().Name
             };
         }

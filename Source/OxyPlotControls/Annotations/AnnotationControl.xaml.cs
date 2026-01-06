@@ -447,7 +447,8 @@ namespace OxyPlotControls
                 {
                     var textAnnotation = (TextAnnotation)annotation;
                     if (GetOxyColorAttribute(textElement, nameof(textAnnotation.Background), out var background)) textAnnotation.Background = background;
-                    if (GetVectorAttribute(textElement, nameof(textAnnotation.Offset), out var offset)) textAnnotation.Offset = offset;
+                    // Note: TextAnnotation.Offset is ScreenVector in modern OxyPlot, convert from Vector
+                    if (GetVectorAttribute(textElement, nameof(textAnnotation.Offset), out var offset)) textAnnotation.Offset = new ScreenVector(offset.X, offset.Y);
                     if (GetOxyThicknessAttribute(textElement, nameof(textAnnotation.Padding), out var padding)) textAnnotation.Padding = padding;
                     if (GetOxyColorAttribute(textElement, nameof(textAnnotation.Stroke), out var stroke)) textAnnotation.Stroke = stroke;
                     if (GetDoubleAttribute(textElement, nameof(textAnnotation.StrokeThickness), out var strokeThickness)) textAnnotation.StrokeThickness = strokeThickness;
