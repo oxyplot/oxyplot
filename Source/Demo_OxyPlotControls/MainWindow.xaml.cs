@@ -1,3 +1,33 @@
+/*
+* NOTICE:
+* The U.S. Army Corps of Engineers, Risk Management Center (USACE-RMC) makes no guarantees about
+* the results, or appropriateness of outputs, obtained from this software.
+*
+* LIST OF CONDITIONS:
+* Redistribution and use in source and binary forms, with or without modification, are permitted
+* provided that the following conditions are met:
+* ● Redistributions of source code must retain the above notice, this list of conditions, and the
+* following disclaimer.
+* ● Redistributions in binary form must reproduce the above notice, this list of conditions, and
+* the following disclaimer in the documentation and/or other materials provided with the distribution.
+* ● The names of the U.S. Government, the U.S. Army Corps of Engineers, the Institute for Water
+* Resources, or the Risk Management Center may not be used to endorse or promote products derived
+* from this software without specific prior written permission. Nor may the names of its contributors
+* be used to endorse or promote products derived from this software without specific prior
+* written permission.
+*
+* DISCLAIMER:
+* THIS SOFTWARE IS PROVIDED BY THE U.S. ARMY CORPS OF ENGINEERS RISK MANAGEMENT CENTER
+* (USACE-RMC) "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+* THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL USACE-RMC BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+* PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+* INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+* THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,15 +48,35 @@ using Numerics.Data;
 namespace Demo_OxyPlotControls
 {
     /// <summary>
-    /// Modern MVVM demo for OxyPlotControls.
-    /// Uses PlotView with PlotModel binding instead of legacy OxyPlot.Wpf.Plot.
+    /// Main demonstration window for OxyPlotControls showcasing various plot types and features.
+    /// Implements modern MVVM pattern using PlotView with PlotModel binding instead of legacy OxyPlot.Wpf.Plot.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    ///     <b> Authors: </b>
+    /// <list type="bullet">
+    /// <item><description>
+    ///     Haden Smith, USACE Risk Management Center, cole.h.smith@usace.army.mil
+    /// </description></item>
+    /// <item><description>
+    ///     Woodrow Fields, USACE Risk Management Center, woodrow.l.fields@usace.army.mil
+    /// </description></item>
+    /// </list>
+    /// </para>
+    /// </remarks>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         #region INotifyPropertyChanged
 
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// </summary>
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        /// <summary>
+        /// Raises the <see cref="PropertyChanged"/> event for the specified property.
+        /// </summary>
+        /// <param name="propertyName">The name of the property that changed. This value is optional and can be provided automatically when invoked from compilers that support CallerMemberName.</param>
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -85,6 +135,14 @@ namespace Demo_OxyPlotControls
 
         #region Event Handlers
 
+        /// <summary>
+        /// Handles the PropertiesCalled event from the OxyPlotToolBar.
+        /// Expands the specified property in the properties control panel.
+        /// </summary>
+        /// <param name="targetPlotView">The PlotView that triggered the event.</param>
+        /// <param name="openProperties">Indicates whether to open the properties panel.</param>
+        /// <param name="propertyExpander">The property expander to be displayed.</param>
+        /// <param name="selectedObject">The object whose properties should be displayed.</param>
         private void OxyPlotToolBar_PropertiesCalled(PlotView targetPlotView, bool openProperties, OxyPlotControls.OxyPlotPropertiesControl.PropertyEXP? propertyExpander, object selectedObject)
         {
             if (propertyExpander.HasValue)
@@ -93,11 +151,22 @@ namespace Demo_OxyPlotControls
             }
         }
 
+        /// <summary>
+        /// Handles the ClosePropertiesCalled event from the OxyPlotPropertiesControl.
+        /// Displays a confirmation message when the properties panel is closed.
+        /// </summary>
+        /// <param name="propertiesControl">The properties control that triggered the event.</param>
         private void PropertiesControl_ClosePropertiesCalled(OxyPlotControls.OxyPlotPropertiesControl propertiesControl)
         {
             MessageBox.Show("Properties panel close requested.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
+        /// <summary>
+        /// Handles the Click event of the Save Settings button.
+        /// Saves the current plot settings to an XML file.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void SaveSettingsButton_Click(object sender, RoutedEventArgs e)
         {
             string saveFile = GenericControls.GeneralMethods.FileSaveDialog("Plot Settings(*.xml) |*.xml", true);
@@ -118,6 +187,12 @@ namespace Demo_OxyPlotControls
             UpdateStatus($"Settings saved to {Path.GetFileName(saveFile)}");
         }
 
+        /// <summary>
+        /// Handles the Click event of the Load Settings button.
+        /// Loads plot settings from an XML file and applies them to the current plot model.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void LoadSettingsButton_Click(object sender, RoutedEventArgs e)
         {
             string fileToOpen = GenericControls.GeneralMethods.FileOpenDialog("Plot Settings(*.xml) |*.xml");
@@ -129,9 +204,17 @@ namespace Demo_OxyPlotControls
                 var document = new XmlDocument();
                 document.Load(fileToOpen);
 
+                // Get the OxyPlot properties element with null check
+                var elements = document.GetElementsByTagName(OxyPlotControls.OxyPlotSettingsSerializer.OxyplotPropertiesTag);
+                if (elements.Count == 0 || elements[0] == null)
+                {
+                    MessageBox.Show($"Invalid settings file: missing '{OxyPlotControls.OxyPlotSettingsSerializer.OxyplotPropertiesTag}' element.");
+                    return;
+                }
+
                 // Create a new PlotModel and apply the settings
                 var newModel = new PlotModel();
-                OxyPlotControls.OxyPlotSettingsSerializer.FromXelement(newModel, XElement.Parse(document.GetElementsByTagName(OxyPlotControls.OxyPlotSettingsSerializer.OxyplotPropertiesTag)[0].OuterXml));
+                OxyPlotControls.OxyPlotSettingsSerializer.FromXelement(newModel, XElement.Parse(elements[0].OuterXml));
 
                 // Repopulate series data from the registry
                 RepopulateAllSeriesData(newModel);
@@ -145,6 +228,12 @@ namespace Demo_OxyPlotControls
             }
         }
 
+        /// <summary>
+        /// Handles the SelectionChanged event of the ComboBox.
+        /// Creates and displays different types of plot series based on the selected option.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data containing information about the selection change.</param>
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (Combobox1.SelectedItem is not ComboBoxItem selectedItem) return;
@@ -223,6 +312,10 @@ namespace Demo_OxyPlotControls
 
         #region Helper Methods
 
+        /// <summary>
+        /// Updates the status text displayed in the UI.
+        /// </summary>
+        /// <param name="message">The status message to display.</param>
         private void UpdateStatus(string message)
         {
             if (StatusText != null)
@@ -231,6 +324,15 @@ namespace Demo_OxyPlotControls
             }
         }
 
+        /// <summary>
+        /// Creates a list of data points representing a normal (Gaussian) distribution.
+        /// </summary>
+        /// <param name="x0">The starting x-value of the distribution range.</param>
+        /// <param name="x1">The ending x-value of the distribution range.</param>
+        /// <param name="mean">The mean (center) of the normal distribution.</param>
+        /// <param name="variance">The variance of the normal distribution.</param>
+        /// <param name="n">The number of points to generate. Default is 1001.</param>
+        /// <returns>A list of data points representing the normal distribution curve.</returns>
         private List<DataPoint> CreateNormalDistribution(double x0, double x1, double mean, double variance, int n = 1001)
         {
             var result = new List<DataPoint>();
@@ -243,6 +345,12 @@ namespace Demo_OxyPlotControls
             return result;
         }
 
+        /// <summary>
+        /// Registers demo data for a series in the internal registry.
+        /// This allows data to be repopulated when loading settings from a file.
+        /// </summary>
+        /// <param name="title">The title of the series to register data for.</param>
+        /// <param name="data">The data object to store (e.g., List of DataPoint, ScatterPoint, etc.).</param>
         private void RegisterDemoData(string title, object data)
         {
             if (!string.IsNullOrEmpty(title))
@@ -251,11 +359,21 @@ namespace Demo_OxyPlotControls
             }
         }
 
+        /// <summary>
+        /// Registers category axis labels for a specific axis in the internal registry.
+        /// This allows labels to be repopulated when loading settings from a file.
+        /// </summary>
+        /// <param name="axisKey">The key identifying the axis. If null or empty, "default" is used.</param>
+        /// <param name="labels">The collection of labels to register.</param>
         private void RegisterCategoryAxisLabels(string axisKey, IEnumerable<string> labels)
         {
             _categoryAxisLabelsRegistry[string.IsNullOrEmpty(axisKey) ? "default" : axisKey] = labels;
         }
 
+        /// <summary>
+        /// Repopulates data for all series in the specified plot model.
+        /// </summary>
+        /// <param name="model">The PlotModel whose series data should be repopulated.</param>
         private void RepopulateAllSeriesData(PlotModel model)
         {
             foreach (var series in model.Series)
@@ -264,6 +382,10 @@ namespace Demo_OxyPlotControls
             }
         }
 
+        /// <summary>
+        /// Repopulates category axis labels for all category axes in the specified plot model.
+        /// </summary>
+        /// <param name="model">The PlotModel whose category axis labels should be repopulated.</param>
         private void RepopulateCategoryAxisLabels(PlotModel model)
         {
             foreach (var axis in model.Axes)
@@ -283,6 +405,10 @@ namespace Demo_OxyPlotControls
             }
         }
 
+        /// <summary>
+        /// Repopulates data for a single series from the demo data registry or generates default data.
+        /// </summary>
+        /// <param name="series">The series whose data should be repopulated.</param>
         private void RepopulateSeriesData(OxyPlot.Series.Series series)
         {
             string? title = series.Title;
@@ -294,6 +420,11 @@ namespace Demo_OxyPlotControls
             GenerateDefaultDemoData(series);
         }
 
+        /// <summary>
+        /// Applies stored data to a series based on the series type.
+        /// </summary>
+        /// <param name="series">The series to apply data to.</param>
+        /// <param name="data">The data object containing the appropriate data type for the series.</param>
         private void ApplyDataToSeries(OxyPlot.Series.Series series, object data)
         {
             switch (series)
@@ -339,6 +470,10 @@ namespace Demo_OxyPlotControls
             }
         }
 
+        /// <summary>
+        /// Generates default demo data for a series when no stored data is available.
+        /// </summary>
+        /// <param name="series">The series to generate default data for.</param>
         private void GenerateDefaultDemoData(OxyPlot.Series.Series series)
         {
             switch (series)
@@ -421,6 +556,11 @@ namespace Demo_OxyPlotControls
 
         #region Series Creation Methods
 
+        /// <summary>
+        /// Creates a base PlotModel with common default settings.
+        /// </summary>
+        /// <param name="title">The title for the plot.</param>
+        /// <returns>A new PlotModel with the specified title and legend visible.</returns>
         private PlotModel CreateBasePlotModel(string title)
         {
             return new PlotModel
@@ -430,6 +570,12 @@ namespace Demo_OxyPlotControls
             };
         }
 
+        /// <summary>
+        /// Adds standard linear axes (X and Y) to a plot model.
+        /// </summary>
+        /// <param name="model">The PlotModel to add axes to.</param>
+        /// <param name="xTitle">The title for the X axis. Default is "X Axis".</param>
+        /// <param name="yTitle">The title for the Y axis. Default is "Y Axis".</param>
         private void AddStandardAxes(PlotModel model, string xTitle = "X Axis", string yTitle = "Y Axis")
         {
             model.Axes.Add(new LinearAxis
@@ -455,6 +601,10 @@ namespace Demo_OxyPlotControls
             });
         }
 
+        /// <summary>
+        /// Creates and displays a line series demo with normal distribution curves.
+        /// </summary>
+        /// <param name="bound">Indicates whether this is a bound data example.</param>
         private void CreateLineSeries(bool bound)
         {
             var model = CreateBasePlotModel("Line Series Demo");
@@ -491,6 +641,10 @@ namespace Demo_OxyPlotControls
             UpdateStatus($"Displaying Line Series{(bound ? " (Bound)" : "")} - 2 series with normal distributions");
         }
 
+        /// <summary>
+        /// Creates and displays a scatter series demo with random points including size and color mapping.
+        /// </summary>
+        /// <param name="bound">Indicates whether this is a bound data example.</param>
         private void CreateScatterSeries(bool bound)
         {
             var model = CreateBasePlotModel("Scatter Series Demo");
@@ -527,6 +681,10 @@ namespace Demo_OxyPlotControls
             UpdateStatus($"Displaying Scatter Series{(bound ? " (Bound)" : "")} - 100 random points with size and color mapping");
         }
 
+        /// <summary>
+        /// Creates and displays a scatter error series demo with measurements and error bars.
+        /// </summary>
+        /// <param name="bound">Indicates whether this is a bound data example.</param>
         private void CreateScatterErrorSeries(bool bound)
         {
             var model = CreateBasePlotModel("Scatter Error Series Demo");
@@ -564,6 +722,10 @@ namespace Demo_OxyPlotControls
             UpdateStatus($"Displaying Scatter Error Series{(bound ? " (Bound)" : "")} - 30 points with X/Y error bars");
         }
 
+        /// <summary>
+        /// Creates and displays a histogram series demo showing a frequency distribution.
+        /// </summary>
+        /// <param name="bound">Indicates whether this is a bound data example.</param>
         private void CreateHistogramSeries(bool bound)
         {
             var model = CreateBasePlotModel("Histogram Series Demo");
@@ -594,6 +756,10 @@ namespace Demo_OxyPlotControls
             UpdateStatus($"Displaying Histogram Series{(bound ? " (Bound)" : "")} - 5 bins showing frequency distribution");
         }
 
+        /// <summary>
+        /// Creates and displays a bar series demo with categorical data.
+        /// </summary>
+        /// <param name="bound">Indicates whether this is a bound data example.</param>
         private void CreateBarSeries(bool bound)
         {
             var model = CreateBasePlotModel("Bar Series Demo");
@@ -637,6 +803,10 @@ namespace Demo_OxyPlotControls
             UpdateStatus($"Displaying Bar Series{(bound ? " (Bound)" : "")} - 5 categories showing popularity percentages");
         }
 
+        /// <summary>
+        /// Creates and displays a box plot series demo showing statistical distributions.
+        /// </summary>
+        /// <param name="bound">Indicates whether this is a bound data example.</param>
         private void CreateBoxPlotSeries(bool bound)
         {
             var model = CreateBasePlotModel("Box Plot Series Demo");
@@ -688,6 +858,10 @@ namespace Demo_OxyPlotControls
             UpdateStatus($"Displaying Box Plot Series{(bound ? " (Bound)" : "")} - 4 subjects with statistical summaries and outliers");
         }
 
+        /// <summary>
+        /// Creates and displays an area series demo with a filled probability density curve.
+        /// </summary>
+        /// <param name="bound">Indicates whether this is a bound data example.</param>
         private void CreateAreaSeries(bool bound)
         {
             var model = CreateBasePlotModel("Area Series Demo");
@@ -710,6 +884,10 @@ namespace Demo_OxyPlotControls
             UpdateStatus($"Displaying Area Series{(bound ? " (Bound)" : "")} - Normal distribution with filled area");
         }
 
+        /// <summary>
+        /// Creates and displays a heat map series demo with a 2D Gaussian distribution.
+        /// </summary>
+        /// <param name="bound">Indicates whether this is a bound data example.</param>
         private void CreateHeatMapSeries(bool bound)
         {
             var model = CreateBasePlotModel("Heat Map Series Demo");
@@ -772,6 +950,9 @@ namespace Demo_OxyPlotControls
             UpdateStatus($"Displaying Heat Map Series{(bound ? " (Bound)" : "")} - 100x100 2D Gaussian distribution");
         }
 
+        /// <summary>
+        /// Creates and displays a date time series demo using USGS stream flow data.
+        /// </summary>
         private void CreateDateTimeSeries()
         {
             var model = CreateBasePlotModel("Date Time Series Demo");
@@ -825,6 +1006,9 @@ namespace Demo_OxyPlotControls
             PlotModel = model;
         }
 
+        /// <summary>
+        /// Creates and displays a pie series demo showing device usage breakdown.
+        /// </summary>
         private void CreatePieSeries()
         {
             var model = new PlotModel
@@ -851,6 +1035,9 @@ namespace Demo_OxyPlotControls
             UpdateStatus("Displaying Pie Series - Device usage breakdown (4 slices)");
         }
 
+        /// <summary>
+        /// Creates and displays a stem series demo showing discrete signal values.
+        /// </summary>
         private void CreateStemSeries()
         {
             var model = CreateBasePlotModel("Stem Series Demo");
@@ -880,6 +1067,9 @@ namespace Demo_OxyPlotControls
             UpdateStatus("Displaying Stem Series - Discrete modulated sine wave signal (30 samples)");
         }
 
+        /// <summary>
+        /// Creates and displays a two color line series demo with values colored based on a threshold.
+        /// </summary>
         private void CreateTwoColorLineSeries()
         {
             var model = CreateBasePlotModel("Two Color Line Series Demo");
@@ -918,6 +1108,9 @@ namespace Demo_OxyPlotControls
             UpdateStatus("Displaying Two Color Line Series - Values above/below threshold shown in different colors");
         }
 
+        /// <summary>
+        /// Creates and displays a step series demo showing digital signal transitions.
+        /// </summary>
         private void CreateStepSeries()
         {
             var model = CreateBasePlotModel("Step Series Demo");

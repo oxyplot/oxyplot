@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:OxyPlotControls;assembly=OxyPlotControls"
         mc:Ignorable="d"
-        Title="OxyPlot Properties" Height="700" Width="350" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" ShowInTaskbar="False">
+        Title="OxyPlot Properties" Height="700" Width="350" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" ShowInTaskbar="False"
+        Closing="OxyPlotPropertiesDialog_Closing">
     <Grid>
         <controls:OxyPlotPropertiesControl Name="PropertiesControl" Margin="5"></controls:OxyPlotPropertiesControl>
     </Grid>

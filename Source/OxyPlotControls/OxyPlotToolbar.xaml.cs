@@ -1,3 +1,33 @@
+/*
+* NOTICE:
+* The U.S. Army Corps of Engineers, Risk Management Center (USACE-RMC) makes no guarantees about
+* the results, or appropriateness of outputs, obtained from this software.
+*
+* LIST OF CONDITIONS:
+* Redistribution and use in source and binary forms, with or without modification, are permitted
+* provided that the following conditions are met:
+* ● Redistributions of source code must retain the above notice, this list of conditions, and the
+* following disclaimer.
+* ● Redistributions in binary form must reproduce the above notice, this list of conditions, and
+* the following disclaimer in the documentation and/or other materials provided with the distribution.
+* ● The names of the U.S. Government, the U.S. Army Corps of Engineers, the Institute for Water
+* Resources, or the Risk Management Center may not be used to endorse or promote products derived
+* from this software without specific prior written permission. Nor may the names of its contributors
+* be used to endorse or promote products derived from this software without specific prior
+* written permission.
+*
+* DISCLAIMER:
+* THIS SOFTWARE IS PROVIDED BY THE U.S. ARMY CORPS OF ENGINEERS RISK MANAGEMENT CENTER
+* (USACE-RMC) "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+* THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL USACE-RMC BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+* PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+* INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+* THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -14,6 +44,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DatabaseManager;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Wpf;
@@ -24,6 +55,19 @@ namespace OxyPlotControls
     /// OxyPlot toolbar control providing pan, zoom, annotation, and export functionality.
     /// Supports modern PlotView architecture working directly with PlotModel and core OxyPlot types.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    ///     <b> Authors: </b>
+    /// <list type="bullet">
+    /// <item><description>
+    ///     Haden Smith, USACE Risk Management Center, cole.h.smith@usace.army.mil
+    /// </description></item>
+    /// <item><description>
+    ///     Woodrow Fields, USACE Risk Management Center, woodrow.l.fields@usace.army.mil
+    /// </description></item>
+    /// </list>
+    /// </para>
+    /// </remarks>
     public partial class OxyPlotToolbar : UserControl
     {
         #region Construction
@@ -307,6 +351,7 @@ namespace OxyPlotControls
         private bool _showPoints = false;
         private Polyline _leaderLine = new Polyline();
         private Canvas _overlayCanvas = new Canvas();
+        private List<UIElement> _markerElements = new List<UIElement>();
         private ScreenPoint _lastScreenPoint = ScreenPoint.Undefined;
         private bool _moveStartPoint = false;
         private bool _moveEndPoint = false;
@@ -320,6 +365,9 @@ namespace OxyPlotControls
         // Adding Annotations
         private AddToolMode _addAnnotationToolMode = AddToolMode.None;
         private OxyPlot.Annotations.Annotation? _targetAddAnnotation = null;
+
+        // Default cursor to restore after operations (replaces DefaultPlotCursor from old Wpf.Plot)
+        private Cursor _defaultCursor = Cursors.Arrow;
 
         /// <summary>
         /// Delegate for the PropertiesCalled event.
@@ -422,23 +470,28 @@ namespace OxyPlotControls
 
             if (_addAnnotationToolMode != AddToolMode.None)
             {
+                _defaultCursor = _addPointCursor;
                 PlotView.Cursor = _addPointCursor;
             }
             else if (PanButton.IsChecked == true)
             {
                 PlotView.PanCursor = _panHandCursor;
+                _defaultCursor = _panHandCursor;
                 PlotView.Cursor = _panHandCursor;
             }
             else if (PointerButton.IsChecked == true)
             {
+                _defaultCursor = Cursors.Arrow;
                 PlotView.Cursor = Cursors.Arrow;
             }
             else if (ZoomButton.IsChecked == true)
             {
+                _defaultCursor = _zoomCursor;
                 PlotView.Cursor = _zoomCursor;
             }
             else
             {
+                _defaultCursor = Cursors.Arrow;
                 PlotView.Cursor = Cursors.Arrow;
             }
         }
@@ -649,6 +702,7 @@ namespace OxyPlotControls
         {
             arrow.MouseDown += (s, ae) =>
             {
+                if (!arrow.Selectable) return;
                 if (_addAnnotationToolMode != AddToolMode.None) return;
                 if (ae.ChangedButton != OxyMouseButton.Left) return;
 
@@ -666,6 +720,7 @@ namespace OxyPlotControls
 
             arrow.MouseMove += (s, ae) =>
             {
+                if (!arrow.Selectable) return;
                 double dx = ae.Position.X - _lastScreenPoint.X;
                 double dy = ae.Position.Y - _lastScreenPoint.Y;
                 var startScreenPoint = arrow.Transform(new DataPoint(arrow.StartPoint.X, arrow.StartPoint.Y));
@@ -684,6 +739,7 @@ namespace OxyPlotControls
 
             arrow.MouseUp += (s, ae) =>
             {
+                if (!arrow.Selectable) return;
                 arrow.Color = _originalColor;
                 Model?.InvalidatePlot(false);
             };
@@ -693,6 +749,7 @@ namespace OxyPlotControls
         {
             text.MouseDown += (s, ae) =>
             {
+                if (!text.Selectable) return;
                 if (_addAnnotationToolMode != AddToolMode.None) return;
                 if (ae.ChangedButton != OxyMouseButton.Left) return;
 
@@ -709,6 +766,7 @@ namespace OxyPlotControls
 
             text.MouseMove += (s, ae) =>
             {
+                if (!text.Selectable) return;
                 double dx = ae.Position.X - _lastScreenPoint.X;
                 double dy = ae.Position.Y - _lastScreenPoint.Y;
                 var theScreenPoint = text.Transform(new DataPoint(text.TextPosition.X, text.TextPosition.Y));
@@ -723,6 +781,7 @@ namespace OxyPlotControls
 
             text.MouseUp += (s, ae) =>
             {
+                if (!text.Selectable) return;
                 text.Background = _originalColor;
                 Model?.InvalidatePlot(false);
             };
@@ -732,6 +791,7 @@ namespace OxyPlotControls
         {
             rect.MouseDown += (s, ae) =>
             {
+                if (!rect.Selectable) return;
                 if (_addAnnotationToolMode != AddToolMode.None) return;
                 if (ae.ChangedButton != OxyMouseButton.Left) return;
 
@@ -762,6 +822,7 @@ namespace OxyPlotControls
 
             rect.MouseMove += (s, ae) =>
             {
+                if (!rect.Selectable) return;
                 double dx = ae.Position.X - _lastScreenPoint.X;
                 double dy = ae.Position.Y - _lastScreenPoint.Y;
                 var upperRightScreenPoint = rect.Transform(rect.MaximumX, rect.MaximumY);
@@ -790,6 +851,7 @@ namespace OxyPlotControls
 
             rect.MouseUp += (s, ae) =>
             {
+                if (!rect.Selectable) return;
                 rect.Fill = _originalColor;
                 Model?.InvalidatePlot(false);
             };
@@ -799,6 +861,7 @@ namespace OxyPlotControls
         {
             ellipse.MouseDown += (s, ae) =>
             {
+                if (!ellipse.Selectable) return;
                 if (_addAnnotationToolMode != AddToolMode.None) return;
                 if (ae.ChangedButton != OxyMouseButton.Left) return;
 
@@ -829,6 +892,7 @@ namespace OxyPlotControls
 
             ellipse.MouseMove += (s, ae) =>
             {
+                if (!ellipse.Selectable) return;
                 double dx = ae.Position.X - _lastScreenPoint.X;
                 double dy = ae.Position.Y - _lastScreenPoint.Y;
                 var upperRightScreenPoint = ellipse.Transform(ellipse.GetMaximumX(), ellipse.GetMaximumY());
@@ -854,6 +918,7 @@ namespace OxyPlotControls
 
             ellipse.MouseUp += (s, ae) =>
             {
+                if (!ellipse.Selectable) return;
                 ellipse.Fill = _originalColor;
                 Model?.InvalidatePlot(false);
             };
@@ -863,6 +928,7 @@ namespace OxyPlotControls
         {
             point.MouseDown += (s, ae) =>
             {
+                if (!point.Selectable) return;
                 if (_addAnnotationToolMode != AddToolMode.None) return;
                 if (ae.ChangedButton != OxyMouseButton.Left) return;
 
@@ -879,6 +945,7 @@ namespace OxyPlotControls
 
             point.MouseMove += (s, ae) =>
             {
+                if (!point.Selectable) return;
                 double dx = ae.Position.X - _lastScreenPoint.X;
                 double dy = ae.Position.Y - _lastScreenPoint.Y;
                 var theScreenPoint = point.Transform(new DataPoint(point.X, point.Y));
@@ -897,6 +964,7 @@ namespace OxyPlotControls
 
             point.MouseUp += (s, ae) =>
             {
+                if (!point.Selectable) return;
                 point.Fill = _originalColor;
                 Model?.InvalidatePlot(false);
             };
@@ -906,6 +974,7 @@ namespace OxyPlotControls
         {
             polygon.MouseDown += (s, ae) =>
             {
+                if (!polygon.Selectable) return;
                 if (_addAnnotationToolMode != AddToolMode.None) return;
                 if (ae.ChangedButton != OxyMouseButton.Left) return;
 
@@ -970,6 +1039,7 @@ namespace OxyPlotControls
 
             polygon.MouseMove += (s, ae) =>
             {
+                if (!polygon.Selectable) return;
                 double dx = ae.Position.X - _lastScreenPoint.X;
                 double dy = ae.Position.Y - _lastScreenPoint.Y;
 
@@ -994,6 +1064,7 @@ namespace OxyPlotControls
 
             polygon.MouseUp += (s, ae) =>
             {
+                if (!polygon.Selectable) return;
                 polygon.Fill = _originalColor;
                 Model?.InvalidatePlot(false);
             };
@@ -1003,6 +1074,7 @@ namespace OxyPlotControls
         {
             polyline.MouseDown += (s, ae) =>
             {
+                if (!polyline.Selectable) return;
                 if (_addAnnotationToolMode != AddToolMode.None) return;
                 if (ae.ChangedButton != OxyMouseButton.Left) return;
 
@@ -1053,6 +1125,7 @@ namespace OxyPlotControls
 
             polyline.MouseMove += (s, ae) =>
             {
+                if (!polyline.Selectable) return;
                 double dx = ae.Position.X - _lastScreenPoint.X;
                 double dy = ae.Position.Y - _lastScreenPoint.Y;
 
@@ -1077,6 +1150,7 @@ namespace OxyPlotControls
 
             polyline.MouseUp += (s, ae) =>
             {
+                if (!polyline.Selectable) return;
                 polyline.Color = _originalColor;
                 Model?.InvalidatePlot(false);
             };
@@ -1086,6 +1160,7 @@ namespace OxyPlotControls
         {
             line.MouseDown += (s, ae) =>
             {
+                if (!line.Selectable) return;
                 if (_addAnnotationToolMode != AddToolMode.None) return;
                 if (ae.ChangedButton != OxyMouseButton.Left) return;
 
@@ -1100,7 +1175,7 @@ namespace OxyPlotControls
                 if ((Mouse.LeftButton == MouseButtonState.Pressed && PanButton.IsChecked == true) || Mouse.MiddleButton == MouseButtonState.Pressed)
                 {
                     PlotView.PanCursor = _panHandClosedCursor;
-                    PlotView.Cursor = _panHandClosedCursor;
+                    _defaultCursor = _panHandClosedCursor;
                     PlotView.Cursor = _panHandClosedCursor;
                 }
 
@@ -1112,6 +1187,7 @@ namespace OxyPlotControls
 
             line.MouseMove += (s, ae) =>
             {
+                if (!line.Selectable) return;
                 double dx = ae.Position.X - _lastScreenPoint.X;
                 double dy = ae.Position.Y - _lastScreenPoint.Y;
                 var screenPoint = line.Transform(new DataPoint(line.X, line.Y));
@@ -1140,6 +1216,7 @@ namespace OxyPlotControls
 
             line.MouseUp += (s, ae) =>
             {
+                if (!line.Selectable) return;
                 line.Color = _originalColor;
                 CloseLineAnnotationTooltip(line);
                 Model?.InvalidatePlot(false);
@@ -1265,7 +1342,7 @@ namespace OxyPlotControls
             if ((Mouse.LeftButton == MouseButtonState.Pressed && PanButton.IsChecked == true) || Mouse.MiddleButton == MouseButtonState.Pressed)
             {
                 PlotView.PanCursor = _panHandClosedCursor;
-                PlotView.Cursor = _panHandClosedCursor;
+                _defaultCursor = _panHandClosedCursor;
                 PlotView.Cursor = _panHandClosedCursor;
             }
 
@@ -1278,7 +1355,6 @@ namespace OxyPlotControls
             if (Mouse.RightButton == MouseButtonState.Pressed)
             {
                 PlotView.Cursor = Cursors.Arrow;
-                PlotView.Cursor = Cursors.Arrow;
                 GetSelectedObjects(sender, e);
                 return;
             }
@@ -1290,7 +1366,7 @@ namespace OxyPlotControls
             if (PanButton.IsChecked == true || Mouse.MiddleButton == MouseButtonState.Pressed)
             {
                 PlotView.PanCursor = _panHandClosedCursor;
-                PlotView.Cursor = _panHandClosedCursor;
+                _defaultCursor = _panHandClosedCursor;
                 PlotView.Cursor = _panHandClosedCursor;
             }
         }
@@ -1308,7 +1384,7 @@ namespace OxyPlotControls
                     newArrow.EndPoint = newArrow.StartPoint;
                     Model!.Annotations.Add(newArrow);
                     // Note: SetupAnnotationHandlers called via CollectionChanged event
-                    Model.InvalidatePlot(false);
+                    Model.InvalidatePlot(true);
                     PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newArrow);
                     _targetAddAnnotation = newArrow;
                     break;
@@ -1318,7 +1394,7 @@ namespace OxyPlotControls
                     newText.TextPosition = ConvertScreenPointToDataPoint(e.Position);
                     Model!.Annotations.Add(newText);
                     // Note: SetupAnnotationHandlers called via CollectionChanged event
-                    Model!.InvalidatePlot(false);
+                    Model.InvalidatePlot(true);
                     PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newText);
                     _targetAddAnnotation = newText;
                     break;
@@ -1326,11 +1402,32 @@ namespace OxyPlotControls
                 case AddToolMode.AddVerticalLineAnnotation:
                     var newVLine = new LineAnnotation { Text = "Vertical Line Annotation", Type = LineAnnotationType.Vertical };
                     var vDataPoint = ConvertScreenPointToDataPoint(e.Position);
+
+                    // Set text positioning based on axis direction
+                    if (Model!.DefaultYAxis != null && !Model.DefaultYAxis.IsReversed)
+                    {
+                        newVLine.TextLinePosition = 1;
+                        newVLine.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Right;
+                    }
+                    else
+                    {
+                        newVLine.TextLinePosition = 0;
+                        newVLine.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Left;
+                    }
+
+                    // Calculate slope and intercept
+                    var vPlotArea = Model.PlotArea;
+                    var vPlotLL = newVLine.InverseTransform(new ScreenPoint(vPlotArea.Left, vPlotArea.Bottom));
+                    var vPlotUR = newVLine.InverseTransform(new ScreenPoint(vPlotArea.Right, vPlotArea.Top));
+
                     newVLine.X = vDataPoint.X;
                     newVLine.Y = vDataPoint.Y;
-                    Model!.Annotations.Add(newVLine);
+                    newVLine.Intercept = vDataPoint.Y;
+                    newVLine.Slope = (vPlotUR.Y - vPlotLL.Y) / (vPlotUR.X - vPlotLL.X);
+
+                    Model.Annotations.Add(newVLine);
                     // Note: SetupAnnotationHandlers called via CollectionChanged event
-                    Model.InvalidatePlot(false);
+                    Model.InvalidatePlot(true);
                     PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newVLine);
                     OpenLineAnnotationTooltip(newVLine);
                     UpdateLineAnnotationTooltip(newVLine);
@@ -1340,11 +1437,32 @@ namespace OxyPlotControls
                 case AddToolMode.AddHorizontalLineAnnotation:
                     var newHLine = new LineAnnotation { Text = "Horizontal Line Annotation", Type = LineAnnotationType.Horizontal };
                     var hDataPoint = ConvertScreenPointToDataPoint(e.Position);
+
+                    // Set text positioning based on axis direction
+                    if (Model!.DefaultXAxis != null && !Model.DefaultXAxis.IsReversed)
+                    {
+                        newHLine.TextLinePosition = 0;
+                        newHLine.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Left;
+                    }
+                    else
+                    {
+                        newHLine.TextLinePosition = 1;
+                        newHLine.TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Left;
+                    }
+
+                    // Calculate slope and intercept
+                    var hPlotArea = Model.PlotArea;
+                    var hPlotLL = newHLine.InverseTransform(new ScreenPoint(hPlotArea.Left, hPlotArea.Bottom));
+                    var hPlotUR = newHLine.InverseTransform(new ScreenPoint(hPlotArea.Right, hPlotArea.Top));
+
                     newHLine.X = hDataPoint.X;
                     newHLine.Y = hDataPoint.Y;
-                    Model!.Annotations.Add(newHLine);
+                    newHLine.Intercept = hDataPoint.Y;
+                    newHLine.Slope = (hPlotUR.Y - hPlotLL.Y) / (hPlotUR.X - hPlotLL.X);
+
+                    Model.Annotations.Add(newHLine);
                     // Note: SetupAnnotationHandlers called via CollectionChanged event
-                    Model.InvalidatePlot(false);
+                    Model.InvalidatePlot(true);
                     PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newHLine);
                     OpenLineAnnotationTooltip(newHLine);
                     UpdateLineAnnotationTooltip(newHLine);
@@ -1360,7 +1478,7 @@ namespace OxyPlotControls
                     newRectangle.MaximumY = rectDataPoint.Y;
                     Model!.Annotations.Add(newRectangle);
                     // Note: SetupAnnotationHandlers called via CollectionChanged event
-                    Model.InvalidatePlot(false);
+                    Model.InvalidatePlot(true);
                     PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newRectangle);
                     _targetAddAnnotation = newRectangle;
                     break;
@@ -1374,7 +1492,7 @@ namespace OxyPlotControls
                     newEllipse.Height = 0;
                     Model!.Annotations.Add(newEllipse);
                     // Note: SetupAnnotationHandlers called via CollectionChanged event
-                    Model.InvalidatePlot(false);
+                    Model.InvalidatePlot(true);
                     PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newEllipse);
                     _targetAddAnnotation = newEllipse;
                     break;
@@ -1386,7 +1504,7 @@ namespace OxyPlotControls
                     newPoint.Y = pointDataPoint.Y;
                     Model!.Annotations.Add(newPoint);
                     // Note: SetupAnnotationHandlers called via CollectionChanged event
-                    Model.InvalidatePlot(false);
+                    Model.InvalidatePlot(true);
                     PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newPoint);
                     _targetAddAnnotation = newPoint;
                     break;
@@ -1409,6 +1527,7 @@ namespace OxyPlotControls
                         {
                             Model!.Annotations.Add(polyAnnotation);
                             // Note: SetupAnnotationHandlers called via CollectionChanged event
+                            Model.InvalidatePlot(true);
                             PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, polyAnnotation);
                         }
                         if (e.ClickCount < 2)
@@ -1426,6 +1545,7 @@ namespace OxyPlotControls
                         // Note: Points is read-only in modern OxyPlot, no need to initialize - it's already an empty list
                         Model!.Annotations.Add(newPolyline);
                         // Note: SetupAnnotationHandlers called via CollectionChanged event
+                        Model.InvalidatePlot(true);
                         PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newPolyline);
                         var dataPointClicked = ConvertScreenPointToDataPoint(e.Position);
                         newPolyline.Points.Add(dataPointClicked);
@@ -1463,14 +1583,22 @@ namespace OxyPlotControls
             bool requiresRedraw = _showPoints;
             _showPoints = false;
             Cursor? updatedCursor = null;
+            var markerPoints = new List<ScreenPoint>();
+            var markerSizes = new List<double>();
 
             foreach (var annotation in Model.Annotations)
             {
+                if (!annotation.Selectable) continue;
                 var ht = annotation.HitTest(new HitTestArguments(e.Position, 10));
                 if (ht == null) continue;
 
                 if (annotation is ArrowAnnotation arrowAnnotation)
                 {
+                    // Add markers at start and end points
+                    markerPoints.Add(arrowAnnotation.Transform(new DataPoint(arrowAnnotation.StartPoint.X, arrowAnnotation.StartPoint.Y)));
+                    markerPoints.Add(arrowAnnotation.Transform(new DataPoint(arrowAnnotation.EndPoint.X, arrowAnnotation.EndPoint.Y)));
+                    markerSizes.AddRange(new[] { 2.2, 2.2 });
+
                     switch (ht.Index)
                     {
                         case 0:
@@ -1491,6 +1619,17 @@ namespace OxyPlotControls
                     var ur = rAnnotation.Transform(Math.Max(rAnnotation.MaximumX, rAnnotation.MinimumX), Math.Max(rAnnotation.MaximumY, rAnnotation.MinimumY));
                     var ll = rAnnotation.Transform(Math.Min(rAnnotation.MinimumX, rAnnotation.MaximumX), Math.Min(rAnnotation.MinimumY, rAnnotation.MaximumY));
 
+                    // Add markers at corners and midpoints
+                    markerPoints.Add(ur);  // Top-right
+                    markerPoints.Add(ll);  // Bottom-left
+                    markerPoints.Add(new ScreenPoint(ll.X, ur.Y));  // Top-left
+                    markerPoints.Add(new ScreenPoint(ur.X, ll.Y));  // Bottom-right
+                    markerPoints.Add(new ScreenPoint(ll.X, ll.Y + (ur.Y - ll.Y) / 2));  // Left midpoint
+                    markerPoints.Add(new ScreenPoint(ur.X, ll.Y + (ur.Y - ll.Y) / 2));  // Right midpoint
+                    markerPoints.Add(new ScreenPoint(ll.X + (ur.X - ll.X) / 2, ll.Y));  // Bottom midpoint
+                    markerPoints.Add(new ScreenPoint(ll.X + (ur.X - ll.X) / 2, ur.Y));  // Top midpoint
+                    markerSizes.AddRange(new[] { 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0 });
+
                     var topRight = new ScreenPoint(Math.Abs(ur.X - e.Position.X), Math.Abs(ur.Y - e.Position.Y));
                     var bottomLeft = new ScreenPoint(Math.Abs(ll.X - e.Position.X), Math.Abs(ll.Y - e.Position.Y));
 
@@ -1506,6 +1645,17 @@ namespace OxyPlotControls
                 {
                     var ur = eAnnotation.Transform(Math.Max(eAnnotation.GetMaximumX(), eAnnotation.GetMinimumX()), Math.Max(eAnnotation.GetMaximumY(), eAnnotation.GetMinimumY()));
                     var ll = eAnnotation.Transform(Math.Min(eAnnotation.GetMinimumX(), eAnnotation.GetMaximumX()), Math.Min(eAnnotation.GetMinimumY(), eAnnotation.GetMaximumY()));
+
+                    // Add markers at corners and midpoints
+                    markerPoints.Add(ur);  // Top-right
+                    markerPoints.Add(ll);  // Bottom-left
+                    markerPoints.Add(new ScreenPoint(ll.X, ur.Y));  // Top-left
+                    markerPoints.Add(new ScreenPoint(ur.X, ll.Y));  // Bottom-right
+                    markerPoints.Add(new ScreenPoint(ll.X, ll.Y + (ur.Y - ll.Y) / 2));  // Left midpoint
+                    markerPoints.Add(new ScreenPoint(ur.X, ll.Y + (ur.Y - ll.Y) / 2));  // Right midpoint
+                    markerPoints.Add(new ScreenPoint(ll.X + (ur.X - ll.X) / 2, ll.Y));  // Bottom midpoint
+                    markerPoints.Add(new ScreenPoint(ll.X + (ur.X - ll.X) / 2, ur.Y));  // Top midpoint
+                    markerSizes.AddRange(new[] { 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0 });
 
                     var topRight = new ScreenPoint(Math.Abs(ur.X - e.Position.X), Math.Abs(ur.Y - e.Position.Y));
                     var bottomLeft = new ScreenPoint(Math.Abs(ll.X - e.Position.X), Math.Abs(ll.Y - e.Position.Y));
@@ -1524,6 +1674,13 @@ namespace OxyPlotControls
                 }
                 else if (annotation is PolygonAnnotation polyAnnotation)
                 {
+                    // Add markers at each vertex
+                    foreach (var p in polyAnnotation.Points)
+                    {
+                        markerPoints.Add(polyAnnotation.Transform(p));
+                        markerSizes.Add(2.0);
+                    }
+
                     if (ht.Index == 0)
                     {
                         var screenToData = polyAnnotation.InverseTransform(e.Position);
@@ -1537,12 +1694,52 @@ namespace OxyPlotControls
                         }
                         else
                         {
-                            updatedCursor = Cursors.SizeAll;
+                            // Check if cursor is on a line segment (for adding points)
+                            bool onLine = false;
+                            for (int i = 0; i < polyAnnotation.Points.Count - 1; i++)
+                            {
+                                var p1 = polyAnnotation.Transform(polyAnnotation.Points[i]);
+                                var p2 = polyAnnotation.Transform(polyAnnotation.Points[i + 1]);
+                                var linePoint = ScreenPointHelper.FindPointOnLine(e.Position, p1, p2);
+                                if ((linePoint - e.Position).Length < 10)
+                                {
+                                    onLine = true;
+                                    updatedCursor = _addPointCursor;
+                                    break;
+                                }
+                            }
+
+                            if (!onLine && polyAnnotation.Points.Count > 2)
+                            {
+                                // Check line between last and first point (closing segment)
+                                var p1 = polyAnnotation.Transform(polyAnnotation.Points[polyAnnotation.Points.Count - 1]);
+                                var p2 = polyAnnotation.Transform(polyAnnotation.Points[0]);
+                                var linePoint = ScreenPointHelper.FindPointOnLine(e.Position, p1, p2);
+                                if ((linePoint - e.Position).Length < 10)
+                                {
+                                    updatedCursor = _addPointCursor;
+                                }
+                                else
+                                {
+                                    updatedCursor = Cursors.SizeAll;
+                                }
+                            }
+                            else if (!onLine)
+                            {
+                                updatedCursor = Cursors.SizeAll;
+                            }
                         }
                     }
                 }
                 else if (annotation is PolylineAnnotation polylineAnnotation)
                 {
+                    // Add markers at each vertex
+                    foreach (var p in polylineAnnotation.Points)
+                    {
+                        markerPoints.Add(polylineAnnotation.Transform(p));
+                        markerSizes.Add(2.0);
+                    }
+
                     if (ht.Index == 0)
                     {
                         var screenToData = polylineAnnotation.InverseTransform(e.Position);
@@ -1566,7 +1763,16 @@ namespace OxyPlotControls
                 }
             }
 
-            if (requiresRedraw) Model.InvalidatePlot(false);
+            // Draw annotation markers
+            if (markerPoints.Count > 0)
+            {
+                DrawAnnotationMarkers(markerPoints, markerSizes);
+            }
+            else if (requiresRedraw)
+            {
+                ClearAnnotationMarkers();
+                Model.InvalidatePlot(false);
+            }
 
             if (updatedCursor != null)
             {
@@ -1579,6 +1785,67 @@ namespace OxyPlotControls
                 PlotView.PanCursor = _panHandClosedCursor;
                 PlotView.Cursor = _panHandClosedCursor;
             }
+        }
+
+        /// <summary>
+        /// Draws annotation control point markers on the overlay canvas.
+        /// </summary>
+        /// <param name="markerPoints">List of screen points where markers should be drawn.</param>
+        /// <param name="markerSizes">List of marker sizes corresponding to each point.</param>
+        private void DrawAnnotationMarkers(List<ScreenPoint> markerPoints, List<double> markerSizes)
+        {
+            // Clear existing markers
+            foreach (var marker in _markerElements)
+            {
+                _overlayCanvas.Children.Remove(marker);
+            }
+            _markerElements.Clear();
+
+            if (markerPoints.Count == 0)
+            {
+                _showPoints = false;
+                return;
+            }
+
+            _showPoints = true;
+
+            // Get the plot area offset for positioning
+            var plotArea = Model?.PlotArea ?? default;
+
+            for (int i = 0; i < markerPoints.Count; i++)
+            {
+                var point = markerPoints[i];
+                var size = i < markerSizes.Count ? markerSizes[i] * 2 : 4; // Default size 4
+
+                var marker = new System.Windows.Shapes.Rectangle
+                {
+                    Width = size,
+                    Height = size,
+                    Fill = System.Windows.Media.Brushes.White,
+                    Stroke = System.Windows.Media.Brushes.Black,
+                    StrokeThickness = 1,
+                    IsHitTestVisible = false
+                };
+
+                Canvas.SetLeft(marker, point.X - size / 2);
+                Canvas.SetTop(marker, point.Y - size / 2);
+
+                _overlayCanvas.Children.Add(marker);
+                _markerElements.Add(marker);
+            }
+        }
+
+        /// <summary>
+        /// Clears all annotation markers from the overlay canvas.
+        /// </summary>
+        private void ClearAnnotationMarkers()
+        {
+            foreach (var marker in _markerElements)
+            {
+                _overlayCanvas.Children.Remove(marker);
+            }
+            _markerElements.Clear();
+            _showPoints = false;
         }
 
         /// <summary>
@@ -3102,9 +3369,11 @@ namespace OxyPlotControls
                 return;
             }
 
+            string filters = "Comma Delimited (*.csv)|*.csv|Excel (*.xlsx)|*.xlsx|SQLite (*.sqlite)|*.sqlite";
             var saveDialog = new Microsoft.Win32.SaveFileDialog
             {
-                Filter = "CSV File (*.csv)|*.csv",
+                Filter = filters,
+                FilterIndex = 1,
                 DefaultExt = ".csv"
             };
 
@@ -3112,23 +3381,69 @@ namespace OxyPlotControls
             {
                 try
                 {
-                    using (var writer = new StreamWriter(saveDialog.FileName))
-                    {
-                        foreach (var table in tableList)
-                        {
-                            // Write column headers
-                            var headers = string.Join(",", table.Columns.Cast<DataColumn>().Select(c => c.ColumnName));
-                            writer.WriteLine(headers);
+                    string extension = System.IO.Path.GetExtension(saveDialog.FileName).ToLowerInvariant();
 
-                            // Write rows
-                            foreach (DataRow row in table.Rows)
+                    switch (extension)
+                    {
+                        case ".csv":
+                            // Combine all the tables because CSVs only have one sheet/table
+                            // Handle duplicate column names by appending unique suffixes
+                            int uniqueCount = 1;
+                            var colNames = new List<string>();
+
+                            foreach (var theDT in tableList)
                             {
-                                var values = string.Join(",", row.ItemArray.Select(v => v.ToString()));
-                                writer.WriteLine(values);
+                                for (int i = 0; i < theDT.Columns.Count; i++)
+                                {
+                                    if (theDT.Columns[i].ColumnName == "id")
+                                        continue;
+
+                                    if (!colNames.Contains(theDT.Columns[i].ColumnName))
+                                    {
+                                        colNames.Add(theDT.Columns[i].ColumnName);
+                                    }
+                                    else
+                                    {
+                                        while (colNames.Contains(theDT.Columns[i].ColumnName))
+                                        {
+                                            theDT.Columns[i].ColumnName = theDT.Columns[i].ColumnName + "_" + uniqueCount.ToString();
+                                            uniqueCount++;
+                                        }
+                                        colNames.Add(theDT.Columns[i].ColumnName);
+                                    }
+                                }
                             }
-                            writer.WriteLine(); // Empty line between tables
-                        }
+
+                            // Get the series data in DatabaseManager.DataTableView format
+                            var totalDT = MergeAll(tableList, "id");
+                            var csvDataView = new InMemoryReader(totalDT).GetTableManager(totalDT.TableName);
+                            csvDataView.ExportToCsv(saveDialog.FileName);
+                            break;
+
+                        case ".xlsx":
+                            // Save each DataTable to the file as a new sheet
+                            foreach (var dt in tableList)
+                            {
+                                var xlsxDataView = new InMemoryReader(dt).GetTableManager(dt.TableName);
+                                if (xlsxDataView == null) continue;
+                                xlsxDataView.ExportToXlsx(saveDialog.FileName);
+                            }
+                            break;
+
+                        case ".sqlite":
+                            // Save each DataTable to the file as a new table
+                            foreach (var dt in tableList)
+                            {
+                                var sqliteDataView = new InMemoryReader(dt).GetTableManager(dt.TableName);
+                                if (sqliteDataView == null) continue;
+                                sqliteDataView.ExportToSqlite(saveDialog.FileName, sqliteDataView.TableName);
+                            }
+                            break;
+
+                        default:
+                            throw new NotSupportedException($"Selected file format extension '{extension}' is not supported for export.");
                     }
+
                     MessageBox.Show("Data exported successfully.");
                 }
                 catch (Exception ex)
@@ -3136,6 +3451,70 @@ namespace OxyPlotControls
                     MessageBox.Show("Error exporting data: " + ex.Message);
                 }
             }
+        }
+
+        /// <summary>
+        /// Merges multiple DataTables into a single table, combining rows with matching primary key values.
+        /// </summary>
+        /// <param name="tables">The list of DataTables to merge.</param>
+        /// <param name="primaryKeyColumn">The name of the primary key column to match rows by.</param>
+        /// <returns>A merged DataTable containing all columns and combined rows.</returns>
+        private static DataTable MergeAll(IList<DataTable> tables, string primaryKeyColumn)
+        {
+            if (!tables.Any())
+                throw new ArgumentException("Tables must not be empty", nameof(tables));
+
+            if (primaryKeyColumn != null)
+            {
+                foreach (var t in tables)
+                {
+                    if (!t.Columns.Contains(primaryKeyColumn))
+                        throw new ArgumentException($"All tables must have the specified primary key column '{primaryKeyColumn}'", nameof(primaryKeyColumn));
+                }
+            }
+
+            if (tables.Count == 1)
+                return tables[0];
+
+            var table = new DataTable("TblUnion");
+            table.BeginLoadData();
+
+            foreach (var t in tables)
+            {
+                table.Merge(t);
+            }
+
+            table.EndLoadData();
+
+            if (primaryKeyColumn != null)
+            {
+                var pkGroups = table.AsEnumerable().GroupBy(r => r[primaryKeyColumn]);
+                var dupGroups = pkGroups.Where(g => g.Count() > 1);
+
+                foreach (var grpDup in dupGroups)
+                {
+                    var firstRow = grpDup.First();
+
+                    foreach (DataColumn c in table.Columns)
+                    {
+                        if (firstRow.IsNull(c))
+                        {
+                            var firstNotNullRow = grpDup.Skip(1).FirstOrDefault(r => !r.IsNull(c));
+                            if (firstNotNullRow != null)
+                                firstRow[c] = firstNotNullRow[c];
+                        }
+                    }
+
+                    var rowsToRemove = grpDup.Skip(1).ToList();
+
+                    foreach (var rowToRemove in rowsToRemove)
+                    {
+                        table.Rows.Remove(rowToRemove);
+                    }
+                }
+            }
+
+            return table;
         }
 
         #endregion
@@ -3190,14 +3569,12 @@ namespace OxyPlotControls
                 }
                 else if (s is OxyPlot.Series.BoxPlotSeries boxPlotSeries)
                 {
-                    foreach (var axis in Model.Axes)
-                    {
-                        if (axis is OxyPlot.Axes.CategoryAxis)
-                        {
-                            // BoxPlotSeries orientation is based on axis position
-                            // No direct IsVertical property on core type
-                        }
-                    }
+                    // In modern OxyPlot core types, BoxPlotSeries orientation is determined
+                    // by the axis positions. When axes are swapped above, the BoxPlotSeries
+                    // will automatically render with the correct orientation based on
+                    // which axis (CategoryAxis) is now on Bottom vs Left.
+                    // The VB version used Wpf.BoxPlotSeries.IsVertical property which
+                    // doesn't exist on core types - orientation is implicit from axis positions.
                 }
             }
 

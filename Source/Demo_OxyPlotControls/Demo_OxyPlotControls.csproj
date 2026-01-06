@@ -13,9 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+    <ProjectReference Include="..\OxyPlot.Wpf.Shared\OxyPlot.Wpf.Shared.csproj" />
     <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
     <ProjectReference Include="..\OxyPlotControls\OxyPlotControls.csproj" />
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
   </ItemGroup>
 
   <!-- GenericControls reference for net9.0 -->
