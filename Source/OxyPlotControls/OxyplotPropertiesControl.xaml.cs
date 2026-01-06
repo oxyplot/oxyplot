@@ -133,17 +133,17 @@ namespace OxyPlotControls
         }
 
         // Lazy loading to improve initialization times.
-        private GeneralPlotControl _generalControls;
-        private LegendControl _legendControls;
-        private AxesControl _axesControls;
-        private SeriesSelectorControl _seriesControls;
-        private AnnotationSelectorControl _annotationsControls;
+        private GeneralPlotControl _generalControls = null!;
+        private LegendControl _legendControls = null!;
+        private AxesControl _axesControls = null!;
+        private SeriesSelectorControl _seriesControls = null!;
+        private AnnotationSelectorControl _annotationsControls = null!;
 
-        private Binding _viewPortWidthBinding;
-        private Binding _plotBinding;
-        private Binding _expanderBinding;
-        private Binding _tabItemStyleBinding;
-        private Binding _comboboxStyleBinding;
+        private Binding _viewPortWidthBinding = null!;
+        private Binding _plotBinding = null!;
+        private Binding _expanderBinding = null!;
+        private Binding _tabItemStyleBinding = null!;
+        private Binding _comboboxStyleBinding = null!;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyPlotPropertiesControl"/> class.

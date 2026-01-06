@@ -446,14 +446,14 @@ namespace OxyPlotControls
             // Note: Derived types must be listed before their base types to avoid unreachable patterns
             return series switch
             {
-                // LineSeries derivatives (must come before LineSeries)
+                // AreaSeries derivatives (AreaSeries inherits from LineSeries, so must come first)
+                TwoColorAreaSeries => "Two Color Area",
+                AreaSeries => "Area",
+                // Other LineSeries derivatives (must come before LineSeries)
                 StairStepSeries => "Stair Step",
                 TwoColorLineSeries => "Two Color Line",
                 StemSeries => "Stem",
                 LineSeries => "Line",
-                // AreaSeries derivatives (must come before AreaSeries)
-                TwoColorAreaSeries => "Two Color Area",
-                AreaSeries => "Area",
                 // ScatterSeries derivatives (must come before ScatterSeries)
                 ScatterErrorSeries => "Scatter Error",
                 ScatterSeries => "Scatter",

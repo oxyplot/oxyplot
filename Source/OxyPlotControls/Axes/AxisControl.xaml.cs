@@ -1083,7 +1083,7 @@ namespace OxyPlotControls
     /// </summary>
     public class ReverseAxisConverter : IMultiValueConverter
     {
-        private Axis _axis;
+        private Axis? _axis;
 
         /// <summary>
         /// Converts start position, end position, and axis to a boolean indicating if the axis is reversed.
