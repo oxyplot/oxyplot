@@ -356,7 +356,6 @@ namespace OxyPlotControls
                 boxPlotElement.SetAttributeValue(nameof(boxPlotSeries.StrokeThickness), boxPlotSeries.StrokeThickness.ToString("G17", CultureInfo.InvariantCulture));
                 boxPlotElement.SetAttributeValue(nameof(boxPlotSeries.Stroke), boxPlotSeries.Stroke);
                 boxPlotElement.SetAttributeValue(nameof(boxPlotSeries.LineStyle), boxPlotSeries.LineStyle);
-                boxPlotElement.SetAttributeValue(nameof(boxPlotSeries.IsVertical), boxPlotSeries.IsVertical);
                 boxPlotElement.SetAttributeValue(nameof(boxPlotSeries.Fill), boxPlotSeries.Fill);
                 boxPlotElement.SetAttributeValue(nameof(boxPlotSeries.OutlierType), boxPlotSeries.OutlierType);
                 boxPlotElement.SetAttributeValue(nameof(boxPlotSeries.WhiskerWidth), boxPlotSeries.WhiskerWidth.ToString("G17", CultureInfo.InvariantCulture));
@@ -422,11 +421,9 @@ namespace OxyPlotControls
                 heatMapElement.SetAttributeValue(nameof(heatMapSeries.Y1), heatMapSeries.Y1.ToString("G17", CultureInfo.InvariantCulture));
                 heatMapElement.SetAttributeValue(nameof(heatMapSeries.X0), heatMapSeries.X0.ToString("G17", CultureInfo.InvariantCulture));
                 heatMapElement.SetAttributeValue(nameof(heatMapSeries.X1), heatMapSeries.X1.ToString("G17", CultureInfo.InvariantCulture));
-                heatMapElement.SetAttributeValue(nameof(heatMapSeries.HighColor), heatMapSeries.HighColor);
                 heatMapElement.SetAttributeValue(nameof(heatMapSeries.CoordinateDefinition), heatMapSeries.CoordinateDefinition);
                 heatMapElement.SetAttributeValue(nameof(heatMapSeries.Interpolate), heatMapSeries.Interpolate);
                 heatMapElement.SetAttributeValue(nameof(heatMapSeries.LabelFontSize), heatMapSeries.LabelFontSize.ToString("G17", CultureInfo.InvariantCulture));
-                heatMapElement.SetAttributeValue(nameof(heatMapSeries.LowColor), heatMapSeries.LowColor);
                 seriesElement.Add(heatMapElement);
             }
 
@@ -635,13 +632,13 @@ namespace OxyPlotControls
             {
                 var barBaseSeriesElement = element.Element(nameof(OxyPlot.Series.BarSeriesBase));
                 if (GetDoubleAttribute(barBaseSeriesElement, nameof(barBaseSeries.BaseValue), out var baseValue)) barBaseSeries.BaseValue = baseValue;
-                if (GetColorAttribute(barBaseSeriesElement, nameof(barBaseSeries.FillColor), out var fillColor)) barBaseSeries.FillColor = fillColor;
+                if (GetOxyColorAttribute(barBaseSeriesElement, nameof(barBaseSeries.FillColor), out var fillColor)) barBaseSeries.FillColor = fillColor;
                 if (GetStringAttribute(barBaseSeriesElement, nameof(barBaseSeries.ColorField), out var colorField)) barBaseSeries.ColorField = colorField;
                 if (GetStringAttribute(barBaseSeriesElement, nameof(barBaseSeries.ValueField), out var valueField)) barBaseSeries.ValueField = valueField;
                 if (GetDoubleAttribute(barBaseSeriesElement, nameof(barBaseSeries.LabelMargin), out var labelMargin)) barBaseSeries.LabelMargin = labelMargin;
-                if (GetColorAttribute(barBaseSeriesElement, nameof(barBaseSeries.StrokeColor), out var strokeColor)) barBaseSeries.StrokeColor = strokeColor;
+                if (GetOxyColorAttribute(barBaseSeriesElement, nameof(barBaseSeries.StrokeColor), out var strokeColor)) barBaseSeries.StrokeColor = strokeColor;
                 if (GetStringAttribute(barBaseSeriesElement, nameof(barBaseSeries.StackGroup), out var stackGroup)) barBaseSeries.StackGroup = stackGroup;
-                if (GetColorAttribute(barBaseSeriesElement, nameof(barBaseSeries.NegativeFillColor), out var negativeFillColor)) barBaseSeries.NegativeFillColor = negativeFillColor;
+                if (GetOxyColorAttribute(barBaseSeriesElement, nameof(barBaseSeries.NegativeFillColor), out var negativeFillColor)) barBaseSeries.NegativeFillColor = negativeFillColor;
                 if (!GetEnumAttribute(barBaseSeriesElement, nameof(barBaseSeries.LabelPlacement), out OxyPlot.Series.LabelPlacement labelPlacement))
                     labelPlacement = OxyPlot.Series.LabelPlacement.Inside;
                 barBaseSeries.LabelPlacement = labelPlacement;
@@ -672,11 +669,11 @@ namespace OxyPlotControls
                         linearBarSeries.BarWidth = barWidth;
                     else if (GetDoubleAttribute(linearBarElement, "ColumnWidth", out var columnWidth))
                         linearBarSeries.BarWidth = columnWidth;
-                    if (GetColorAttribute(linearBarElement, nameof(linearBarSeries.FillColor), out var fillColor))
+                    if (GetOxyColorAttribute(linearBarElement, nameof(linearBarSeries.FillColor), out var fillColor))
                         linearBarSeries.FillColor = fillColor;
-                    if (GetColorAttribute(linearBarElement, nameof(linearBarSeries.NegativeFillColor), out var negFillColor))
+                    if (GetOxyColorAttribute(linearBarElement, nameof(linearBarSeries.NegativeFillColor), out var negFillColor))
                         linearBarSeries.NegativeFillColor = negFillColor;
-                    if (GetColorAttribute(linearBarElement, nameof(linearBarSeries.StrokeColor), out var strokeColor))
+                    if (GetOxyColorAttribute(linearBarElement, nameof(linearBarSeries.StrokeColor), out var strokeColor))
                         linearBarSeries.StrokeColor = strokeColor;
                     if (GetDoubleAttribute(linearBarElement, nameof(linearBarSeries.StrokeThickness), out var strokeThickness))
                         linearBarSeries.StrokeThickness = strokeThickness;
@@ -688,13 +685,13 @@ namespace OxyPlotControls
             if (histogramSeries != null)
             {
                 var histogramSeriesElement = element.Element(nameof(OxyPlot.Series.HistogramSeries));
-                if (GetColorAttribute(histogramSeriesElement, nameof(histogramSeries.FillColor), out var histFillColor)) histogramSeries.FillColor = histFillColor;
-                if (GetColorAttribute(histogramSeriesElement, nameof(histogramSeries.NegativeFillColor), out var histNegativeFillColor)) histogramSeries.NegativeFillColor = histNegativeFillColor;
+                if (GetOxyColorAttribute(histogramSeriesElement, nameof(histogramSeries.FillColor), out var histFillColor)) histogramSeries.FillColor = histFillColor;
+                if (GetOxyColorAttribute(histogramSeriesElement, nameof(histogramSeries.NegativeFillColor), out var histNegativeFillColor)) histogramSeries.NegativeFillColor = histNegativeFillColor;
                 if (GetStringAttribute(histogramSeriesElement, nameof(histogramSeries.LabelFormatString), out var histLabelFormatString)) histogramSeries.LabelFormatString = histLabelFormatString;
                 if (!GetEnumAttribute(histogramSeriesElement, nameof(histogramSeries.LabelPlacement), out OxyPlot.Series.LabelPlacement histLabelPlacement))
                     histLabelPlacement = OxyPlot.Series.LabelPlacement.Inside;
                 histogramSeries.LabelPlacement = histLabelPlacement;
-                if (GetColorAttribute(histogramSeriesElement, nameof(histogramSeries.StrokeColor), out var histStrokeColor)) histogramSeries.StrokeColor = histStrokeColor;
+                if (GetOxyColorAttribute(histogramSeriesElement, nameof(histogramSeries.StrokeColor), out var histStrokeColor)) histogramSeries.StrokeColor = histStrokeColor;
                 if (GetDoubleAttribute(histogramSeriesElement, nameof(histogramSeries.StrokeThickness), out var histStrokeThickness)) histogramSeries.StrokeThickness = histStrokeThickness;
             }
 
@@ -712,11 +709,11 @@ namespace OxyPlotControls
                 if (!GetEnumAttribute(lineSeriesElement, nameof(lineSeries.LineStyle), out OxyPlot.LineStyle lineStyle))
                     lineStyle = OxyPlot.LineStyle.Automatic;
                 lineSeries.LineStyle = lineStyle;
-                if (GetColorAttribute(lineSeriesElement, nameof(lineSeries.MarkerFill), out var lineMarkerFill)) lineSeries.MarkerFill = lineMarkerFill;
+                if (GetOxyColorAttribute(lineSeriesElement, nameof(lineSeries.MarkerFill), out var lineMarkerFill)) lineSeries.MarkerFill = lineMarkerFill;
                 // TODO - Deserialize MarkerOutline value into point array
                 if (GetIntegerAttribute(lineSeriesElement, nameof(lineSeries.MarkerResolution), out var markerResolution)) lineSeries.MarkerResolution = markerResolution;
                 if (GetDoubleAttribute(lineSeriesElement, nameof(lineSeries.MarkerSize), out var lineMarkerSize)) lineSeries.MarkerSize = lineMarkerSize;
-                if (GetColorAttribute(lineSeriesElement, nameof(lineSeries.MarkerStroke), out var lineMarkerStroke)) lineSeries.MarkerStroke = lineMarkerStroke;
+                if (GetOxyColorAttribute(lineSeriesElement, nameof(lineSeries.MarkerStroke), out var lineMarkerStroke)) lineSeries.MarkerStroke = lineMarkerStroke;
                 if (GetDoubleAttribute(lineSeriesElement, nameof(lineSeries.MarkerStrokeThickness), out var lineMarkerStrokeThickness)) lineSeries.MarkerStrokeThickness = lineMarkerStrokeThickness;
                 if (!GetEnumAttribute(lineSeriesElement, nameof(lineSeries.MarkerType), out OxyPlot.MarkerType lineMarkerType))
                     lineMarkerType = OxyPlot.MarkerType.Circle;
@@ -725,7 +722,7 @@ namespace OxyPlotControls
                 if (GetDoubleAttribute(lineSeriesElement, nameof(lineSeries.StrokeThickness), out var lineStrokeThickness)) lineSeries.StrokeThickness = lineStrokeThickness;
                 if (GetStringAttribute(lineSeriesElement, nameof(lineSeries.LabelFormatString), out var lineLabelFormatString)) lineSeries.LabelFormatString = lineLabelFormatString;
                 if (GetDoubleAttribute(lineSeriesElement, nameof(lineSeries.LabelMargin), out var lineLabelMargin)) lineSeries.LabelMargin = lineLabelMargin;
-                if (GetColorAttribute(lineSeriesElement, nameof(lineSeries.BrokenLineColor), out var brokenLineColor)) lineSeries.BrokenLineColor = brokenLineColor;
+                if (GetOxyColorAttribute(lineSeriesElement, nameof(lineSeries.BrokenLineColor), out var brokenLineColor)) lineSeries.BrokenLineColor = brokenLineColor;
                 if (!GetEnumAttribute(lineSeriesElement, nameof(lineSeries.BrokenLineStyle), out OxyPlot.LineStyle brokenLineStyle))
                     brokenLineStyle = OxyPlot.LineStyle.Automatic;
                 lineSeries.BrokenLineStyle = brokenLineStyle;
@@ -737,8 +734,8 @@ namespace OxyPlotControls
             if (areaSeries != null)
             {
                 var areaSeriesElement = element.Element(nameof(OxyPlot.Series.AreaSeries));
-                if (GetColorAttribute(areaSeriesElement, nameof(areaSeries.Color2), out var color2)) areaSeries.Color2 = color2;
-                if (GetColorAttribute(areaSeriesElement, nameof(areaSeries.Fill), out var areaFill)) areaSeries.Fill = areaFill;
+                if (GetOxyColorAttribute(areaSeriesElement, nameof(areaSeries.Color2), out var color2)) areaSeries.Color2 = color2;
+                if (GetOxyColorAttribute(areaSeriesElement, nameof(areaSeries.Fill), out var areaFill)) areaSeries.Fill = areaFill;
                 if (GetStringAttribute(areaSeriesElement, nameof(areaSeries.DataFieldX2), out var dataFieldX2)) areaSeries.DataFieldX2 = dataFieldX2;
                 if (GetStringAttribute(areaSeriesElement, nameof(areaSeries.DataFieldY2), out var dataFieldY2)) areaSeries.DataFieldY2 = dataFieldY2;
                 if (GetBooleanAttribute(areaSeriesElement, nameof(areaSeries.Reverse2), out var reverse2)) areaSeries.Reverse2 = reverse2;
@@ -750,12 +747,11 @@ namespace OxyPlotControls
             {
                 var boxPlotseriesElement = element.Element(nameof(OxyPlot.Series.BoxPlotSeries));
                 if (GetDoubleAttribute(boxPlotseriesElement, nameof(boxPlotSeries.StrokeThickness), out var boxStrokeThickness)) boxPlotSeries.StrokeThickness = boxStrokeThickness;
-                if (GetColorAttribute(boxPlotseriesElement, nameof(boxPlotSeries.Stroke), out var boxStroke)) boxPlotSeries.Stroke = boxStroke;
+                if (GetOxyColorAttribute(boxPlotseriesElement, nameof(boxPlotSeries.Stroke), out var boxStroke)) boxPlotSeries.Stroke = boxStroke;
                 if (!GetEnumAttribute(boxPlotseriesElement, nameof(boxPlotSeries.LineStyle), out OxyPlot.LineStyle boxLineStyle))
                     boxLineStyle = OxyPlot.LineStyle.Automatic;
                 boxPlotSeries.LineStyle = boxLineStyle;
-                if (GetBooleanAttribute(boxPlotseriesElement, nameof(boxPlotSeries.IsVertical), out var isVertical)) boxPlotSeries.IsVertical = isVertical;
-                if (GetColorAttribute(boxPlotseriesElement, nameof(boxPlotSeries.Fill), out var boxFill)) boxPlotSeries.Fill = boxFill;
+                if (GetOxyColorAttribute(boxPlotseriesElement, nameof(boxPlotSeries.Fill), out var boxFill)) boxPlotSeries.Fill = boxFill;
                 if (!GetEnumAttribute(boxPlotseriesElement, nameof(boxPlotSeries.OutlierType), out OxyPlot.MarkerType outlierType))
                     outlierType = OxyPlot.MarkerType.Circle;
                 boxPlotSeries.OutlierType = outlierType;
@@ -776,9 +772,9 @@ namespace OxyPlotControls
                 if (GetStringAttribute(scatterPointSeriesElement, nameof(scatterPointSeries.DataFieldValue), out var scatterDataFieldValue)) scatterPointSeries.DataFieldValue = scatterDataFieldValue;
                 if (GetStringAttribute(scatterPointSeriesElement, nameof(scatterPointSeries.ColorAxisKey), out var scatterColorAxisKey)) scatterPointSeries.ColorAxisKey = scatterColorAxisKey;
                 if (GetIntegerAttribute(scatterPointSeriesElement, nameof(scatterPointSeries.BinSize), out var scatterBinSize)) scatterPointSeries.BinSize = scatterBinSize;
-                if (GetColorAttribute(scatterPointSeriesElement, nameof(scatterPointSeries.MarkerFill), out var scatterMarkerFill)) scatterPointSeries.MarkerFill = scatterMarkerFill;
+                if (GetOxyColorAttribute(scatterPointSeriesElement, nameof(scatterPointSeries.MarkerFill), out var scatterMarkerFill)) scatterPointSeries.MarkerFill = scatterMarkerFill;
                 if (GetDoubleAttribute(scatterPointSeriesElement, nameof(scatterPointSeries.MarkerSize), out var scatterMarkerSize)) scatterPointSeries.MarkerSize = scatterMarkerSize;
-                if (GetColorAttribute(scatterPointSeriesElement, nameof(scatterPointSeries.MarkerStroke), out var scatterMarkerStroke)) scatterPointSeries.MarkerStroke = scatterMarkerStroke;
+                if (GetOxyColorAttribute(scatterPointSeriesElement, nameof(scatterPointSeries.MarkerStroke), out var scatterMarkerStroke)) scatterPointSeries.MarkerStroke = scatterMarkerStroke;
                 if (GetDoubleAttribute(scatterPointSeriesElement, nameof(scatterPointSeries.MarkerStrokeThickness), out var scatterMarkerStrokeThickness)) scatterPointSeries.MarkerStrokeThickness = scatterMarkerStrokeThickness;
                 if (!GetEnumAttribute(scatterPointSeriesElement, nameof(scatterPointSeries.MarkerType), out OxyPlot.MarkerType scatterMarkerType))
                     scatterMarkerType = OxyPlot.MarkerType.Circle;
@@ -794,9 +790,9 @@ namespace OxyPlotControls
                 if (GetStringAttribute(errorSeriesElement, nameof(scatterErrorSeries.DataFieldValue), out var errDataFieldValue)) scatterErrorSeries.DataFieldValue = errDataFieldValue;
                 if (GetStringAttribute(errorSeriesElement, nameof(scatterErrorSeries.ColorAxisKey), out var errColorAxisKey)) scatterErrorSeries.ColorAxisKey = errColorAxisKey;
                 if (GetIntegerAttribute(errorSeriesElement, nameof(scatterErrorSeries.BinSize), out var errBinSize)) scatterErrorSeries.BinSize = errBinSize;
-                if (GetColorAttribute(errorSeriesElement, nameof(scatterErrorSeries.MarkerFill), out var errMarkerFill)) scatterErrorSeries.MarkerFill = errMarkerFill;
+                if (GetOxyColorAttribute(errorSeriesElement, nameof(scatterErrorSeries.MarkerFill), out var errMarkerFill)) scatterErrorSeries.MarkerFill = errMarkerFill;
                 if (GetDoubleAttribute(errorSeriesElement, nameof(scatterErrorSeries.MarkerSize), out var errMarkerSize)) scatterErrorSeries.MarkerSize = errMarkerSize;
-                if (GetColorAttribute(errorSeriesElement, nameof(scatterErrorSeries.MarkerStroke), out var errMarkerStroke)) scatterErrorSeries.MarkerStroke = errMarkerStroke;
+                if (GetOxyColorAttribute(errorSeriesElement, nameof(scatterErrorSeries.MarkerStroke), out var errMarkerStroke)) scatterErrorSeries.MarkerStroke = errMarkerStroke;
                 if (GetDoubleAttribute(errorSeriesElement, nameof(scatterErrorSeries.MarkerStrokeThickness), out var errMarkerStrokeThickness)) scatterErrorSeries.MarkerStrokeThickness = errMarkerStrokeThickness;
                 if (!GetEnumAttribute(errorSeriesElement, nameof(scatterErrorSeries.MarkerType), out OxyPlot.MarkerType errMarkerType))
                     errMarkerType = OxyPlot.MarkerType.Circle;
@@ -804,7 +800,7 @@ namespace OxyPlotControls
                 if (GetDoubleAttribute(errorSeriesElement, nameof(scatterErrorSeries.ErrorBarStopWidth), out var errorBarStopWidth)) scatterErrorSeries.ErrorBarStopWidth = errorBarStopWidth;
                 if (GetDoubleAttribute(errorSeriesElement, nameof(scatterErrorSeries.MinimumErrorSize), out var minimumErrorSize)) scatterErrorSeries.MinimumErrorSize = minimumErrorSize;
                 if (GetDoubleAttribute(errorSeriesElement, nameof(scatterErrorSeries.ErrorBarStrokeThickness), out var errorBarStrokeThickness)) scatterErrorSeries.ErrorBarStrokeThickness = errorBarStrokeThickness;
-                if (GetColorAttribute(errorSeriesElement, nameof(scatterErrorSeries.ErrorBarColor), out var errorBarColor)) scatterErrorSeries.ErrorBarColor = errorBarColor;
+                if (GetOxyColorAttribute(errorSeriesElement, nameof(scatterErrorSeries.ErrorBarColor), out var errorBarColor)) scatterErrorSeries.ErrorBarColor = errorBarColor;
                 if (GetStringAttribute(errorSeriesElement, nameof(scatterErrorSeries.DataFieldLowerErrorX), out var dataFieldLowerErrorX)) scatterErrorSeries.DataFieldLowerErrorX = dataFieldLowerErrorX;
                 if (GetStringAttribute(errorSeriesElement, nameof(scatterErrorSeries.DataFieldUpperErrorX), out var dataFieldUpperErrorX)) scatterErrorSeries.DataFieldUpperErrorX = dataFieldUpperErrorX;
                 if (GetStringAttribute(errorSeriesElement, nameof(scatterErrorSeries.DataFieldLowerErrorY), out var dataFieldLowerErrorY)) scatterErrorSeries.DataFieldLowerErrorY = dataFieldLowerErrorY;
@@ -821,8 +817,6 @@ namespace OxyPlotControls
                 if (GetDoubleAttribute(heatMapSeriesElement, nameof(heatMapSeries.Y1), out var y1)) heatMapSeries.Y1 = y1;
                 if (GetDoubleAttribute(heatMapSeriesElement, nameof(heatMapSeries.X0), out var x0)) heatMapSeries.X0 = x0;
                 if (GetDoubleAttribute(heatMapSeriesElement, nameof(heatMapSeries.X1), out var x1)) heatMapSeries.X1 = x1;
-                if (GetColorAttribute(heatMapSeriesElement, nameof(heatMapSeries.HighColor), out var highColor)) heatMapSeries.HighColor = highColor;
-                if (GetColorAttribute(heatMapSeriesElement, nameof(heatMapSeries.LowColor), out var lowColor)) heatMapSeries.LowColor = lowColor;
                 // TODO - Deserialize coordinateDefinition value
                 if (GetBooleanAttribute(heatMapSeriesElement, nameof(heatMapSeries.Interpolate), out var interpolate)) heatMapSeries.Interpolate = interpolate;
                 if (GetDoubleAttribute(heatMapSeriesElement, nameof(heatMapSeries.LabelFontSize), out var labelFontSize)) heatMapSeries.LabelFontSize = labelFontSize;
@@ -844,7 +838,7 @@ namespace OxyPlotControls
             if (twoColorLineSeries != null)
             {
                 var twoColorElement = element.Element(nameof(OxyPlot.Series.TwoColorLineSeries));
-                if (GetColorAttribute(twoColorElement, nameof(twoColorLineSeries.Color2), out var color2))
+                if (GetOxyColorAttribute(twoColorElement, nameof(twoColorLineSeries.Color2), out var color2))
                     twoColorLineSeries.Color2 = color2;
                 if (GetDoubleAttribute(twoColorElement, nameof(twoColorLineSeries.Limit), out var limit))
                     twoColorLineSeries.Limit = limit;
@@ -869,7 +863,7 @@ namespace OxyPlotControls
                     pieSeries.ExplodedDistance = explodedDistance;
                 if (GetDoubleAttribute(pieElement, nameof(pieSeries.InnerDiameter), out var innerDiameter))
                     pieSeries.InnerDiameter = innerDiameter;
-                if (GetColorAttribute(pieElement, nameof(pieSeries.InsideLabelColor), out var insideLabelColor))
+                if (GetOxyColorAttribute(pieElement, nameof(pieSeries.InsideLabelColor), out var insideLabelColor))
                     pieSeries.InsideLabelColor = insideLabelColor;
                 if (GetStringAttribute(pieElement, nameof(pieSeries.InsideLabelFormat), out var insideLabelFormat))
                     pieSeries.InsideLabelFormat = insideLabelFormat;
@@ -881,7 +875,7 @@ namespace OxyPlotControls
                     pieSeries.OutsideLabelFormat = outsideLabelFormat;
                 if (GetDoubleAttribute(pieElement, nameof(pieSeries.StartAngle), out var startAngle))
                     pieSeries.StartAngle = startAngle;
-                if (GetColorAttribute(pieElement, nameof(pieSeries.Stroke), out var pieStroke))
+                if (GetOxyColorAttribute(pieElement, nameof(pieSeries.Stroke), out var pieStroke))
                     pieSeries.Stroke = pieStroke;
                 if (GetDoubleAttribute(pieElement, nameof(pieSeries.StrokeThickness), out var pieStrokeThickness))
                     pieSeries.StrokeThickness = pieStrokeThickness;
@@ -900,11 +894,11 @@ namespace OxyPlotControls
             if (contourSeries != null)
             {
                 var contourElement = element.Element(nameof(OxyPlot.Series.ContourSeries));
-                if (GetColorAttribute(contourElement, nameof(contourSeries.Color), out var contourColor))
+                if (GetOxyColorAttribute(contourElement, nameof(contourSeries.Color), out var contourColor))
                     contourSeries.Color = contourColor;
                 if (GetDoubleAttribute(contourElement, nameof(contourSeries.ContourLevelStep), out var contourLevelStep))
                     contourSeries.ContourLevelStep = contourLevelStep;
-                if (GetColorAttribute(contourElement, nameof(contourSeries.LabelBackground), out var labelBackground))
+                if (GetOxyColorAttribute(contourElement, nameof(contourSeries.LabelBackground), out var labelBackground))
                     contourSeries.LabelBackground = labelBackground;
                 if (GetStringAttribute(contourElement, nameof(contourSeries.LabelFormatString), out var contourLabelFormatString))
                     contourSeries.LabelFormatString = contourLabelFormatString;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -350,10 +351,10 @@ namespace OxyPlotControls
 
             var controller = PlotView.ActualController;
             controller.UnbindAll();
-            controller.BindMouseDown(OxyMouseButton.Middle, PlotCommands.PanAt);
-            controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.SnapTrack);
-            controller.BindMouseWheel(PlotCommands.ZoomWheel);
-            controller.BindKeyDown(OxyKey.Escape, PlotCommands.Reset);
+            controller.BindMouseDown(OxyMouseButton.Middle, OxyPlot.PlotCommands.PanAt);
+            controller.BindMouseDown(OxyMouseButton.Left, OxyPlot.PlotCommands.SnapTrack);
+            controller.BindMouseWheel(OxyPlot.PlotCommands.ZoomWheel);
+            controller.BindKeyDown(OxyKey.Escape, OxyPlot.PlotCommands.Reset);
 
             SetCursor();
         }
@@ -367,11 +368,11 @@ namespace OxyPlotControls
 
             var controller = PlotView.ActualController;
             controller.UnbindAll();
-            controller.BindMouseDown(OxyMouseButton.Middle, PlotCommands.PanAt);
-            controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
-            controller.BindMouseDown(OxyMouseButton.Right, PlotCommands.SnapTrack);
-            controller.BindMouseWheel(PlotCommands.ZoomWheel);
-            controller.BindKeyDown(OxyKey.Escape, PlotCommands.Reset);
+            controller.BindMouseDown(OxyMouseButton.Middle, OxyPlot.PlotCommands.PanAt);
+            controller.BindMouseDown(OxyMouseButton.Left, OxyPlot.PlotCommands.PanAt);
+            controller.BindMouseDown(OxyMouseButton.Right, OxyPlot.PlotCommands.SnapTrack);
+            controller.BindMouseWheel(OxyPlot.PlotCommands.ZoomWheel);
+            controller.BindKeyDown(OxyKey.Escape, OxyPlot.PlotCommands.Reset);
 
             SetCursor();
         }
@@ -385,11 +386,11 @@ namespace OxyPlotControls
 
             var controller = PlotView.ActualController;
             controller.UnbindAll();
-            controller.BindMouseDown(OxyMouseButton.Middle, PlotCommands.PanAt);
-            controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.ZoomRectangle);
-            controller.BindMouseDown(OxyMouseButton.Right, PlotCommands.SnapTrack);
-            controller.BindMouseWheel(PlotCommands.ZoomWheel);
-            controller.BindKeyDown(OxyKey.Escape, PlotCommands.Reset);
+            controller.BindMouseDown(OxyMouseButton.Middle, OxyPlot.PlotCommands.PanAt);
+            controller.BindMouseDown(OxyMouseButton.Left, OxyPlot.PlotCommands.ZoomRectangle);
+            controller.BindMouseDown(OxyMouseButton.Right, OxyPlot.PlotCommands.SnapTrack);
+            controller.BindMouseWheel(OxyPlot.PlotCommands.ZoomWheel);
+            controller.BindKeyDown(OxyKey.Escape, OxyPlot.PlotCommands.Reset);
 
             SetCursor();
         }
@@ -415,28 +416,28 @@ namespace OxyPlotControls
 
             if (_addAnnotationToolMode != AddToolMode.None)
             {
-                PlotView.DefaultPlotCursor = _addPointCursor;
+                PlotView.Cursor = _addPointCursor;
                 PlotView.Cursor = _addPointCursor;
             }
             else if (PanButton.IsChecked == true)
             {
                 PlotView.PanCursor = _panHandCursor;
-                PlotView.DefaultPlotCursor = _panHandCursor;
+                PlotView.Cursor = _panHandCursor;
                 PlotView.Cursor = _panHandCursor;
             }
             else if (PointerButton.IsChecked == true)
             {
-                PlotView.DefaultPlotCursor = Cursors.Arrow;
+                PlotView.Cursor = Cursors.Arrow;
                 PlotView.Cursor = Cursors.Arrow;
             }
             else if (ZoomButton.IsChecked == true)
             {
-                PlotView.DefaultPlotCursor = _zoomCursor;
+                PlotView.Cursor = _zoomCursor;
                 PlotView.Cursor = _zoomCursor;
             }
             else
             {
-                PlotView.DefaultPlotCursor = Cursors.Arrow;
+                PlotView.Cursor = Cursors.Arrow;
                 PlotView.Cursor = Cursors.Arrow;
             }
         }
@@ -1094,7 +1095,7 @@ namespace OxyPlotControls
                 if ((Mouse.LeftButton == MouseButtonState.Pressed && PanButton.IsChecked == true) || Mouse.MiddleButton == MouseButtonState.Pressed)
                 {
                     PlotView.PanCursor = _panHandClosedCursor;
-                    PlotView.DefaultPlotCursor = _panHandClosedCursor;
+                    PlotView.Cursor = _panHandClosedCursor;
                     PlotView.Cursor = _panHandClosedCursor;
                 }
 
@@ -1258,7 +1259,7 @@ namespace OxyPlotControls
             if ((Mouse.LeftButton == MouseButtonState.Pressed && PanButton.IsChecked == true) || Mouse.MiddleButton == MouseButtonState.Pressed)
             {
                 PlotView.PanCursor = _panHandClosedCursor;
-                PlotView.DefaultPlotCursor = _panHandClosedCursor;
+                PlotView.Cursor = _panHandClosedCursor;
                 PlotView.Cursor = _panHandClosedCursor;
             }
 
@@ -1270,7 +1271,7 @@ namespace OxyPlotControls
 
             if (Mouse.RightButton == MouseButtonState.Pressed)
             {
-                PlotView.DefaultPlotCursor = Cursors.Arrow;
+                PlotView.Cursor = Cursors.Arrow;
                 PlotView.Cursor = Cursors.Arrow;
                 GetSelectedObjects(sender, e);
                 return;
@@ -1283,7 +1284,7 @@ namespace OxyPlotControls
             if (PanButton.IsChecked == true || Mouse.MiddleButton == MouseButtonState.Pressed)
             {
                 PlotView.PanCursor = _panHandClosedCursor;
-                PlotView.DefaultPlotCursor = _panHandClosedCursor;
+                PlotView.Cursor = _panHandClosedCursor;
                 PlotView.Cursor = _panHandClosedCursor;
             }
         }
@@ -1562,11 +1563,7 @@ namespace OxyPlotControls
 
             if (requiresRedraw) Model.InvalidatePlot(false);
 
-            if (updatedCursor == null)
-            {
-                PlotView.Cursor = PlotView.DefaultPlotCursor;
-            }
-            else
+            if (updatedCursor != null)
             {
                 PlotView.Cursor = updatedCursor;
                 return;
@@ -1575,7 +1572,6 @@ namespace OxyPlotControls
             if ((Mouse.LeftButton == MouseButtonState.Pressed && PanButton.IsChecked == true) || Mouse.MiddleButton == MouseButtonState.Pressed)
             {
                 PlotView.PanCursor = _panHandClosedCursor;
-                PlotView.DefaultPlotCursor = _panHandClosedCursor;
                 PlotView.Cursor = _panHandClosedCursor;
             }
         }
