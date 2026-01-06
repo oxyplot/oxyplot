@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Win32;
+using OxyPlot;
 using OxyPlot.Wpf;
 
 namespace OxyPlotControls
@@ -12,20 +13,68 @@ namespace OxyPlotControls
     /// <summary>
     /// A dialog window for saving OxyPlot charts as image files.
     /// Supports PNG, PDF, and SVG formats with customizable dimensions.
+    /// Works with both the modern PlotView control and the legacy Plot control.
     /// </summary>
     public partial class SavePlotImageDialog : Window
     {
-        private Plot _plot;
+        private PlotView _plotView;
+        private Plot _legacyPlot;
+        private double _actualWidth;
+        private double _actualHeight;
+        private PlotModel _model;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SavePlotImageDialog"/> class.
+        /// Initializes a new instance of the <see cref="SavePlotImageDialog"/> class using a PlotView.
+        /// </summary>
+        /// <param name="plotView">The PlotView control to save as an image.</param>
+        public SavePlotImageDialog(PlotView plotView)
+        {
+            InitializeComponent();
+
+            _plotView = plotView;
+            _legacyPlot = null;
+            _actualWidth = plotView.ActualWidth;
+            _actualHeight = plotView.ActualHeight;
+            _model = plotView.Model;
+
+            ContentRendered += SavePlotImageDialog_ContentRendered;
+            Closing += SavePlotImageDialog_Closing;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SavePlotImageDialog"/> class using a legacy Plot control.
+        /// Provided for backward compatibility with existing code.
         /// </summary>
         /// <param name="thePlot">The OxyPlot Plot control to save as an image.</param>
         public SavePlotImageDialog(Plot thePlot)
         {
             InitializeComponent();
 
-            _plot = thePlot;
+            _legacyPlot = thePlot;
+            _plotView = null;
+            _actualWidth = thePlot.ActualWidth;
+            _actualHeight = thePlot.ActualHeight;
+            _model = thePlot.ActualModel;
+
+            ContentRendered += SavePlotImageDialog_ContentRendered;
+            Closing += SavePlotImageDialog_Closing;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SavePlotImageDialog"/> class using a PlotModel directly.
+        /// </summary>
+        /// <param name="model">The PlotModel to save as an image.</param>
+        /// <param name="width">The current display width of the plot.</param>
+        /// <param name="height">The current display height of the plot.</param>
+        public SavePlotImageDialog(PlotModel model, double width = 800, double height = 600)
+        {
+            InitializeComponent();
+
+            _plotView = null;
+            _legacyPlot = null;
+            _actualWidth = width;
+            _actualHeight = height;
+            _model = model;
 
             ContentRendered += SavePlotImageDialog_ContentRendered;
             Closing += SavePlotImageDialog_Closing;
@@ -33,8 +82,8 @@ namespace OxyPlotControls
 
         private void SavePlotImageDialog_ContentRendered(object sender, EventArgs e)
         {
-            WidthTextBox.ToolTip = "Current Plot Width is " + ((int)_plot.ActualWidth).ToString() + " px";
-            HeightTextBox.ToolTip = "Current Plot Height is " + ((int)_plot.ActualHeight).ToString() + " px";
+            WidthTextBox.ToolTip = "Current Plot Width is " + ((int)_actualWidth).ToString() + " px";
+            HeightTextBox.ToolTip = "Current Plot Height is " + ((int)_actualHeight).ToString() + " px";
 
             var size = ((ComboBoxItem)ImageSizeComboBox.SelectedItem).Content.ToString();
             var sizes = size.Split(' ');
@@ -66,7 +115,7 @@ namespace OxyPlotControls
 
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_plot == null) return;
+            if (_model == null) return;
 
             string saveFile = FileSaveDialog("PNG File(*.png) |*.png|PDF File(*.pdf) |*.pdf|SVG File(*.svg) |*.svg");
 
@@ -135,18 +184,27 @@ namespace OxyPlotControls
                 switch (extension)
                 {
                     case ".png":
-                        _plot.SaveBitmap(saveFile, imageWidth, imageHeight, _plot.ActualModel.Background);
+                        // Use legacy Plot.SaveBitmap if available, otherwise use PngExporter
+                        if (_legacyPlot != null)
+                        {
+                            _legacyPlot.SaveBitmap(saveFile, imageWidth, imageHeight, _model.Background);
+                        }
+                        else
+                        {
+                            var pngExporter = new PngExporter { Width = imageWidth, Height = imageHeight, Background = _model.Background };
+                            pngExporter.ExportToFile(_model, saveFile);
+                        }
                         break;
                     case ".svg":
                         using (var fs = new FileStream(saveFile, FileMode.Create))
                         {
-                            OxyPlot.SvgExporter.Export(_plot.ActualModel, fs, imageWidth, imageHeight, true);
+                            OxyPlot.SvgExporter.Export(_model, fs, imageWidth, imageHeight, true);
                         }
                         break;
                     case ".pdf":
                         using (var fs = new FileStream(saveFile, FileMode.Create))
                         {
-                            OxyPlot.PdfExporter.Export(_plot.ActualModel, fs, imageWidth, imageHeight);
+                            OxyPlot.PdfExporter.Export(_model, fs, imageWidth, imageHeight);
                         }
                         break;
                 }
@@ -179,8 +237,8 @@ namespace OxyPlotControls
                 WidthTextBox.IsEnabled = true;
                 HeightTextBox.IsEnabled = true;
 
-                WidthTextBox.Text = ((int)_plot.ActualWidth).ToString();
-                HeightTextBox.Text = ((int)_plot.ActualHeight).ToString();
+                WidthTextBox.Text = ((int)_actualWidth).ToString();
+                HeightTextBox.Text = ((int)_actualHeight).ToString();
             }
             else
             {

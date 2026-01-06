@@ -452,23 +452,34 @@ namespace OxyPlotControls
             GetStringAttribute(element, "SeriesType", out string seriesType);
 
             // Create the Series Type and Deserialize properties specific to the series
-            if (seriesType == typeof(OxyPlot.Series.HeatMapSeries).ToString())
+            // Support both V1 (OxyPlot.Wpf.*) and V2 (OxyPlot.Series.*) type names
+            if (seriesType == typeof(OxyPlot.Series.HeatMapSeries).ToString() ||
+                seriesType == "OxyPlot.Wpf.HeatMapSeries")
                 series = new OxyPlot.Series.HeatMapSeries();
-            else if (seriesType == typeof(OxyPlot.Series.LineSeries).ToString())
+            else if (seriesType == typeof(OxyPlot.Series.LineSeries).ToString() ||
+                     seriesType == "OxyPlot.Wpf.LineSeries")
                 series = new OxyPlot.Series.LineSeries();
-            else if (seriesType == typeof(OxyPlot.Series.ColumnSeries).ToString())
+            else if (seriesType == typeof(OxyPlot.Series.ColumnSeries).ToString() ||
+                     seriesType == "OxyPlot.Wpf.ColumnSeries")
                 series = new OxyPlot.Series.ColumnSeries();
-            else if (seriesType == typeof(OxyPlot.Series.BarSeries).ToString())
+            else if (seriesType == typeof(OxyPlot.Series.BarSeries).ToString() ||
+                     seriesType == "OxyPlot.Wpf.BarSeries")
                 series = new OxyPlot.Series.BarSeries();
-            else if (seriesType == typeof(OxyPlot.Series.HistogramSeries).ToString())
+            else if (seriesType == typeof(OxyPlot.Series.HistogramSeries).ToString() ||
+                     seriesType == "OxyPlot.Wpf.HistogramSeries")
                 series = new OxyPlot.Series.HistogramSeries();
-            else if (seriesType == typeof(OxyPlot.Series.ScatterSeries).ToString())
+            else if (seriesType == typeof(OxyPlot.Series.ScatterSeries).ToString() ||
+                     seriesType == "OxyPlot.Wpf.ScatterPointSeries" ||  // V1 used different name
+                     seriesType == "OxyPlot.Wpf.ScatterSeries")
                 series = new OxyPlot.Series.ScatterSeries();
-            else if (seriesType == typeof(OxyPlot.Series.ScatterErrorSeries).ToString())
+            else if (seriesType == typeof(OxyPlot.Series.ScatterErrorSeries).ToString() ||
+                     seriesType == "OxyPlot.Wpf.ScatterErrorSeries")
                 series = new OxyPlot.Series.ScatterErrorSeries();
-            else if (seriesType == typeof(OxyPlot.Series.AreaSeries).ToString())
+            else if (seriesType == typeof(OxyPlot.Series.AreaSeries).ToString() ||
+                     seriesType == "OxyPlot.Wpf.AreaSeries")
                 series = new OxyPlot.Series.AreaSeries();
-            else if (seriesType == typeof(OxyPlot.Series.BoxPlotSeries).ToString())
+            else if (seriesType == typeof(OxyPlot.Series.BoxPlotSeries).ToString() ||
+                     seriesType == "OxyPlot.Wpf.BoxPlotSeries")
                 series = new OxyPlot.Series.BoxPlotSeries();
             else
                 return null; // not a recognized type
@@ -494,6 +505,27 @@ namespace OxyPlotControls
                 if (GetBooleanAttribute(generalElement, nameof(series.RenderInLegend), out var renderInLegend)) series.RenderInLegend = renderInLegend;
                 if (GetStringAttribute(generalElement, nameof(series.TrackerFormatString), out var trackerFormatString)) series.TrackerFormatString = trackerFormatString;
                 if (GetStringAttribute(generalElement, nameof(series.TrackerKey), out var trackerKey)) series.TrackerKey = trackerKey;
+
+                // V1 backward compatibility: read VB-serialized properties
+                // Name → Tag (stored as object, we store the string)
+                if (GetStringAttribute(generalElement, "Name", out var name) && !string.IsNullOrEmpty(name))
+                {
+                    series.Tag = name;
+                }
+
+                // Background → Series.Background (convert from WPF brush string to OxyColor)
+                if (GetStringAttribute(generalElement, "Background", out var backgroundStr) && !string.IsNullOrEmpty(backgroundStr))
+                {
+                    try
+                    {
+                        var wpfColor = (Color)ColorConverter.ConvertFromString(backgroundStr);
+                        series.Background = OxyColor.FromArgb(wpfColor.A, wpfColor.R, wpfColor.G, wpfColor.B);
+                    }
+                    catch
+                    {
+                        // Ignore invalid color strings
+                    }
+                }
             }
 
             // Deserialize XY Axis Series Properties

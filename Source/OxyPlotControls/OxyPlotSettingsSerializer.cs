@@ -135,6 +135,27 @@ namespace OxyPlotControls
         }
 
         /// <summary>
+        /// Attempts to get an OxyColor value from an XML element attribute.
+        /// Handles both OxyColor string format (#AARRGGBB) and WPF Color format.
+        /// </summary>
+        /// <param name="el">The XElement to read from.</param>
+        /// <param name="attributeName">The name of the attribute to read.</param>
+        /// <param name="c">When this method returns, contains the parsed OxyColor if successful.</param>
+        /// <returns>True if the attribute exists and was successfully parsed; otherwise, false.</returns>
+        public static bool GetColorAttribute(XElement el, string attributeName, out OxyColor c)
+        {
+            c = OxyColors.Automatic;
+            if (el == null) return false;
+            if (el.Attribute(attributeName) == null) return false;
+            string value = el.Attribute(attributeName).Value;
+            if (string.IsNullOrEmpty(value)) return false;
+
+            // Try parsing as OxyColor first (handles #AARRGGBB format)
+            c = OxyColor.Parse(value);
+            return true;
+        }
+
+        /// <summary>
         /// Attempts to get a Brush value from an XML element attribute.
         /// </summary>
         /// <param name="el">The XElement to read from.</param>
