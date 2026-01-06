@@ -6,11 +6,9 @@
     <Nullable>enable</Nullable>
     <LangVersion>12.0</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>OxyPlotControls</RootNamespace>
     <AssemblyName>OxyPlotControls</AssemblyName>
-    <Authors>USACE-RMC</Authors>
-    <Description>WPF controls for editing and configuring OxyPlot charts. Provides property editors for series, axes, annotations, and general plot settings.</Description>
-    <Copyright>Copyright © USACE-RMC 2026</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

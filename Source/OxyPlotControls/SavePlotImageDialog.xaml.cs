@@ -13,15 +13,13 @@ namespace OxyPlotControls
     /// <summary>
     /// A dialog window for saving OxyPlot charts as image files.
     /// Supports PNG, PDF, and SVG formats with customizable dimensions.
-    /// Works with both the modern PlotView control and the legacy Plot control.
     /// </summary>
     public partial class SavePlotImageDialog : Window
     {
-        private PlotView _plotView;
-        private Plot _legacyPlot;
+        private PlotView? _plotView;
         private double _actualWidth;
         private double _actualHeight;
-        private PlotModel _model;
+        private PlotModel? _model;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SavePlotImageDialog"/> class using a PlotView.
@@ -32,29 +30,9 @@ namespace OxyPlotControls
             InitializeComponent();
 
             _plotView = plotView;
-            _legacyPlot = null;
             _actualWidth = plotView.ActualWidth;
             _actualHeight = plotView.ActualHeight;
             _model = plotView.Model;
-
-            ContentRendered += SavePlotImageDialog_ContentRendered;
-            Closing += SavePlotImageDialog_Closing;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SavePlotImageDialog"/> class using a legacy Plot control.
-        /// Provided for backward compatibility with existing code.
-        /// </summary>
-        /// <param name="thePlot">The OxyPlot Plot control to save as an image.</param>
-        public SavePlotImageDialog(Plot thePlot)
-        {
-            InitializeComponent();
-
-            _legacyPlot = thePlot;
-            _plotView = null;
-            _actualWidth = thePlot.ActualWidth;
-            _actualHeight = thePlot.ActualHeight;
-            _model = thePlot.ActualModel;
 
             ContentRendered += SavePlotImageDialog_ContentRendered;
             Closing += SavePlotImageDialog_Closing;
@@ -71,7 +49,6 @@ namespace OxyPlotControls
             InitializeComponent();
 
             _plotView = null;
-            _legacyPlot = null;
             _actualWidth = width;
             _actualHeight = height;
             _model = model;
@@ -80,13 +57,13 @@ namespace OxyPlotControls
             Closing += SavePlotImageDialog_Closing;
         }
 
-        private void SavePlotImageDialog_ContentRendered(object sender, EventArgs e)
+        private void SavePlotImageDialog_ContentRendered(object? sender, EventArgs e)
         {
             WidthTextBox.ToolTip = "Current Plot Width is " + ((int)_actualWidth).ToString() + " px";
             HeightTextBox.ToolTip = "Current Plot Height is " + ((int)_actualHeight).ToString() + " px";
 
             var size = ((ComboBoxItem)ImageSizeComboBox.SelectedItem).Content.ToString();
-            var sizes = size.Split(' ');
+            var sizes = size?.Split(' ') ?? new[] { "800", "x", "600" };
             WidthTextBox.Text = sizes[0];
             HeightTextBox.Text = sizes[2];
         }
@@ -161,7 +138,7 @@ namespace OxyPlotControls
             else
             {
                 var size = ((ComboBoxItem)ImageSizeComboBox.SelectedItem).Content.ToString();
-                var sizes = size.Split(' ');
+                var sizes = size?.Split(' ') ?? new[] { "800", "x", "600" };
                 imageWidth = int.Parse(sizes[0]);
                 imageHeight = int.Parse(sizes[2]);
             }
@@ -184,16 +161,8 @@ namespace OxyPlotControls
                 switch (extension)
                 {
                     case ".png":
-                        // Use legacy Plot.SaveBitmap if available, otherwise use PngExporter
-                        if (_legacyPlot != null)
-                        {
-                            _legacyPlot.SaveBitmap(saveFile, imageWidth, imageHeight, _model.Background);
-                        }
-                        else
-                        {
-                            var pngExporter = new PngExporter { Width = imageWidth, Height = imageHeight, Background = _model.Background };
-                            pngExporter.ExportToFile(_model, saveFile);
-                        }
+                        var pngExporter = new PngExporter { Width = imageWidth, Height = imageHeight, Background = _model.Background };
+                        pngExporter.ExportToFile(_model, saveFile);
                         break;
                     case ".svg":
                         using (var fs = new FileStream(saveFile, FileMode.Create))
@@ -222,7 +191,7 @@ namespace OxyPlotControls
             Close();
         }
 
-        private void SavePlotImageDialog_Closing(object sender, CancelEventArgs e)
+        private void SavePlotImageDialog_Closing(object? sender, CancelEventArgs e)
         {
             if (Owner != null) Owner.Activate();
         }
@@ -246,7 +215,7 @@ namespace OxyPlotControls
                 HeightTextBox.IsEnabled = false;
 
                 var size = ((ComboBoxItem)ImageSizeComboBox.SelectedItem).Content.ToString();
-                var sizes = size.Split(' ');
+                var sizes = size?.Split(' ') ?? new[] { "800", "x", "600" };
                 WidthTextBox.Text = sizes[0];
                 HeightTextBox.Text = sizes[2];
             }
