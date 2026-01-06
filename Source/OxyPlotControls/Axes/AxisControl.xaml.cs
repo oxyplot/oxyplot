@@ -769,7 +769,7 @@ namespace OxyPlotControls
         public static LogarithmicAxis ConvertAxisToLogarithmicAxis(Axis wpfAxis, double logBase = 10, bool powerPadding = true)
         {
             var newAxis = new LogarithmicAxis { Base = logBase, PowerPadding = powerPadding };
-            newAxis.FromAxisProperties(wpfAxis);
+            newAxis.CopyFromAxis(wpfAxis);
             if (newAxis.Minimum <= 0) newAxis.Minimum = Epsilon;
             newAxis.Maximum = wpfAxis.Maximum;
             newAxis.StartPosition = wpfAxis.StartPosition;
@@ -793,7 +793,7 @@ namespace OxyPlotControls
                 FractionUnit = fractionUnits,
                 FractionUnitSymbol = fractionSymbol
             };
-            newAxis.FromAxisProperties(wpfAxis);
+            newAxis.CopyFromAxis(wpfAxis);
             newAxis.Minimum = wpfAxis.Minimum;
             newAxis.Maximum = wpfAxis.Maximum;
             newAxis.StartPosition = wpfAxis.StartPosition;
@@ -809,7 +809,7 @@ namespace OxyPlotControls
         public static NormalProbabilityAxis ConvertAxisToNormalAxis(Axis wpfAxis)
         {
             var newAxis = new NormalProbabilityAxis();
-            newAxis.FromAxisProperties(wpfAxis);
+            newAxis.CopyFromAxis(wpfAxis);
             if (newAxis.Minimum < 0.0000000000000001) newAxis.Minimum = 0.0000001;
             if (newAxis.Maximum > 0.999 || double.IsNaN(newAxis.Maximum)) newAxis.Maximum = 0.999;
             newAxis.StartPosition = wpfAxis.StartPosition;
@@ -825,7 +825,7 @@ namespace OxyPlotControls
         public static GumbelProbabilityAxis ConvertAxisToGumbelAxis(Axis wpfAxis)
         {
             var newAxis = new GumbelProbabilityAxis();
-            newAxis.FromAxisProperties(wpfAxis);
+            newAxis.CopyFromAxis(wpfAxis);
             if (newAxis.Minimum < 0.0000000000000001) newAxis.Minimum = 0.0000001;
             if (newAxis.Maximum > 0.99 || double.IsNaN(newAxis.Maximum)) newAxis.Maximum = 0.99;
             newAxis.StartPosition = wpfAxis.StartPosition;
@@ -841,7 +841,7 @@ namespace OxyPlotControls
         public static DateTimeAxis ConvertAxisToDateTimeAxis(Axis wpfAxis)
         {
             var newAxis = new DateTimeAxis();
-            newAxis.FromAxisProperties(wpfAxis);
+            newAxis.CopyFromAxis(wpfAxis);
             newAxis.Minimum = wpfAxis.Minimum;
             newAxis.Maximum = wpfAxis.Maximum;
             newAxis.StartPosition = wpfAxis.StartPosition;
@@ -963,7 +963,7 @@ namespace OxyPlotControls
 
             AxisTypeChanged?.Invoke(Axis, newAxis);
 
-            thePlot.InvalidatePlot();
+            thePlot.InvalidatePlot(false);
         }
 
         /// <summary>

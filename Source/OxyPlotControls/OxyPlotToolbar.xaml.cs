@@ -1765,52 +1765,43 @@ namespace OxyPlotControls
             }
 
             // Legend Area hit test
-            var legendArea = Model.LegendArea;
-            if (legendArea.Contains(e.Position))
-            {
-                if (leftClickBool)
-                {
-                    PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Legend_Title, legendArea);
-                    return;
-                }
-                else
-                {
-                    var legendItem = new MenuItem { Header = "Format Legend", Icon = CreateMenuIcon("Format.png") };
-                    legendItem.Click += (s, args) => PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Legend_Title, legendArea);
-                    _contextMenu.Items.Add(legendItem);
-                }
-            }
+            // Note: In modern OxyPlot, legends are handled differently and LegendArea is not exposed
+            // The legend hit testing is skipped for now
+            // TODO: Implement alternative legend hit testing if needed using Model.Legends collection
 
             // AXIS Areas hit test
             var plotArea = Model.PlotArea;
+            var margins = Model.ActualPlotMargins;
             foreach (var axis in Model.Axes)
             {
                 double axLeft = 0, axTop = 0, axWidth = 0, axHeight = 0;
 
+                // Note: In modern OxyPlot, Axis.DesiredSize is not available
+                // We use ActualPlotMargins as an approximation for axis hit testing
                 switch (axis.Position)
                 {
                     case OxyPlot.Axes.AxisPosition.Bottom:
                         axLeft = plotArea.Left;
                         axTop = plotArea.Bottom + axis.AxisDistance;
                         axWidth = plotArea.Width;
-                        axHeight = axis.DesiredSize.Height;
+                        axHeight = margins.Bottom;
                         break;
                     case OxyPlot.Axes.AxisPosition.Top:
                         axLeft = plotArea.Left;
-                        axTop = plotArea.Top - axis.AxisDistance - axis.DesiredSize.Height;
+                        axTop = plotArea.Top - axis.AxisDistance - margins.Top;
                         axWidth = plotArea.Width;
-                        axHeight = axis.DesiredSize.Height;
+                        axHeight = margins.Top;
                         break;
                     case OxyPlot.Axes.AxisPosition.Left:
-                        axLeft = plotArea.Left - axis.AxisDistance - axis.DesiredSize.Width;
+                        axLeft = plotArea.Left - axis.AxisDistance - margins.Left;
                         axTop = plotArea.Top;
-                        axWidth = axis.DesiredSize.Width;
+                        axWidth = margins.Left;
                         axHeight = plotArea.Height;
                         break;
                     case OxyPlot.Axes.AxisPosition.Right:
                         axLeft = plotArea.Right + axis.AxisDistance;
                         axTop = plotArea.Top;
-                        axWidth = axis.DesiredSize.Width;
+                        axWidth = margins.Right;
                         axHeight = plotArea.Height;
                         break;
                 }

@@ -255,10 +255,11 @@ namespace OxyPlotControls
             }
 
             // Serialize bar base series properties
-            var barBaseSeries = series as OxyPlot.Series.BarSeriesBase;
+            // Note: BarSeriesBase<T> is generic in modern OxyPlot, so we check for BarSeries specifically
+            var barBaseSeries = series as OxyPlot.Series.BarSeries;
             if (barBaseSeries != null)
             {
-                var barBaseElement = new XElement(nameof(OxyPlot.Series.BarSeriesBase));
+                var barBaseElement = new XElement("BarSeriesBase");
                 barBaseElement.SetAttributeValue(nameof(barBaseSeries.BaseValue), barBaseSeries.BaseValue.ToString("G17", CultureInfo.InvariantCulture));
                 barBaseElement.SetAttributeValue(nameof(barBaseSeries.FillColor), barBaseSeries.FillColor);
                 barBaseElement.SetAttributeValue(nameof(barBaseSeries.ColorField), barBaseSeries.ColorField);
@@ -627,10 +628,11 @@ namespace OxyPlotControls
             }
 
             // Deserialize Bar series Base properties
-            var barBaseSeries = series as OxyPlot.Series.BarSeriesBase;
+            // Note: BarSeriesBase<T> is generic in modern OxyPlot, so we check for BarSeries specifically
+            var barBaseSeries = series as OxyPlot.Series.BarSeries;
             if (barBaseSeries != null)
             {
-                var barBaseSeriesElement = element.Element(nameof(OxyPlot.Series.BarSeriesBase));
+                var barBaseSeriesElement = element.Element("BarSeriesBase");
                 if (GetDoubleAttribute(barBaseSeriesElement, nameof(barBaseSeries.BaseValue), out var baseValue)) barBaseSeries.BaseValue = baseValue;
                 if (GetOxyColorAttribute(barBaseSeriesElement, nameof(barBaseSeries.FillColor), out var fillColor)) barBaseSeries.FillColor = fillColor;
                 if (GetStringAttribute(barBaseSeriesElement, nameof(barBaseSeries.ColorField), out var colorField)) barBaseSeries.ColorField = colorField;
