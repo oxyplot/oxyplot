@@ -269,8 +269,22 @@ namespace OxyPlotControls
             set => SetValue(ToolBarOrientationProperty, value);
         }
 
-        private TextBox _textBox = null;
-        private ContextMenu _contextMenu = null;
+        private TextBox? _textBox = null;
+        private ContextMenu? _contextMenu = null;
+        private EditTextTarget _editTarget = EditTextTarget.None;
+        private object? _editTargetObject = null;
+
+        /// <summary>
+        /// Enumeration for the current text editing target.
+        /// </summary>
+        private enum EditTextTarget
+        {
+            None,
+            Title,
+            Subtitle,
+            AxisTitle,
+            AnnotationText
+        }
 
         /// <summary>
         /// Enumeration for adding annotation tool mode.
@@ -1751,6 +1765,66 @@ namespace OxyPlotControls
                 _contextMenu.Items.Add(formatPlotItem);
             }
 
+            // TITLE AREA hit test - check if click is in title/subtitle area
+            if (Model.TitleArea.Contains(e.Position))
+            {
+                // Determine if title or subtitle was clicked based on Y position
+                var titleArea = Model.TitleArea;
+                double midY = titleArea.Top + titleArea.Height / 2;
+                bool isSubtitle = !string.IsNullOrEmpty(Model.Subtitle) && e.Position.Y > midY;
+
+                if (leftClickBool)
+                {
+                    if (isSubtitle)
+                    {
+                        PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Model.TitleArea);
+                        CreateEditTextBox(EditTextTarget.Subtitle, Model.Subtitle ?? "", e.Position);
+                    }
+                    else if (!string.IsNullOrEmpty(Model.Title))
+                    {
+                        PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotTitle, Model.TitleArea);
+                        CreateEditTextBox(EditTextTarget.Title, Model.Title, e.Position);
+                    }
+                    return;
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(Model.Title))
+                    {
+                        var editTitleItem = new MenuItem { Header = "Edit Plot Title", Icon = CreateMenuIcon("EditTextbox.png") };
+                        editTitleItem.Click += (s, args) =>
+                        {
+                            PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotTitle, Model.TitleArea);
+                            CreateEditTextBox(EditTextTarget.Title, Model.Title, e.Position);
+                        };
+                        var formatTitleItem = new MenuItem { Header = "Format Plot Title", Icon = CreateMenuIcon("Format.png") };
+                        formatTitleItem.Click += (s, args) =>
+                        {
+                            PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.General_PlotTitle, Model.TitleArea);
+                        };
+                        _contextMenu.Items.Add(editTitleItem);
+                        _contextMenu.Items.Add(formatTitleItem);
+                    }
+
+                    if (!string.IsNullOrEmpty(Model.Subtitle))
+                    {
+                        var editSubtitleItem = new MenuItem { Header = "Edit Plot Subtitle", Icon = CreateMenuIcon("EditTextbox.png") };
+                        editSubtitleItem.Click += (s, args) =>
+                        {
+                            PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Model.TitleArea);
+                            CreateEditTextBox(EditTextTarget.Subtitle, Model.Subtitle, e.Position);
+                        };
+                        var formatSubtitleItem = new MenuItem { Header = "Format Plot Subtitle", Icon = CreateMenuIcon("Format.png") };
+                        formatSubtitleItem.Click += (s, args) =>
+                        {
+                            PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Model.TitleArea);
+                        };
+                        _contextMenu.Items.Add(editSubtitleItem);
+                        _contextMenu.Items.Add(formatSubtitleItem);
+                    }
+                }
+            }
+
             // SERIES hit test
             var seriesHTRS = Model.HitTest(new HitTestArguments(e.Position, 10)).ToList();
             foreach (var htr in seriesHTRS)
@@ -1819,12 +1893,31 @@ namespace OxyPlotControls
                 {
                     if (leftClickBool)
                     {
-                        PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Options, axis);
-                        PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Display, axis);
+                        // If axis has a title, allow editing it directly
+                        if (!string.IsNullOrEmpty(axis.Title))
+                        {
+                            PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Display, axis);
+                            CreateEditTextBox(EditTextTarget.AxisTitle, axis.Title, e.Position, axis);
+                        }
+                        else
+                        {
+                            PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Options, axis);
+                            PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Display, axis);
+                        }
                         return;
                     }
                     else
                     {
+                        // Edit axis title menu item
+                        var editAxisTitleItem = new MenuItem { Header = "Edit Axis Title", Icon = CreateMenuIcon("EditTextbox.png") };
+                        editAxisTitleItem.Click += (s, args) =>
+                        {
+                            PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Display, axis);
+                            CreateEditTextBox(EditTextTarget.AxisTitle, axis.Title ?? "", e.Position, axis);
+                        };
+                        _contextMenu.Items.Add(editAxisTitleItem);
+
+                        // Format axis menu item
                         var formatAxisItem = new MenuItem { Header = "Format Axis: " + axis.Title, Icon = CreateMenuIcon("Format.png") };
                         formatAxisItem.Click += (s, args) =>
                         {
@@ -1879,6 +1972,207 @@ namespace OxyPlotControls
             _contextMenu.HorizontalOffset = 0;
             _contextMenu.VerticalOffset = 0;
             _contextMenu.IsOpen = true;
+        }
+
+        #endregion
+
+        #region CreateEditTextBox
+
+        /// <summary>
+        /// Creates an in-place text box for editing text on the plot.
+        /// Supports plot titles, subtitles, axis titles, and annotation text.
+        /// </summary>
+        /// <param name="target">The type of text element being edited.</param>
+        /// <param name="initialText">The initial text to display in the text box.</param>
+        /// <param name="position">The screen position where the click occurred.</param>
+        /// <param name="targetObject">Optional target object (e.g., axis or annotation).</param>
+        private void CreateEditTextBox(EditTextTarget target, string initialText, ScreenPoint position, object? targetObject = null)
+        {
+            if (Model == null || PlotView == null) return;
+
+            // Remove any existing textbox
+            RemoveEditTextBox();
+
+            // Store edit target info
+            _editTarget = target;
+            _editTargetObject = targetObject;
+
+            // Get the area to position the textbox
+            OxyRect editArea;
+            double fontSize = 14;
+            string fontFamily = "Segoe UI";
+            FontWeight fontWeight = FontWeights.Normal;
+
+            switch (target)
+            {
+                case EditTextTarget.Title:
+                    editArea = Model.TitleArea;
+                    fontSize = Model.TitleFontSize > 0 ? Model.TitleFontSize : 18;
+                    fontFamily = !string.IsNullOrEmpty(Model.TitleFont) ? Model.TitleFont : Model.DefaultFont ?? "Segoe UI";
+                    fontWeight = FontWeights.Bold;
+                    break;
+                case EditTextTarget.Subtitle:
+                    editArea = Model.TitleArea;
+                    fontSize = Model.SubtitleFontSize > 0 ? Model.SubtitleFontSize : 14;
+                    fontFamily = !string.IsNullOrEmpty(Model.SubtitleFont) ? Model.SubtitleFont : Model.DefaultFont ?? "Segoe UI";
+                    break;
+                case EditTextTarget.AxisTitle:
+                    if (targetObject is OxyPlot.Axes.Axis axis)
+                    {
+                        // Use position for axis title - it's usually at the center of the axis
+                        editArea = new OxyRect(position.X - 100, position.Y - 12, 200, 24);
+                        fontSize = axis.TitleFontSize > 0 ? axis.TitleFontSize : 14;
+                        fontFamily = !string.IsNullOrEmpty(axis.TitleFont) ? axis.TitleFont : Model.DefaultFont ?? "Segoe UI";
+                        fontWeight = FontWeights.Bold;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                    break;
+                case EditTextTarget.AnnotationText:
+                    // For annotations, position near the click point
+                    editArea = new OxyRect(position.X - 100, position.Y - 12, 200, 24);
+                    break;
+                default:
+                    return;
+            }
+
+            // Create the textbox
+            _textBox = new TextBox
+            {
+                Text = initialText,
+                FontSize = fontSize,
+                FontFamily = new FontFamily(fontFamily),
+                FontWeight = fontWeight,
+                TextAlignment = TextAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                Padding = new Thickness(2),
+                BorderThickness = new Thickness(1),
+                BorderBrush = new SolidColorBrush(Colors.DodgerBlue),
+                Background = new SolidColorBrush(Colors.White),
+                MinWidth = 100
+            };
+
+            // Position the textbox
+            double left, top, width;
+            if (target == EditTextTarget.Title || target == EditTextTarget.Subtitle)
+            {
+                // Center in the plot area for title/subtitle
+                left = Model.PlotArea.Left;
+                width = Model.PlotArea.Width;
+                if (target == EditTextTarget.Title)
+                {
+                    top = editArea.Top + 5;
+                }
+                else
+                {
+                    // Subtitle is below title
+                    top = editArea.Top + editArea.Height / 2 + 5;
+                }
+                _textBox.Width = width;
+            }
+            else
+            {
+                left = editArea.Left;
+                top = editArea.Top;
+                width = editArea.Width;
+                _textBox.MinWidth = width;
+            }
+
+            Canvas.SetLeft(_textBox, left);
+            Canvas.SetTop(_textBox, top);
+
+            // Add to overlay canvas
+            _overlayCanvas.Children.Add(_textBox);
+
+            // Set up event handlers
+            _textBox.PreviewKeyDown += EditTextBox_PreviewKeyDown;
+            _textBox.LostFocus += EditTextBox_LostFocus;
+
+            // Focus and select all text
+            _textBox.Focus();
+            _textBox.SelectAll();
+        }
+
+        /// <summary>
+        /// Handles the PreviewKeyDown event for the edit text box.
+        /// </summary>
+        private void EditTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                ApplyEditTextBoxChanges();
+                RemoveEditTextBox();
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Escape)
+            {
+                RemoveEditTextBox();
+                e.Handled = true;
+            }
+        }
+
+        /// <summary>
+        /// Handles the LostFocus event for the edit text box.
+        /// </summary>
+        private void EditTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ApplyEditTextBoxChanges();
+            RemoveEditTextBox();
+        }
+
+        /// <summary>
+        /// Applies the changes from the edit text box to the model.
+        /// </summary>
+        private void ApplyEditTextBoxChanges()
+        {
+            if (_textBox == null || Model == null) return;
+
+            string newText = _textBox.Text ?? "";
+
+            switch (_editTarget)
+            {
+                case EditTextTarget.Title:
+                    Model.Title = newText;
+                    break;
+                case EditTextTarget.Subtitle:
+                    Model.Subtitle = newText;
+                    break;
+                case EditTextTarget.AxisTitle:
+                    if (_editTargetObject is OxyPlot.Axes.Axis axis)
+                    {
+                        axis.Title = newText;
+                    }
+                    break;
+                case EditTextTarget.AnnotationText:
+                    if (_editTargetObject is TextualAnnotation textAnnotation)
+                    {
+                        textAnnotation.Text = newText;
+                    }
+                    break;
+            }
+
+            Model.InvalidatePlot(false);
+        }
+
+        /// <summary>
+        /// Removes the edit text box from the overlay canvas.
+        /// </summary>
+        private void RemoveEditTextBox()
+        {
+            if (_textBox != null)
+            {
+                _textBox.PreviewKeyDown -= EditTextBox_PreviewKeyDown;
+                _textBox.LostFocus -= EditTextBox_LostFocus;
+                _overlayCanvas.Children.Remove(_textBox);
+                _textBox = null;
+            }
+            _editTarget = EditTextTarget.None;
+            _editTargetObject = null;
         }
 
         #endregion
