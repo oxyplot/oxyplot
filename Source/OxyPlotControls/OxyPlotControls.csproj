@@ -19,18 +19,8 @@
   </ItemGroup>
 
   <!-- GenericControls reference for net9.0 -->
-  <ItemGroup>
-    <Reference Include="GenericControls">
-      <HintPath>..\..\genericcontrols\GenericControls\bin\Debug\net9.0-windows\GenericControls.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 
   <!-- DatabaseManager reference for net9.0 -->
-  <ItemGroup>
-    <Reference Include="DatabaseManager">
-      <HintPath>..\..\database-management\DatabaseManager\bin\Debug\net9.0\DatabaseManager.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 
   <!-- Resource files -->
   <ItemGroup>
@@ -43,5 +33,13 @@
   <ItemGroup>
     <Page Include="Expander\ExpanderStyle.xaml" />
     <Page Include="Resources\IconResources.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="DatabaseManager">
+      <HintPath>..\..\..\database-management\DatabaseManager\bin\Debug\net9.0\DatabaseManager.dll</HintPath>
+    </Reference>
+    <Reference Include="GenericControls">
+      <HintPath>..\..\..\wpf-framework\src\GenericControls\bin\Debug\net9.0-windows\GenericControls.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

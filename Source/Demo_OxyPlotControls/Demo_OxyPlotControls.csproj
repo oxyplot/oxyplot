@@ -18,21 +18,19 @@
   </ItemGroup>
 
   <!-- GenericControls reference for net9.0 -->
-  <ItemGroup>
-    <Reference Include="GenericControls">
-      <HintPath>..\..\genericcontrols\GenericControls\bin\Debug\net9.0-windows\GenericControls.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 
   <!-- Numerics reference for net9.0 -->
-  <ItemGroup>
-    <Reference Include="Numerics">
-      <HintPath>..\..\numerics\Numerics\bin\Debug\net9.0\Numerics.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 
   <!-- Embedded resources -->
   <ItemGroup>
     <EmbeddedResource Include="USGS_01134500.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="DatabaseManager">
+      <HintPath>..\..\..\database-management\DatabaseManager\bin\Debug\net9.0\DatabaseManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Numerics">
+      <HintPath>..\..\..\numerics\Numerics\bin\Debug\net9.0\Numerics.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
