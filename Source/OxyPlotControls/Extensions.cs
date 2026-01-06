@@ -440,19 +440,19 @@ namespace OxyPlotControls
                 ScatterSeries => "Scatter",
                 AreaSeries => "Area",
                 BarSeries => "Bar",
-                ColumnSeries => "Column",
                 BoxPlotSeries => "Box Plot",
                 PieSeries => "Pie",
                 StemSeries => "Stem",
                 StairStepSeries => "Stair Step",
                 TwoColorLineSeries => "Two Color Line",
                 TwoColorAreaSeries => "Two Color Area",
-                LinearBarSeries => "Linear Bar",
+                LinearBarSeries => "Column",  // LinearBarSeries is the modern equivalent of ColumnSeries
                 RectangleBarSeries => "Rectangle Bar",
                 CandleStickSeries => "Candle Stick",
                 HighLowSeries => "High Low",
                 ContourSeries => "Contour",
                 HeatMapSeries => "Heat Map",
+                HistogramSeries => "Histogram",
                 ScatterErrorSeries => "Scatter Error",
                 _ => series.GetType().Name
             };

@@ -333,7 +333,7 @@ namespace OxyPlotControls
         {
             typeof(OxyPlot.Series.HistogramSeries),
             typeof(OxyPlot.Series.BarSeries),
-            typeof(OxyPlot.Series.ColumnSeries),
+            typeof(OxyPlot.Series.LinearBarSeries),
             typeof(OxyPlot.Series.HeatMapSeries)
         };
 

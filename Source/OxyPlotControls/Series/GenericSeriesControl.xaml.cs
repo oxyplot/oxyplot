@@ -283,13 +283,17 @@ namespace OxyPlotControls
                 seriesElement.Add(barElement);
             }
 
-            // Serialize column series properties
-            var columnSeries = series as OxyPlot.Series.ColumnSeries;
-            if (columnSeries != null)
+            // Serialize linear bar series properties (modern equivalent of ColumnSeries)
+            var linearBarSeries = series as OxyPlot.Series.LinearBarSeries;
+            if (linearBarSeries != null)
             {
-                var columnElement = new XElement(nameof(OxyPlot.Series.ColumnSeries));
-                columnElement.SetAttributeValue(nameof(columnSeries.ColumnWidth), columnSeries.ColumnWidth.ToString("G17", CultureInfo.InvariantCulture));
-                seriesElement.Add(columnElement);
+                var linearBarElement = new XElement(nameof(OxyPlot.Series.LinearBarSeries));
+                linearBarElement.SetAttributeValue(nameof(linearBarSeries.BarWidth), linearBarSeries.BarWidth.ToString("G17", CultureInfo.InvariantCulture));
+                linearBarElement.SetAttributeValue(nameof(linearBarSeries.FillColor), OxyPlotSettingsSerializer.OxyColorToString(linearBarSeries.FillColor));
+                linearBarElement.SetAttributeValue(nameof(linearBarSeries.NegativeFillColor), OxyPlotSettingsSerializer.OxyColorToString(linearBarSeries.NegativeFillColor));
+                linearBarElement.SetAttributeValue(nameof(linearBarSeries.StrokeColor), OxyPlotSettingsSerializer.OxyColorToString(linearBarSeries.StrokeColor));
+                linearBarElement.SetAttributeValue(nameof(linearBarSeries.StrokeThickness), linearBarSeries.StrokeThickness.ToString("G17", CultureInfo.InvariantCulture));
+                seriesElement.Add(linearBarElement);
             }
 
             // Serialize histogram series properties
@@ -459,9 +463,10 @@ namespace OxyPlotControls
             else if (seriesType == typeof(OxyPlot.Series.LineSeries).ToString() ||
                      seriesType == "OxyPlot.Wpf.LineSeries")
                 series = new OxyPlot.Series.LineSeries();
-            else if (seriesType == typeof(OxyPlot.Series.ColumnSeries).ToString() ||
-                     seriesType == "OxyPlot.Wpf.ColumnSeries")
-                series = new OxyPlot.Series.ColumnSeries();
+            else if (seriesType == typeof(OxyPlot.Series.LinearBarSeries).ToString() ||
+                     seriesType == "OxyPlot.Wpf.ColumnSeries" ||  // V1 backward compatibility
+                     seriesType == "OxyPlot.Series.ColumnSeries")  // Legacy reference compatibility
+                series = new OxyPlot.Series.LinearBarSeries();
             else if (seriesType == typeof(OxyPlot.Series.BarSeries).ToString() ||
                      seriesType == "OxyPlot.Wpf.BarSeries")
                 series = new OxyPlot.Series.BarSeries();
@@ -576,12 +581,29 @@ namespace OxyPlotControls
                 if (GetDoubleAttribute(barSeriesElement, nameof(barSeries.BarWidth), out var barWidth)) barSeries.BarWidth = barWidth;
             }
 
-            // Deserialize column properties
-            var columnSeries = series as OxyPlot.Series.ColumnSeries;
-            if (columnSeries != null)
+            // Deserialize linear bar series properties (modern equivalent of ColumnSeries)
+            var linearBarSeries = series as OxyPlot.Series.LinearBarSeries;
+            if (linearBarSeries != null)
             {
-                var columnSeriesElement = element.Element(nameof(OxyPlot.Series.ColumnSeries));
-                if (GetDoubleAttribute(columnSeriesElement, nameof(columnSeries.ColumnWidth), out var columnWidth)) columnSeries.ColumnWidth = columnWidth;
+                // Try both new and legacy element names for backward compatibility
+                var linearBarElement = element.Element(nameof(OxyPlot.Series.LinearBarSeries))
+                    ?? element.Element("ColumnSeries");
+                if (linearBarElement != null)
+                {
+                    // Try BarWidth (modern) and ColumnWidth (legacy) attribute names
+                    if (GetDoubleAttribute(linearBarElement, nameof(linearBarSeries.BarWidth), out var barWidth))
+                        linearBarSeries.BarWidth = barWidth;
+                    else if (GetDoubleAttribute(linearBarElement, "ColumnWidth", out var columnWidth))
+                        linearBarSeries.BarWidth = columnWidth;
+                    if (GetColorAttribute(linearBarElement, nameof(linearBarSeries.FillColor), out var fillColor))
+                        linearBarSeries.FillColor = fillColor;
+                    if (GetColorAttribute(linearBarElement, nameof(linearBarSeries.NegativeFillColor), out var negFillColor))
+                        linearBarSeries.NegativeFillColor = negFillColor;
+                    if (GetColorAttribute(linearBarElement, nameof(linearBarSeries.StrokeColor), out var strokeColor))
+                        linearBarSeries.StrokeColor = strokeColor;
+                    if (GetDoubleAttribute(linearBarElement, nameof(linearBarSeries.StrokeThickness), out var strokeThickness))
+                        linearBarSeries.StrokeThickness = strokeThickness;
+                }
             }
 
             // Deserialize histogram series properties
