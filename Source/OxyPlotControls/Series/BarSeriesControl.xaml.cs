@@ -32,16 +32,16 @@ namespace OxyPlotControls
         /// </summary>
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
             nameof(Series),
-            typeof(BarSeriesBase),
+            typeof(BarSeries),
             typeof(BarSeriesControl),
             new PropertyMetadata(null, OnSeriesChanged));
 
         /// <summary>
         /// Gets or sets the bar series whose properties are being edited.
         /// </summary>
-        public BarSeriesBase? Series
+        public BarSeries? Series
         {
-            get => (BarSeriesBase?)GetValue(SeriesProperty);
+            get => (BarSeries?)GetValue(SeriesProperty);
             set => SetValue(SeriesProperty, value);
         }
 
@@ -214,7 +214,7 @@ namespace OxyPlotControls
     /// </summary>
     public class BarSeriesFillConverter : IMultiValueConverter
     {
-        private BarSeriesBase? _series;
+        private BarSeries? _series;
 
         /// <summary>
         /// Converts a fill color and series to a SolidColorBrush.
@@ -229,7 +229,7 @@ namespace OxyPlotControls
 
             // Get Series directly (core type)
             if (values[1] == null) return new SolidColorBrush(c);
-            _series = values[1] as BarSeriesBase;
+            _series = values[1] as BarSeries;
             if (_series == null) return new SolidColorBrush(c);
 
             // Convert
