@@ -5,6 +5,7 @@
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <LangVersion>12.0</LangVersion>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>OxyPlotControls</RootNamespace>
