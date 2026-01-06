@@ -112,7 +112,7 @@ namespace OxyPlotControls
             if (series == null) return;
 
             // Bar/Column
-            if (series is BarSeriesBase barSeries)
+            if (series is BarSeries barSeries)
             {
                 if (thisControl._barControl == null)
                     thisControl._barControl = new BarSeriesControl { ExpanderStyle = thisControl.ExpanderStyle };
