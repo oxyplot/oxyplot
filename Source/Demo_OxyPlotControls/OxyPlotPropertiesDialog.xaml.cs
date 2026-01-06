@@ -9,10 +9,10 @@ namespace Demo_OxyPlotControls
     /// </summary>
     public partial class OxyPlotPropertiesDialog : Window
     {
-        public OxyPlotPropertiesDialog(Plot plot)
+        public OxyPlotPropertiesDialog(PlotView plotView)
         {
             InitializeComponent();
-            PropertiesControl.Plot = plot;
+            PropertiesControl.PlotModel = plotView.Model;
         }
 
         private void OxyPlotPropertiesDialog_Closing(object sender, CancelEventArgs e)

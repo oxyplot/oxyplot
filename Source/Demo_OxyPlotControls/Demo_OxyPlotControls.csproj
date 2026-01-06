@@ -9,6 +9,7 @@
     <RootNamespace>Demo_OxyPlotControls</RootNamespace>
     <AssemblyName>Demo_OxyPlotControls</AssemblyName>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
