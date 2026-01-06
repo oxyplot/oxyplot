@@ -289,12 +289,12 @@ namespace OxyPlotControls
             AddHorizontalLineAnnotation
         }
 
-        // Custom Cursors
-        private Cursor _movePointsCursor;
-        private Cursor _addPointCursor;
-        private Cursor _panHandCursor;
-        private Cursor _panHandClosedCursor;
-        private Cursor _zoomCursor;
+        // Custom Cursors (initialized in constructor)
+        private Cursor _movePointsCursor = null!;
+        private Cursor _addPointCursor = null!;
+        private Cursor _panHandCursor = null!;
+        private Cursor _panHandClosedCursor = null!;
+        private Cursor _zoomCursor = null!;
 
         // Edit Annotation variables
         private bool _doubleClicked = false;
@@ -313,7 +313,7 @@ namespace OxyPlotControls
 
         // Adding Annotations
         private AddToolMode _addAnnotationToolMode = AddToolMode.None;
-        private OxyPlot.Annotations.Annotation _targetAddAnnotation = null;
+        private OxyPlot.Annotations.Annotation? _targetAddAnnotation = null;
 
         /// <summary>
         /// Delegate for the PropertiesCalled event.
@@ -327,7 +327,7 @@ namespace OxyPlotControls
         /// <summary>
         /// Event indicating the plot properties need to be opened.
         /// </summary>
-        public event PropertiesCalledEventHandler PropertiesCalled;
+        public event PropertiesCalledEventHandler? PropertiesCalled;
 
         // Non-swappable series types
         private static readonly HashSet<Type> _nonSwapSeriesTypes = new HashSet<Type>
