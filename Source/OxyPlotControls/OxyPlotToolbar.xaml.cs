@@ -2271,7 +2271,7 @@ namespace OxyPlotControls
         /// <summary>
         /// Save plot image.
         /// </summary>
-        private void SavePlotImageButton_Click(object sender, RoutedEventArgs e)
+        private void SaveImageButton_Click(object sender, RoutedEventArgs e)
         {
             if (PlotView == null) return;
             var saveDialog = new SavePlotImageDialog(PlotView);
