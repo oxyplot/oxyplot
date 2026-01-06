@@ -82,28 +82,33 @@ namespace OxyPlotControls
             thisControl.SeriesGrid.Children.Clear();
             if (thisControl._genericControl != null)
             {
-                thisControl._genericControl.Series = null;
-                thisControl._genericControl.ExpanderStyle = thisControl.ExpanderStyle;
+                thisControl._genericControl.Series = null!;
+                if (thisControl.ExpanderStyle != null)
+                    thisControl._genericControl.ExpanderStyle = thisControl.ExpanderStyle;
             }
             if (thisControl._scatterControl != null)
             {
-                thisControl._scatterControl.Series = null;
-                thisControl._scatterControl.ExpanderStyle = thisControl.ExpanderStyle;
+                thisControl._scatterControl.Series = null!;
+                if (thisControl.ExpanderStyle != null)
+                    thisControl._scatterControl.ExpanderStyle = thisControl.ExpanderStyle;
             }
             if (thisControl._lineControl != null)
             {
-                thisControl._lineControl.Series = null;
-                thisControl._lineControl.ExpanderStyle = thisControl.ExpanderStyle;
+                thisControl._lineControl.Series = null!;
+                if (thisControl.ExpanderStyle != null)
+                    thisControl._lineControl.ExpanderStyle = thisControl.ExpanderStyle;
             }
             if (thisControl._boxPlotControl != null)
             {
-                thisControl._boxPlotControl.Series = null;
-                thisControl._boxPlotControl.ExpanderStyle = thisControl.ExpanderStyle;
+                thisControl._boxPlotControl.Series = null!;
+                if (thisControl.ExpanderStyle != null)
+                    thisControl._boxPlotControl.ExpanderStyle = thisControl.ExpanderStyle;
             }
             if (thisControl._barControl != null)
             {
-                thisControl._barControl.Series = null;
-                thisControl._barControl.ExpanderStyle = thisControl.ExpanderStyle;
+                thisControl._barControl.Series = null!;
+                if (thisControl.ExpanderStyle != null)
+                    thisControl._barControl.ExpanderStyle = thisControl.ExpanderStyle;
             }
 
             // Get the new series
@@ -115,7 +120,11 @@ namespace OxyPlotControls
             if (series is BarSeries barSeries)
             {
                 if (thisControl._barControl == null)
-                    thisControl._barControl = new BarSeriesControl { ExpanderStyle = thisControl.ExpanderStyle };
+                {
+                    thisControl._barControl = new BarSeriesControl();
+                    if (thisControl.ExpanderStyle != null)
+                        thisControl._barControl.ExpanderStyle = thisControl.ExpanderStyle;
+                }
                 thisControl._barControl.Series = barSeries;
                 thisControl.SeriesGrid.Children.Add(thisControl._barControl);
                 return;
@@ -125,7 +134,11 @@ namespace OxyPlotControls
             if (series is LineSeries lineSeries)
             {
                 if (thisControl._lineControl == null)
-                    thisControl._lineControl = new LineSeriesControl { ExpanderStyle = thisControl.ExpanderStyle };
+                {
+                    thisControl._lineControl = new LineSeriesControl();
+                    if (thisControl.ExpanderStyle != null)
+                        thisControl._lineControl.ExpanderStyle = thisControl.ExpanderStyle;
+                }
                 thisControl._lineControl.Series = lineSeries;
                 thisControl.SeriesGrid.Children.Add(thisControl._lineControl);
                 return;
@@ -135,7 +148,11 @@ namespace OxyPlotControls
             if (series is ScatterSeries scatterSeries)
             {
                 if (thisControl._scatterControl == null)
-                    thisControl._scatterControl = new ScatterSeriesControl { ExpanderStyle = thisControl.ExpanderStyle };
+                {
+                    thisControl._scatterControl = new ScatterSeriesControl();
+                    if (thisControl.ExpanderStyle != null)
+                        thisControl._scatterControl.ExpanderStyle = thisControl.ExpanderStyle;
+                }
                 thisControl._scatterControl.Series = scatterSeries;
                 thisControl.SeriesGrid.Children.Add(thisControl._scatterControl);
                 return;
@@ -145,7 +162,11 @@ namespace OxyPlotControls
             if (series is BoxPlotSeries boxPlotSeries)
             {
                 if (thisControl._boxPlotControl == null)
-                    thisControl._boxPlotControl = new BoxPlotSeriesControl { ExpanderStyle = thisControl.ExpanderStyle };
+                {
+                    thisControl._boxPlotControl = new BoxPlotSeriesControl();
+                    if (thisControl.ExpanderStyle != null)
+                        thisControl._boxPlotControl.ExpanderStyle = thisControl.ExpanderStyle;
+                }
                 thisControl._boxPlotControl.Series = boxPlotSeries;
                 thisControl.SeriesGrid.Children.Add(thisControl._boxPlotControl);
                 return;
@@ -153,7 +174,11 @@ namespace OxyPlotControls
 
             // Generic fallback
             if (thisControl._genericControl == null)
-                thisControl._genericControl = new GenericSeriesControl { ExpanderStyle = thisControl.ExpanderStyle };
+            {
+                thisControl._genericControl = new GenericSeriesControl();
+                if (thisControl.ExpanderStyle != null)
+                    thisControl._genericControl.ExpanderStyle = thisControl.ExpanderStyle;
+            }
             thisControl._genericControl.Series = series;
             thisControl.SeriesGrid.Children.Add(thisControl._genericControl);
         }
@@ -167,16 +192,19 @@ namespace OxyPlotControls
             if (d.GetType() != typeof(SeriesControl)) return;
             var thisControl = (SeriesControl)d;
 
-            if (thisControl._genericControl != null)
-                thisControl._genericControl.ExpanderStyle = thisControl.ExpanderStyle;
-            if (thisControl._scatterControl != null)
-                thisControl._scatterControl.ExpanderStyle = thisControl.ExpanderStyle;
-            if (thisControl._lineControl != null)
-                thisControl._lineControl.ExpanderStyle = thisControl.ExpanderStyle;
-            if (thisControl._boxPlotControl != null)
-                thisControl._boxPlotControl.ExpanderStyle = thisControl.ExpanderStyle;
-            if (thisControl._barControl != null)
-                thisControl._barControl.ExpanderStyle = thisControl.ExpanderStyle;
+            if (thisControl.ExpanderStyle != null)
+            {
+                if (thisControl._genericControl != null)
+                    thisControl._genericControl.ExpanderStyle = thisControl.ExpanderStyle;
+                if (thisControl._scatterControl != null)
+                    thisControl._scatterControl.ExpanderStyle = thisControl.ExpanderStyle;
+                if (thisControl._lineControl != null)
+                    thisControl._lineControl.ExpanderStyle = thisControl.ExpanderStyle;
+                if (thisControl._boxPlotControl != null)
+                    thisControl._boxPlotControl.ExpanderStyle = thisControl.ExpanderStyle;
+                if (thisControl._barControl != null)
+                    thisControl._barControl.ExpanderStyle = thisControl.ExpanderStyle;
+            }
         }
 
         /// <summary>

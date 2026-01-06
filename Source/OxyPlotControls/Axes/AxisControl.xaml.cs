@@ -467,7 +467,7 @@ namespace OxyPlotControls
             }
             else if (axisType == typeof(LogarithmicAxis))
             {
-                var logAxis = axis as LogarithmicAxis;
+                var logAxis = (LogarithmicAxis)axis;
                 var logAxisProperties = new XElement("LogarithmicAxis");
                 logAxisProperties.SetAttributeValue(nameof(logAxis.Base), logAxis.Base.ToString("G17", CultureInfo.InvariantCulture));
                 logAxisProperties.SetAttributeValue(nameof(logAxis.PowerPadding), logAxis.PowerPadding.ToString());
@@ -1110,7 +1110,7 @@ namespace OxyPlotControls
         /// </summary>
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            if (_axis == null) return new object[] { 0.0, 1.0, null };
+            if (_axis == null) return new object[] { 0.0, 1.0, DependencyProperty.UnsetValue };
 
             bool result;
             bool.TryParse(value.ToString(), out result);
@@ -1151,11 +1151,7 @@ namespace OxyPlotControls
             }
             else
             {
-                dashArray = lineStyle.GetDashArray();
-                if (dashArray == null)
-                {
-                    dashArray = new double[] { 0 };
-                }
+                dashArray = lineStyle.GetDashArray() ?? new double[] { 0 };
             }
 
             // Find matching instance from LineStyleOptions for proper ComboBox selection

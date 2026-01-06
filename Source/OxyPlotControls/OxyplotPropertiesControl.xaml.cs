@@ -58,7 +58,7 @@ namespace OxyPlotControls
         /// <summary>
         /// Occurs when the close properties button is clicked.
         /// </summary>
-        public event Action<OxyPlotPropertiesControl> ClosePropertiesCalled;
+        public event Action<OxyPlotPropertiesControl>? ClosePropertiesCalled;
 
         private void SetDefaultStyles()
         {
@@ -165,7 +165,7 @@ namespace OxyPlotControls
 
             // Re-trigger the selection change now that bindings are ready
             // (the initial SelectionChanged fired during InitializeComponent was skipped)
-            PropertyControlComboBox_SelectionChanged(PropertyControlComboBox, null);
+            PropertyControlComboBox_SelectionChanged(PropertyControlComboBox, null!);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace OxyPlotControls
 
         private string ToEnumName<T>(int value) where T : struct
         {
-            return ((T)(object)value).ToString();
+            return ((T)(object)value).ToString() ?? string.Empty;
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace OxyPlotControls
         /// </summary>
         /// <param name="prop">The property section to expand.</param>
         /// <param name="selectedObject">Optional object to select within the property section.</param>
-        public void ExpandProperty(PropertyEXP prop, object selectedObject = null)
+        public void ExpandProperty(PropertyEXP prop, object? selectedObject = null)
         {
             string str = ToEnumName<PropertyEXP>((int)prop);
 
