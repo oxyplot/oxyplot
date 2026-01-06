@@ -684,6 +684,7 @@ namespace OxyPlotControls
             arrow.MouseUp += (s, ae) =>
             {
                 arrow.Color = _originalColor;
+                Model?.InvalidatePlot(false);
             };
         }
 
@@ -722,6 +723,7 @@ namespace OxyPlotControls
             text.MouseUp += (s, ae) =>
             {
                 text.Background = _originalColor;
+                Model?.InvalidatePlot(false);
             };
         }
 
@@ -788,6 +790,7 @@ namespace OxyPlotControls
             rect.MouseUp += (s, ae) =>
             {
                 rect.Fill = _originalColor;
+                Model?.InvalidatePlot(false);
             };
         }
 
@@ -851,6 +854,7 @@ namespace OxyPlotControls
             ellipse.MouseUp += (s, ae) =>
             {
                 ellipse.Fill = _originalColor;
+                Model?.InvalidatePlot(false);
             };
         }
 
@@ -893,6 +897,7 @@ namespace OxyPlotControls
             point.MouseUp += (s, ae) =>
             {
                 point.Fill = _originalColor;
+                Model?.InvalidatePlot(false);
             };
         }
 
@@ -989,6 +994,7 @@ namespace OxyPlotControls
             polygon.MouseUp += (s, ae) =>
             {
                 polygon.Fill = _originalColor;
+                Model?.InvalidatePlot(false);
             };
         }
 
@@ -1071,6 +1077,7 @@ namespace OxyPlotControls
             polyline.MouseUp += (s, ae) =>
             {
                 polyline.Color = _originalColor;
+                Model?.InvalidatePlot(false);
             };
         }
 
@@ -1134,6 +1141,7 @@ namespace OxyPlotControls
             {
                 line.Color = _originalColor;
                 CloseLineAnnotationTooltip(line);
+                Model?.InvalidatePlot(false);
             };
         }
 
@@ -1298,7 +1306,7 @@ namespace OxyPlotControls
                     newArrow.StartPoint = ConvertScreenPointToDataPoint(e.Position);
                     newArrow.EndPoint = newArrow.StartPoint;
                     Model.Annotations.Add(newArrow);
-                    SetupAnnotationHandlers(newArrow);
+                    // Note: SetupAnnotationHandlers called via CollectionChanged event
                     Model.InvalidatePlot(false);
                     PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newArrow);
                     _targetAddAnnotation = newArrow;
@@ -1308,7 +1316,7 @@ namespace OxyPlotControls
                     var newText = new TextAnnotation { Text = "Text Annotation" };
                     newText.TextPosition = ConvertScreenPointToDataPoint(e.Position);
                     Model.Annotations.Add(newText);
-                    SetupAnnotationHandlers(newText);
+                    // Note: SetupAnnotationHandlers called via CollectionChanged event
                     Model.InvalidatePlot(false);
                     PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newText);
                     _targetAddAnnotation = newText;
@@ -1320,7 +1328,7 @@ namespace OxyPlotControls
                     newVLine.X = vDataPoint.X;
                     newVLine.Y = vDataPoint.Y;
                     Model.Annotations.Add(newVLine);
-                    SetupAnnotationHandlers(newVLine);
+                    // Note: SetupAnnotationHandlers called via CollectionChanged event
                     Model.InvalidatePlot(false);
                     PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newVLine);
                     OpenLineAnnotationTooltip(newVLine);
@@ -1334,7 +1342,7 @@ namespace OxyPlotControls
                     newHLine.X = hDataPoint.X;
                     newHLine.Y = hDataPoint.Y;
                     Model.Annotations.Add(newHLine);
-                    SetupAnnotationHandlers(newHLine);
+                    // Note: SetupAnnotationHandlers called via CollectionChanged event
                     Model.InvalidatePlot(false);
                     PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newHLine);
                     OpenLineAnnotationTooltip(newHLine);
@@ -1350,7 +1358,7 @@ namespace OxyPlotControls
                     newRectangle.MinimumY = rectDataPoint.Y;
                     newRectangle.MaximumY = rectDataPoint.Y;
                     Model.Annotations.Add(newRectangle);
-                    SetupAnnotationHandlers(newRectangle);
+                    // Note: SetupAnnotationHandlers called via CollectionChanged event
                     Model.InvalidatePlot(false);
                     PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newRectangle);
                     _targetAddAnnotation = newRectangle;
@@ -1364,7 +1372,7 @@ namespace OxyPlotControls
                     newEllipse.Width = 0;
                     newEllipse.Height = 0;
                     Model.Annotations.Add(newEllipse);
-                    SetupAnnotationHandlers(newEllipse);
+                    // Note: SetupAnnotationHandlers called via CollectionChanged event
                     Model.InvalidatePlot(false);
                     PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newEllipse);
                     _targetAddAnnotation = newEllipse;
@@ -1376,7 +1384,7 @@ namespace OxyPlotControls
                     newPoint.X = pointDataPoint.X;
                     newPoint.Y = pointDataPoint.Y;
                     Model.Annotations.Add(newPoint);
-                    SetupAnnotationHandlers(newPoint);
+                    // Note: SetupAnnotationHandlers called via CollectionChanged event
                     Model.InvalidatePlot(false);
                     PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newPoint);
                     _targetAddAnnotation = newPoint;
@@ -1399,7 +1407,7 @@ namespace OxyPlotControls
                         if (polyAnnotation.Points.Count == 3)
                         {
                             Model.Annotations.Add(polyAnnotation);
-                            SetupAnnotationHandlers(polyAnnotation);
+                            // Note: SetupAnnotationHandlers called via CollectionChanged event
                             PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, polyAnnotation);
                         }
                         if (e.ClickCount < 2)
@@ -1416,7 +1424,7 @@ namespace OxyPlotControls
                         var newPolyline = new PolylineAnnotation { Text = "Polyline Annotation" };
                         // Note: Points is read-only in modern OxyPlot, no need to initialize - it's already an empty list
                         Model.Annotations.Add(newPolyline);
-                        SetupAnnotationHandlers(newPolyline);
+                        // Note: SetupAnnotationHandlers called via CollectionChanged event
                         PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, newPolyline);
                         var dataPointClicked = ConvertScreenPointToDataPoint(e.Position);
                         newPolyline.Points.Add(dataPointClicked);
