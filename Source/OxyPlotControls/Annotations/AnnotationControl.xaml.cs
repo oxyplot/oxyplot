@@ -302,7 +302,6 @@ namespace OxyPlotControls
                     pathProperties.SetAttributeValue(nameof(pathAnnotation.Color), pathAnnotation.Color.ToByteString());
                     pathProperties.SetAttributeValue(nameof(pathAnnotation.ClipByXAxis), pathAnnotation.ClipByXAxis.ToString());
                     pathProperties.SetAttributeValue(nameof(pathAnnotation.ClipByYAxis), pathAnnotation.ClipByYAxis.ToString());
-                    pathProperties.SetAttributeValue(nameof(pathAnnotation.ClipText), pathAnnotation.ClipText.ToString());
                     pathProperties.SetAttributeValue(nameof(pathAnnotation.LineJoin), pathAnnotation.LineJoin.ToString());
                     pathProperties.SetAttributeValue(nameof(pathAnnotation.LineStyle), pathAnnotation.LineStyle.ToString());
                     pathProperties.SetAttributeValue(nameof(pathAnnotation.StrokeThickness), pathAnnotation.StrokeThickness.ToString("G17", CultureInfo.InvariantCulture));
@@ -404,9 +403,9 @@ namespace OxyPlotControls
                 if (GetFontWeightAsDoubleAttribute(textualElement, nameof(annotation.FontWeight), out var fontWeightVal)) annotation.FontWeight = fontWeightVal;
                 if (GetDataPointAttribute(textualElement, nameof(annotation.TextPosition), out var textPosition)) annotation.TextPosition = textPosition;
                 if (GetDoubleAttribute(textualElement, nameof(annotation.TextRotation), out var textRotation)) annotation.TextRotation = textRotation;
-                if (GetEnumAttribute(textualElement, nameof(annotation.TextHorizontalAlignment), out HorizontalAlignment hAlign))
+                if (GetEnumAttribute(textualElement, nameof(annotation.TextHorizontalAlignment), out OxyPlot.HorizontalAlignment hAlign))
                     annotation.TextHorizontalAlignment = hAlign;
-                if (GetEnumAttribute(textualElement, nameof(annotation.TextVerticalAlignment), out VerticalAlignment vAlign))
+                if (GetEnumAttribute(textualElement, nameof(annotation.TextVerticalAlignment), out OxyPlot.VerticalAlignment vAlign))
                     annotation.TextVerticalAlignment = vAlign;
 
                 // Backwards Compatibility
@@ -524,11 +523,21 @@ namespace OxyPlotControls
                             if (GetEnumAttribute(polygonElement, nameof(polygonAnnotation.LineJoin), out LineJoin lineJoin)) polygonAnnotation.LineJoin = lineJoin;
                             if (GetEnumAttribute(polygonElement, nameof(polygonAnnotation.LineStyle), out LineStyle lineStyle)) polygonAnnotation.LineStyle = lineStyle;
                             var polyPointsElement = polygonElement.Element(nameof(polygonAnnotation.Points));
-                            if (polyPointsElement != null) polygonAnnotation.Points = polyPointsElement.PointsFromXElement();
+                            if (polyPointsElement != null)
+                            {
+                                polygonAnnotation.Points.Clear();
+                                foreach (var pt in polyPointsElement.PointsFromXElement())
+                                    polygonAnnotation.Points.Add(pt);
+                            }
 
                             // Backwards compatibility
                             polyPointsElement = polygonElement.Element("DataPoints");
-                            if (polyPointsElement != null) polygonAnnotation.Points = polyPointsElement.PointsFromXElement();
+                            if (polyPointsElement != null)
+                            {
+                                polygonAnnotation.Points.Clear();
+                                foreach (var pt in polyPointsElement.PointsFromXElement())
+                                    polygonAnnotation.Points.Add(pt);
+                            }
                         }
                     }
                 }
@@ -544,7 +553,7 @@ namespace OxyPlotControls
                         if (GetOxyColorAttribute(pathElement, nameof(pathAnnotation.Color), out var color)) pathAnnotation.Color = color;
                         if (GetBooleanAttribute(pathElement, nameof(pathAnnotation.ClipByXAxis), out var clipByXAxis)) pathAnnotation.ClipByXAxis = clipByXAxis;
                         if (GetBooleanAttribute(pathElement, nameof(pathAnnotation.ClipByYAxis), out var clipByYAxis)) pathAnnotation.ClipByYAxis = clipByYAxis;
-                        if (GetBooleanAttribute(pathElement, nameof(pathAnnotation.ClipText), out var clipText)) pathAnnotation.ClipText = clipText;
+                        // Note: ClipText property was removed from PathAnnotation
                         if (GetEnumAttribute(pathElement, nameof(pathAnnotation.LineJoin), out LineJoin lineJoin)) pathAnnotation.LineJoin = lineJoin;
                         if (GetEnumAttribute(pathElement, nameof(pathAnnotation.LineStyle), out LineStyle lineStyle)) pathAnnotation.LineStyle = lineStyle;
                         if (GetDoubleAttribute(pathElement, nameof(pathAnnotation.StrokeThickness), out var strokeThickness)) pathAnnotation.StrokeThickness = strokeThickness;
@@ -578,11 +587,21 @@ namespace OxyPlotControls
                                 var polylineAnnotation = (PolylineAnnotation)pathAnnotation;
                                 if (GetDoubleAttribute(polylineElement, nameof(polylineAnnotation.MinimumSegmentLength), out var minimumSegmentLength)) polylineAnnotation.MinimumSegmentLength = minimumSegmentLength;
                                 var polyPointsElement = polylineElement.Element(nameof(polylineAnnotation.Points));
-                                if (polyPointsElement != null) polylineAnnotation.Points = polyPointsElement.PointsFromXElement();
+                                if (polyPointsElement != null)
+                                {
+                                    polylineAnnotation.Points.Clear();
+                                    foreach (var pt in polyPointsElement.PointsFromXElement())
+                                        polylineAnnotation.Points.Add(pt);
+                                }
 
                                 // Backwards compatibility
                                 polyPointsElement = polylineElement.Element("DataPoints");
-                                if (polyPointsElement != null) polylineAnnotation.Points = polyPointsElement.PointsFromXElement();
+                                if (polyPointsElement != null)
+                                {
+                                    polylineAnnotation.Points.Clear();
+                                    foreach (var pt in polyPointsElement.PointsFromXElement())
+                                        polylineAnnotation.Points.Add(pt);
+                                }
                             }
                         }
                     }

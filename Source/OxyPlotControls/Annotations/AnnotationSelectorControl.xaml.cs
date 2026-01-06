@@ -222,10 +222,10 @@ namespace OxyPlotControls
                     double centerXShift = Math.Abs((plotUR.X - plotLL.X) * 0.1);
                     double centerYShift = Math.Abs((plotUR.Y - plotLL.Y) * 0.1);
 
-                    newEllipse.MinimumX = plotCenter.X - centerXShift;
-                    newEllipse.MaximumX = plotCenter.X + centerXShift;
-                    newEllipse.MinimumY = plotCenter.Y - centerYShift;
-                    newEllipse.MaximumY = plotCenter.Y + centerYShift;
+                    newEllipse.X = plotCenter.X;
+                    newEllipse.Y = plotCenter.Y;
+                    newEllipse.Width = centerXShift * 2;
+                    newEllipse.Height = centerYShift * 2;
                 };
                 cntrl.Items.Add(addEllipse);
 
@@ -250,7 +250,7 @@ namespace OxyPlotControls
                 var addPolygon = new ComboBoxItem { Content = "Add Polygon Annotation", FontStyle = FontStyles.Italic };
                 addPolygon.PreviewMouseLeftButtonUp += (s, args) =>
                 {
-                    var newPolygon = new PolygonAnnotation { Text = "Polygon Annotation", Points = new System.Collections.Generic.List<DataPoint>() };
+                    var newPolygon = new PolygonAnnotation { Text = "Polygon Annotation" };
                     thisControl.PlotModel.Annotations.Add(newPolygon);
                     thisControl.PlotModel.InvalidatePlot(false);
                     thisControl.AnnotationPropertyControlComboBox.SelectedItem = thisControl.PlotModel.Annotations[thisControl.PlotModel.Annotations.Count - 1];
@@ -275,7 +275,7 @@ namespace OxyPlotControls
                 var addPolyline = new ComboBoxItem { Content = "Add Polyline Annotation", FontStyle = FontStyles.Italic };
                 addPolyline.PreviewMouseLeftButtonUp += (s, args) =>
                 {
-                    var newPolyline = new PolylineAnnotation { Text = "Polyline Annotation", Points = new System.Collections.Generic.List<DataPoint>() };
+                    var newPolyline = new PolylineAnnotation { Text = "Polyline Annotation" };
                     thisControl.PlotModel.Annotations.Add(newPolyline);
                     thisControl.PlotModel.InvalidatePlot(false);
                     thisControl.AnnotationPropertyControlComboBox.SelectedItem = thisControl.PlotModel.Annotations[thisControl.PlotModel.Annotations.Count - 1];
