@@ -340,7 +340,7 @@ namespace OxyPlotControls
         {
             typeof(OxyPlot.Series.HistogramSeries),
             typeof(OxyPlot.Series.BarSeries),
-            typeof(OxyPlot.Series.ColumnSeries),
+            typeof(OxyPlot.Series.LinearBarSeries),
             typeof(OxyPlot.Series.HeatMapSeries)
         };
 
@@ -1896,7 +1896,7 @@ namespace OxyPlotControls
                         {
                             if (leftClickBool)
                             {
-                                PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Annotations_Options, anno);
+                                PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, anno);
                                 CreateEditTBX(txtblock, anno, "Text", textAnno.TextRotation, plotCanvas);
                                 return;
                             }
@@ -1905,13 +1905,13 @@ namespace OxyPlotControls
                                 var editAnnoItem = new MenuItem { Header = "Edit Annotation Text", Icon = CreateMenuIcon("EditTextbox.png") };
                                 editAnnoItem.Click += (s, args) =>
                                 {
-                                    PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Annotations_Options, anno);
+                                    PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, anno);
                                     CreateEditTBX(txtblock, anno, "Text", textAnno.TextRotation, plotCanvas);
                                 };
                                 var formatAnnoItem = new MenuItem { Header = "Format Annotation", Icon = CreateMenuIcon("Format.png") };
                                 formatAnnoItem.Click += (s, args) =>
                                 {
-                                    PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Options, anno);
+                                    PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, anno);
                                 };
                                 _contextMenu.Items.Add(editAnnoItem);
                                 _contextMenu.Items.Add(formatAnnoItem);
@@ -2831,62 +2831,6 @@ namespace OxyPlotControls
                     else
                     {
                         foreach (var seriesItem in barSeries.Items)
-                        {
-                            dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesItem.CategoryIndex, seriesItem.Color.GetColorName(), seriesItem.Value);
-                        }
-                    }
-                }
-                else if (series is OxyPlot.Series.ColumnSeries columnSeries)
-                {
-                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "ColumnSeries_" + tableCount;
-                    foreach (var badChar in badCharacters)
-                    {
-                        seriesName = seriesName.Replace(badChar, "_");
-                    }
-
-                    dataTable.TableName = seriesName;
-                    dataTable.Columns.Add("id", typeof(int));
-                    dataTable.Columns.Add(seriesName + "_categoryIndex", typeof(string));
-                    dataTable.Columns.Add(seriesName + "_color", typeof(string));
-                    dataTable.Columns.Add(seriesName + "_value", typeof(string));
-
-                    if (columnSeries.ItemsSource != null)
-                    {
-                        var datalist = columnSeries.ItemsSource as IEnumerable<OxyPlot.Series.ColumnItem>;
-                        if (datalist != null)
-                        {
-                            foreach (var seriesItem in datalist.ToList())
-                            {
-                                dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesItem.CategoryIndex, seriesItem.Color.GetColorName(), seriesItem.Value);
-                            }
-                        }
-                        else
-                        {
-                            int c = 0;
-                            foreach (var obj in columnSeries.ItemsSource.Cast<object>())
-                            {
-                                string colorVal = "";
-                                if (columnSeries.ColorField != null)
-                                {
-                                    PropertyInfo? propColor = obj.GetType().GetProperty(columnSeries.ColorField);
-                                    colorVal = Convert.ToString(propColor?.GetValue(obj, null)) ?? "";
-                                }
-
-                                string valueVal = "";
-                                if (columnSeries.ValueField != null)
-                                {
-                                    PropertyInfo? propValue = obj.GetType().GetProperty(columnSeries.ValueField);
-                                    valueVal = Convert.ToString(propValue?.GetValue(obj, null)) ?? "";
-                                }
-
-                                dataTable.Rows.Add(dataTable.Rows.Count + 1, c, colorVal, valueVal);
-                                c++;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foreach (var seriesItem in columnSeries.Items)
                         {
                             dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesItem.CategoryIndex, seriesItem.Color.GetColorName(), seriesItem.Value);
                         }
