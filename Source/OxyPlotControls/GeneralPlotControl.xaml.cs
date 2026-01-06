@@ -451,7 +451,7 @@ namespace OxyPlotControls
         /// <param name="parameter">Additional parameter (not used).</param>
         /// <param name="culture">The culture to use for conversion.</param>
         /// <returns>The value cast to SolidColorBrush, or null if the value is null.</returns>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return null;
             return (SolidColorBrush)value;
@@ -465,7 +465,7 @@ namespace OxyPlotControls
         /// <param name="parameter">Additional parameter (not used).</param>
         /// <param name="culture">The culture to use for conversion.</param>
         /// <returns>The value cast to Brush, or null if the value is null.</returns>
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return null;
             return (Brush)value;

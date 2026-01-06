@@ -208,7 +208,7 @@ namespace OxyPlotControls
         /// <summary>
         /// Finds a visual child of a specified type.
         /// </summary>
-        private static T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        private static T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
             {
@@ -351,7 +351,7 @@ namespace OxyPlotControls
         /// <summary>
         /// User clicked the pointer button.
         /// </summary>
-        private void PointerButton_Click(object sender, RoutedEventArgs e)
+        private void PointerButton_Click(object? sender, RoutedEventArgs? e)
         {
             if (PlotView == null) return;
 
@@ -368,7 +368,7 @@ namespace OxyPlotControls
         /// <summary>
         /// User clicked the pan button.
         /// </summary>
-        private void PanButton_Click(object sender, RoutedEventArgs e)
+        private void PanButton_Click(object? sender, RoutedEventArgs? e)
         {
             if (PlotView == null) return;
 

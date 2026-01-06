@@ -425,7 +425,7 @@ namespace OxyPlotControls
         /// <param name="parent">The parent element to search from.</param>
         /// <param name="name">The name of the element to find.</param>
         /// <returns>The found element, or null if not found.</returns>
-        private static T FindElementByName<T>(DependencyObject parent, string name) where T : FrameworkElement
+        private static T? FindElementByName<T>(DependencyObject parent, string name) where T : FrameworkElement
         {
             if (parent == null) return null;
 

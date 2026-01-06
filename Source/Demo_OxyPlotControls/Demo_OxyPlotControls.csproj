@@ -30,6 +30,9 @@
     <Reference Include="DatabaseManager">
       <HintPath>..\..\..\database-management\DatabaseManager\bin\Debug\net9.0\DatabaseManager.dll</HintPath>
     </Reference>
+    <Reference Include="GenericControls">
+      <HintPath>..\..\..\wpf-framework\src\GenericControls\bin\Debug\net9.0-windows\GenericControls.dll</HintPath>
+    </Reference>
     <Reference Include="Numerics">
       <HintPath>..\..\..\numerics\Numerics\bin\Debug\net9.0\Numerics.dll</HintPath>
     </Reference>

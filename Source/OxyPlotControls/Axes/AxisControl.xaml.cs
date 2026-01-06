@@ -502,14 +502,14 @@ namespace OxyPlotControls
         /// <param name="element">The XElement containing the axis properties.</param>
         /// <param name="targetAxis">Optional target axis to apply properties to.</param>
         /// <returns>A new or updated axis with the deserialized properties.</returns>
-        public static Axis XElementToAxisProperties(XElement element, Axis targetAxis = null)
+        public static Axis? XElementToAxisProperties(XElement element, Axis? targetAxis = null)
         {
             if (element.Name != AxisPropertiesTag) return null;
 
             var fontWeightConverter = new FontWeightConverter();
             Axis axis;
             string axisType = "";
-            if (element.Attribute("AxisType") != null) axisType = element.Attribute("AxisType").Value;
+            if (element.Attribute("AxisType") != null) axisType = element.Attribute("AxisType")!.Value;
 
             if (targetAxis != null)
             {
@@ -785,7 +785,7 @@ namespace OxyPlotControls
         /// <param name="fractionUnits">The fraction unit value.</param>
         /// <param name="fractionSymbol">The symbol to use for fractions.</param>
         /// <returns>A new linear axis with properties copied from the source.</returns>
-        public static LinearAxis ConvertAxisToLinearAxis(Axis wpfAxis, bool formatAsFractions = false, double fractionUnits = 1, string fractionSymbol = null)
+        public static LinearAxis ConvertAxisToLinearAxis(Axis wpfAxis, bool formatAsFractions = false, double fractionUnits = 1, string? fractionSymbol = null)
         {
             var newAxis = new LinearAxis
             {
@@ -1137,7 +1137,7 @@ namespace OxyPlotControls
         /// Converts an OxyPlot LineStyle to a WPF DoubleCollection dash array.
         /// Returns the matching instance from LineStyleOptions to ensure proper ComboBox selection.
         /// </summary>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return value;
             if (value.GetType() != typeof(OxyPlot.LineStyle)) return AxisControl.LineStyleOptions?.FirstOrDefault() ?? new DoubleCollection();
@@ -1204,7 +1204,7 @@ namespace OxyPlotControls
         /// <summary>
         /// Converts a value to its string representation.
         /// </summary>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return value;
             return value.ToString();
@@ -1213,7 +1213,7 @@ namespace OxyPlotControls
         /// <summary>
         /// Converts empty strings to null, otherwise returns the value.
         /// </summary>
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return null;
             if (value.ToString() == "") return null;
@@ -1254,7 +1254,7 @@ namespace OxyPlotControls
         /// <summary>
         /// Converts an OxyPlot double date value to a DateTime.
         /// </summary>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null || value.GetType() != typeof(double)) return value;
             return OxyPlot.Axes.DateTimeAxis.ToDateTime((double)value);
@@ -1263,7 +1263,7 @@ namespace OxyPlotControls
         /// <summary>
         /// Converts a DateTime to an OxyPlot double date value.
         /// </summary>
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null || value.GetType() != typeof(DateTime)) return value;
 

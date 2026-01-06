@@ -501,7 +501,7 @@ namespace OxyPlotControls
         /// </summary>
         /// <param name="element">The XElement containing series properties.</param>
         /// <returns>A new series instance with the deserialized properties, or null if the type is not recognized.</returns>
-        public static OxyPlot.Series.Series XElementToSeriesProperties(XElement element)
+        public static OxyPlot.Series.Series? XElementToSeriesProperties(XElement element)
         {
             // Early Exit
             if (element == null) return null;
@@ -936,7 +936,7 @@ namespace OxyPlotControls
         /// <summary>
         /// Converts a color and series to a SolidColorBrush.
         /// </summary>
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             // Get Color
             if (values[0] == null) return null;
@@ -1020,7 +1020,7 @@ namespace OxyPlotControls
         /// <summary>
         /// Converts a marker fill color and series to a SolidColorBrush.
         /// </summary>
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             // Get Color
             if (values[0] == null) return null;
@@ -1091,7 +1091,7 @@ namespace OxyPlotControls
         /// <summary>
         /// Converts a marker stroke color and series to a SolidColorBrush.
         /// </summary>
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             // Get Color
             if (values[0] == null) return null;

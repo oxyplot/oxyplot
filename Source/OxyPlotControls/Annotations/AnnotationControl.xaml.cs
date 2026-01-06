@@ -659,7 +659,7 @@ namespace OxyPlotControls
         /// <summary>
         /// Converts an OxyPlot DataPoint to a WPF Point.
         /// </summary>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return value;
             if (value.GetType() != typeof(DataPoint)) return null;
@@ -670,7 +670,7 @@ namespace OxyPlotControls
         /// <summary>
         /// Converts a WPF Point back to an OxyPlot DataPoint.
         /// </summary>
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return value;
             if (value.GetType() != typeof(System.Windows.Point)) return null;
@@ -687,7 +687,7 @@ namespace OxyPlotControls
         /// <summary>
         /// Converts an OxyPlot ScreenVector to a WPF Point.
         /// </summary>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return value;
             if (value.GetType() != typeof(ScreenVector)) return null;
@@ -698,7 +698,7 @@ namespace OxyPlotControls
         /// <summary>
         /// Converts a WPF Point back to an OxyPlot ScreenVector.
         /// </summary>
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return value;
             if (value.GetType() != typeof(System.Windows.Point)) return null;
