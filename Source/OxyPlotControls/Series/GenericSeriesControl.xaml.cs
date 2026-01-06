@@ -430,6 +430,71 @@ namespace OxyPlotControls
                 seriesElement.Add(heatMapElement);
             }
 
+            // Serialize stair step series properties (extends LineSeries)
+            var stairStepSeries = series as OxyPlot.Series.StairStepSeries;
+            if (stairStepSeries != null)
+            {
+                var stairStepElement = new XElement(nameof(OxyPlot.Series.StairStepSeries));
+                stairStepElement.SetAttributeValue(nameof(stairStepSeries.VerticalStrokeThickness), stairStepSeries.VerticalStrokeThickness.ToString("G17", CultureInfo.InvariantCulture));
+                stairStepElement.SetAttributeValue(nameof(stairStepSeries.VerticalLineStyle), stairStepSeries.VerticalLineStyle);
+                seriesElement.Add(stairStepElement);
+            }
+
+            // Serialize two-color line series properties (extends LineSeries)
+            var twoColorLineSeries = series as OxyPlot.Series.TwoColorLineSeries;
+            if (twoColorLineSeries != null)
+            {
+                var twoColorElement = new XElement(nameof(OxyPlot.Series.TwoColorLineSeries));
+                twoColorElement.SetAttributeValue(nameof(twoColorLineSeries.Color2), OxyPlotSettingsSerializer.OxyColorToString(twoColorLineSeries.Color2));
+                twoColorElement.SetAttributeValue(nameof(twoColorLineSeries.Limit), twoColorLineSeries.Limit.ToString("G17", CultureInfo.InvariantCulture));
+                twoColorElement.SetAttributeValue(nameof(twoColorLineSeries.LineStyle2), twoColorLineSeries.LineStyle2);
+                seriesElement.Add(twoColorElement);
+            }
+
+            // Serialize pie series properties
+            var pieSeries = series as OxyPlot.Series.PieSeries;
+            if (pieSeries != null)
+            {
+                var pieElement = new XElement(nameof(OxyPlot.Series.PieSeries));
+                pieElement.SetAttributeValue(nameof(pieSeries.AngleIncrement), pieSeries.AngleIncrement.ToString("G17", CultureInfo.InvariantCulture));
+                pieElement.SetAttributeValue(nameof(pieSeries.AngleSpan), pieSeries.AngleSpan.ToString("G17", CultureInfo.InvariantCulture));
+                pieElement.SetAttributeValue(nameof(pieSeries.AreInsideLabelsAngled), pieSeries.AreInsideLabelsAngled.ToString());
+                pieElement.SetAttributeValue(nameof(pieSeries.Diameter), pieSeries.Diameter.ToString("G17", CultureInfo.InvariantCulture));
+                pieElement.SetAttributeValue(nameof(pieSeries.ExplodedDistance), pieSeries.ExplodedDistance.ToString("G17", CultureInfo.InvariantCulture));
+                pieElement.SetAttributeValue(nameof(pieSeries.InnerDiameter), pieSeries.InnerDiameter.ToString("G17", CultureInfo.InvariantCulture));
+                pieElement.SetAttributeValue(nameof(pieSeries.InsideLabelColor), OxyPlotSettingsSerializer.OxyColorToString(pieSeries.InsideLabelColor));
+                pieElement.SetAttributeValue(nameof(pieSeries.InsideLabelFormat), pieSeries.InsideLabelFormat);
+                pieElement.SetAttributeValue(nameof(pieSeries.InsideLabelPosition), pieSeries.InsideLabelPosition.ToString("G17", CultureInfo.InvariantCulture));
+                pieElement.SetAttributeValue(nameof(pieSeries.LegendFormat), pieSeries.LegendFormat);
+                pieElement.SetAttributeValue(nameof(pieSeries.OutsideLabelFormat), pieSeries.OutsideLabelFormat);
+                pieElement.SetAttributeValue(nameof(pieSeries.StartAngle), pieSeries.StartAngle.ToString("G17", CultureInfo.InvariantCulture));
+                pieElement.SetAttributeValue(nameof(pieSeries.Stroke), OxyPlotSettingsSerializer.OxyColorToString(pieSeries.Stroke));
+                pieElement.SetAttributeValue(nameof(pieSeries.StrokeThickness), pieSeries.StrokeThickness.ToString("G17", CultureInfo.InvariantCulture));
+                pieElement.SetAttributeValue(nameof(pieSeries.TickDistance), pieSeries.TickDistance.ToString("G17", CultureInfo.InvariantCulture));
+                pieElement.SetAttributeValue(nameof(pieSeries.TickHorizontalLength), pieSeries.TickHorizontalLength.ToString("G17", CultureInfo.InvariantCulture));
+                pieElement.SetAttributeValue(nameof(pieSeries.TickLabelDistance), pieSeries.TickLabelDistance.ToString("G17", CultureInfo.InvariantCulture));
+                pieElement.SetAttributeValue(nameof(pieSeries.TickRadialLength), pieSeries.TickRadialLength.ToString("G17", CultureInfo.InvariantCulture));
+                seriesElement.Add(pieElement);
+            }
+
+            // Serialize contour series properties
+            var contourSeries = series as OxyPlot.Series.ContourSeries;
+            if (contourSeries != null)
+            {
+                var contourElement = new XElement(nameof(OxyPlot.Series.ContourSeries));
+                contourElement.SetAttributeValue(nameof(contourSeries.Color), OxyPlotSettingsSerializer.OxyColorToString(contourSeries.Color));
+                contourElement.SetAttributeValue(nameof(contourSeries.ContourLevelStep), contourSeries.ContourLevelStep.ToString("G17", CultureInfo.InvariantCulture));
+                contourElement.SetAttributeValue(nameof(contourSeries.LabelBackground), OxyPlotSettingsSerializer.OxyColorToString(contourSeries.LabelBackground));
+                contourElement.SetAttributeValue(nameof(contourSeries.LabelFormatString), contourSeries.LabelFormatString);
+                contourElement.SetAttributeValue(nameof(contourSeries.LabelSpacing), contourSeries.LabelSpacing.ToString("G17", CultureInfo.InvariantCulture));
+                contourElement.SetAttributeValue(nameof(contourSeries.LabelStep), contourSeries.LabelStep.ToString(CultureInfo.InvariantCulture));
+                contourElement.SetAttributeValue(nameof(contourSeries.LineStyle), contourSeries.LineStyle);
+                contourElement.SetAttributeValue(nameof(contourSeries.MinimumSegmentLength), contourSeries.MinimumSegmentLength.ToString("G17", CultureInfo.InvariantCulture));
+                contourElement.SetAttributeValue(nameof(contourSeries.MultiLabel), contourSeries.MultiLabel.ToString());
+                contourElement.SetAttributeValue(nameof(contourSeries.StrokeThickness), contourSeries.StrokeThickness.ToString("G17", CultureInfo.InvariantCulture));
+                seriesElement.Add(contourElement);
+            }
+
             return seriesElement;
         }
 
@@ -486,6 +551,18 @@ namespace OxyPlotControls
             else if (seriesType == typeof(OxyPlot.Series.BoxPlotSeries).ToString() ||
                      seriesType == "OxyPlot.Wpf.BoxPlotSeries")
                 series = new OxyPlot.Series.BoxPlotSeries();
+            else if (seriesType == typeof(OxyPlot.Series.StairStepSeries).ToString() ||
+                     seriesType == "OxyPlot.Wpf.StairStepSeries")
+                series = new OxyPlot.Series.StairStepSeries();
+            else if (seriesType == typeof(OxyPlot.Series.TwoColorLineSeries).ToString() ||
+                     seriesType == "OxyPlot.Wpf.TwoColorLineSeries")
+                series = new OxyPlot.Series.TwoColorLineSeries();
+            else if (seriesType == typeof(OxyPlot.Series.PieSeries).ToString() ||
+                     seriesType == "OxyPlot.Wpf.PieSeries")
+                series = new OxyPlot.Series.PieSeries();
+            else if (seriesType == typeof(OxyPlot.Series.ContourSeries).ToString() ||
+                     seriesType == "OxyPlot.Wpf.ContourSeries")
+                series = new OxyPlot.Series.ContourSeries();
             else
                 return null; // not a recognized type
 
@@ -749,6 +826,100 @@ namespace OxyPlotControls
                 // TODO - Deserialize coordinateDefinition value
                 if (GetBooleanAttribute(heatMapSeriesElement, nameof(heatMapSeries.Interpolate), out var interpolate)) heatMapSeries.Interpolate = interpolate;
                 if (GetDoubleAttribute(heatMapSeriesElement, nameof(heatMapSeries.LabelFontSize), out var labelFontSize)) heatMapSeries.LabelFontSize = labelFontSize;
+            }
+
+            // Deserialize stair step series properties (extends LineSeries)
+            var stairStepSeries = series as OxyPlot.Series.StairStepSeries;
+            if (stairStepSeries != null)
+            {
+                var stairStepElement = element.Element(nameof(OxyPlot.Series.StairStepSeries));
+                if (GetDoubleAttribute(stairStepElement, nameof(stairStepSeries.VerticalStrokeThickness), out var verticalStrokeThickness))
+                    stairStepSeries.VerticalStrokeThickness = verticalStrokeThickness;
+                if (GetEnumAttribute(stairStepElement, nameof(stairStepSeries.VerticalLineStyle), out OxyPlot.LineStyle verticalLineStyle))
+                    stairStepSeries.VerticalLineStyle = verticalLineStyle;
+            }
+
+            // Deserialize two-color line series properties (extends LineSeries)
+            var twoColorLineSeries = series as OxyPlot.Series.TwoColorLineSeries;
+            if (twoColorLineSeries != null)
+            {
+                var twoColorElement = element.Element(nameof(OxyPlot.Series.TwoColorLineSeries));
+                if (GetColorAttribute(twoColorElement, nameof(twoColorLineSeries.Color2), out var color2))
+                    twoColorLineSeries.Color2 = color2;
+                if (GetDoubleAttribute(twoColorElement, nameof(twoColorLineSeries.Limit), out var limit))
+                    twoColorLineSeries.Limit = limit;
+                if (GetEnumAttribute(twoColorElement, nameof(twoColorLineSeries.LineStyle2), out OxyPlot.LineStyle lineStyle2))
+                    twoColorLineSeries.LineStyle2 = lineStyle2;
+            }
+
+            // Deserialize pie series properties
+            var pieSeries = series as OxyPlot.Series.PieSeries;
+            if (pieSeries != null)
+            {
+                var pieElement = element.Element(nameof(OxyPlot.Series.PieSeries));
+                if (GetDoubleAttribute(pieElement, nameof(pieSeries.AngleIncrement), out var angleIncrement))
+                    pieSeries.AngleIncrement = angleIncrement;
+                if (GetDoubleAttribute(pieElement, nameof(pieSeries.AngleSpan), out var angleSpan))
+                    pieSeries.AngleSpan = angleSpan;
+                if (GetBooleanAttribute(pieElement, nameof(pieSeries.AreInsideLabelsAngled), out var areInsideLabelsAngled))
+                    pieSeries.AreInsideLabelsAngled = areInsideLabelsAngled;
+                if (GetDoubleAttribute(pieElement, nameof(pieSeries.Diameter), out var diameter))
+                    pieSeries.Diameter = diameter;
+                if (GetDoubleAttribute(pieElement, nameof(pieSeries.ExplodedDistance), out var explodedDistance))
+                    pieSeries.ExplodedDistance = explodedDistance;
+                if (GetDoubleAttribute(pieElement, nameof(pieSeries.InnerDiameter), out var innerDiameter))
+                    pieSeries.InnerDiameter = innerDiameter;
+                if (GetColorAttribute(pieElement, nameof(pieSeries.InsideLabelColor), out var insideLabelColor))
+                    pieSeries.InsideLabelColor = insideLabelColor;
+                if (GetStringAttribute(pieElement, nameof(pieSeries.InsideLabelFormat), out var insideLabelFormat))
+                    pieSeries.InsideLabelFormat = insideLabelFormat;
+                if (GetDoubleAttribute(pieElement, nameof(pieSeries.InsideLabelPosition), out var insideLabelPosition))
+                    pieSeries.InsideLabelPosition = insideLabelPosition;
+                if (GetStringAttribute(pieElement, nameof(pieSeries.LegendFormat), out var legendFormat))
+                    pieSeries.LegendFormat = legendFormat;
+                if (GetStringAttribute(pieElement, nameof(pieSeries.OutsideLabelFormat), out var outsideLabelFormat))
+                    pieSeries.OutsideLabelFormat = outsideLabelFormat;
+                if (GetDoubleAttribute(pieElement, nameof(pieSeries.StartAngle), out var startAngle))
+                    pieSeries.StartAngle = startAngle;
+                if (GetColorAttribute(pieElement, nameof(pieSeries.Stroke), out var pieStroke))
+                    pieSeries.Stroke = pieStroke;
+                if (GetDoubleAttribute(pieElement, nameof(pieSeries.StrokeThickness), out var pieStrokeThickness))
+                    pieSeries.StrokeThickness = pieStrokeThickness;
+                if (GetDoubleAttribute(pieElement, nameof(pieSeries.TickDistance), out var tickDistance))
+                    pieSeries.TickDistance = tickDistance;
+                if (GetDoubleAttribute(pieElement, nameof(pieSeries.TickHorizontalLength), out var tickHorizontalLength))
+                    pieSeries.TickHorizontalLength = tickHorizontalLength;
+                if (GetDoubleAttribute(pieElement, nameof(pieSeries.TickLabelDistance), out var tickLabelDistance))
+                    pieSeries.TickLabelDistance = tickLabelDistance;
+                if (GetDoubleAttribute(pieElement, nameof(pieSeries.TickRadialLength), out var tickRadialLength))
+                    pieSeries.TickRadialLength = tickRadialLength;
+            }
+
+            // Deserialize contour series properties
+            var contourSeries = series as OxyPlot.Series.ContourSeries;
+            if (contourSeries != null)
+            {
+                var contourElement = element.Element(nameof(OxyPlot.Series.ContourSeries));
+                if (GetColorAttribute(contourElement, nameof(contourSeries.Color), out var contourColor))
+                    contourSeries.Color = contourColor;
+                if (GetDoubleAttribute(contourElement, nameof(contourSeries.ContourLevelStep), out var contourLevelStep))
+                    contourSeries.ContourLevelStep = contourLevelStep;
+                if (GetColorAttribute(contourElement, nameof(contourSeries.LabelBackground), out var labelBackground))
+                    contourSeries.LabelBackground = labelBackground;
+                if (GetStringAttribute(contourElement, nameof(contourSeries.LabelFormatString), out var contourLabelFormatString))
+                    contourSeries.LabelFormatString = contourLabelFormatString;
+                if (GetDoubleAttribute(contourElement, nameof(contourSeries.LabelSpacing), out var labelSpacing))
+                    contourSeries.LabelSpacing = labelSpacing;
+                if (GetIntegerAttribute(contourElement, nameof(contourSeries.LabelStep), out var labelStep))
+                    contourSeries.LabelStep = labelStep;
+                if (GetEnumAttribute(contourElement, nameof(contourSeries.LineStyle), out OxyPlot.LineStyle contourLineStyle))
+                    contourSeries.LineStyle = contourLineStyle;
+                if (GetDoubleAttribute(contourElement, nameof(contourSeries.MinimumSegmentLength), out var contourMinSegmentLength))
+                    contourSeries.MinimumSegmentLength = contourMinSegmentLength;
+                if (GetBooleanAttribute(contourElement, nameof(contourSeries.MultiLabel), out var multiLabel))
+                    contourSeries.MultiLabel = multiLabel;
+                if (GetDoubleAttribute(contourElement, nameof(contourSeries.StrokeThickness), out var contourStrokeThickness))
+                    contourSeries.StrokeThickness = contourStrokeThickness;
             }
 
             return series;

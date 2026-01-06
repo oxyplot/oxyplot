@@ -480,6 +480,18 @@ namespace OxyPlotControls
                 dateAxisProperties.SetAttributeValue(nameof(dateAxis.CalendarWeekRule), dateAxis.CalendarWeekRule.ToString());
                 axisProperties.Add(dateAxisProperties);
             }
+            else if (axisType == typeof(NormalProbabilityAxis))
+            {
+                // NormalProbabilityAxis has no unique properties beyond base Axis
+                // Empty element added for type identification during deserialization
+                axisProperties.Add(new XElement("NormalProbabilityAxis"));
+            }
+            else if (axisType == typeof(GumbelProbabilityAxis))
+            {
+                // GumbelProbabilityAxis has no unique properties beyond base Axis
+                // Empty element added for type identification during deserialization
+                axisProperties.Add(new XElement("GumbelProbabilityAxis"));
+            }
 
             return axisProperties;
         }
