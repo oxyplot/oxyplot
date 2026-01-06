@@ -127,8 +127,9 @@ namespace OxyPlotControls
         public static bool GetColorAttribute(XElement el, string attributeName, out Color c)
         {
             c = default(Color);
-            if (el.Attribute(attributeName) == null) return false;
-            string value = el.Attribute(attributeName).Value;
+            var attribute = el.Attribute(attributeName);
+            if (attribute == null) return false;
+            string value = attribute.Value;
             if (string.IsNullOrEmpty(value)) return false;
 
             c = (Color)ColorConverter.ConvertFromString(value);
@@ -144,15 +145,16 @@ namespace OxyPlotControls
         /// <param name="converter">The BrushConverter to use for parsing.</param>
         /// <param name="b">When this method returns, contains the parsed Brush if successful.</param>
         /// <returns>True if the attribute exists and was successfully parsed; otherwise, false.</returns>
-        public static bool GetBrushAttribute(XElement el, string attributeName, BrushConverter converter, out Brush b)
+        public static bool GetBrushAttribute(XElement el, string attributeName, BrushConverter converter, out Brush? b)
         {
             b = null;
-            if (el.Attribute(attributeName) == null) return false;
-            string value = el.Attribute(attributeName).Value;
+            var attribute = el.Attribute(attributeName);
+            if (attribute == null) return false;
+            string value = attribute.Value;
             if (string.IsNullOrEmpty(value)) return false;
 
-            b = (Brush)converter.ConvertFromInvariantString(value);
-            return true;
+            b = converter.ConvertFromInvariantString(value) as Brush;
+            return b != null;
         }
 
         /// <summary>
@@ -162,12 +164,13 @@ namespace OxyPlotControls
         /// <param name="attributeName">The name of the attribute to read.</param>
         /// <param name="s">When this method returns, contains the attribute value if successful.</param>
         /// <returns>True if the attribute exists; otherwise, false.</returns>
-        public static bool GetStringAttribute(XElement el, string attributeName, out string s)
+        public static bool GetStringAttribute(XElement el, string attributeName, out string? s)
         {
             s = null;
-            if (el.Attribute(attributeName) == null) return false;
+            var attribute = el.Attribute(attributeName);
+            if (attribute == null) return false;
 
-            s = el.Attribute(attributeName).Value;
+            s = attribute.Value;
             return true;
         }
 
@@ -181,8 +184,9 @@ namespace OxyPlotControls
         public static bool GetDoubleAttribute(XElement el, string attributeName, out double d)
         {
             d = 0;
-            if (el.Attribute(attributeName) == null) return false;
-            string value = el.Attribute(attributeName).Value;
+            var attribute = el.Attribute(attributeName);
+            if (attribute == null) return false;
+            string value = attribute.Value;
             if (string.IsNullOrEmpty(value)) return false;
 
             return double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out d);
@@ -198,8 +202,9 @@ namespace OxyPlotControls
         public static bool GetIntegerAttribute(XElement el, string attributeName, out int i)
         {
             i = 0;
-            if (el.Attribute(attributeName) == null) return false;
-            string value = el.Attribute(attributeName).Value;
+            var attribute = el.Attribute(attributeName);
+            if (attribute == null) return false;
+            string value = attribute.Value;
             if (string.IsNullOrEmpty(value)) return false;
 
             return int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out i);
@@ -215,8 +220,9 @@ namespace OxyPlotControls
         public static bool GetBooleanAttribute(XElement el, string attributeName, out bool b)
         {
             b = false;
-            if (el.Attribute(attributeName) == null) return false;
-            string value = el.Attribute(attributeName).Value;
+            var attribute = el.Attribute(attributeName);
+            if (attribute == null) return false;
+            string value = attribute.Value;
             if (string.IsNullOrEmpty(value)) return false;
 
             return bool.TryParse(value, out b);
@@ -230,15 +236,16 @@ namespace OxyPlotControls
         /// <param name="converter">The FontFamilyConverter to use for parsing.</param>
         /// <param name="ff">When this method returns, contains the parsed FontFamily if successful.</param>
         /// <returns>True if the attribute exists and was successfully parsed; otherwise, false.</returns>
-        public static bool GetFontFamilyAttribute(XElement el, string attributeName, FontFamilyConverter converter, out FontFamily ff)
+        public static bool GetFontFamilyAttribute(XElement el, string attributeName, FontFamilyConverter converter, out FontFamily? ff)
         {
             ff = null;
-            if (el.Attribute(attributeName) == null) return false;
-            string value = el.Attribute(attributeName).Value;
+            var attribute = el.Attribute(attributeName);
+            if (attribute == null) return false;
+            string value = attribute.Value;
             if (string.IsNullOrEmpty(value)) return false;
 
-            ff = (FontFamily)converter.ConvertFromInvariantString(value);
-            return true;
+            ff = converter.ConvertFromInvariantString(value) as FontFamily;
+            return ff != null;
         }
 
         /// <summary>
@@ -252,11 +259,14 @@ namespace OxyPlotControls
         public static bool GetFontWeightAttribute(XElement el, string attributeName, FontWeightConverter converter, out FontWeight fw)
         {
             fw = default(FontWeight);
-            if (el.Attribute(attributeName) == null) return false;
-            string value = el.Attribute(attributeName).Value;
+            var attribute = el.Attribute(attributeName);
+            if (attribute == null) return false;
+            string value = attribute.Value;
             if (string.IsNullOrEmpty(value)) return false;
 
-            fw = (FontWeight)converter.ConvertFromInvariantString(value);
+            var result = converter.ConvertFromInvariantString(value);
+            if (result == null) return false;
+            fw = (FontWeight)result;
             return true;
         }
 
@@ -271,11 +281,14 @@ namespace OxyPlotControls
         public static bool GetThicknessAttribute(XElement el, string attributeName, System.Windows.ThicknessConverter converter, out Thickness t)
         {
             t = default(Thickness);
-            if (el.Attribute(attributeName) == null) return false;
-            string value = el.Attribute(attributeName).Value;
+            var attribute = el.Attribute(attributeName);
+            if (attribute == null) return false;
+            string value = attribute.Value;
             if (string.IsNullOrEmpty(value)) return false;
 
-            t = (Thickness)converter.ConvertFromInvariantString(value);
+            var result = converter.ConvertFromInvariantString(value);
+            if (result == null) return false;
+            t = (Thickness)result;
             return true;
         }
 
@@ -290,8 +303,9 @@ namespace OxyPlotControls
         public static bool GetEnumAttribute<TEnum>(XElement el, string attributeName, out TEnum e) where TEnum : struct
         {
             e = default(TEnum);
-            if (el.Attribute(attributeName) == null) return false;
-            string value = el.Attribute(attributeName).Value;
+            var attribute = el.Attribute(attributeName);
+            if (attribute == null) return false;
+            string value = attribute.Value;
             if (string.IsNullOrEmpty(value)) return false;
 
             return Enum.TryParse(value, out e);
@@ -307,8 +321,9 @@ namespace OxyPlotControls
         public static bool GetDataPointAttribute(XElement el, string attributeName, out OxyPlot.DataPoint dp)
         {
             dp = OxyPlot.DataPoint.Undefined;
-            if (el.Attribute(attributeName) == null) return false;
-            string value = el.Attribute(attributeName).Value;
+            var attribute = el.Attribute(attributeName);
+            if (attribute == null) return false;
+            string value = attribute.Value;
             if (string.IsNullOrEmpty(value)) return false;
 
             dp = value.FromPrettyDataText();
@@ -325,8 +340,9 @@ namespace OxyPlotControls
         public static bool GetScreenVectorAttribute(XElement el, string attributeName, out OxyPlot.ScreenVector vp)
         {
             vp = default(OxyPlot.ScreenVector);
-            if (el.Attribute(attributeName) == null) return false;
-            string value = el.Attribute(attributeName).Value;
+            var attribute = el.Attribute(attributeName);
+            if (attribute == null) return false;
+            string value = attribute.Value;
             if (string.IsNullOrEmpty(value)) return false;
 
             vp = value.FromPrettyVectorText();
@@ -343,8 +359,9 @@ namespace OxyPlotControls
         public static bool GetScreenPointAttribute(XElement el, string attributeName, out OxyPlot.ScreenPoint vp)
         {
             vp = OxyPlot.ScreenPoint.Undefined;
-            if (el.Attribute(attributeName) == null) return false;
-            string value = el.Attribute(attributeName).Value;
+            var attribute = el.Attribute(attributeName);
+            if (attribute == null) return false;
+            string value = attribute.Value;
             if (string.IsNullOrEmpty(value)) return false;
 
             vp = value.FromPrettyScreenText();
@@ -361,8 +378,9 @@ namespace OxyPlotControls
         public static bool GetVectorAttribute(XElement el, string attributeName, out Vector v)
         {
             v = default(Vector);
-            if (el.Attribute(attributeName) == null) return false;
-            string value = el.Attribute(attributeName).Value;
+            var attribute = el.Attribute(attributeName);
+            if (attribute == null) return false;
+            string value = attribute.Value;
             if (string.IsNullOrEmpty(value)) return false;
 
             v = value.FromPrettyVectorString();
@@ -380,8 +398,9 @@ namespace OxyPlotControls
         public static bool GetOxyColorAttribute(XElement el, string attributeName, out OxyColor oxyColor)
         {
             oxyColor = OxyColors.Undefined;
-            if (el.Attribute(attributeName) == null) return false;
-            string value = el.Attribute(attributeName).Value;
+            var attribute = el.Attribute(attributeName);
+            if (attribute == null) return false;
+            string value = attribute.Value;
             if (string.IsNullOrEmpty(value)) return false;
 
             // Try to parse as hex color first (#AARRGGBB or #RRGGBB)
