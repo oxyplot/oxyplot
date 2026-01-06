@@ -80,9 +80,9 @@
                             DockPanel.Dock="Top"
                             MaxPropertyWidth="200"
                             Title="Font"
-                            FontFamilyString="{Binding Path=Annotation.FontFamily, ElementName=AnnotationProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource FontFamilyToFontConverter}}"
+                            FontFamilyString="{Binding Path=Annotation.Font, ElementName=AnnotationProperties, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource FontFamilyToFontConverter}}"
                             IsEnabled="{Binding ElementName=AnnotationProperties, Path=Annotation.IsEnabled}"
-                            Visibility="{Binding ElementName=AnnotationProperties, Path=Annotation.FontFamily, Converter={StaticResource AlwaysVisibleConverter}, FallbackValue=Collapsed}"
+                            Visibility="{Binding ElementName=AnnotationProperties, Path=Annotation.Font, Converter={StaticResource AlwaysVisibleConverter}, FallbackValue=Collapsed}"
                             PropertyWidth="{Binding ElementName=DummyPropertyControl, Path=ActualPropertyWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ActualToLengthConverter}}"/>
 
                 <!--Title Font Size-->

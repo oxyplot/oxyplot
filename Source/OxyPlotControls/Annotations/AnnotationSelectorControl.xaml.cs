@@ -135,6 +135,7 @@ namespace OxyPlotControls
 
                     newArrow.StartPoint = centerXShifted;
                     newArrow.EndPoint = plotCenter;
+                    thisControl.PlotModel.InvalidatePlot(false);
                 };
                 cntrl.Items.Add(addArrow);
 
@@ -149,6 +150,7 @@ namespace OxyPlotControls
                     thisControl.AnnotationPropertyControlComboBox.IsDropDownOpen = false;
                     thisControl.AnnotationPropertiesControl.Focus();
                     newText.TextPosition = newText.InverseTransform(thisControl.PlotModel.PlotArea.Center);
+                    thisControl.PlotModel.InvalidatePlot(false);
                 };
                 cntrl.Items.Add(addText);
 
@@ -174,6 +176,7 @@ namespace OxyPlotControls
                     newLine.Type = LineAnnotationType.LinearEquation;
                     newLine.Intercept = plotCenter.Y;
                     newLine.Slope = (plotUR.Y - plotLL.Y) / (plotUR.X - plotLL.X);
+                    thisControl.PlotModel.InvalidatePlot(false);
                 };
                 cntrl.Items.Add(addLine);
 
@@ -200,6 +203,7 @@ namespace OxyPlotControls
                     newRect.MaximumX = plotCenter.X + centerXShift;
                     newRect.MinimumY = plotCenter.Y - centerYShift;
                     newRect.MaximumY = plotCenter.Y + centerYShift;
+                    thisControl.PlotModel.InvalidatePlot(false);
                 };
                 cntrl.Items.Add(addRect);
 
@@ -226,6 +230,7 @@ namespace OxyPlotControls
                     newEllipse.Y = plotCenter.Y;
                     newEllipse.Width = centerXShift * 2;
                     newEllipse.Height = centerYShift * 2;
+                    thisControl.PlotModel.InvalidatePlot(false);
                 };
                 cntrl.Items.Add(addEllipse);
 
@@ -243,6 +248,7 @@ namespace OxyPlotControls
                     var plotCenter = newPoint.InverseTransform(thisControl.PlotModel.PlotArea.Center);
                     newPoint.X = plotCenter.X;
                     newPoint.Y = plotCenter.Y;
+                    thisControl.PlotModel.InvalidatePlot(false);
                 };
                 cntrl.Items.Add(addPoint);
 
