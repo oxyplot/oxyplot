@@ -271,20 +271,12 @@ namespace OxyPlotControls
 
         private TextBox? _textBox = null;
         private ContextMenu? _contextMenu = null;
-        private EditTextTarget _editTarget = EditTextTarget.None;
+        private Canvas? _textBoxCanvas = null;
+        private DockPanel? _textBoxDockPanel = null;
+        private OxyColor _currentTextColor = OxyColors.Black;
+        private OxyColor _currentStrokeColor = OxyColors.Black;
         private object? _editTargetObject = null;
-
-        /// <summary>
-        /// Enumeration for the current text editing target.
-        /// </summary>
-        private enum EditTextTarget
-        {
-            None,
-            Title,
-            Subtitle,
-            AxisTitle,
-            AnnotationText
-        }
+        private string? _editPropertyName = null;
 
         /// <summary>
         /// Enumeration for adding annotation tool mode.
@@ -348,7 +340,7 @@ namespace OxyPlotControls
         {
             typeof(OxyPlot.Series.HistogramSeries),
             typeof(OxyPlot.Series.BarSeries),
-            typeof(OxyPlot.Series.LinearBarSeries),
+            typeof(OxyPlot.Series.ColumnSeries),
             typeof(OxyPlot.Series.HeatMapSeries)
         };
 
@@ -431,27 +423,22 @@ namespace OxyPlotControls
             if (_addAnnotationToolMode != AddToolMode.None)
             {
                 PlotView.Cursor = _addPointCursor;
-                PlotView.Cursor = _addPointCursor;
             }
             else if (PanButton.IsChecked == true)
             {
                 PlotView.PanCursor = _panHandCursor;
                 PlotView.Cursor = _panHandCursor;
-                PlotView.Cursor = _panHandCursor;
             }
             else if (PointerButton.IsChecked == true)
             {
-                PlotView.Cursor = Cursors.Arrow;
                 PlotView.Cursor = Cursors.Arrow;
             }
             else if (ZoomButton.IsChecked == true)
             {
                 PlotView.Cursor = _zoomCursor;
-                PlotView.Cursor = _zoomCursor;
             }
             else
             {
-                PlotView.Cursor = Cursors.Arrow;
                 PlotView.Cursor = Cursors.Arrow;
             }
         }
@@ -1765,62 +1752,172 @@ namespace OxyPlotControls
                 _contextMenu.Items.Add(formatPlotItem);
             }
 
-            // TITLE AREA hit test - check if click is in title/subtitle area
-            if (Model.TitleArea.Contains(e.Position))
-            {
-                // Determine if title or subtitle was clicked based on Y position
-                var titleArea = Model.TitleArea;
-                double midY = titleArea.Top + titleArea.Height / 2;
-                bool isSubtitle = !string.IsNullOrEmpty(Model.Subtitle) && e.Position.Y > midY;
+            var plotAndAxisArea = Model.PlotAndAxisArea;
+            var plotArea = Model.PlotArea;
 
-                if (leftClickBool)
+            // Legend Area custom hit test
+            foreach (var legend in Model.Legends)
+            {
+                var legendArea = legend.LegendArea;
+                if (legendArea.Contains(e.Position))
                 {
-                    if (isSubtitle)
+                    if (leftClickBool)
                     {
-                        PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Model.TitleArea);
-                        CreateEditTextBox(EditTextTarget.Subtitle, Model.Subtitle ?? "", e.Position);
+                        PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Legend_Title, legendArea);
+                        return;
                     }
-                    else if (!string.IsNullOrEmpty(Model.Title))
+                    else
                     {
-                        PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotTitle, Model.TitleArea);
-                        CreateEditTextBox(EditTextTarget.Title, Model.Title, e.Position);
+                        var legendItem = new MenuItem { Header = "Format Legend", Icon = CreateMenuIcon("Format.png") };
+                        legendItem.Click += (s, args) => PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Legend_Title, legendArea);
+                        _contextMenu.Items.Add(legendItem);
                     }
-                    return;
+                    break;
                 }
-                else
+            }
+
+            // TEXT HIT TEST - use InputHitTest to find TextBlock elements
+            var plotCanvas = GetPlotViewCanvas();
+            if (plotCanvas != null)
+            {
+                var textResult = plotCanvas.InputHitTest(new Point(e.Position.X, e.Position.Y));
+                if (textResult != null && textResult.GetType() == typeof(TextBlock))
                 {
-                    if (!string.IsNullOrEmpty(Model.Title))
+                    var txtblock = (TextBlock)textResult;
+
+                    // CHART TITLE SELECTED
+                    if (Model.Title == txtblock.Text && Model.TitleArea.Contains(new ScreenPoint(e.Position.X, e.Position.Y)))
                     {
-                        var editTitleItem = new MenuItem { Header = "Edit Plot Title", Icon = CreateMenuIcon("EditTextbox.png") };
-                        editTitleItem.Click += (s, args) =>
+                        if (leftClickBool)
                         {
                             PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotTitle, Model.TitleArea);
-                            CreateEditTextBox(EditTextTarget.Title, Model.Title, e.Position);
-                        };
-                        var formatTitleItem = new MenuItem { Header = "Format Plot Title", Icon = CreateMenuIcon("Format.png") };
-                        formatTitleItem.Click += (s, args) =>
+                            CreateEditTBX(txtblock, Model, "Title", 0, plotCanvas);
+                            return;
+                        }
+                        else
                         {
-                            PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.General_PlotTitle, Model.TitleArea);
-                        };
-                        _contextMenu.Items.Add(editTitleItem);
-                        _contextMenu.Items.Add(formatTitleItem);
+                            var editTitleItem = new MenuItem { Header = "Edit Plot Title", Icon = CreateMenuIcon("EditTextbox.png") };
+                            editTitleItem.Click += (s, args) =>
+                            {
+                                PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotTitle, Model.TitleArea);
+                                CreateEditTBX(txtblock, Model, "Title", 0, plotCanvas);
+                            };
+                            var formatTitleItem = new MenuItem { Header = "Format Plot Title", Icon = CreateMenuIcon("Format.png") };
+                            formatTitleItem.Click += (s, args) =>
+                            {
+                                PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.General_PlotTitle, Model.TitleArea);
+                                PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Model.TitleArea);
+                            };
+                            _contextMenu.Items.Add(editTitleItem);
+                            _contextMenu.Items.Add(formatTitleItem);
+                        }
                     }
 
-                    if (!string.IsNullOrEmpty(Model.Subtitle))
+                    // CHART SUBTITLE SELECTED
+                    if (Model.Subtitle == txtblock.Text && Model.TitleArea.Contains(new ScreenPoint(e.Position.X, e.Position.Y)))
                     {
-                        var editSubtitleItem = new MenuItem { Header = "Edit Plot Subtitle", Icon = CreateMenuIcon("EditTextbox.png") };
-                        editSubtitleItem.Click += (s, args) =>
+                        if (leftClickBool)
                         {
                             PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Model.TitleArea);
-                            CreateEditTextBox(EditTextTarget.Subtitle, Model.Subtitle, e.Position);
-                        };
-                        var formatSubtitleItem = new MenuItem { Header = "Format Plot Subtitle", Icon = CreateMenuIcon("Format.png") };
-                        formatSubtitleItem.Click += (s, args) =>
+                            CreateEditTBX(txtblock, Model, "Subtitle", 0, plotCanvas);
+                            return;
+                        }
+                        else
                         {
-                            PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Model.TitleArea);
-                        };
-                        _contextMenu.Items.Add(editSubtitleItem);
-                        _contextMenu.Items.Add(formatSubtitleItem);
+                            var editSubtitleItem = new MenuItem { Header = "Edit Plot Subtitle", Icon = CreateMenuIcon("EditTextbox.png") };
+                            editSubtitleItem.Click += (s, args) =>
+                            {
+                                PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Model.TitleArea);
+                                CreateEditTBX(txtblock, Model, "Subtitle", 0, plotCanvas);
+                            };
+                            var formatSubtitleItem = new MenuItem { Header = "Format Plot Subtitle", Icon = CreateMenuIcon("Format.png") };
+                            formatSubtitleItem.Click += (s, args) =>
+                            {
+                                PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.General_PlotSubtitle, Model.TitleArea);
+                            };
+                            _contextMenu.Items.Add(editSubtitleItem);
+                            _contextMenu.Items.Add(formatSubtitleItem);
+                        }
+                    }
+
+                    // AXES TITLES SELECTED
+                    if (Model.PlotAndAxisArea.Contains(new ScreenPoint(e.Position.X, e.Position.Y)))
+                    {
+                        var axes = Model.Axes.Where(x => x.Title != null && txtblock.Text.Contains(x.Title)).ToList();
+
+                        if (axes.Count == 1)
+                        {
+                            var ax = axes.First();
+
+                            if (leftClickBool)
+                            {
+                                PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Title, ax);
+                                if (ax.IsVertical())
+                                {
+                                    CreateEditTBX(txtblock, ax, "Title", -90, plotCanvas);
+                                }
+                                else
+                                {
+                                    CreateEditTBX(txtblock, ax, "Title", 0, plotCanvas);
+                                }
+                                return;
+                            }
+                            else
+                            {
+                                var editAxisTitleItem = new MenuItem { Header = "Edit Axis Title", Icon = CreateMenuIcon("EditTextbox.png") };
+                                editAxisTitleItem.Click += (s, args) =>
+                                {
+                                    PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Title, ax);
+                                    if (ax.IsVertical())
+                                    {
+                                        CreateEditTBX(txtblock, ax, "Title", -90, plotCanvas);
+                                    }
+                                    else
+                                    {
+                                        CreateEditTBX(txtblock, ax, "Title", 0, plotCanvas);
+                                    }
+                                };
+                                var formatAxisItem = new MenuItem { Header = "Format Axis: " + ax.Title, Icon = CreateMenuIcon("Format.png") };
+                                formatAxisItem.Click += (s, args) =>
+                                {
+                                    PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Axes_Options, ax);
+                                    PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Display, ax);
+                                };
+                                _contextMenu.Items.Add(editAxisTitleItem);
+                                _contextMenu.Items.Add(formatAxisItem);
+                            }
+                        }
+                    }
+
+                    // ANNOTATION TEXT SELECTED
+                    foreach (var anno in Model.Annotations)
+                    {
+                        if (anno is TextualAnnotation textAnno && textAnno.Text == txtblock.Text)
+                        {
+                            if (leftClickBool)
+                            {
+                                PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Annotations_Options, anno);
+                                CreateEditTBX(txtblock, anno, "Text", textAnno.TextRotation, plotCanvas);
+                                return;
+                            }
+                            else
+                            {
+                                var editAnnoItem = new MenuItem { Header = "Edit Annotation Text", Icon = CreateMenuIcon("EditTextbox.png") };
+                                editAnnoItem.Click += (s, args) =>
+                                {
+                                    PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Annotations_Options, anno);
+                                    CreateEditTBX(txtblock, anno, "Text", textAnno.TextRotation, plotCanvas);
+                                };
+                                var formatAnnoItem = new MenuItem { Header = "Format Annotation", Icon = CreateMenuIcon("Format.png") };
+                                formatAnnoItem.Click += (s, args) =>
+                                {
+                                    PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Options, anno);
+                                };
+                                _contextMenu.Items.Add(editAnnoItem);
+                                _contextMenu.Items.Add(formatAnnoItem);
+                            }
+                            break;
+                        }
                     }
                 }
             }
@@ -1846,13 +1943,7 @@ namespace OxyPlotControls
                 }
             }
 
-            // Legend Area hit test
-            // Note: In modern OxyPlot, legends are handled differently and LegendArea is not exposed
-            // The legend hit testing is skipped for now
-            // TODO: Implement alternative legend hit testing if needed using Model.Legends collection
-
             // AXIS Areas hit test
-            var plotArea = Model.PlotArea;
             var margins = Model.ActualPlotMargins;
             foreach (var axis in Model.Axes)
             {
@@ -1893,30 +1984,13 @@ namespace OxyPlotControls
                 {
                     if (leftClickBool)
                     {
-                        // If axis has a title, allow editing it directly
-                        if (!string.IsNullOrEmpty(axis.Title))
-                        {
-                            PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Display, axis);
-                            CreateEditTextBox(EditTextTarget.AxisTitle, axis.Title, e.Position, axis);
-                        }
-                        else
-                        {
-                            PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Options, axis);
-                            PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Display, axis);
-                        }
+                        // Open axis properties (title editing is handled via TextBlock hit test above)
+                        PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Options, axis);
+                        PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Display, axis);
                         return;
                     }
                     else
                     {
-                        // Edit axis title menu item
-                        var editAxisTitleItem = new MenuItem { Header = "Edit Axis Title", Icon = CreateMenuIcon("EditTextbox.png") };
-                        editAxisTitleItem.Click += (s, args) =>
-                        {
-                            PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Axes_Display, axis);
-                            CreateEditTextBox(EditTextTarget.AxisTitle, axis.Title ?? "", e.Position, axis);
-                        };
-                        _contextMenu.Items.Add(editAxisTitleItem);
-
                         // Format axis menu item
                         var formatAxisItem = new MenuItem { Header = "Format Axis: " + axis.Title, Icon = CreateMenuIcon("Format.png") };
                         formatAxisItem.Click += (s, args) =>
@@ -1946,6 +2020,38 @@ namespace OxyPlotControls
                     }
                     else
                     {
+                        // Add Edit Annotation Text menu item for TextualAnnotation types
+                        if (annotation is TextualAnnotation textAnno)
+                        {
+                            var editAnnoItem = new MenuItem { Header = "Edit Annotation Text: " + annoText, Icon = CreateMenuIcon("EditTextbox.png") };
+                            editAnnoItem.Click += (s, args) =>
+                            {
+                                PropertiesCalled?.Invoke(PlotView, false, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, annotation);
+
+                                // Dummy canvas is used to render the item
+                                var dummyCanvas = new Canvas();
+                                var crc = new OxyPlot.Wpf.CanvasRenderContext(dummyCanvas);
+                                var currentCanvas = GetPlotViewCanvas();
+                                if (currentCanvas == null) return;
+                                var size = new Size(currentCanvas.ActualWidth, currentCanvas.ActualHeight);
+                                dummyCanvas.Measure(size);
+                                dummyCanvas.Arrange(new Rect(size));
+                                dummyCanvas.UpdateLayout();
+                                annotation.Render(crc);
+                                dummyCanvas.UpdateLayout();
+
+                                foreach (var tbk in FindVisualChildren<TextBlock>(dummyCanvas))
+                                {
+                                    if (tbk.Text == textAnno.Text)
+                                    {
+                                        CreateEditTBX(tbk, annotation, "Text", textAnno.TextRotation, dummyCanvas);
+                                        break;
+                                    }
+                                }
+                            };
+                            _contextMenu.Items.Add(editAnnoItem);
+                        }
+
                         var formatAnnoItem = new MenuItem { Header = "Format Annotation: " + annoText, Icon = CreateMenuIcon("Format.png") };
                         formatAnnoItem.Click += (s, args) => PropertiesCalled?.Invoke(PlotView, true, OxyPlotPropertiesControl.PropertyEXP.Annotations_Text, annotation);
 
@@ -1976,203 +2082,358 @@ namespace OxyPlotControls
 
         #endregion
 
-        #region CreateEditTextBox
+        #region CreateEditTBX
 
         /// <summary>
         /// Creates an in-place text box for editing text on the plot.
-        /// Supports plot titles, subtitles, axis titles, and annotation text.
+        /// Supports plot titles, axis titles, and all annotation types.
         /// </summary>
-        /// <param name="target">The type of text element being edited.</param>
-        /// <param name="initialText">The initial text to display in the text box.</param>
-        /// <param name="position">The screen position where the click occurred.</param>
-        /// <param name="targetObject">Optional target object (e.g., axis or annotation).</param>
-        private void CreateEditTextBox(EditTextTarget target, string initialText, ScreenPoint position, object? targetObject = null)
+        /// <param name="existingTextblock">The existing TextBlock element being edited.</param>
+        /// <param name="targetObject">The object containing the text property (PlotModel, Axis, or Annotation).</param>
+        /// <param name="propertyName">The name of the property to update (e.g., "Title", "Subtitle", "Text").</param>
+        /// <param name="angle">The rotation angle for the text box.</param>
+        /// <param name="canvas">The canvas for positioning.</param>
+        private void CreateEditTBX(TextBlock existingTextblock, object targetObject, string propertyName, double angle, Canvas canvas)
         {
             if (Model == null || PlotView == null) return;
 
-            // Remove any existing textbox
-            RemoveEditTextBox();
+            IInputElement txtblckAsInputElem = existingTextblock as IInputElement;
+            _currentTextColor = OxyColors.Black;
+            _currentStrokeColor = OxyColors.Black;
 
-            // Store edit target info
-            _editTarget = target;
-            _editTargetObject = targetObject;
-
-            // Get the area to position the textbox
-            OxyRect editArea;
-            double fontSize = 14;
-            string fontFamily = "Segoe UI";
-            FontWeight fontWeight = System.Windows.FontWeights.Normal;
-
-            switch (target)
+            Point point;
+            try
             {
-                case EditTextTarget.Title:
-                    editArea = Model.TitleArea;
-                    fontSize = Model.TitleFontSize > 0 ? Model.TitleFontSize : 18;
-                    fontFamily = !string.IsNullOrEmpty(Model.TitleFont) ? Model.TitleFont : Model.DefaultFont ?? "Segoe UI";
-                    fontWeight = System.Windows.FontWeights.Bold;
-                    break;
-                case EditTextTarget.Subtitle:
-                    editArea = Model.TitleArea;
-                    fontSize = Model.SubtitleFontSize > 0 ? Model.SubtitleFontSize : 14;
-                    fontFamily = !string.IsNullOrEmpty(Model.SubtitleFont) ? Model.SubtitleFont : Model.DefaultFont ?? "Segoe UI";
-                    break;
-                case EditTextTarget.AxisTitle:
-                    if (targetObject is OxyPlot.Axes.Axis axis)
-                    {
-                        // Use position for axis title - it's usually at the center of the axis
-                        editArea = new OxyRect(position.X - 100, position.Y - 12, 200, 24);
-                        fontSize = axis.TitleFontSize > 0 ? axis.TitleFontSize : 14;
-                        fontFamily = !string.IsNullOrEmpty(axis.TitleFont) ? axis.TitleFont : Model.DefaultFont ?? "Segoe UI";
-                        fontWeight = System.Windows.FontWeights.Bold;
-                    }
-                    else
-                    {
-                        return;
-                    }
-                    break;
-                case EditTextTarget.AnnotationText:
-                    // For annotations, position near the click point
-                    editArea = new OxyRect(position.X - 100, position.Y - 12, 200, 24);
-                    break;
-                default:
-                    return;
+                point = GetPosition((Visual)txtblckAsInputElem, canvas);
+            }
+            catch
+            {
+                return;
             }
 
-            // Create the textbox
-            _textBox = new TextBox
+            double left = point.X;
+            double top = point.Y;
+            double width = existingTextblock.ActualWidth;
+            double height = existingTextblock.ActualHeight;
+            double fontsize = existingTextblock.FontSize;
+            FontFamily fontFamily = existingTextblock.FontFamily;
+            FontWeight fontWeight = existingTextblock.FontWeight;
+            Brush foreColor = existingTextblock.Foreground;
+
+            // Store target info
+            _editTargetObject = targetObject;
+            _editPropertyName = propertyName;
+
+            // Create canvas for the textbox overlay
+            _textBoxCanvas = new Canvas { Name = "TextBoxCanvas" };
+            _textBoxCanvas.Background = new SolidColorBrush(Colors.Transparent);
+            _textBoxDockPanel = new DockPanel();
+
+            // Get the parent grid from PlotView
+            var plotParent = GetPlotViewParentGrid();
+            if (plotParent == null) return;
+            plotParent.Children.Add(_textBoxCanvas);
+
+            // Set initial text box settings
+            _textBox = new TextBox();
+            _textBox.Background = PlotView.Background;
+            _textBox.TextAlignment = TextAlignment.Center;
+            _textBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            _textBox.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            _textBox.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Stretch;
+            _textBox.VerticalContentAlignment = System.Windows.VerticalAlignment.Stretch;
+            _textBox.Padding = new Thickness(-2);
+            _textBox.FontSize = fontsize;
+            _textBox.FontFamily = fontFamily;
+            _textBox.FontWeight = fontWeight;
+            _textBox.Foreground = foreColor;
+            TextOptions.SetTextFormattingMode(_textBox, TextFormattingMode.Display);
+
+            // Normalize all angles to 0-360
+            if (angle < 0 || angle >= 360)
             {
-                Text = initialText,
-                FontSize = fontSize,
-                FontFamily = new FontFamily(fontFamily),
-                FontWeight = fontWeight,
-                TextAlignment = TextAlignment.Center,
-                HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-                VerticalAlignment = System.Windows.VerticalAlignment.Center,
-                HorizontalContentAlignment = System.Windows.HorizontalAlignment.Stretch,
-                VerticalContentAlignment = System.Windows.VerticalAlignment.Center,
-                Padding = new Thickness(2),
-                BorderThickness = new Thickness(1),
-                BorderBrush = new SolidColorBrush(Colors.DodgerBlue),
-                Background = new SolidColorBrush(Colors.White),
-                MinWidth = 100
+                angle = angle % 360;
+                if (angle < 0)
+                {
+                    angle += 360;
+                }
+            }
+
+            // Determine what type of element was selected
+            if (targetObject == Model && (propertyName == "Title" || propertyName == "Subtitle"))
+            {
+                // It must be a title or subtitle
+                _textBoxDockPanel.RenderTransform = new RotateTransform(angle, 0, 0);
+                _textBoxDockPanel.Width = Model.PlotArea.Width;
+                _textBoxDockPanel.Height = height;
+                Canvas.SetLeft(_textBoxDockPanel, Model.PlotArea.Left);
+                Canvas.SetTop(_textBoxDockPanel, top);
+
+                string title = propertyName == "Title" ? Model.Title ?? "" : Model.Subtitle ?? "";
+                _currentTextColor = propertyName == "Title" ? Model.TitleColor : Model.SubtitleColor;
+                if (propertyName == "Title")
+                    Model.TitleColor = OxyColors.Transparent;
+                else
+                    Model.SubtitleColor = OxyColors.Transparent;
+                _textBox.Text = title;
+            }
+            else if (targetObject is OxyPlot.Axes.Axis axis)
+            {
+                if (angle == 0)
+                {
+                    _textBoxDockPanel.RenderTransform = new RotateTransform(angle, 0, 0);
+                    _textBoxDockPanel.Width = Model.PlotArea.Width;
+                    _textBoxDockPanel.Height = height;
+                    Canvas.SetLeft(_textBoxDockPanel, Model.PlotArea.Left);
+                    Canvas.SetTop(_textBoxDockPanel, top);
+                }
+                else if (angle == 270 || angle == -90) // Vertical text - flowing up
+                {
+                    _textBoxDockPanel.RenderTransform = new RotateTransform(270, 0, 0);
+                    _textBoxDockPanel.Width = Model.PlotArea.Height;
+                    _textBoxDockPanel.Height = height;
+                    Canvas.SetTop(_textBoxDockPanel, Model.PlotArea.Bottom);
+                    Canvas.SetLeft(_textBoxDockPanel, left);
+                }
+
+                string title = axis.Title ?? "";
+                _currentTextColor = axis.TitleColor;
+                axis.TitleColor = OxyColors.Transparent;
+                _textBox.Text = title;
+            }
+            else if (targetObject is ArrowAnnotation arrowAnno)
+            {
+                _textBoxDockPanel.RenderTransform = new RotateTransform(0, 0, 0);
+                _textBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.Padding = new Thickness(0);
+
+                _currentTextColor = arrowAnno.TextColor;
+                arrowAnno.TextColor = OxyColors.Transparent;
+
+                var startPoint = arrowAnno.Transform(arrowAnno.StartPoint);
+                _textBoxDockPanel.Width = existingTextblock.Width + 2;
+                Canvas.SetTop(_textBoxDockPanel, startPoint.Y - height);
+                Canvas.SetLeft(_textBoxDockPanel, startPoint.X);
+                _textBox.Text = arrowAnno.Text ?? "";
+            }
+            else if (targetObject is LineAnnotation lineAnno)
+            {
+                _textBox.HorizontalAlignment = lineAnno.TextHorizontalAlignment.ToHorizontalAlignment();
+                _textBox.HorizontalContentAlignment = lineAnno.TextHorizontalAlignment.ToHorizontalAlignment();
+                _textBox.VerticalAlignment = lineAnno.TextVerticalAlignment.ToVerticalAlignment();
+                _textBox.VerticalContentAlignment = lineAnno.TextVerticalAlignment.ToVerticalAlignment();
+                _textBox.Padding = new Thickness(0);
+                _currentTextColor = lineAnno.TextColor;
+                lineAnno.TextColor = OxyColors.Transparent;
+
+                _textBoxDockPanel.RenderTransform = new RotateTransform(0, 0, 0);
+                _textBoxDockPanel.Width = existingTextblock.ActualWidth + 2;
+                _textBox.Width = _textBoxDockPanel.Width;
+                Canvas.SetLeft(_textBoxDockPanel, left);
+                Canvas.SetTop(_textBoxDockPanel, top);
+                _textBox.Text = lineAnno.Text ?? "";
+            }
+            else if (targetObject is TextualAnnotation textAnno)
+            {
+                // Generic handler for TextAnnotation, RectangleAnnotation, EllipseAnnotation,
+                // PointAnnotation, PolygonAnnotation, PolylineAnnotation
+                _currentTextColor = textAnno.TextColor;
+                textAnno.TextColor = OxyColors.Transparent;
+
+                if (targetObject is TextAnnotation ta)
+                {
+                    _currentStrokeColor = ta.Stroke;
+                    ta.Stroke = OxyColors.Transparent;
+                }
+
+                _textBox.Width = existingTextblock.Width;
+                _textBox.TextAlignment = TextAlignment.Left;
+                _textBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Left;
+                _textBox.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+                _textBox.Padding = new Thickness(0);
+                _textBoxDockPanel.RenderTransform = new RotateTransform(0, 0, 0);
+                _textBoxDockPanel.Width = _textBox.Width;
+                _textBoxDockPanel.Height = height;
+                Canvas.SetLeft(_textBoxDockPanel, left);
+                Canvas.SetTop(_textBoxDockPanel, top);
+                _textBox.Text = textAnno.Text ?? "";
+            }
+
+            // Add the textbox to the dock panel and canvas
+            _textBoxDockPanel.Children.Add(_textBox);
+            _textBoxCanvas.Children.Add(_textBoxDockPanel);
+
+            // Focus color from template is controlling here
+            _textBox.BorderThickness = new Thickness(1);
+            _textBox.Focus();
+
+            // Put the cursor at the end of the textbox
+            if (_textBox.Text != null && _textBox.Text.Length > 0)
+            {
+                _textBox.SelectionStart = _textBox.Text.Length;
+            }
+
+            // Store reference to parent for cleanup
+            var parentGrid = plotParent;
+
+            // If the plot size changes, remove the textbox overlay
+            PlotView.SizeChanged += OnPlotViewSizeChanged;
+
+            // On key enter, remove the textbox overlay
+            _textBox.PreviewKeyDown += (s, args) =>
+            {
+                if (args.Key == Key.Enter)
+                {
+                    RemoveEditTBX(parentGrid);
+                }
             };
 
-            // Position the textbox
-            double left, top, width;
-            if (target == EditTextTarget.Title || target == EditTextTarget.Subtitle)
+            // On lost focus, remove the textbox overlay
+            _textBox.LostFocus += (s, args) =>
             {
-                // Center in the plot area for title/subtitle
-                left = Model.PlotArea.Left;
-                width = Model.PlotArea.Width;
-                if (target == EditTextTarget.Title)
-                {
-                    top = editArea.Top + 5;
-                }
-                else
-                {
-                    // Subtitle is below title
-                    top = editArea.Top + editArea.Height / 2 + 5;
-                }
-                _textBox.Width = width;
-            }
-            else
-            {
-                left = editArea.Left;
-                top = editArea.Top;
-                width = editArea.Width;
-                _textBox.MinWidth = width;
-            }
-
-            Canvas.SetLeft(_textBox, left);
-            Canvas.SetTop(_textBox, top);
-
-            // Add to overlay canvas
-            _overlayCanvas.Children.Add(_textBox);
-
-            // Set up event handlers
-            _textBox.PreviewKeyDown += EditTextBox_PreviewKeyDown;
-            _textBox.LostFocus += EditTextBox_LostFocus;
-
-            // Focus and select all text
-            _textBox.Focus();
-            _textBox.SelectAll();
+                RemoveEditTBX(parentGrid);
+            };
         }
 
         /// <summary>
-        /// Handles the PreviewKeyDown event for the edit text box.
+        /// Handles plot view size change - removes the edit textbox.
         /// </summary>
-        private void EditTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void OnPlotViewSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            var parentGrid = GetPlotViewParentGrid();
+            if (parentGrid != null)
             {
-                ApplyEditTextBoxChanges();
-                RemoveEditTextBox();
-                e.Handled = true;
-            }
-            else if (e.Key == Key.Escape)
-            {
-                RemoveEditTextBox();
-                e.Handled = true;
+                RemoveEditTBX(parentGrid);
             }
         }
 
         /// <summary>
-        /// Handles the LostFocus event for the edit text box.
+        /// Removes the edit textbox and restores colors.
         /// </summary>
-        private void EditTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            ApplyEditTextBoxChanges();
-            RemoveEditTextBox();
-        }
-
-        /// <summary>
-        /// Applies the changes from the edit text box to the model.
-        /// </summary>
-        private void ApplyEditTextBoxChanges()
+        private void RemoveEditTBX(Grid? parentGrid)
         {
             if (_textBox == null || Model == null) return;
 
+            // Apply the text change
             string newText = _textBox.Text ?? "";
 
-            switch (_editTarget)
+            if (_editTargetObject == Model)
             {
-                case EditTextTarget.Title:
+                if (_editPropertyName == "Title")
+                {
                     Model.Title = newText;
-                    break;
-                case EditTextTarget.Subtitle:
+                    Model.TitleColor = _currentTextColor;
+                }
+                else if (_editPropertyName == "Subtitle")
+                {
                     Model.Subtitle = newText;
-                    break;
-                case EditTextTarget.AxisTitle:
-                    if (_editTargetObject is OxyPlot.Axes.Axis axis)
-                    {
-                        axis.Title = newText;
-                    }
-                    break;
-                case EditTextTarget.AnnotationText:
-                    if (_editTargetObject is TextualAnnotation textAnnotation)
-                    {
-                        textAnnotation.Text = newText;
-                    }
-                    break;
+                    Model.SubtitleColor = _currentTextColor;
+                }
             }
+            else if (_editTargetObject is OxyPlot.Axes.Axis axis)
+            {
+                axis.Title = newText;
+                axis.TitleColor = _currentTextColor;
+            }
+            else if (_editTargetObject is ArrowAnnotation arrowAnno)
+            {
+                arrowAnno.Text = newText;
+                arrowAnno.TextColor = _currentTextColor;
+            }
+            else if (_editTargetObject is LineAnnotation lineAnno)
+            {
+                lineAnno.Text = newText;
+                lineAnno.TextColor = _currentTextColor;
+            }
+            else if (_editTargetObject is TextAnnotation textAnno)
+            {
+                textAnno.Text = newText;
+                textAnno.TextColor = _currentTextColor;
+                textAnno.Stroke = _currentStrokeColor;
+            }
+            else if (_editTargetObject is TextualAnnotation textualAnno)
+            {
+                textualAnno.Text = newText;
+                textualAnno.TextColor = _currentTextColor;
+            }
+
+            // Remove the canvas overlay
+            if (parentGrid != null && _textBoxCanvas != null)
+            {
+                parentGrid.Children.Remove(_textBoxCanvas);
+            }
+
+            // Cleanup
+            if (PlotView != null)
+            {
+                PlotView.SizeChanged -= OnPlotViewSizeChanged;
+            }
+
+            _textBox = null;
+            _textBoxCanvas = null;
+            _textBoxDockPanel = null;
+            _editTargetObject = null;
+            _editPropertyName = null;
 
             Model.InvalidatePlot(false);
         }
 
         /// <summary>
-        /// Removes the edit text box from the overlay canvas.
+        /// Gets the parent Grid of the PlotView for adding overlays.
         /// </summary>
-        private void RemoveEditTextBox()
+        private Grid? GetPlotViewParentGrid()
         {
-            if (_textBox != null)
+            if (PlotView == null) return null;
+
+            // Try to find the internal grid in the PlotView
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(PlotView); i++)
             {
-                _textBox.PreviewKeyDown -= EditTextBox_PreviewKeyDown;
-                _textBox.LostFocus -= EditTextBox_LostFocus;
-                _overlayCanvas.Children.Remove(_textBox);
-                _textBox = null;
+                var child = VisualTreeHelper.GetChild(PlotView, i);
+                if (child is Grid grid)
+                {
+                    return grid;
+                }
             }
-            _editTarget = EditTextTarget.None;
-            _editTargetObject = null;
+
+            // Fallback: use the PlotView's parent if it's a Grid
+            if (VisualTreeHelper.GetParent(PlotView) is Grid parentGrid)
+            {
+                return parentGrid;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the Canvas from the PlotView for hit testing.
+        /// </summary>
+        private Canvas? GetPlotViewCanvas()
+        {
+            if (PlotView == null) return null;
+
+            // The PlotView uses a Canvas as its plotPresenter
+            // We need to find it in the visual tree
+            foreach (var canvas in FindVisualChildren<Canvas>(PlotView))
+            {
+                return canvas;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the position of a visual element relative to a canvas.
+        /// </summary>
+        private Point GetPosition(Visual element, Canvas canvas)
+        {
+            var positionTransform = element.TransformToAncestor(canvas);
+            var areaPosition = positionTransform.Transform(new Point(0, 0));
+            return areaPosition;
         }
 
         #endregion
@@ -2240,6 +2501,26 @@ namespace OxyPlotControls
         private static Image CreateMenuIcon(string resourceName)
         {
             return new Image { Source = LoadResourceImage(resourceName), Width = 16, Height = 16 };
+        }
+
+        /// <summary>
+        /// Measures the size of a string.
+        /// </summary>
+        private Size MeasureString(string candidate, FontFamily family, FontStyle style, FontWeight weight, FontStretch stretch, double size)
+        {
+            if (candidate == null)
+            {
+                return new Size(0, 0);
+            }
+            var formattedText = new FormattedText(
+                candidate,
+                System.Globalization.CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(family, style, weight, stretch),
+                size,
+                Brushes.Black,
+                new NumberSubstitution());
+            return new Size(formattedText.Width, formattedText.Height);
         }
 
         #endregion
@@ -2364,15 +2645,55 @@ namespace OxyPlotControls
                     dataTable.Columns.Add(seriesName + "_x2", typeof(string));
                     dataTable.Columns.Add(seriesName + "_y2", typeof(string));
 
-                    for (int i = 0; i < areaSeries.Points.Count; i++)
+                    if (areaSeries.ItemsSource != null)
                     {
-                        if (areaSeries.Points2.Count > 0)
+                        var datalist = areaSeries.ItemsSource as IEnumerable<DataPoint>;
+                        if (datalist != null)
                         {
-                            dataTable.Rows.Add(dataTable.Rows.Count + 1, areaSeries.Points[i].X, areaSeries.Points[i].Y, areaSeries.Points2[i].X, areaSeries.Points2[i].Y);
+                            foreach (var seriesValue in datalist.ToList())
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesValue.X, seriesValue.Y, "", "");
+                            }
                         }
                         else
                         {
-                            dataTable.Rows.Add(dataTable.Rows.Count + 1, areaSeries.Points[i].X, areaSeries.Points[i].Y, "", "");
+                            foreach (var obj in areaSeries.ItemsSource.Cast<object>())
+                            {
+                                PropertyInfo? propX = obj.GetType().GetProperty(areaSeries.DataFieldX);
+                                string xVal = Convert.ToString(propX?.GetValue(obj, null)) ?? "";
+                                PropertyInfo? propY = obj.GetType().GetProperty(areaSeries.DataFieldY);
+                                string yVal = Convert.ToString(propY?.GetValue(obj, null)) ?? "";
+
+                                string xVal2 = "";
+                                if (areaSeries.DataFieldX2 != null)
+                                {
+                                    PropertyInfo? propX2 = obj.GetType().GetProperty(areaSeries.DataFieldX2);
+                                    xVal2 = Convert.ToString(propX2?.GetValue(obj, null)) ?? "";
+                                }
+
+                                string yVal2 = "";
+                                if (areaSeries.DataFieldY2 != null)
+                                {
+                                    PropertyInfo? propY2 = obj.GetType().GetProperty(areaSeries.DataFieldY2);
+                                    yVal2 = Convert.ToString(propY2?.GetValue(obj, null)) ?? "";
+                                }
+
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, xVal, yVal, xVal2, yVal2);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < areaSeries.Points.Count; i++)
+                        {
+                            if (areaSeries.Points2.Count > 0)
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, areaSeries.Points[i].X, areaSeries.Points[i].Y, areaSeries.Points2[i].X, areaSeries.Points2[i].Y);
+                            }
+                            else
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, areaSeries.Points[i].X, areaSeries.Points[i].Y, "", "");
+                            }
                         }
                     }
                 }
@@ -2394,9 +2715,431 @@ namespace OxyPlotControls
                     dataTable.Columns.Add(seriesName + "_upperWhisker", typeof(string));
                     dataTable.Columns.Add(seriesName + "_label", typeof(string));
 
-                    foreach (var item in boxPlotSeries.Items)
+                    if (boxPlotSeries.ItemsSource != null)
                     {
-                        dataTable.Rows.Add(dataTable.Rows.Count + 1, item.X, item.LowerWhisker, item.BoxBottom, item.Median, item.BoxTop, item.UpperWhisker, item.Tag);
+                        var datalist = boxPlotSeries.ItemsSource as IEnumerable<OxyPlot.Series.BoxPlotItem>;
+                        if (datalist != null)
+                        {
+                            foreach (var bpi in datalist)
+                            {
+                                var r = dataTable.Rows.Add(dataTable.Rows.Count + 1, bpi.X, bpi.LowerWhisker, bpi.BoxBottom, bpi.Median, bpi.BoxTop, bpi.UpperWhisker);
+
+                                // Check if a X Axis Label is specified
+                                if (boxPlotSeries.XAxis != null)
+                                {
+                                    if (boxPlotSeries.XAxis.GetType() == typeof(OxyPlot.Axes.CategoryAxis))
+                                    {
+                                        if (((OxyPlot.Axes.CategoryAxis)boxPlotSeries.XAxis).LabelField != null)
+                                        {
+                                            r[seriesName + "_label"] = ((OxyPlot.Axes.CategoryAxis)boxPlotSeries.XAxis).LabelField;
+                                        }
+                                    }
+                                }
+
+                                int j = 1;
+                                foreach (var outlier in bpi.Outliers)
+                                {
+                                    if (!dataTable.Columns.Contains("outlier" + j))
+                                    {
+                                        dataTable.Columns.Add("outlier" + j, typeof(string));
+                                    }
+                                    r[dataTable.Columns.IndexOf("outlier" + j)] = outlier;
+                                    j++;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < boxPlotSeries.Items.Count; i++)
+                        {
+                            var r = dataTable.Rows.Add(dataTable.Rows.Count + 1, boxPlotSeries.Items[i].X, boxPlotSeries.Items[i].LowerWhisker, boxPlotSeries.Items[i].BoxBottom, boxPlotSeries.Items[i].Median, boxPlotSeries.Items[i].BoxTop, boxPlotSeries.Items[i].UpperWhisker);
+
+                            // Check if a X Axis Label is specified
+                            if (boxPlotSeries.XAxis != null)
+                            {
+                                if (boxPlotSeries.XAxis.GetType() == typeof(OxyPlot.Axes.CategoryAxis))
+                                {
+                                    if (((OxyPlot.Axes.CategoryAxis)boxPlotSeries.XAxis).LabelField != null)
+                                    {
+                                        r[seriesName + "_label"] = ((OxyPlot.Axes.CategoryAxis)boxPlotSeries.XAxis).LabelField;
+                                    }
+                                }
+                            }
+
+                            int j = 1;
+                            foreach (var outlier in boxPlotSeries.Items[i].Outliers)
+                            {
+                                if (!dataTable.Columns.Contains("outlier" + j))
+                                {
+                                    dataTable.Columns.Add("outlier" + j, typeof(string));
+                                }
+                                r[dataTable.Columns.IndexOf("outlier" + j)] = outlier;
+                                j++;
+                            }
+                        }
+                    }
+                }
+                else if (series is OxyPlot.Series.BarSeries barSeries)
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "BarSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
+
+                    dataTable.TableName = seriesName;
+                    dataTable.Columns.Add("id", typeof(int));
+                    dataTable.Columns.Add(seriesName + "_categoryIndex", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_color", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_value", typeof(string));
+
+                    if (barSeries.ItemsSource != null)
+                    {
+                        var datalist = barSeries.ItemsSource as IEnumerable<OxyPlot.Series.BarItem>;
+                        if (datalist != null)
+                        {
+                            foreach (var seriesItem in datalist.ToList())
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesItem.CategoryIndex, seriesItem.Color.GetColorName(), seriesItem.Value);
+                            }
+                        }
+                        else
+                        {
+                            int c = 0;
+                            foreach (var obj in barSeries.ItemsSource.Cast<object>())
+                            {
+                                string colorVal = "";
+                                if (barSeries.ColorField != null)
+                                {
+                                    PropertyInfo? propColor = obj.GetType().GetProperty(barSeries.ColorField);
+                                    colorVal = Convert.ToString(propColor?.GetValue(obj, null)) ?? "";
+                                }
+
+                                string valueVal = "";
+                                if (barSeries.ValueField != null)
+                                {
+                                    PropertyInfo? propValue = obj.GetType().GetProperty(barSeries.ValueField);
+                                    valueVal = Convert.ToString(propValue?.GetValue(obj, null)) ?? "";
+                                }
+
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, c, colorVal, valueVal);
+                                c++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var seriesItem in barSeries.Items)
+                        {
+                            dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesItem.CategoryIndex, seriesItem.Color.GetColorName(), seriesItem.Value);
+                        }
+                    }
+                }
+                else if (series is OxyPlot.Series.ColumnSeries columnSeries)
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "ColumnSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
+
+                    dataTable.TableName = seriesName;
+                    dataTable.Columns.Add("id", typeof(int));
+                    dataTable.Columns.Add(seriesName + "_categoryIndex", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_color", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_value", typeof(string));
+
+                    if (columnSeries.ItemsSource != null)
+                    {
+                        var datalist = columnSeries.ItemsSource as IEnumerable<OxyPlot.Series.ColumnItem>;
+                        if (datalist != null)
+                        {
+                            foreach (var seriesItem in datalist.ToList())
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesItem.CategoryIndex, seriesItem.Color.GetColorName(), seriesItem.Value);
+                            }
+                        }
+                        else
+                        {
+                            int c = 0;
+                            foreach (var obj in columnSeries.ItemsSource.Cast<object>())
+                            {
+                                string colorVal = "";
+                                if (columnSeries.ColorField != null)
+                                {
+                                    PropertyInfo? propColor = obj.GetType().GetProperty(columnSeries.ColorField);
+                                    colorVal = Convert.ToString(propColor?.GetValue(obj, null)) ?? "";
+                                }
+
+                                string valueVal = "";
+                                if (columnSeries.ValueField != null)
+                                {
+                                    PropertyInfo? propValue = obj.GetType().GetProperty(columnSeries.ValueField);
+                                    valueVal = Convert.ToString(propValue?.GetValue(obj, null)) ?? "";
+                                }
+
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, c, colorVal, valueVal);
+                                c++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var seriesItem in columnSeries.Items)
+                        {
+                            dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesItem.CategoryIndex, seriesItem.Color.GetColorName(), seriesItem.Value);
+                        }
+                    }
+                }
+                else if (series is OxyPlot.Series.HistogramSeries histogramSeries)
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "HistogramSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
+
+                    dataTable.TableName = seriesName;
+                    dataTable.Columns.Add("id", typeof(int));
+                    dataTable.Columns.Add(seriesName + "_rangeStart", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_rangeEnd", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_area", typeof(string));
+
+                    if (histogramSeries.ItemsSource != null)
+                    {
+                        var datalist = histogramSeries.ItemsSource as IEnumerable<OxyPlot.Series.HistogramItem>;
+                        if (datalist != null)
+                        {
+                            foreach (var seriesValue in datalist.ToList())
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesValue.RangeStart, seriesValue.RangeEnd, seriesValue.Area);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var seriesItem in histogramSeries.Items)
+                        {
+                            dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesItem.RangeStart, seriesItem.RangeEnd, seriesItem.Area);
+                        }
+                    }
+                }
+                else if (series is OxyPlot.Series.HeatMapSeries heatMapSeries)
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "HeatMapSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
+
+                    dataTable.TableName = seriesName;
+                    dataTable.Columns.Add("id", typeof(int));
+                    dataTable.Columns.Add("xy", typeof(string));
+
+                    if (heatMapSeries.Data != null)
+                    {
+                        // Add columns for X values
+                        double x0 = heatMapSeries.X0;
+                        double x1 = heatMapSeries.X1;
+                        int xN = heatMapSeries.Data.GetLength(0) - 1;
+                        double xDelta = xN > 0 ? (x1 - x0) / xN : 0;
+                        dataTable.Columns.Add(x0.ToString(), typeof(string));
+                        for (int i = 1; i < heatMapSeries.Data.GetLength(0); i++)
+                        {
+                            x0 += xDelta;
+                            dataTable.Columns.Add(x0.ToString(), typeof(string));
+                        }
+
+                        // Add rows for Y values
+                        double y0 = heatMapSeries.Y0;
+                        double y1 = heatMapSeries.Y1;
+                        int yN = heatMapSeries.Data.GetLength(1) - 1;
+                        double yDelta = yN > 0 ? (y1 - y0) / yN : 0;
+                        dataTable.Rows.Add();
+                        dataTable.Rows[0][0] = 1;
+                        dataTable.Rows[0][1] = y0;
+
+                        for (int j = 1; j < heatMapSeries.Data.GetLength(1); j++)
+                        {
+                            dataTable.Rows.Add();
+                            y0 += yDelta;
+                            dataTable.Rows[j][0] = j + 1;
+                            dataTable.Rows[j][1] = y0;
+                        }
+
+                        // Fill in matrix values
+                        for (int x = 0; x < heatMapSeries.Data.GetLength(0); x++)
+                        {
+                            for (int y = 0; y < heatMapSeries.Data.GetLength(1); y++)
+                            {
+                                dataTable.Rows[y][x + 2] = heatMapSeries.Data[x, y];
+                            }
+                        }
+                    }
+                }
+                else if (series is OxyPlot.Series.ScatterErrorSeries scatterErrorSeries)
+                {
+                    seriesName = !string.IsNullOrEmpty(series.Title) ? series.Title : "ScatterErrorSeries_" + tableCount;
+                    foreach (var badChar in badCharacters)
+                    {
+                        seriesName = seriesName.Replace(badChar, "_");
+                    }
+
+                    dataTable.TableName = seriesName;
+                    dataTable.Columns.Add("id", typeof(int));
+                    dataTable.Columns.Add(seriesName + "_xLower", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_x", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_xUpper", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_yLower", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_y", typeof(string));
+                    dataTable.Columns.Add(seriesName + "_yUpper", typeof(string));
+
+                    if (scatterErrorSeries.ItemsSource != null)
+                    {
+                        var datalist = scatterErrorSeries.ItemsSource as IEnumerable<OxyPlot.Series.ScatterErrorPoint>;
+                        if (datalist != null)
+                        {
+                            foreach (var seriesValue in datalist.ToList())
+                            {
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesValue.LowerErrorX, seriesValue.X, seriesValue.UpperErrorX, seriesValue.LowerErrorY, seriesValue.Y, seriesValue.UpperErrorY);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var obj in scatterErrorSeries.ItemsSource.Cast<object>())
+                            {
+                                PropertyInfo? propX = obj.GetType().GetProperty(scatterErrorSeries.DataFieldX);
+                                string xVal = Convert.ToString(propX?.GetValue(obj, null)) ?? "";
+
+                                PropertyInfo? propY = obj.GetType().GetProperty(scatterErrorSeries.DataFieldY);
+                                string yVal = Convert.ToString(propY?.GetValue(obj, null)) ?? "";
+
+                                string xLower = "";
+                                if (scatterErrorSeries.DataFieldLowerErrorX != null)
+                                {
+                                    PropertyInfo? propXlower = obj.GetType().GetProperty(scatterErrorSeries.DataFieldLowerErrorX);
+                                    xLower = Convert.ToString(propXlower?.GetValue(obj, null)) ?? "";
+                                }
+
+                                string xUpper = "";
+                                if (scatterErrorSeries.DataFieldUpperErrorX != null)
+                                {
+                                    PropertyInfo? propXupper = obj.GetType().GetProperty(scatterErrorSeries.DataFieldUpperErrorX);
+                                    xUpper = Convert.ToString(propXupper?.GetValue(obj, null)) ?? "";
+                                }
+
+                                string yLower = "";
+                                if (scatterErrorSeries.DataFieldLowerErrorY != null)
+                                {
+                                    PropertyInfo? propYlower = obj.GetType().GetProperty(scatterErrorSeries.DataFieldLowerErrorY);
+                                    yLower = Convert.ToString(propYlower?.GetValue(obj, null)) ?? "";
+                                }
+
+                                string yUpper = "";
+                                if (scatterErrorSeries.DataFieldUpperErrorY != null)
+                                {
+                                    PropertyInfo? propYupper = obj.GetType().GetProperty(scatterErrorSeries.DataFieldUpperErrorY);
+                                    yUpper = Convert.ToString(propYupper?.GetValue(obj, null)) ?? "";
+                                }
+
+                                dataTable.Rows.Add(dataTable.Rows.Count + 1, xLower, xVal, xUpper, yLower, yVal, yUpper);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var seriesValue in scatterErrorSeries.Points)
+                        {
+                            dataTable.Rows.Add(dataTable.Rows.Count + 1, seriesValue.LowerErrorX, seriesValue.X, seriesValue.UpperErrorX, seriesValue.LowerErrorY, seriesValue.Y, seriesValue.UpperErrorY);
+                        }
+                    }
+                }
+
+                // Check for item source on a X category axis
+                if (series is OxyPlot.Series.XYAxisSeries xySeries)
+                {
+                    var xCat = xySeries.XAxis as OxyPlot.Axes.CategoryAxis;
+                    if (xCat != null)
+                    {
+                        dataTable.Columns.Add("Xcategory", typeof(string));
+
+                        if (xCat.ItemsSource != null)
+                        {
+                            var xCatList = xCat.ItemsSource as IEnumerable<string>;
+                            if (xCatList != null)
+                            {
+                                for (int i = 0; i < Math.Min(dataTable.Rows.Count, xCatList.Count()); i++)
+                                {
+                                    dataTable.Rows[i]["Xcategory"] = xCatList.ElementAt(i);
+                                }
+                            }
+                            else
+                            {
+                                int i = 0;
+                                foreach (var obj in xCat.ItemsSource.Cast<object>())
+                                {
+                                    if (i >= dataTable.Rows.Count) break;
+                                    if (xCat.LabelField != null)
+                                    {
+                                        PropertyInfo? propLabel = obj.GetType().GetProperty(xCat.LabelField);
+                                        string xVal = Convert.ToString(propLabel?.GetValue(obj, null)) ?? "";
+                                        dataTable.Rows[i]["Xcategory"] = xVal;
+                                    }
+                                    i++;
+                                }
+                            }
+                        }
+                        else if (xCat.Labels.Count > 0)
+                        {
+                            for (int i = 0; i < Math.Min(dataTable.Rows.Count, xCat.Labels.Count); i++)
+                            {
+                                dataTable.Rows[i]["Xcategory"] = xCat.Labels[i];
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Check for item source on a Y category axis
+                        var yCat = xySeries.YAxis as OxyPlot.Axes.CategoryAxis;
+                        if (yCat != null)
+                        {
+                            dataTable.Columns.Add("Ycategory", typeof(string));
+
+                            if (yCat.ItemsSource != null)
+                            {
+                                var yCatList = yCat.ItemsSource as IEnumerable<string>;
+                                if (yCatList != null)
+                                {
+                                    for (int i = 0; i < Math.Min(dataTable.Rows.Count, yCatList.Count()); i++)
+                                    {
+                                        dataTable.Rows[i]["Ycategory"] = yCatList.ElementAt(i);
+                                    }
+                                }
+                                else
+                                {
+                                    int i = 0;
+                                    foreach (var obj in yCat.ItemsSource.Cast<object>())
+                                    {
+                                        if (i >= dataTable.Rows.Count) break;
+                                        if (yCat.LabelField != null)
+                                        {
+                                            PropertyInfo? propLabel = obj.GetType().GetProperty(yCat.LabelField);
+                                            string yVal = Convert.ToString(propLabel?.GetValue(obj, null)) ?? "";
+                                            dataTable.Rows[i]["Ycategory"] = yVal;
+                                        }
+                                        i++;
+                                    }
+                                }
+                            }
+                            else if (yCat.Labels.Count > 0)
+                            {
+                                for (int i = 0; i < Math.Min(dataTable.Rows.Count, yCat.Labels.Count); i++)
+                                {
+                                    dataTable.Rows[i]["Ycategory"] = yCat.Labels[i];
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -2516,50 +3259,107 @@ namespace OxyPlotControls
 
         private void SwapDataPoints(OxyPlot.Series.DataPointSeries dps)
         {
-            if (dps?.Points == null || dps.Points.Count == 0) return;
-            var pnts = dps.Points.ToArray();
-            dps.Points.Clear();
-            foreach (var p in pnts)
+            if (dps == null) return;
+
+            if (dps.ItemsSource != null)
             {
-                dps.Points.Add(new DataPoint(p.Y, p.X));
+                // Swap DataField X/Y
+                if (dps.DataFieldX == null && dps.DataFieldY == null)
+                {
+                    dps.DataFieldX = "Y";
+                    dps.DataFieldY = "X";
+                }
+                else
+                {
+                    string dfx = dps.DataFieldX ?? "";
+                    dps.DataFieldX = dps.DataFieldY;
+                    dps.DataFieldY = dfx;
+                }
+
+                // Handle AreaSeries DataField X2/Y2
+                if (dps is OxyPlot.Series.AreaSeries areaSeries)
+                {
+                    string dfx2 = areaSeries.DataFieldX2 ?? "";
+                    areaSeries.DataFieldX2 = areaSeries.DataFieldY2;
+                    areaSeries.DataFieldY2 = dfx2;
+                }
+            }
+            else
+            {
+                if (dps.Points == null || dps.Points.Count == 0) return;
+                var pnts = dps.Points.ToArray();
+                dps.Points.Clear();
+                foreach (var p in pnts)
+                {
+                    dps.Points.Add(new DataPoint(p.Y, p.X));
+                }
             }
         }
 
         private void SwapScatterSeries(OxyPlot.Series.ScatterSeries series)
         {
-            if (series?.Points == null || series.Points.Count == 0) return;
-            var pnts = series.Points.ToArray();
-            series.Points.Clear();
-            foreach (var p in pnts)
+            if (series == null) return;
+
+            if (series.ItemsSource != null)
             {
-                series.Points.Add(new OxyPlot.Series.ScatterPoint(p.Y, p.X, p.Size, p.Value, p.Tag));
+                string dfx = series.DataFieldX ?? "";
+                series.DataFieldX = series.DataFieldY;
+                series.DataFieldY = dfx;
+            }
+            else
+            {
+                if (series.Points == null || series.Points.Count == 0) return;
+                var pnts = series.Points.ToArray();
+                series.Points.Clear();
+                foreach (var p in pnts)
+                {
+                    series.Points.Add(new OxyPlot.Series.ScatterPoint(p.Y, p.X, p.Size, p.Value, p.Tag));
+                }
             }
         }
 
         private void SwapScatterErrorSeries(OxyPlot.Series.ScatterErrorSeries series)
         {
-            if (series?.Points == null || series.Points.Count == 0) return;
-            var pnts = series.Points.ToArray();
-            series.Points.Clear();
-            foreach (var p in pnts)
+            if (series == null) return;
+
+            if (series.ItemsSource != null)
             {
-                series.Points.Add(new OxyPlot.Series.ScatterErrorPoint(p.Y, p.X, p.ErrorY, p.ErrorX, p.Size, p.Value, p.Tag));
+                string dfx = series.DataFieldX ?? "";
+                series.DataFieldX = series.DataFieldY;
+                series.DataFieldY = dfx;
+
+                string dfxLower = series.DataFieldLowerErrorX ?? "";
+                series.DataFieldLowerErrorX = series.DataFieldLowerErrorY;
+                series.DataFieldLowerErrorY = dfxLower;
+
+                string dfxUpper = series.DataFieldUpperErrorX ?? "";
+                series.DataFieldUpperErrorX = series.DataFieldUpperErrorY;
+                series.DataFieldUpperErrorY = dfxUpper;
+            }
+            else
+            {
+                if (series.Points == null || series.Points.Count == 0) return;
+                var pnts = series.Points.ToArray();
+                series.Points.Clear();
+                foreach (var p in pnts)
+                {
+                    series.Points.Add(new OxyPlot.Series.ScatterErrorPoint(p.Y, p.X, p.ErrorY, p.ErrorX, p.Size, p.Value, p.Tag, p.LowerErrorY, p.UpperErrorY, p.LowerErrorX, p.UpperErrorX));
+                }
             }
         }
 
         #endregion
 
-        #region Save Image
+        #region Save Plot
 
         /// <summary>
-        /// Save plot image.
+        /// On Click, open the save plot image dialog.
         /// </summary>
         private void SaveImageButton_Click(object sender, RoutedEventArgs e)
         {
             if (PlotView == null) return;
-            var saveDialog = new SavePlotImageDialog(PlotView);
-            saveDialog.Owner = Window.GetWindow(this);
-            saveDialog.ShowDialog();
+            var saveImageDialog = new SavePlotImageDialog(PlotView) { Owner = Window.GetWindow(this) };
+            saveImageDialog.ShowDialog();
         }
 
         #endregion

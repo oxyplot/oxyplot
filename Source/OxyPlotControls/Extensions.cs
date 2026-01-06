@@ -224,6 +224,38 @@ namespace OxyPlotControls
         }
 
         /// <summary>
+        /// Converts OxyPlot HorizontalAlignment to WPF HorizontalAlignment.
+        /// </summary>
+        /// <param name="alignment">The OxyPlot horizontal alignment.</param>
+        /// <returns>The corresponding WPF horizontal alignment.</returns>
+        public static System.Windows.HorizontalAlignment ToHorizontalAlignment(this OxyPlot.HorizontalAlignment alignment)
+        {
+            return alignment switch
+            {
+                OxyPlot.HorizontalAlignment.Left => System.Windows.HorizontalAlignment.Left,
+                OxyPlot.HorizontalAlignment.Center => System.Windows.HorizontalAlignment.Center,
+                OxyPlot.HorizontalAlignment.Right => System.Windows.HorizontalAlignment.Right,
+                _ => System.Windows.HorizontalAlignment.Center
+            };
+        }
+
+        /// <summary>
+        /// Converts OxyPlot VerticalAlignment to WPF VerticalAlignment.
+        /// </summary>
+        /// <param name="alignment">The OxyPlot vertical alignment.</param>
+        /// <returns>The corresponding WPF vertical alignment.</returns>
+        public static System.Windows.VerticalAlignment ToVerticalAlignment(this OxyPlot.VerticalAlignment alignment)
+        {
+            return alignment switch
+            {
+                OxyPlot.VerticalAlignment.Top => System.Windows.VerticalAlignment.Top,
+                OxyPlot.VerticalAlignment.Middle => System.Windows.VerticalAlignment.Center,
+                OxyPlot.VerticalAlignment.Bottom => System.Windows.VerticalAlignment.Bottom,
+                _ => System.Windows.VerticalAlignment.Center
+            };
+        }
+
+        /// <summary>
         /// Copies common axis properties from one axis to another.
         /// </summary>
         /// <param name="toAxis">The target axis to copy properties to.</param>
