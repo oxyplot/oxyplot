@@ -194,6 +194,23 @@ namespace OxyPlot.Series
                     null,
                     LineJoin.Miter);
             }
+            ErrorBarItem errorBarItem = item as ErrorBarItem;
+            if (errorBarItem != null)
+            {
+                if (errorBarItem.IsMarkerVisible)
+                {
+                    ScreenPoint screenPoint = new ScreenPoint(upperErrorPoint.X + errorBarItem.MarkerOffset.X,
+                        upperErrorPoint.Y + errorBarItem.MarkerOffset.Y);
+                    rc.DrawMarker(screenPoint,
+                        errorBarItem.MarkerType,
+                        errorBarItem.CustomOutline,
+                        errorBarItem.MarkerSize,
+                        errorBarItem.MarkerColor,
+                        errorBarItem.MarkerStrokeColor,
+                        errorBarItem.MarkerStrokeThickness,
+                        this.EdgeRenderingMode);
+                }
+            }
         }
     }
 }
