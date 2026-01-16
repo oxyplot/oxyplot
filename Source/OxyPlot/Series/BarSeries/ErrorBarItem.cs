@@ -61,5 +61,10 @@ namespace OxyPlot.Series
 
             return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1}", this.Value, this.Error);
         }
+        /// <summary>
+        /// top
+        /// </summary>
+        public double Spacing { get; set; }
+       
     }
 }
