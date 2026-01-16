@@ -7,10 +7,12 @@ All notable changes to this project will be documented in this file.
 
 - Example to demonstrate how to create vertical BarSeries
 - Example to demonstrate how to create ErrorBarSeries Marker
-
+- Example to demonstrate how to create ErrorBarItem Spacing
+- 
 ### Fixed
 - DateTimeAxis converting local time rather than UTC to TimeZone
 - ErrorBarItem add marker
+- ErrorBarItem add spacing
 
 ## [2.2.0] - 2024-09-03
 
