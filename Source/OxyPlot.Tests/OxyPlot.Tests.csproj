@@ -1,10 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net462;net6.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net462;net6.0;net8.0;net10.0</TargetFrameworks>
+        <AllowMissingPrunePackageData>true</AllowMissingPrunePackageData>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <Description>OxyPlot unit tests</Description>
         <LangVersion>9</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsNotAsErrors>NU1903</WarningsNotAsErrors>
         <NoWarn>$(NoWarn);CS0618</NoWarn>
     </PropertyGroup>
     <ItemGroup>
