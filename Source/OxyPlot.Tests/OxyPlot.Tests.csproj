@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net462;net6.0;net8.0;net10.0</TargetFrameworks>
+        <TargetFrameworks>net462;net8.0;net10.0</TargetFrameworks>
         <AllowMissingPrunePackageData>true</AllowMissingPrunePackageData>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <Description>OxyPlot unit tests</Description>
-        <LangVersion>9</LangVersion>
+        <LangVersion>14</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsNotAsErrors>NU1903</WarningsNotAsErrors>
         <NoWarn>$(NoWarn);CS0618</NoWarn>
@@ -14,10 +14,10 @@
         <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.0" />
-        <PackageReference Include="NSubstitute" Version="4.2.1" />
-        <PackageReference Include="NUnit" Version="3.14.0" />
-        <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
+        <PackageReference Include="NSubstitute" Version="5.3.0" />
+        <PackageReference Include="NUnit" Version="4.5.1" />
+        <PackageReference Include="NUnit3TestAdapter" Version="6.2.0" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="Schemas\svg.xsd">
@@ -50,5 +50,8 @@
         <Content Include="Imaging\TestImages\test_8bit.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Update="DotNet.ReproducibleBuilds" Version="2.0.2" />
     </ItemGroup>
 </Project>

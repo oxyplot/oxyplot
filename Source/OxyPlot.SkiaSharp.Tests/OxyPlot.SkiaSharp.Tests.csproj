@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net462;net6.0;net8.0;net10.0</TargetFrameworks>
+        <TargetFrameworks>net462;net8.0;net10.0</TargetFrameworks>
         <AllowMissingPrunePackageData>true</AllowMissingPrunePackageData>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <Description>OxyPlot SkiaSharp unit tests</Description>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsNotAsErrors>NU1903</WarningsNotAsErrors>
         <Platforms>AnyCPU;x86;x64</Platforms>
-        <LangVersion>8</LangVersion>
+        <LangVersion>14</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(TargetFramework)|$(Platform)'=='net462|AnyCPU'">
         <PlatformTarget>x86</PlatformTarget>
@@ -24,8 +24,11 @@
         <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.0" />
-        <PackageReference Include="NUnit" Version="3.14.0" />
-        <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
+        <PackageReference Include="NUnit" Version="4.5.1" />
+        <PackageReference Include="NUnit3TestAdapter" Version="6.2.0" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Update="DotNet.ReproducibleBuilds" Version="2.0.2" />
     </ItemGroup>
 </Project>

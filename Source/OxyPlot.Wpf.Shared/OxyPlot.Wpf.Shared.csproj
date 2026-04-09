@@ -3,7 +3,7 @@
     <TargetFrameworks>net462;net6.0-windows;net8.0-windows;net10.0-windows</TargetFrameworks>
     <AllowMissingPrunePackageData>true</AllowMissingPrunePackageData>
     <UseWPF>true</UseWPF>
-    <LangVersion>8</LangVersion>
+    <LangVersion>14</LangVersion>
     <Description>OxyPlot is a plotting library for .NET. This package is the base for WPF PlotView implementations.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -16,5 +16,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="DotNet.ReproducibleBuilds" Version="2.0.2" />
   </ItemGroup>
 </Project>

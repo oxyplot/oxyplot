@@ -10,6 +10,7 @@
 namespace OxyPlot.Tests
 {
     using NUnit.Framework;
+    using NUnit.Framework.Legacy;
 
     /// <summary>
     /// Provides unit tests for the <see cref="CodeGenerator" />.

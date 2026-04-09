@@ -6,7 +6,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Example models for OxyPlot.</Description>
     <PackageTags>plotting plot charting chart</PackageTags>
-    <LangVersion>11</LangVersion>
+    <LangVersion>14</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\DodgyContourData.tsv" />
@@ -28,5 +28,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\OxyPlot\OxyPlot.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="DotNet.ReproducibleBuilds" Version="2.0.2" />
   </ItemGroup>
 </Project>
