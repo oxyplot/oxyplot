@@ -23,10 +23,6 @@
     <EmbeddedResource Include="Resources\Y.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Net.Requests" Version="4.3.0" />
-    <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\OxyPlot\OxyPlot.csproj" />
   </ItemGroup>
   <ItemGroup>

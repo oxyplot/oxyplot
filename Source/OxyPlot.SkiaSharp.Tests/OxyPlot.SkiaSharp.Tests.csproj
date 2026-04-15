@@ -5,7 +5,6 @@
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <Description>OxyPlot SkiaSharp unit tests</Description>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <WarningsNotAsErrors>NU1903</WarningsNotAsErrors>
         <Platforms>AnyCPU;x86;x64</Platforms>
         <LangVersion>14</LangVersion>
     </PropertyGroup>
