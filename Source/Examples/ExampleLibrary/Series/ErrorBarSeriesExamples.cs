@@ -258,10 +258,10 @@ namespace ExampleLibrary
             var outline = new ScreenPoint[points];
             for (int i = 0; i < points; i++)
             {
-                double x = 2.0 * i / (points - 1) - 1; // -1 到 1
+                double x = 2.0 * i / (points - 1) - 1; 
                 double y = Math.Sin(x * Math.PI * 3) * Math.Exp(-Math.Abs(x)) * 0.8;
 
-                // 添加一些随机脉冲效果
+                // Add some random pulse effects
                 y += Math.Sin(x * Math.PI * 8) * 0.1 * Math.Exp(-x * x * 4);
 
                 outline[i] = new ScreenPoint(x, y);
@@ -274,7 +274,7 @@ namespace ExampleLibrary
             for (int i = 0; i < points; i++)
             {
                 double progress = (double)i / points;
-                double radius = 0.2 + 0.8 * progress; // 半径逐渐增大
+                double radius = 0.2 + 0.8 * progress; 
                 double angle = 2 * Math.PI * (5 * progress + tightness * i);
 
                 outline[i] = new ScreenPoint(
