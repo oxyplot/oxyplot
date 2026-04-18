@@ -199,8 +199,14 @@ namespace OxyPlot.Series
             {
                 if (errorBarItem.IsMarkerVisible)
                 {
-                    ScreenPoint screenPoint = new ScreenPoint(upperErrorPoint.X + errorBarItem.MarkerOffset.X,
-                        upperErrorPoint.Y + errorBarItem.MarkerOffset.Y);
+                    double x = upperErrorPoint.X + errorBarItem.MarkerOffset.X;
+                    double y = upperErrorPoint.Y + errorBarItem.MarkerOffset.Y;
+                    if (this.IsTransposed())
+                    {
+                        x = upperErrorPoint.X + errorBarItem.MarkerOffset.Y;
+                        y = upperErrorPoint.Y - errorBarItem.MarkerOffset.X;
+                    }
+                    ScreenPoint screenPoint = new ScreenPoint(x, y);
                     rc.DrawMarker(screenPoint,
                         errorBarItem.MarkerType,
                         errorBarItem.CustomOutline,
