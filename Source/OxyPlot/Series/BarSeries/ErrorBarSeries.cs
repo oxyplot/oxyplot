@@ -113,7 +113,18 @@ namespace OxyPlot.Series
             this.MinX = minValue;
             this.MaxX = maxValue;
         }
+        private ScreenPoint GetScreenPoint(ScreenPoint screenPoint, double spacing)
+        {
 
+            if (!this.IsTransposed())
+            {
+                return new ScreenPoint(screenPoint.X, screenPoint.Y + spacing);
+            }
+            else
+            {
+                return new ScreenPoint(screenPoint.X - spacing, screenPoint.Y);
+            }
+        }
         /// <inheritdoc/>
         protected override void RenderItem(
             IRenderContext rc,
@@ -123,11 +134,22 @@ namespace OxyPlot.Series
             BarItem item,
             OxyRect rect)
         {
-            base.RenderItem(rc, barValue, categoryValue, actualBarWidth, item, rect);
 
-            if (!(item is ErrorBarItem errorItem))
+            ErrorBarItem errorItem = item as ErrorBarItem;
+            if (errorItem == null)
             {
+                base.RenderItem(rc, barValue, categoryValue, actualBarWidth, item, rect);
                 return;
+            }
+            else
+            {
+                OxyRect errRect = new OxyRect(rect.Left, rect.Top + errorItem.Spacing, rect.Width, rect.Height);
+                if (this.IsTransposed())
+                {
+
+                    errRect = new OxyRect(rect.Left - errorItem.Spacing, rect.Top, rect.Width, rect.Height);
+                }
+                base.RenderItem(rc, barValue, categoryValue, actualBarWidth, item, errRect);
             }
 
             // Render the error
@@ -139,8 +161,8 @@ namespace OxyPlot.Series
             var categoryMiddle = categoryValue + (0.5 * actualBarWidth);
             var categoryEnd = categoryValue + (end * actualBarWidth);
 
-            var lowerErrorPoint = this.Transform(errorStart, categoryMiddle);
-            var upperErrorPoint = this.Transform(errorEnd, categoryMiddle);
+            var lowerErrorPoint = this.GetScreenPoint(this.Transform(errorStart, categoryMiddle), errorItem.Spacing);
+            var upperErrorPoint = this.GetScreenPoint(this.Transform(errorEnd, categoryMiddle), errorItem.Spacing);
 
             rc.DrawLine(
                 new List<ScreenPoint> { lowerErrorPoint, upperErrorPoint },
@@ -152,8 +174,8 @@ namespace OxyPlot.Series
 
             if (this.ErrorWidth > 0)
             {
-                var lowerLeftErrorPoint = this.Transform(errorStart, categoryStart);
-                var lowerRightErrorPoint = this.Transform(errorStart, categoryEnd);
+                var lowerLeftErrorPoint = this.GetScreenPoint(this.Transform(errorStart, categoryStart), errorItem.Spacing);
+                var lowerRightErrorPoint = this.GetScreenPoint(this.Transform(errorStart, categoryEnd), errorItem.Spacing);
                 rc.DrawLine(
                     new List<ScreenPoint> { lowerLeftErrorPoint, lowerRightErrorPoint },
                     this.StrokeColor,
@@ -162,8 +184,8 @@ namespace OxyPlot.Series
                     null,
                     LineJoin.Miter);
 
-                var upperLeftErrorPoint = this.Transform(errorEnd, categoryStart);
-                var upperRightErrorPoint = this.Transform(errorEnd, categoryEnd);
+                var upperLeftErrorPoint = this.GetScreenPoint(this.Transform(errorEnd, categoryStart), errorItem.Spacing);
+                var upperRightErrorPoint = this.GetScreenPoint(this.Transform(errorEnd, categoryEnd), errorItem.Spacing);
                 rc.DrawLine(
                     new List<ScreenPoint> { upperLeftErrorPoint, upperRightErrorPoint },
                     this.StrokeColor,
@@ -171,6 +193,29 @@ namespace OxyPlot.Series
                     this.EdgeRenderingMode.GetActual(EdgeRenderingMode.PreferSharpness),
                     null,
                     LineJoin.Miter);
+            }
+            ErrorBarItem errorBarItem = item as ErrorBarItem;
+            if (errorBarItem != null)
+            {
+                if (errorBarItem.IsMarkerVisible)
+                {
+                    double x = upperErrorPoint.X + errorBarItem.MarkerOffset.X;
+                    double y = upperErrorPoint.Y + errorBarItem.MarkerOffset.Y;
+                    if (this.IsTransposed())
+                    {
+                        x = upperErrorPoint.X + errorBarItem.MarkerOffset.Y;
+                        y = upperErrorPoint.Y - errorBarItem.MarkerOffset.X;
+                    }
+                    ScreenPoint screenPoint = new ScreenPoint(x, y);
+                    rc.DrawMarker(screenPoint,
+                        errorBarItem.MarkerType,
+                        errorBarItem.CustomOutline,
+                        errorBarItem.MarkerSize,
+                        errorBarItem.MarkerColor,
+                        errorBarItem.MarkerStrokeColor,
+                        errorBarItem.MarkerStrokeThickness,
+                        this.EdgeRenderingMode);
+                }
             }
         }
     }
