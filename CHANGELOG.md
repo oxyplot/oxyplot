@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - DateTimeAxis converting local time rather than UTC to TimeZone
 
-### Upgraded
+### Changed
 - Target .NET 10, remove target .NET 6 (out of support and incompatible with nuget updates)
 - Various nuget package upgrades
 
