@@ -10,6 +10,7 @@ namespace OxyPlot.Tests
     using System.Linq;
 
     using NUnit.Framework;
+    using NUnit.Framework.Legacy;
 
     /// <summary>
     /// Unit tests for the <see cref="ComparerHelper"/>.

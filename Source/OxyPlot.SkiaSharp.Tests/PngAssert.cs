@@ -35,17 +35,17 @@ namespace OxyPlot.SkiaSharp.Tests
             {
                 EnsureFolder(expected);
                 File.Copy(actual, expected);
-                Assert.Fail("File not found: {0}", expected);
+                Assert.Fail(string.Format("File not found: {0}", expected));
             }
 
             if (expectedImage.GetLength(0) != actualImage.GetLength(0))
             {
-                Assert.Fail("Expected height: {0}\nActual height:{1}\n{2}", expectedImage.GetLength(0), actualImage.GetLength(0), message);
+                Assert.Fail(string.Format("Expected height: {0}\nActual height:{1}\n{2}", expectedImage.GetLength(0), actualImage.GetLength(0), message));
             }
 
             if (expectedImage.GetLength(1) != actualImage.GetLength(1))
             {
-                Assert.Fail("Expected width: {0}\nActual width:{1}\n{2}", expectedImage.GetLength(1), actualImage.GetLength(1), message);
+                Assert.Fail(string.Format("Expected width: {0}\nActual width:{1}\n{2}", expectedImage.GetLength(1), actualImage.GetLength(1), message));
             }
 
             var w = expectedImage.GetLength(0);
@@ -87,13 +87,13 @@ namespace OxyPlot.SkiaSharp.Tests
                     File.WriteAllBytes(output, encoder.Encode(differenceImage));
                 }
 
-                Assert.Fail(
+                Assert.Fail(string.Format(
                     "{0}:\nPixel differences: {1}\nExpected image: {2}\nActual image: {3}\nDiff image: {4}",
                     message,
                     differences,
                     Path.GetFullPath(expected),
                     Path.GetFullPath(actual),
-                    Path.GetFullPath(output));
+                    Path.GetFullPath(output)));
             }
         }
 

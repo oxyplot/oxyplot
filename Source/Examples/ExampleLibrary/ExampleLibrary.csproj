@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net462;net6.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net462;net6.0;net8.0;net10.0</TargetFrameworks>
+    <AllowMissingPrunePackageData>true</AllowMissingPrunePackageData>
     <PackageId>OxyPlot.ExampleLibrary</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Example models for OxyPlot.</Description>
     <PackageTags>plotting plot charting chart</PackageTags>
-    <LangVersion>11</LangVersion>
+    <LangVersion>14</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\DodgyContourData.tsv" />
@@ -22,10 +23,9 @@
     <EmbeddedResource Include="Resources\Y.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Net.Requests" Version="4.3.0" />
-    <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
+    <ProjectReference Include="..\..\OxyPlot\OxyPlot.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\OxyPlot\OxyPlot.csproj" />
+    <PackageReference Update="DotNet.ReproducibleBuilds" Version="2.0.2" />
   </ItemGroup>
 </Project>

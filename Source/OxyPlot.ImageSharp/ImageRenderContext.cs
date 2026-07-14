@@ -316,7 +316,7 @@ namespace OxyPlot.ImageSharp
             var doPad = interpolate;
 
             var srcRough = new Rectangle((int)Math.Floor(src.X), (int)Math.Floor(src.Y), (int)Math.Ceiling(src.Width + 3), (int)Math.Ceiling(src.Height + 3));
-            srcRough.Intersect(sourceImage.Bounds());
+            srcRough.Intersect(sourceImage.Bounds);
             var srcOffset = new PointF(srcRough.X - src.X, srcRough.Y - src.Y);
             srcOffset.Offset(0.5f, 0.5f); // texel alignment for resampler
             if (doPad)
@@ -345,7 +345,7 @@ namespace OxyPlot.ImageSharp
                 sourceImage.Mutate(img =>
                 {
                     img.Transform(rescale, resampler);
-                    destRough.Intersect(sourceImage.Bounds());
+                    destRough.Intersect(sourceImage.Bounds);
                     img.Crop(destRough);
                 });
 
@@ -633,7 +633,7 @@ namespace OxyPlot.ImageSharp
         /// <param name="rectangle">The region to copy.</param>
         private void Blit(Image<Rgba32> source, Image<Rgba32> destination, Rectangle rectangle)
         {
-            rectangle.Intersect(source.Bounds());
+            rectangle.Intersect(source.Bounds);
 
             for (int i = rectangle.Left; i < rectangle.Right; i++)
             {
