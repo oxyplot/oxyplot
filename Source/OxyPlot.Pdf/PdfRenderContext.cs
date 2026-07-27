@@ -81,7 +81,7 @@ namespace OxyPlot.Pdf
         }
 
         /// <inheritdoc/>
-        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray = null)
         {
             this.SetSmoothingMode(this.ShouldUseAntiAliasingForEllipse(edgeRenderingMode));
             
@@ -179,7 +179,7 @@ namespace OxyPlot.Pdf
         }
 
         /// <inheritdoc/>
-        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray = null)
         {
             this.SetSmoothingMode(this.ShouldUseAntiAliasingForRect(edgeRenderingMode));
             if (fill.IsVisible())

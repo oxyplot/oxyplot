@@ -52,7 +52,7 @@ namespace OxyPlot.Wpf
         public double BalancedLineDrawingThicknessLimit { get; set; }
 
         ///<inheritdoc/>
-        public override void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public override void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray = null)
         {
             if (rectangles.Count == 0)
             {
@@ -224,7 +224,7 @@ namespace OxyPlot.Wpf
         }
 
         ///<inheritdoc/>
-        public override void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public override void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray = null)
         {
             if (rectangles.Count == 0)
             {

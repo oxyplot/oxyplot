@@ -32,7 +32,8 @@ namespace OxyPlot
         /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the extents will not be stroked.</param>
         /// <param name="thickness">The thickness (in device independent units, 1/96 inch).</param>
         /// <param name="edgeRenderingMode">The edge rendering mode.</param>
-        void DrawEllipse(OxyRect extents, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode);
+        /// <param name="dashArray"></param>
+        void DrawEllipse(OxyRect extents, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[]? dashArray = null);
 
         /// <summary>
         /// Draws a collection of ellipses, where all have the same stroke and fill.
@@ -42,10 +43,11 @@ namespace OxyPlot
         /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be stroked.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        /// <param name="dashArray"></param>
         /// <remarks>
         /// This should have better performance than calling <see cref="DrawEllipse" /> multiple times.
         /// </remarks>
-        void DrawEllipses(IList<OxyRect> extents, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode);
+        void DrawEllipses(IList<OxyRect> extents, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[]? dashArray = null);
 
         /// <summary>
         /// Draws a polyline.
@@ -133,7 +135,8 @@ namespace OxyPlot
         /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the rectangle will not be stroked.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         /// <param name="edgeRenderingMode">The edge rendering mode.</param>
-        void DrawRectangle(OxyRect rectangle, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode);
+        /// <param name="dashArray"></param>
+        void DrawRectangle(OxyRect rectangle, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[]? dashArray = null);
 
         /// <summary>
         /// Draws a collection of extents, where all have the same stroke and fill.
@@ -143,10 +146,11 @@ namespace OxyPlot
         /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the extents will not be stroked.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        /// <param name="dashArray"></param>
         /// <remarks>
         /// This should have better performance than calling <see cref="DrawRectangle" /> multiple times.
         /// </remarks>
-        void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode);
+        void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[]? dashArray = null);
 
         /// <summary>
         /// Draws text.

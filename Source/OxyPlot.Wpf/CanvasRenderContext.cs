@@ -99,13 +99,13 @@ namespace OxyPlot.Wpf
         public TextFormattingMode TextFormattingMode { get; set; }
 
         ///<inheritdoc/>
-        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray = null)
         {
-            this.DrawEllipses(new[] { rect }, fill, stroke, thickness, edgeRenderingMode);
+            this.DrawEllipses(new[] { rect }, fill, stroke, thickness, edgeRenderingMode, dashArray);
         }
 
         ///<inheritdoc/>
-        public override void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public override void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray = null)
         {
             if (rectangles.Count == 0)
             {
@@ -113,7 +113,7 @@ namespace OxyPlot.Wpf
             }
 
             var path = this.CreateAndAdd<Path>();
-            this.SetStroke(path, stroke, thickness, edgeRenderingMode);
+            this.SetStroke(path, stroke, thickness, edgeRenderingMode, LineJoin.Miter, dashArray);
             if (!fill.IsUndefined())
             {
                 path.Fill = this.GetCachedBrush(fill);
@@ -263,13 +263,13 @@ namespace OxyPlot.Wpf
         }
 
         ///<inheritdoc/>
-        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray = null)
         {
-            this.DrawRectangles(new[] { rect }, fill, stroke, thickness, edgeRenderingMode);
+            this.DrawRectangles(new[] { rect }, fill, stroke, thickness, edgeRenderingMode, dashArray);
         }
 
         ///<inheritdoc/>
-        public override void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public override void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray = null)
         {
             if (rectangles.Count == 0)
             {
@@ -277,7 +277,7 @@ namespace OxyPlot.Wpf
             }
 
             var path = this.CreateAndAdd<Path>();
-            this.SetStroke(path, stroke, thickness, edgeRenderingMode);
+            this.SetStroke(path, stroke, thickness, edgeRenderingMode, LineJoin.Miter, dashArray);
             if (!fill.IsUndefined())
             {
                 path.Fill = this.GetCachedBrush(fill);

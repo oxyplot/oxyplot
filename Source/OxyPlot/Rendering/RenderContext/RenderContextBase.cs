@@ -67,18 +67,18 @@ namespace OxyPlot
         public bool RendersToScreen { get; set; }
 
         /// <inheritdoc/>
-        public virtual void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public virtual void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray)
         {
             var polygon = CreateEllipse(rect);
             this.DrawPolygon(polygon, fill, stroke, thickness, edgeRenderingMode, null, LineJoin.Miter);
         }
 
         /// <inheritdoc/>
-        public virtual void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public virtual void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray)
         {
             foreach (var r in rectangles)
             {
-                this.DrawEllipse(r, fill, stroke, thickness, edgeRenderingMode);
+                this.DrawEllipse(r, fill, stroke, thickness, edgeRenderingMode, dashArray);
             }
         }
 
@@ -133,18 +133,18 @@ namespace OxyPlot
         }
 
         /// <inheritdoc/>
-        public virtual void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public virtual void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray = null)
         {
             var polygon = CreateRectangle(rect);
-            this.DrawPolygon(polygon, fill, stroke, thickness, edgeRenderingMode, null, LineJoin.Miter);
+            this.DrawPolygon(polygon, fill, stroke, thickness, edgeRenderingMode, dashArray, LineJoin.Miter);
         }
 
         /// <inheritdoc/>
-        public virtual void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public virtual void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray = null)
         {
             foreach (var r in rectangles)
             {
-                this.DrawRectangle(r, fill, stroke, thickness, edgeRenderingMode);
+                this.DrawRectangle(r, fill, stroke, thickness, edgeRenderingMode, dashArray);
             }
         }
 

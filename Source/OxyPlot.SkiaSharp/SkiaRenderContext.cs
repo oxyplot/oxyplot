@@ -87,7 +87,7 @@ namespace OxyPlot.SkiaSharp
         }
 
         /// <inheritdoc/>
-        public void DrawEllipse(OxyRect extents, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public void DrawEllipse(OxyRect extents, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray = null)
         {
             if (!fill.IsVisible() && !(stroke.IsVisible() || thickness <= 0))
             {
@@ -110,7 +110,7 @@ namespace OxyPlot.SkiaSharp
         }
 
         /// <inheritdoc/>
-        public void DrawEllipses(IList<OxyRect> extents, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public void DrawEllipses(IList<OxyRect> extents, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray = null)
         {
             if (!fill.IsVisible() && (!stroke.IsVisible() || thickness <= 0))
             {
@@ -315,7 +315,7 @@ namespace OxyPlot.SkiaSharp
         }
 
         /// <inheritdoc/>
-        public void DrawRectangle(OxyRect rectangle, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public void DrawRectangle(OxyRect rectangle, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray = null)
         {
             if (!fill.IsVisible() && !(stroke.IsVisible() || thickness <= 0))
             {
@@ -338,7 +338,7 @@ namespace OxyPlot.SkiaSharp
         }
 
         /// <inheritdoc/>
-        public void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode)
+        public void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray = null)
         {
             if (!fill.IsVisible() && !(stroke.IsVisible() || thickness <= 0) || rectangles.Count == 0)
             {
