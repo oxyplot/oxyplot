@@ -5,14 +5,22 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Example to demonstrate how to create vertical BarSeries
-
 ### Fixed
-- DateTimeAxis converting local time rather than UTC to TimeZone
 
 ### Changed
-- Target .NET 10, remove target .NET 6 (out of support and incompatible with nuget updates)
-- Various nuget package upgrades
+
+## [2.2.1] - 2026-07-29
+
+### Added
+
+- Example to demonstrate how to create vertical BarSeries (#2116)
+
+### Fixed
+- DateTimeAxis converting local time rather than UTC to TimeZone (#2129)
+
+### Changed
+- Target .NET 10, remove target .NET 6 (out of support and incompatible with nuget updates) (#2161)
+- Various nuget package upgrades (#2161)
 
 ## [2.2.0] - 2024-09-03
 
@@ -529,7 +537,8 @@ All notable changes to this project will be documented in this file.
 - Add overridable Axis.FormatValueOverride (#181)
 - PngExporter text formatting (#170)
 
-[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v2.2.1...HEAD
+[2.2.1]: https://github.com/oxyplot/oxyplot/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/oxyplot/oxyplot/compare/v2.1.2...v2.2.0
 [2.1.2]: https://github.com/oxyplot/oxyplot/compare/v2.1.0...v2.1.2
 [2.1.0]: https://github.com/oxyplot/oxyplot/compare/v2.0.0...v2.1.0
