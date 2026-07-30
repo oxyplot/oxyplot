@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Example to demonstrate how to create vertical BarSeries
+- Colorblind friendly Okabe-Ito color palette
 
 ### Fixed
 - DateTimeAxis converting local time rather than UTC to TimeZone
