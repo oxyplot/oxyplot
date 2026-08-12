@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HelpersTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -61,7 +61,7 @@ namespace OxyPlot.Tests
             foreach (var tc in testCases)
             {
                 var result = Helpers.LinearInterpolation(tc.X0, tc.Y0, tc.X1, tc.Y1, tc.X);
-                Assert.AreEqual(tc.Y, result);
+                Assert.That(result, Is.EqualTo(tc.Y));
             }
         }
     }

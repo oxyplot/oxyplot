@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HistogramHelperTests.cs" company="OxyPlot">
 //   Copyright (c) 2019 OxyPlot contributors
 // </copyright>
@@ -45,9 +45,9 @@ namespace OxyPlot.Tests
 
             var breaks = HistogramHelpers.CreateUniformBins(start, end, 1);
 
-            Assert.AreEqual(2, breaks.Count);
-            Assert.AreEqual(breaks[0], start);
-            Assert.AreEqual(breaks[1], end);
+            Assert.That(breaks.Count, Is.EqualTo(2));
+            Assert.That(start, Is.EqualTo(breaks[0]));
+            Assert.That(end, Is.EqualTo(breaks[1]));
         }
 
         [Test]
@@ -65,12 +65,12 @@ namespace OxyPlot.Tests
 
                 var breaks = HistogramHelpers.CreateUniformBins(start, end, count);
 
-                Assert.AreEqual(count, breaks.Count - 1);
+                Assert.That(breaks.Count - 1, Is.EqualTo(count));
 
                 int i = 0;
                 for (int b = start; b <= end; b += interval, i++)
                 {
-                    Assert.AreEqual(b, breaks[i]);
+                    Assert.That(breaks[i], Is.EqualTo(b));
                 }
             }
         }
@@ -88,9 +88,9 @@ namespace OxyPlot.Tests
                 var breaks = HistogramHelpers.CreateUniformBins(start, end, count);
 
                 // ensure that CreateUniformBins gives back the exact same start and end
-                Assert.AreEqual(count + 1, breaks.Count);
-                Assert.AreEqual(breaks[0], start);
-                Assert.AreEqual(breaks[count], end);
+                Assert.That(breaks.Count, Is.EqualTo(count + 1));
+                Assert.That(start, Is.EqualTo(breaks[0]));
+                Assert.That(end, Is.EqualTo(breaks[count]));
 
                 // ensure the gab between breaks is reasonably consistent
                 double expectedGap = (end - start) / count;
@@ -98,7 +98,7 @@ namespace OxyPlot.Tests
                 for (int i = 0; i < count; i++)
                 {
                     double gap = breaks[i + 1] - breaks[i];
-                    Assert.AreEqual(expectedGap, gap, 1E-5); // near limits of resoltuion
+                    Assert.That(gap, Is.EqualTo(expectedGap).Within(1E-5)); // near limits of resoltuion
                 }
             }
         }
@@ -263,21 +263,21 @@ namespace OxyPlot.Tests
             var items = HistogramHelpers.Collect(samples, breaks, binningOptions).ToArray();
 
             // check number of items
-            Assert.AreEqual(expectedAreas.Length, items.Length);
+            Assert.That(items.Length, Is.EqualTo(expectedAreas.Length));
 
             // check areas and counts
             for (int i = 0; i < expectedAreas.Length; i++)
             {
-                Assert.AreEqual(expectedAreas[i], items[i].Area, expectedAreas[i] * 1E-15);
-                Assert.AreEqual(expectedCounts[i], items[i].Count);
+                Assert.That(items[i].Area, Is.EqualTo(expectedAreas[i]).Within(expectedAreas[i] * 1E-15));
+                Assert.That(items[i].Count, Is.EqualTo(expectedCounts[i]));
             }
 
             // check item ranges
             var orderedBreaks = breaks.Distinct().OrderBy(b => b).ToArray();
             for (int i = 0; i < items.Length; i++)
             {
-                Assert.AreEqual(orderedBreaks[i], items[i].RangeStart);
-                Assert.AreEqual(orderedBreaks[i + 1], items[i].RangeEnd);
+                Assert.That(items[i].RangeStart, Is.EqualTo(orderedBreaks[i]));
+                Assert.That(items[i].RangeEnd, Is.EqualTo(orderedBreaks[i + 1]));
             }
         }
     }

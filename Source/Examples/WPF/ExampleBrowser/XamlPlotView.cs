@@ -6,17 +6,20 @@
 
 namespace ExampleBrowser
 {
+    using System.Windows;
+    using System.Windows.Controls;
+
     using OxyPlot;
     using OxyPlot.Wpf;
 
     /// <summary>
     /// Represents a PlotView which uses the XamlRenderContext for rendering.
     /// </summary>
-    public class XamlPlotView : PlotView
+    public class XamlPlotView : CanvasPlotView
     {
         protected override IRenderContext CreateRenderContext()
         {
-            return new XamlRenderContext(this.Canvas);
+            return new XamlRenderContext((Canvas)this.RenderSurface);
         }
     }
 }

@@ -462,6 +462,12 @@ namespace OxyPlot.Pdf
             XImage bitmap;
             using (var ms = new MemoryStream(source.GetData()))
             {
+#if NET6_0_OR_GREATER
+                 if (!OperatingSystem.IsWindowsVersionAtLeast(6, 1))
+                {
+                    throw new PlatformNotSupportedException("PDF image export via System.Drawing requires Windows.");
+                }
+#endif
                 var im = System.Drawing.Image.FromStream(ms);
                 bitmap = XImage.FromGdiPlusImage(im);
             }

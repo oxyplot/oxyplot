@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ReflectionPathTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -26,7 +26,7 @@ namespace OxyPlot.Tests
             var item = new Item();
             var rp = new ReflectionPath("SubItem");
             object result;
-            Assert.IsTrue(rp.TryGetValue(item, out result));
+            Assert.That(rp.TryGetValue(item, out result), Is.True);
             Assert.That(rp.GetValue(item), Is.Null);
         }
 
@@ -39,7 +39,7 @@ namespace OxyPlot.Tests
             var item = new Item();
             var rp = new ReflectionPath("SubItem.X");
             object result;
-            Assert.IsTrue(rp.TryGetValue(item, out result));
+            Assert.That(rp.TryGetValue(item, out result), Is.True);
             Assert.That(rp.GetValue(item), Is.Null);
         }
 
@@ -52,7 +52,7 @@ namespace OxyPlot.Tests
             var item = new Item { Number = 41 };
             var rp = new ReflectionPath("Number");
             object result;
-            Assert.IsTrue(rp.TryGetValue(item, out result));
+            Assert.That(rp.TryGetValue(item, out result), Is.True);
             Assert.That(rp.GetValue(item), Is.EqualTo(41));
         }
 
@@ -65,7 +65,7 @@ namespace OxyPlot.Tests
             var item = new Item { Point = new DataPoint(1, 2) };
             var rp = new ReflectionPath("Point.X");
             object result;
-            Assert.IsTrue(rp.TryGetValue(item, out result));
+            Assert.That(rp.TryGetValue(item, out result), Is.True);
             Assert.That(rp.GetValue(item), Is.EqualTo(1));
         }
 
@@ -94,7 +94,7 @@ namespace OxyPlot.Tests
                 rp.GetValue(item);
             }
 
-            Assert.Less(w.ElapsedMilliseconds, 2000);
+            Assert.That(w.ElapsedMilliseconds, Is.LessThan(2000));
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace OxyPlot.Tests
             var item = new Item { Point = new DataPoint(1, 2) };
             var rp = new ReflectionPath("Point.Z");
             object result;
-            Assert.IsFalse(rp.TryGetValue(item, out result));
+            Assert.That(rp.TryGetValue(item, out result), Is.False);
             Assert.Throws<InvalidOperationException>(() => rp.GetValue(item));
         }
 

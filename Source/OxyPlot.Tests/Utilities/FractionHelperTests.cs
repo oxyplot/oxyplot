@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FractionHelperTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -19,13 +19,13 @@ namespace OxyPlot.Tests
         [Test]
         public void ConvertToFractionString()
         {
-            Assert.AreEqual("3/4", FractionHelper.ConvertToFractionString(0.75));
+            Assert.That(FractionHelper.ConvertToFractionString(0.75), Is.EqualTo("3/4"));
         }
 
         [Test]
         public void ConvertToFractionString_WithUnit()
         {
-            Assert.AreEqual("2pi", FractionHelper.ConvertToFractionString(Math.PI * 2, Math.PI, "pi"));
+            Assert.That(FractionHelper.ConvertToFractionString(Math.PI * 2, Math.PI, "pi"), Is.EqualTo("2pi"));
         }
     }
 }

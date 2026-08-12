@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DeflateTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -46,10 +46,10 @@ namespace OxyPlot.Tests
 
         private static void AssertArrayEquals<T>(T[] refOut, T[] actualOut)
         {
-            Assert.AreEqual(refOut.Length, actualOut.Length, "Different length");
+            Assert.That(actualOut.Length, Is.EqualTo(refOut.Length), "Different length");
             for (int i = 0; i < refOut.Length; i++)
             {
-                Assert.AreEqual(refOut[i], actualOut[i], "Different at byte " + i);
+                Assert.That(actualOut[i], Is.EqualTo(refOut[i]), "Different at byte " + i);
             }
         }
     }

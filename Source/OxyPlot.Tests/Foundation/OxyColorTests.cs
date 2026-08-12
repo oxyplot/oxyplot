@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OxyColorTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -18,121 +18,121 @@ namespace OxyPlot.Tests
         [Test]
         public void Parse()
         {
-            Assert.AreEqual(OxyColors.Red, OxyColor.Parse("#FF0000"));
-            Assert.AreEqual(OxyColors.Red, OxyColor.Parse("#FFFF0000"));
-            Assert.AreEqual(OxyColors.Red, OxyColor.Parse("255,0,0"));
-            Assert.AreEqual(OxyColors.Red, OxyColor.Parse("255,255,0,0"));
-            Assert.AreEqual(OxyColors.Undefined, OxyColor.Parse(null));
-            Assert.AreEqual(OxyColors.Undefined, OxyColor.Parse("None"));
-            Assert.AreEqual(OxyColors.Automatic, OxyColor.Parse("Auto"));
-            Assert.AreEqual(OxyColors.Undefined, OxyColor.Parse("#00000000"));
-            Assert.AreEqual(OxyColors.Automatic, OxyColor.Parse("#00000001"));
-            Assert.AreEqual(OxyColors.White, OxyColor.Parse("#FFF"));
+            Assert.That(OxyColor.Parse("#FF0000"), Is.EqualTo(OxyColors.Red));
+            Assert.That(OxyColor.Parse("#FFFF0000"), Is.EqualTo(OxyColors.Red));
+            Assert.That(OxyColor.Parse("255,0,0"), Is.EqualTo(OxyColors.Red));
+            Assert.That(OxyColor.Parse("255,255,0,0"), Is.EqualTo(OxyColors.Red));
+            Assert.That(OxyColor.Parse(null), Is.EqualTo(OxyColors.Undefined));
+            Assert.That(OxyColor.Parse("None"), Is.EqualTo(OxyColors.Undefined));
+            Assert.That(OxyColor.Parse("Auto"), Is.EqualTo(OxyColors.Automatic));
+            Assert.That(OxyColor.Parse("#00000000"), Is.EqualTo(OxyColors.Undefined));
+            Assert.That(OxyColor.Parse("#00000001"), Is.EqualTo(OxyColors.Automatic));
+            Assert.That(OxyColor.Parse("#FFF"), Is.EqualTo(OxyColors.White));
         }
 
         [Test]
         public void ColorDifference()
         {
-            Assert.AreEqual(1.1189122525867927d, OxyColor.ColorDifference(OxyColors.Red, OxyColors.Green), 1e-6);
+            Assert.That(OxyColor.ColorDifference(OxyColors.Red, OxyColors.Green), Is.EqualTo(1.1189122525867927d).Within(1e-6));
         }
 
         [Test]
         public void FromAColor()
         {
-            Assert.AreEqual(OxyColor.FromArgb(0x80, 0xff, 0, 0), OxyColor.FromAColor(0x80, OxyColors.Red));
+            Assert.That(OxyColor.FromAColor(0x80, OxyColors.Red), Is.EqualTo(OxyColor.FromArgb(0x80, 0xff, 0, 0)));
         }
 
         [Test]
         public void FromHsv()
         {
-            Assert.AreEqual(OxyColors.Red, OxyColor.FromHsv(0, 1, 1));
+            Assert.That(OxyColor.FromHsv(0, 1, 1), Is.EqualTo(OxyColors.Red));
         }
 
         [Test]
         public void FromRgb()
         {
-            Assert.AreEqual(OxyColors.Red, OxyColor.FromRgb(255, 0, 0));
+            Assert.That(OxyColor.FromRgb(255, 0, 0), Is.EqualTo(OxyColors.Red));
         }
 
         [Test]
         public void FromArgb()
         {
-            Assert.AreEqual(OxyColors.Red, OxyColor.FromArgb(255, 255, 0, 0));
+            Assert.That(OxyColor.FromArgb(255, 255, 0, 0), Is.EqualTo(OxyColors.Red));
         }
 
         [Test]
         public void FromUInt32()
         {
-            Assert.AreEqual(OxyColors.Red, OxyColor.FromUInt32(0xFFFF0000));
+            Assert.That(OxyColor.FromUInt32(0xFFFF0000), Is.EqualTo(OxyColors.Red));
         }
 
         [Test]
         public void GetColorName()
         {
-            Assert.AreEqual("Red", OxyColors.Red.GetColorName());
+            Assert.That(OxyColors.Red.GetColorName(), Is.EqualTo("Red"));
         }
 
         [Test]
         public void ChangeIntensity()
         {
-            Assert.AreEqual(OxyColor.FromArgb(255, 127, 0, 0), OxyColors.Red.ChangeIntensity(0.5));
+            Assert.That(OxyColors.Red.ChangeIntensity(0.5), Is.EqualTo(OxyColor.FromArgb(255, 127, 0, 0)));
         }
 
         [Test]
         public void ChangeSaturation()
         {
-            Assert.AreEqual(OxyColor.FromArgb(255, 255, 127, 127), OxyColors.Red.ChangeSaturation(0.5));
+            Assert.That(OxyColors.Red.ChangeSaturation(0.5), Is.EqualTo(OxyColor.FromArgb(255, 255, 127, 127)));
         }
 
         [Test]
         public void ChangeSaturation_OverSaturate()
         {
-            Assert.AreEqual(OxyColor.FromArgb(255, 255, 0, 0), OxyColors.Red.ChangeSaturation(2));
+            Assert.That(OxyColors.Red.ChangeSaturation(2), Is.EqualTo(OxyColor.FromArgb(255, 255, 0, 0)));
         }
 
         [Test]
         public void Complementary()
         {
-            Assert.AreEqual(OxyColors.Cyan, OxyColors.Red.Complementary());
+            Assert.That(OxyColors.Red.Complementary(), Is.EqualTo(OxyColors.Cyan));
         }
 
         [Test]
         public void ToByteString()
         {
-            Assert.AreEqual("255,255,0,0", OxyColors.Red.ToByteString());
+            Assert.That(OxyColors.Red.ToByteString(), Is.EqualTo("255,255,0,0"));
         }
 
         [Test]
         public void ToCode()
         {
-            Assert.AreEqual("OxyColors.Red", OxyColors.Red.ToCode());
-            Assert.AreEqual("OxyColor.FromArgb(1, 2, 3, 4)", OxyColor.FromArgb(0x01, 0x02, 0x03, 0x04).ToCode());
+            Assert.That(OxyColors.Red.ToCode(), Is.EqualTo("OxyColors.Red"));
+            Assert.That(OxyColor.FromArgb(0x01, 0x02, 0x03, 0x04).ToCode(), Is.EqualTo("OxyColor.FromArgb(1, 2, 3, 4)"));
         }
 
         [Test]
         public void ToHsv()
         {
-            Assert.AreEqual(new[] { 0, 1, 1 }, OxyColors.Red.ToHsv());
+            Assert.That(OxyColors.Red.ToHsv(), Is.EqualTo(new[] { 0, 1, 1 }));
         }
 
         [Test]
         public new void ToString()
         {
-            Assert.AreEqual("#ffff0000", OxyColors.Red.ToString());
-            Assert.AreEqual("#00000001", OxyColors.Automatic.ToString());
-            Assert.AreEqual("#00000000", OxyColors.Undefined.ToString());
+            Assert.That(OxyColors.Red.ToString(), Is.EqualTo("#ffff0000"));
+            Assert.That(OxyColors.Automatic.ToString(), Is.EqualTo("#00000001"));
+            Assert.That(OxyColors.Undefined.ToString(), Is.EqualTo("#00000000"));
         }
 
         [Test]
         public void ToUint()
         {
-            Assert.AreEqual(0xFFFF0000, OxyColors.Red.ToUint());
+            Assert.That(OxyColors.Red.ToUint(), Is.EqualTo(0xFFFF0000));
         }
 
         [Test]
         public void HueDifference()
         {
-            Assert.AreEqual(1.0 / 3, OxyColor.HueDifference(OxyColors.Red, OxyColors.Blue), 1e-6);
+            Assert.That(OxyColor.HueDifference(OxyColors.Red, OxyColors.Blue), Is.EqualTo(1.0 / 3).Within(1e-6));
         }
     }
 }

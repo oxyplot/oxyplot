@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OxyPaletteTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -19,52 +19,52 @@ namespace OxyPlot.Tests
         public void Interpolate()
         {
             var palette = OxyPalette.Interpolate(5, OxyColors.Blue, OxyColors.White, OxyColors.Red);
-            Assert.AreEqual(5, palette.Colors.Count);
-            Assert.AreEqual(OxyColors.Blue, palette.Colors[0]);
-            Assert.AreEqual(OxyColor.FromRgb(127, 127, 255), palette.Colors[1]);
-            Assert.AreEqual(OxyColors.White, palette.Colors[2]);
-            Assert.AreEqual(OxyColor.FromRgb(255, 127, 127), palette.Colors[3]);
-            Assert.AreEqual(OxyColors.Red, palette.Colors[4]);
+            Assert.That(palette.Colors.Count, Is.EqualTo(5));
+            Assert.That(palette.Colors[0], Is.EqualTo(OxyColors.Blue));
+            Assert.That(palette.Colors[1], Is.EqualTo(OxyColor.FromRgb(127, 127, 255)));
+            Assert.That(palette.Colors[2], Is.EqualTo(OxyColors.White));
+            Assert.That(palette.Colors[3], Is.EqualTo(OxyColor.FromRgb(255, 127, 127)));
+            Assert.That(palette.Colors[4], Is.EqualTo(OxyColors.Red));
 
             // Try with some invalid values.
             palette = null;
             palette = OxyPalette.Interpolate(-9, OxyColors.Blue, OxyColors.White, OxyColors.Red);
-            Assert.AreEqual(0, palette.Colors.Count);
+            Assert.That(palette.Colors.Count, Is.EqualTo(0));
 
             palette = null;
             palette = OxyPalette.Interpolate(5, null);
-            Assert.AreEqual(0, palette.Colors.Count);
+            Assert.That(palette.Colors.Count, Is.EqualTo(0));
 
             palette = null;
             palette = OxyPalette.Interpolate(0, null);
-            Assert.AreEqual(0, palette.Colors.Count);
+            Assert.That(palette.Colors.Count, Is.EqualTo(0));
 
             // Try corner cases.
             palette = null;
             palette = OxyPalette.Interpolate(1, OxyColors.Blue, OxyColors.White, OxyColors.Red);
-            Assert.AreEqual(1, palette.Colors.Count);
-            Assert.AreEqual(OxyColors.Blue, palette.Colors[0]);
+            Assert.That(palette.Colors.Count, Is.EqualTo(1));
+            Assert.That(palette.Colors[0], Is.EqualTo(OxyColors.Blue));
 
             palette = null;
             palette = OxyPalette.Interpolate(2, OxyColors.Blue, OxyColors.White, OxyColors.Red);
-            Assert.AreEqual(2, palette.Colors.Count);
-            Assert.AreEqual(OxyColors.Blue, palette.Colors[0]);
-            Assert.AreEqual(OxyColors.Red, palette.Colors[1]);
+            Assert.That(palette.Colors.Count, Is.EqualTo(2));
+            Assert.That(palette.Colors[0], Is.EqualTo(OxyColors.Blue));
+            Assert.That(palette.Colors[1], Is.EqualTo(OxyColors.Red));
 
             palette = null;
             palette = OxyPalette.Interpolate(4, OxyColors.Blue);
-            Assert.AreEqual(4, palette.Colors.Count);
-            Assert.AreEqual(OxyColors.Blue, palette.Colors[0]);
-            Assert.AreEqual(OxyColors.Blue, palette.Colors[1]);
-            Assert.AreEqual(OxyColors.Blue, palette.Colors[2]);
-            Assert.AreEqual(OxyColors.Blue, palette.Colors[3]);
+            Assert.That(palette.Colors.Count, Is.EqualTo(4));
+            Assert.That(palette.Colors[0], Is.EqualTo(OxyColors.Blue));
+            Assert.That(palette.Colors[1], Is.EqualTo(OxyColors.Blue));
+            Assert.That(palette.Colors[2], Is.EqualTo(OxyColors.Blue));
+            Assert.That(palette.Colors[3], Is.EqualTo(OxyColors.Blue));
         }
 
         [Test]
         public void Constructor()
         {
             var palette = new OxyPalette(OxyColors.Blue, OxyColors.White, OxyColors.Red);
-            Assert.AreEqual(3, palette.Colors.Count);
+            Assert.That(palette.Colors.Count, Is.EqualTo(3));
         }
     }
 }

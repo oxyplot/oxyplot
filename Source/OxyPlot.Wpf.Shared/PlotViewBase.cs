@@ -174,6 +174,11 @@ namespace OxyPlot.Wpf
             this.BeginInvoke(this.Render);
         }
 
+        /// <summary>
+        /// If true, there is no need for the overlay grid.
+        /// </summary>
+        protected virtual bool RenderSurfaceHandlesMouseEvents => true;
+
         /// <inheritdoc/>
         public override void OnApplyTemplate()
         {
@@ -196,13 +201,13 @@ namespace OxyPlot.Wpf
             this.zoomControl.Focusable = false;
             this.overlays.Children.Add(this.zoomControl);
 
-            // add additional grid on top of everthing else to fix issue of mouse events getting lost
-            // it must be added last so it covers all other controls
-            var mouseGrid = new Grid
+            if (!this.RenderSurfaceHandlesMouseEvents)
             {
-                Background = Brushes.Transparent // background must be set for hit test to work
-            };
-            this.grid.Children.Add(mouseGrid);
+                // add additional grid on top of everything else to fix issue of mouse events getting lost
+                // it must be added last so it covers all other controls. Background must be set for hit test to work
+                var mouseGrid = new Grid { Background = Brushes.Transparent };
+                this.grid.Children.Add(mouseGrid);
+            }
         }
 
         /// <summary>

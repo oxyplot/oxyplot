@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PortableDocumentTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -63,7 +63,7 @@ namespace OxyPlot.Tests
             var s = "π";
             doc.DrawText(50, 400, s);
             doc.Save(Folder + "DrawText_SpecialCharacters.pdf");
-            Assert.IsTrue(s[0] > 255);
+            Assert.That(s[0], Is.GreaterThan(255));
         }
 
         [Test]

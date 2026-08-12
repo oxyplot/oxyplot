@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ScreenPointHelperTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -19,7 +19,7 @@ namespace OxyPlot.Tests
         [Test]
         public void IsPointInPolygon_NullPoints()
         {
-            Assert.IsFalse(ScreenPointHelper.IsPointInPolygon(default(ScreenPoint), null));
+            Assert.That(ScreenPointHelper.IsPointInPolygon(default(ScreenPoint), null), Is.False);
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace OxyPlot.Tests
         {
             var points = CreatePointList();
             var result = ScreenPointHelper.ResamplePoints(points, 1);
-            Assert.AreEqual(4, result.Count);
+            Assert.That(result.Count, Is.EqualTo(4));
         }
 
         [Test]
@@ -35,8 +35,8 @@ namespace OxyPlot.Tests
         {
             var points = CreatePointList();
             var centroid = ScreenPointHelper.GetCentroid(points);
-            Assert.AreEqual(0.041666, centroid.X, 1e-6);
-            Assert.AreEqual(0.708333, centroid.Y, 1e-6);
+            Assert.That(centroid.X, Is.EqualTo(0.041666).Within(1e-6));
+            Assert.That(centroid.Y, Is.EqualTo(0.708333).Within(1e-6));
         }
 
         private static IList<ScreenPoint> CreatePointList()

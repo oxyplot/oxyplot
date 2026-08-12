@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ElementCollectionTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -43,9 +43,9 @@ namespace OxyPlot.Tests.Graphics
                 var axis = new LinearAxis();
                 collection.Add(axis);
 
-                Assert.AreEqual(1, raisedCount);
-                Assert.AreEqual(1, eventArgs.AddedItems.Count);
-                Assert.IsTrue(ReferenceEquals(axis, eventArgs.AddedItems[0]));
+                Assert.That(raisedCount, Is.EqualTo(1));
+                Assert.That(eventArgs.AddedItems.Count, Is.EqualTo(1));
+                Assert.That(ReferenceEquals(axis, eventArgs.AddedItems[0]), Is.True);
             }
         }
 
@@ -79,9 +79,9 @@ namespace OxyPlot.Tests.Graphics
                 var axis = new LinearAxis();
                 collection.Insert(1, axis);
 
-                Assert.AreEqual(1, raisedCount);
-                Assert.AreEqual(1, eventArgs.AddedItems.Count);
-                Assert.IsTrue(ReferenceEquals(axis, eventArgs.AddedItems[0]));
+                Assert.That(raisedCount, Is.EqualTo(1));
+                Assert.That(eventArgs.AddedItems.Count, Is.EqualTo(1));
+                Assert.That(ReferenceEquals(axis, eventArgs.AddedItems[0]), Is.True);
             }
         }
 
@@ -113,9 +113,9 @@ namespace OxyPlot.Tests.Graphics
 
                 collection.Clear();
 
-                Assert.AreEqual(1, raisedCount);
-                Assert.AreEqual(1, eventArgs.RemovedItems.Count);
-                Assert.IsTrue(ReferenceEquals(axis, eventArgs.RemovedItems[0]));
+                Assert.That(raisedCount, Is.EqualTo(1));
+                Assert.That(eventArgs.RemovedItems.Count, Is.EqualTo(1));
+                Assert.That(ReferenceEquals(axis, eventArgs.RemovedItems[0]), Is.True);
             }
         }
 
@@ -147,9 +147,9 @@ namespace OxyPlot.Tests.Graphics
 
                 collection.Remove(axis);
 
-                Assert.AreEqual(1, raisedCount);
-                Assert.AreEqual(1, eventArgs.RemovedItems.Count);
-                Assert.IsTrue(ReferenceEquals(axis, eventArgs.RemovedItems[0]));
+                Assert.That(raisedCount, Is.EqualTo(1));
+                Assert.That(eventArgs.RemovedItems.Count, Is.EqualTo(1));
+                Assert.That(ReferenceEquals(axis, eventArgs.RemovedItems[0]), Is.True);
             }
         }
 
@@ -181,9 +181,9 @@ namespace OxyPlot.Tests.Graphics
 
                 collection.RemoveAt(0);
 
-                Assert.AreEqual(1, raisedCount);
-                Assert.AreEqual(1, eventArgs.RemovedItems.Count);
-                Assert.IsTrue(ReferenceEquals(axis, eventArgs.RemovedItems[0]));
+                Assert.That(raisedCount, Is.EqualTo(1));
+                Assert.That(eventArgs.RemovedItems.Count, Is.EqualTo(1));
+                Assert.That(ReferenceEquals(axis, eventArgs.RemovedItems[0]), Is.True);
             }
         }
     }

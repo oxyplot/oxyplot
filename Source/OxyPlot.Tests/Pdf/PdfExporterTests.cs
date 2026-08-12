@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PdfExporterTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -47,7 +47,7 @@ namespace OxyPlot.Tests
                     PdfExporter.Export(model, s, Width, Height);
                 }
 
-                Assert.IsTrue(File.Exists(path));
+                Assert.That(File.Exists(path), Is.True);
             }
 
             ExportModelAndCheckFileExists(example.PlotModel, $"{example.Category} - {example.Title}");

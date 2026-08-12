@@ -84,22 +84,31 @@ namespace OxyPlot.Wpf
         public BitmapSource ExportToBitmap(IPlotModel model)
         {
             var scale = 96d / this.Resolution;
-            var canvas = new Canvas { Width = this.Width * scale, Height = this.Height * scale, Background = model.Background.ToBrush() };
-            canvas.Measure(new Size(canvas.Width, canvas.Height));
-            canvas.Arrange(new Rect(0, 0, canvas.Width, canvas.Height));
+            var renderSurface = new RenderSurface { Width = this.Width * scale, Height = this.Height * scale, Background = model.Background.ToBrush() };
 
-            var rc = new CanvasRenderContext(canvas) { RendersToScreen = false };
+            renderSurface.Measure(new Size(renderSurface.Width, renderSurface.Height));
+            renderSurface.Arrange(new Rect(0, 0, renderSurface.Width, renderSurface.Height));
+
+            var rc = new DrawingRenderContext(renderSurface) { RendersToScreen = false };
 
             rc.TextFormattingMode = TextFormattingMode.Ideal;
             rc.DpiScale = this.Resolution / 96;
 
             model.Update(true);
-            model.Render(rc, new OxyRect(0, 0, canvas.Width, canvas.Height));
+            try
+            {
+                renderSurface.BeginRender();
+                model.Render(rc, new OxyRect(0, 0, renderSurface.Width, renderSurface.Height));
+            }
+            finally
+            {
+                renderSurface.EndRender();
+            }
 
-            canvas.UpdateLayout();
+            renderSurface.UpdateLayout();
 
             var bmp = new RenderTargetBitmap(this.Width, this.Height, this.Resolution, this.Resolution, PixelFormats.Pbgra32);
-            bmp.Render(canvas);
+            bmp.Render(renderSurface);
             return bmp;
 
             // alternative implementation:

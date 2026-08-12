@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DecimatorTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -36,7 +36,7 @@ namespace OxyPlot.Tests.Rendering.Utilities
             }
 
             Decimator.Decimate(input, output);
-            Assert.AreEqual(6, output.Count);
+            Assert.That(output.Count, Is.EqualTo(6));
         }
     }
 }

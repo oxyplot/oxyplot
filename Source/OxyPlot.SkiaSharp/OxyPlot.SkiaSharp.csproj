@@ -1,29 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <LangVersion>8</LangVersion>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Copyright>Copyright (c) 2020 OxyPlot contributors</Copyright>
-    <TargetFrameworks>net462;netstandard2.0;net6.0;net8.0;net10.0</TargetFrameworks>
-    <AllowMissingPrunePackageData>true</AllowMissingPrunePackageData>
-    <Authors>OxyPlot contributors</Authors>
-    <Description>OxyPlot is a plotting library for .NET. This package provides rendering based on SkiaSharp.</Description>
-    <PackageTags>plotting plot charting chart skiasharp skia pdf</PackageTags>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>OxyPlot.SkiaSharp.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="SkiaSharp" Version="3.119.2" />
-    <PackageReference Include="SkiaSharp.HarfBuzz" Version="3.119.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="OxyPlot.SkiaSharp.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Update="DotNet.ReproducibleBuilds" Version="2.0.2" />
-  </ItemGroup>
+    <PropertyGroup>
+        <LangVersion>14</LangVersion>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Copyright>Copyright (c) 2020 OxyPlot contributors</Copyright>
+        <TargetFrameworks>net462;netstandard2.0;net8.0;net10.0</TargetFrameworks>
+        <AllowMissingPrunePackageData>true</AllowMissingPrunePackageData>
+        <Authors>OxyPlot contributors</Authors>
+        <Description>OxyPlot is a plotting library for .NET. This package provides rendering based on SkiaSharp.</Description>
+        <PackageTags>plotting plot charting chart skiasharp skia pdf</PackageTags>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>OxyPlot.SkiaSharp.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="SkiaSharp" Version="3.119.2" />
+        <PackageReference Include="SkiaSharp.HarfBuzz" Version="3.119.2" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="OxyPlot.SkiaSharp.snk" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Update="DotNet.ReproducibleBuilds" Version="2.0.2" />
+    </ItemGroup>
 </Project>

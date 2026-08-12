@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OxySizeTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -93,10 +93,10 @@ namespace OxyPlot.Tests
             var actual = new OxySize(40, 50).GetBounds(angle, horizontalAlignment, verticalAlignment);
             const double Delta = 1;
             var errorMessage = string.Format("{0} is not equal to {1} rotated by {2} angle when aligned {3} and {4}", expected, actual, angle, horizontalAlignment, verticalAlignment);
-            Assert.AreEqual(expected.Left, actual.Left, Delta, errorMessage);
-            Assert.AreEqual(expected.Top, actual.Top, Delta, errorMessage);
-            Assert.AreEqual(expected.Width, actual.Width, Delta, errorMessage);
-            Assert.AreEqual(expected.Height, actual.Height, Delta, errorMessage);
+            Assert.That(actual.Left, Is.EqualTo(expected.Left).Within(Delta), errorMessage);
+            Assert.That(actual.Top, Is.EqualTo(expected.Top).Within(Delta), errorMessage);
+            Assert.That(actual.Width, Is.EqualTo(expected.Width).Within(Delta), errorMessage);
+            Assert.That(actual.Height, Is.EqualTo(expected.Height).Within(Delta), errorMessage);
         }
 
         /// <summary>

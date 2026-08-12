@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SvgExporterTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -78,7 +78,7 @@ namespace OxyPlot.Tests
                     SvgExporter.Export(model, s, 800, 500, true);
                 }
 
-                Assert.IsTrue(File.Exists(path));
+                Assert.That(File.Exists(path), Is.True);
             }
 
             ExportModelAndCheckFileExists(example.PlotModel, $"{example.Category} - {example.Title}");

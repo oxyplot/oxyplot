@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DateTimeAxisTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -22,44 +22,44 @@ namespace OxyPlot.Tests
         public void ToDouble_ValidDate()
         {
             var date = new DateTime(2011, 3, 15);
-            Assert.AreEqual(date.ToOADate(), DateTimeAxis.ToDouble(date));
+            Assert.That(DateTimeAxis.ToDouble(date), Is.EqualTo(date.ToOADate()));
         }
 
         [Test]
         public void ToDouble_NoDate()
         {
-            Assert.AreEqual(-693593, DateTimeAxis.ToDouble(new DateTime()));
+            Assert.That(DateTimeAxis.ToDouble(new DateTime()), Is.EqualTo(-693593));
         }
 
         [Test]
         public void ToDateTime_ValidDate()
         {
             var date = new DateTime(2011, 3, 15);
-            Assert.AreEqual(date, DateTimeAxis.ToDateTime(date.ToOADate(), DateTimeAxis.DefaultPrecision));
+            Assert.That(DateTimeAxis.ToDateTime(date.ToOADate(), DateTimeAxis.DefaultPrecision), Is.EqualTo(date));
         }
 
         [Test]
         public void ToDateTime_NoDate()
         {
-            Assert.AreEqual(new DateTime(), DateTimeAxis.ToDateTime(-693593, DateTimeAxis.DefaultPrecision));
+            Assert.That(DateTimeAxis.ToDateTime(-693593, DateTimeAxis.DefaultPrecision), Is.EqualTo(new DateTime()));
         }
 
         [Test]
         public void ToDateTime_NaN()
         {
-            Assert.AreEqual(new DateTime(), DateTimeAxis.ToDateTime(double.NaN, DateTimeAxis.DefaultPrecision));
+            Assert.That(DateTimeAxis.ToDateTime(double.NaN, DateTimeAxis.DefaultPrecision), Is.EqualTo(new DateTime()));
         }
 
         [Test]
         public void ToDateTime_VeryBigValue()
         {
-            Assert.AreEqual(new DateTime(), DateTimeAxis.ToDateTime(double.MaxValue, DateTimeAxis.DefaultPrecision));
+            Assert.That(DateTimeAxis.ToDateTime(double.MaxValue, DateTimeAxis.DefaultPrecision), Is.EqualTo(new DateTime()));
         }
 
         [Test]
         public void ToDateTime_VerySmallValue()
         {
-            Assert.AreEqual(new DateTime(), DateTimeAxis.ToDateTime(double.MinValue, DateTimeAxis.DefaultPrecision));
+            Assert.That(DateTimeAxis.ToDateTime(double.MinValue, DateTimeAxis.DefaultPrecision), Is.EqualTo(new DateTime()));
         }
     }
 }

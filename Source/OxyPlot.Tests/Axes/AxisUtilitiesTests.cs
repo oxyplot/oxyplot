@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AxisUtilitiesTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -13,7 +13,6 @@ namespace OxyPlot.Tests
     using System.Collections.Generic;
     using System.Linq;
     using NUnit.Framework;
-    using NUnit.Framework.Legacy;
     using OxyPlot.Axes;
 
     /// <summary>
@@ -32,9 +31,9 @@ namespace OxyPlot.Tests
         [Test]
         public void CreateTickValues_MaxTicks()
         {
-            Assert.AreEqual(1000, AxisUtilities.CreateTickValues(1, 100, 0.000001).Count);
-            Assert.AreEqual(100, AxisUtilities.CreateTickValues(1, 100, 0.000001, 100).Count);
-            Assert.AreEqual(0, AxisUtilities.CreateTickValues(1, 100, 0.000001, 0).Count);
+            Assert.That(AxisUtilities.CreateTickValues(1, 100, 0.000001).Count, Is.EqualTo(1000));
+            Assert.That(AxisUtilities.CreateTickValues(1, 100, 0.000001, 100).Count, Is.EqualTo(100));
+            Assert.That(AxisUtilities.CreateTickValues(1, 100, 0.000001, 0).Count, Is.EqualTo(0));
         }
 
         [Test]
@@ -175,7 +174,7 @@ namespace OxyPlot.Tests
             void Test(IList<double> majorTicks, IList<double> minorTicks, IList<double> expected)
             {
                 var actual = AxisUtilities.FilterRedundantMinorTicks(majorTicks, minorTicks);
-                CollectionAssert.AreEqual(expected, actual);
+                Assert.That(actual, Is.EqualTo(expected).AsCollection);
             }
         }
     }

@@ -202,24 +202,28 @@ namespace OxyPlot.WindowsForms
         /// Gets or sets the pan cursor.
         /// </summary>
         [Category(OxyPlotCategory)]
+        [DefaultValue(typeof(Cursor), "Hand")]
         public Cursor PanCursor { get; set; }
 
         /// <summary>
         /// Gets or sets the horizontal zoom cursor.
         /// </summary>
         [Category(OxyPlotCategory)]
+        [DefaultValue(typeof(Cursor), "SizeWE")]
         public Cursor ZoomHorizontalCursor { get; set; }
 
         /// <summary>
         /// Gets or sets the rectangle zoom cursor.
         /// </summary>
         [Category(OxyPlotCategory)]
+        [DefaultValue(typeof(Cursor), "SizeNWSE")] 
         public Cursor ZoomRectangleCursor { get; set; }
 
         /// <summary>
         /// Gets or sets the vertical zoom cursor.
         /// </summary>
         [Category(OxyPlotCategory)]
+        [DefaultValue(typeof(Cursor), "SizeNS")]
         public Cursor ZoomVerticalCursor { get; set; }
 
         /// <summary>

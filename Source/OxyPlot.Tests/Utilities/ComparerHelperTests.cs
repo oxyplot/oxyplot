@@ -10,7 +10,6 @@ namespace OxyPlot.Tests
     using System.Linq;
 
     using NUnit.Framework;
-    using NUnit.Framework.Legacy;
 
     /// <summary>
     /// Unit tests for the <see cref="ComparerHelper"/>.
@@ -44,7 +43,7 @@ namespace OxyPlot.Tests
             var sorted = source.OrderBy(x => x, comparer).ToList();
 
             var expected = new List<int> { 0, 7, 6, 5, 4, 3, 2, 1 };
-            CollectionAssert.AreEqual(expected, sorted);
+            Assert.That(sorted, Is.EqualTo(expected).AsCollection);
         }
     }
 }

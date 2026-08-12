@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OxyAssert.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -50,7 +50,7 @@ namespace OxyPlot.Tests
             var baselineSvg = File.ReadAllText(baseline);
             var actualSvg = File.ReadAllText(path);
 
-            Assert.IsTrue(string.Equals(baselineSvg, actualSvg), "Actual svg is not equal to baseline (" + Path.GetFullPath(baseline) + ")");
+            Assert.That(string.Equals(baselineSvg, actualSvg), Is.True, "Actual svg is not equal to baseline (" + Path.GetFullPath(baseline) + ")");
         }
     }
 }

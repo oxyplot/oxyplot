@@ -33,8 +33,8 @@ namespace OxyPlot.Tests
             filler.Add("A", 0d);
             filler.Fill(target, this.src, args => new ScatterPoint(Convert.ToDouble(args[0]), 0));
 
-            Assert.AreEqual(1, target.Count);
-            Assert.AreEqual(3.14, target[0].X);
+            Assert.That(target.Count, Is.EqualTo(1));
+            Assert.That(target[0].X, Is.EqualTo(3.14));
         }
 
         [Test]
@@ -46,8 +46,8 @@ namespace OxyPlot.Tests
             filler.Add("A", 0d);
             filler.Fill(target, this.src, args => new DataPoint(Convert.ToDouble(args[0]), 0));
 
-            Assert.AreEqual(1, target.Count);
-            Assert.AreEqual(3.14, target[0].X);
+            Assert.That(target.Count, Is.EqualTo(1));
+            Assert.That(target[0].X, Is.EqualTo(3.14));
         }
 
         [Test]
@@ -69,8 +69,8 @@ namespace OxyPlot.Tests
             filler.Add(null, 42);
             filler.Fill(target, this.src, args => new ScatterPoint(Convert.ToDouble(args[0]), 0));
 
-            Assert.AreEqual(1, target.Count);
-            Assert.AreEqual(42, target[0].X);
+            Assert.That(target.Count, Is.EqualTo(1));
+            Assert.That(target[0].X, Is.EqualTo(42));
         }
 
         private class TestObject
