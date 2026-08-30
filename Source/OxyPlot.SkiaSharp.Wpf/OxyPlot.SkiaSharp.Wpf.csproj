@@ -21,7 +21,4 @@
     <ProjectReference Include="..\OxyPlot.Wpf.Shared\OxyPlot.Wpf.Shared.csproj" />
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Update="DotNet.ReproducibleBuilds" Version="2.0.2" />
-  </ItemGroup>
 </Project>

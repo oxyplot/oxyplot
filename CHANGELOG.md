@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Target .NET 10, remove target .NET 6 (out of support and incompatible with nuget updates)
 - Various nuget package upgrades
+- Updated DotNet.ReproducibleBuilds and DotNet.ReproducibleBuilds.Isolated to 2.0.5
 
 ## [2.2.0] - 2024-09-03
 
