@@ -12,8 +12,16 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Target .NET 10, remove target .NET 6 (out of support and incompatible with nuget updates)
-- Various nuget package upgrades
-- Updated DotNet.ReproducibleBuilds and DotNet.ReproducibleBuilds.Isolated to 2.0.5
+- Update ImageSharp to 3.1.11
+- Update ImageSharp.Drawing to 2.1.4
+- Update SkiaSharp.Views.Desktop.Common to 3.119.2
+- Update SkiaSharp to 3.199.2
+- Update SkiaSharp.HarfBuzz to 3.199.2
+- Update Microsoft.NET.Test.Sdk to 17.13.10
+- Update NUnit to 4.5.1
+- Update NUnit3TestAdapter to 6.2.0
+- Update NSubstitute to 5.3.0
+- Update DotNet.ReproducibleBuilds and DotNet.ReproducibleBuilds.Isolated to 2.0.5 and remove redundant package references
 
 ## [2.2.0] - 2024-09-03
 
