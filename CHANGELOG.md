@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 
 - Example to demonstrate how to create vertical BarSeries
 
+### Added
+ - DateTimeAxis.ActualIntervalType and DateTimeAxis.ActualMinorIntervalType properties
+
 ### Fixed
 - DateTimeAxis converting local time rather than UTC to TimeZone
 

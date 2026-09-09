@@ -48,14 +48,14 @@ namespace OxyPlot.Axes
         private static readonly double MinDayValue = (DateTime.MinValue - TimeOrigin).TotalDays;
 
         /// <summary>
-        /// The actual interval type.
+        /// Gets or sets the actual interval type.
         /// </summary>
-        private DateTimeIntervalType actualIntervalType;
+        protected DateTimeIntervalType ActualIntervalType { get; set; }
 
         /// <summary>
-        /// The actual minor interval type.
+        /// Gets or sets the actual minor interval type.
         /// </summary>
-        private DateTimeIntervalType actualMinorIntervalType;
+        protected DateTimeIntervalType ActualMinorIntervalType { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "DateTimeAxis" /> class.
@@ -204,9 +204,9 @@ namespace OxyPlot.Axes
             out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
         {
             minorTickValues = this.CreateDateTimeTickValues(
-                this.ClipMinimum, this.ClipMaximum, this.ActualMinorStep, this.actualMinorIntervalType);
+                this.ClipMinimum, this.ClipMaximum, this.ActualMinorStep, this.ActualMinorIntervalType);
             majorTickValues = this.CreateDateTimeTickValues(
-                this.ClipMinimum, this.ClipMaximum, this.ActualMajorStep, this.actualIntervalType);
+                this.ClipMinimum, this.ClipMaximum, this.ActualMajorStep, this.ActualIntervalType);
             majorLabelValues = majorTickValues;
 
             minorTickValues = AxisUtilities.FilterRedundantMinorTicks(majorTickValues, minorTickValues);
@@ -237,11 +237,11 @@ namespace OxyPlot.Axes
         internal override void UpdateIntervals(OxyRect plotArea)
         {
             base.UpdateIntervals(plotArea);
-            switch (this.actualIntervalType)
+            switch (this.ActualIntervalType)
             {
                 case DateTimeIntervalType.Years:
                     this.ActualMinorStep = 31;
-                    this.actualMinorIntervalType = DateTimeIntervalType.Years;
+                    this.ActualMinorIntervalType = DateTimeIntervalType.Years;
                     if (this.StringFormat == null)
                     {
                         this.ActualStringFormat = "yyyy";
@@ -249,7 +249,7 @@ namespace OxyPlot.Axes
 
                     break;
                 case DateTimeIntervalType.Months:
-                    this.actualMinorIntervalType = DateTimeIntervalType.Months;
+                    this.ActualMinorIntervalType = DateTimeIntervalType.Months;
                     if (this.StringFormat == null)
                     {
                         this.ActualStringFormat = "yyyy-MM-dd";
@@ -257,7 +257,7 @@ namespace OxyPlot.Axes
 
                     break;
                 case DateTimeIntervalType.Weeks:
-                    this.actualMinorIntervalType = DateTimeIntervalType.Days;
+                    this.ActualMinorIntervalType = DateTimeIntervalType.Days;
                     this.ActualMajorStep = 7;
                     this.ActualMinorStep = 1;
                     if (this.StringFormat == null)
@@ -298,9 +298,6 @@ namespace OxyPlot.Axes
                     }
 
                     break;
-                    
-                    
-                    
                 case DateTimeIntervalType.Milliseconds:
                     this.ActualMinorStep = this.ActualMajorStep;
                     if (this.ActualStringFormat == null)
@@ -309,7 +306,7 @@ namespace OxyPlot.Axes
                     }
 
                     break;
-                    
+
                 case DateTimeIntervalType.Manual:
                     break;
                 case DateTimeIntervalType.Auto:
@@ -406,77 +403,77 @@ namespace OxyPlot.Axes
                 interval = nextInterval;
             }
 
-            this.actualIntervalType = this.IntervalType;
-            this.actualMinorIntervalType = this.MinorIntervalType;
+            this.ActualIntervalType = this.IntervalType;
+            this.ActualMinorIntervalType = this.MinorIntervalType;
 
             if (this.IntervalType == DateTimeIntervalType.Auto)
             {
-                this.actualIntervalType = DateTimeIntervalType.Milliseconds;
+                this.ActualIntervalType = DateTimeIntervalType.Milliseconds;
 
                 if (interval >= 1.0 / 24 / 60 / 60)
                 {
-                    this.actualIntervalType = DateTimeIntervalType.Seconds;
+                    this.ActualIntervalType = DateTimeIntervalType.Seconds;
                 }
-                    
+
                 if (interval >= 1.0 / 24 / 60)
                 {
-                    this.actualIntervalType = DateTimeIntervalType.Minutes;
+                    this.ActualIntervalType = DateTimeIntervalType.Minutes;
                 }
 
                 if (interval >= 1.0 / 24)
                 {
-                    this.actualIntervalType = DateTimeIntervalType.Hours;
+                    this.ActualIntervalType = DateTimeIntervalType.Hours;
                 }
 
                 if (interval >= 1)
                 {
-                    this.actualIntervalType = DateTimeIntervalType.Days;
+                    this.ActualIntervalType = DateTimeIntervalType.Days;
                 }
 
                 if (interval >= 30)
                 {
-                    this.actualIntervalType = DateTimeIntervalType.Months;
+                    this.ActualIntervalType = DateTimeIntervalType.Months;
                 }
 
                 if (range >= 365.25)
                 {
-                    this.actualIntervalType = DateTimeIntervalType.Years;
+                    this.ActualIntervalType = DateTimeIntervalType.Years;
                 }
             }
 
-            if (this.actualIntervalType == DateTimeIntervalType.Months)
+            if (this.ActualIntervalType == DateTimeIntervalType.Months)
             {
                 double monthsRange = range / 30.5;
                 interval = this.CalculateActualInterval(availableSize, maxIntervalSize, monthsRange, this.MinimumMajorIntervalCount, this.MaximumMajorIntervalCount);
             }
 
-            if (this.actualIntervalType == DateTimeIntervalType.Years)
+            if (this.ActualIntervalType == DateTimeIntervalType.Years)
             {
                 double yearsRange = range / 365.25;
                 interval = this.CalculateActualInterval(availableSize, maxIntervalSize, yearsRange, this.MinimumMajorIntervalCount, this.MaximumMajorIntervalCount);
             }
 
-            if (this.actualMinorIntervalType == DateTimeIntervalType.Auto)
+            if (this.ActualMinorIntervalType == DateTimeIntervalType.Auto)
             {
-                switch (this.actualIntervalType)
+                switch (this.ActualIntervalType)
                 {
                     case DateTimeIntervalType.Years:
-                        this.actualMinorIntervalType = DateTimeIntervalType.Months;
+                        this.ActualMinorIntervalType = DateTimeIntervalType.Months;
                         break;
                     case DateTimeIntervalType.Months:
-                        this.actualMinorIntervalType = DateTimeIntervalType.Days;
+                        this.ActualMinorIntervalType = DateTimeIntervalType.Days;
                         break;
                     case DateTimeIntervalType.Weeks:
-                        this.actualMinorIntervalType = DateTimeIntervalType.Days;
+                        this.ActualMinorIntervalType = DateTimeIntervalType.Days;
                         break;
                     case DateTimeIntervalType.Days:
-                        this.actualMinorIntervalType = DateTimeIntervalType.Hours;
+                        this.ActualMinorIntervalType = DateTimeIntervalType.Hours;
                         break;
                     case DateTimeIntervalType.Hours:
-                        this.actualMinorIntervalType = DateTimeIntervalType.Minutes;
+                        this.ActualMinorIntervalType = DateTimeIntervalType.Minutes;
                         break;
                     default:
-                        this.actualMinorIntervalType = DateTimeIntervalType.Days;
+                        this.ActualMinorIntervalType = DateTimeIntervalType.Days;
                         break;
                 }
             }
