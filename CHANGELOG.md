@@ -15,8 +15,6 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Target .NET 10, remove target .NET 6 (out of support and incompatible with nuget updates)
 - Various nuget package upgrades
-- Removed legacy NUnit calls from tests.
-- Fix tests that file when run in a culture that is not using dot as decimal separator by setting the culture to invariant when parsing doubles.
 
 ## [2.2.0] - 2024-09-03
 
