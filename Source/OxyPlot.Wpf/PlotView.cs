@@ -16,7 +16,7 @@ namespace OxyPlot.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// Represents a control that displays a <see cref="PlotModel" />. This <see cref="IPlotView"/> is based on <see cref="CanvasRenderContext"/>.
+    /// Represents a control that displays a <see cref="PlotModel" />. This <see cref="IPlotView"/> is based on <see cref="DrawingRenderContext"/>.
     /// </summary>
     public partial class PlotView : PlotViewBase
     {
@@ -32,7 +32,6 @@ namespace OxyPlot.Wpf
         /// </summary>
         public PlotView()
         {
-            this.DisconnectCanvasWhileUpdating = true;
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, this.DoCopy));
         }
 
@@ -43,9 +42,9 @@ namespace OxyPlot.Wpf
         public bool DisconnectCanvasWhileUpdating { get; set; }
 
         /// <summary>
-        /// Gets or sets the vertical zoom cursor.
+        /// Gets or sets the text measurement method.
         /// </summary>
-        /// <value>The zoom vertical cursor.</value>
+        /// <value>The text measurement method.</value>
         public TextMeasurementMethod TextMeasurementMethod
         {
             get => (TextMeasurementMethod)this.GetValue(TextMeasurementMethodProperty);
@@ -55,38 +54,38 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets the Canvas.
         /// </summary>
-        protected Canvas Canvas => (Canvas)this.plotPresenter;
+        protected Panel RenderSurface => (Panel)this.plotPresenter;
 
         /// <summary>
-        /// Gets the CanvasRenderContext.
+        /// Gets the WpfRenderContext.
         /// </summary>
-        private CanvasRenderContext RenderContext => (CanvasRenderContext)this.renderContext;
+        private WpfRenderContext RenderContext => this.renderContext as WpfRenderContext;
 
         /// <inheritdoc/>
         protected override void ClearBackground()
         {
-            this.Canvas.Children.Clear();
+            this.RenderSurface.Children.Clear();
 
             if (this.ActualModel != null && this.ActualModel.Background.IsVisible())
             {
-                this.Canvas.Background = this.ActualModel.Background.ToBrush();
+                this.RenderSurface.Background = this.ActualModel.Background.ToBrush();
             }
             else
             {
-                this.Canvas.Background = null;
+                this.RenderSurface.Background = Brushes.Transparent;
             }
         }
 
         /// <inheritdoc/>
         protected override FrameworkElement CreatePlotPresenter()
         {
-            return new Canvas();
+            return new RenderSurface() { Background = Brushes.Transparent };
         }
 
         /// <inheritdoc/>
         protected override IRenderContext CreateRenderContext()
         {
-            return new CanvasRenderContext(this.Canvas);
+            return new DrawingRenderContext((RenderSurface)this.RenderSurface);
         }
 
         /// <inheritdoc/>
@@ -100,26 +99,17 @@ namespace OxyPlot.Wpf
         protected override void RenderOverride()
         {
             this.RenderContext.TextMeasurementMethod = this.TextMeasurementMethod;
-            if (this.DisconnectCanvasWhileUpdating)
+            var renderSurface = this.RenderSurface as RenderSurface;
+
+            try
             {
-                // TODO: profile... not sure if this makes any difference
-                var idx = this.grid.Children.IndexOf(this.plotPresenter);
-                if (idx != -1)
-                {
-                    this.grid.Children.RemoveAt(idx);
-                }
+                renderSurface?.BeginRender();
 
                 base.RenderOverride();
-
-                if (idx != -1)
-                {
-                    // reinsert the canvas again
-                    this.grid.Children.Insert(idx, this.plotPresenter);
-                }
             }
-            else
+            finally
             {
-                base.RenderOverride();
+                renderSurface?.EndRender();
             }
         }
 
@@ -127,9 +117,13 @@ namespace OxyPlot.Wpf
         protected override double UpdateDpi()
         {
             var scale = base.UpdateDpi();
-            this.RenderContext.DpiScale = scale;
-            var ancestor = this.GetAncestorVisualFromVisualTree(this);
-            this.RenderContext.VisualOffset = ancestor != null ? this.TransformToAncestor(ancestor).Transform(default) : default;
+            if (this.RenderContext != null)
+            {
+                this.RenderContext.DpiScale = scale;
+                var ancestor = this.GetAncestorVisualFromVisualTree(this);
+                this.RenderContext.VisualOffset = ancestor != null ? this.TransformToAncestor(ancestor).Transform(default) : default;
+            }
+
             return scale;
         }
 
@@ -152,7 +146,7 @@ namespace OxyPlot.Wpf
         /// <returns> The host window from the visual tree.</returns>
         private Visual GetAncestorVisualFromVisualTree(DependencyObject startElement)
         {
-            
+
             DependencyObject child = startElement;
             DependencyObject parent = VisualTreeHelper.GetParent(child);
             while (parent != null)
@@ -161,7 +155,7 @@ namespace OxyPlot.Wpf
                 parent = VisualTreeHelper.GetParent(child);
             }
 
-            return child is Visual visualChild ? visualChild : Window.GetWindow(this);
+            return child as Visual ?? Window.GetWindow(this);
         }
     }
 }

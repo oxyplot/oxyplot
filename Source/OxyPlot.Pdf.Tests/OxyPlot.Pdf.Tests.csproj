@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net462</TargetFrameworks>
+        <TargetFrameworks>net462;net8.0;net10.0</TargetFrameworks>
+        <AllowMissingPrunePackageData>true</AllowMissingPrunePackageData>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <Description>OxyPlot Pdf unit tests</Description>
+        <LangVersion>14</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <NoWarn>$(NoWarn);CS0618;NU1701</NoWarn>
     </PropertyGroup>
@@ -12,12 +14,9 @@
         <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.0" />
-        <PackageReference Include="NUnit" Version="3.14.0" />
-        <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
+        <PackageReference Include="NUnit" Version="4.5.1" />
+        <PackageReference Include="NUnit3TestAdapter" Version="6.2.0" />
         <PackageReference Include="PDFsharp-MigraDoc-GDI" Version="1.50.5147" />
-    </ItemGroup>
-    <ItemGroup>
-        <Reference Include="System.Data.DataSetExtensions" />
     </ItemGroup>
 </Project>

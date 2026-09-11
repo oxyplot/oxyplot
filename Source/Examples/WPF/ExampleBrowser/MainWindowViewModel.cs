@@ -57,8 +57,6 @@ namespace ExampleBrowser
             }
         }
 
-        public PlotModel CanvasModel => this.Renderer == Renderer.Canvas ? this._PlotModel : null;
-
         public string Code
         {
             get => this._Code;
@@ -96,8 +94,9 @@ namespace ExampleBrowser
         {
             ((IPlotModel)this._PlotModel)?.AttachPlotView(null);
             this.RaisePropertyChanged(nameof(this.SkiaModel));
-            this.RaisePropertyChanged(nameof(this.CanvasXamlModel));
+            this.RaisePropertyChanged(nameof(this.XamlModel));
             this.RaisePropertyChanged(nameof(this.CanvasModel));
+            this.RaisePropertyChanged(nameof(this.DrawingModel));
         }
 
         public IEnumerable<Renderer> Renderers => Enum.GetValues(typeof(Renderer)).Cast<Renderer>();
@@ -113,9 +112,13 @@ namespace ExampleBrowser
             }
         }
 
+        public PlotModel CanvasModel => this.Renderer == Renderer.Canvas ? this._PlotModel : null;
+
         public PlotModel SkiaModel => this.Renderer == Renderer.SkiaSharp ? this._PlotModel : null;
 
-        public PlotModel CanvasXamlModel => this.Renderer == Renderer.Canvas_XAML ? this._PlotModel : null;
+        public PlotModel DrawingModel => this.Renderer == Renderer.Drawing ? this._PlotModel : null;
+
+        public PlotModel XamlModel => this.Renderer == Renderer.XAML ? this._PlotModel : null;
 
         public bool Transposed
         {

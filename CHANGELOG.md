@@ -6,9 +6,11 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Example to demonstrate how to create vertical BarSeries
+- A new RenderContext for WPF (DrawingRenderContext) that renders into DrawingGroup instead of creating WPF elements. Adding WPF elements during render can cause flickering and block rendering when there are a lot of series. Changed WPF PlotView to use the new render context.
 
 ### Fixed
 - DateTimeAxis converting local time rather than UTC to TimeZone
+- Blank plots on InvalidatePlot (#1794)
 
 ### Changed
 - Target .NET 10, remove target .NET 6 (out of support and incompatible with nuget updates)

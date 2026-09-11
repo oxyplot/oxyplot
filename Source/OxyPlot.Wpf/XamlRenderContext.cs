@@ -17,7 +17,7 @@ namespace OxyPlot.Wpf
     using Path = System.Windows.Shapes.Path;
 
     /// <summary>
-    /// Implements <see cref="IRenderContext" /> for <see cref="Canvas" />. This does not use <see cref="StreamGeometry"/> and therefore the output can be serialized to XAML.
+    /// Implements <see cref="IRenderContext" /> for <see cref="Canvas" />, but does not use <see cref="StreamGeometry"/> and therefore the output can be serialized to XAML.
     /// </summary>
     public class XamlRenderContext : CanvasRenderContext
     {
@@ -128,7 +128,7 @@ namespace OxyPlot.Wpf
                     pathGeometry = new PathGeometry();
                 }
 
-                var actualPoints = this.GetActualPoints( new[] { points[i], points[i + 1] }, path.StrokeThickness, edgeRenderingMode).ToList();
+                var actualPoints = this.GetActualPoints(new[] { points[i], points[i + 1] }, path.StrokeThickness, edgeRenderingMode).ToList();
 
                 var figure = new PathFigure { StartPoint = actualPoints[0], IsClosed = false };
                 figure.Segments.Add(new LineSegment(actualPoints[1], true) { IsSmoothJoin = false });

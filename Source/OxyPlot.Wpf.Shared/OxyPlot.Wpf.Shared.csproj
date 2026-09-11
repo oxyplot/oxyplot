@@ -1,23 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFrameworks>net462;net6.0-windows7.0;net8.0-windows7.0;net10.0-windows7.0</TargetFrameworks>
-    <AllowMissingPrunePackageData>true</AllowMissingPrunePackageData>
-    <UseWPF>true</UseWPF>
-    <LangVersion>14</LangVersion>
-    <Description>OxyPlot is a plotting library for .NET. This package is the base for WPF PlotView implementations.</Description>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <PackageTags>plotting plot charting chart wpf</PackageTags>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>OxyPlot.Wpf.Shared.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Include="OxyPlot.Wpf.Shared.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Update="DotNet.ReproducibleBuilds" Version="2.0.2" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFrameworks>net462;net8.0-windows7.0;net10.0-windows7.0</TargetFrameworks>
+        <AllowMissingPrunePackageData>true</AllowMissingPrunePackageData>
+        <UseWPF>true</UseWPF>
+        <LangVersion>14</LangVersion>
+        <Description>OxyPlot is a plotting library for .NET. This package is the base for WPF PlotView implementations.</Description>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <PackageTags>plotting plot charting chart wpf</PackageTags>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>OxyPlot.Wpf.Shared.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="OxyPlot.Wpf.Shared.snk" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\OxyPlot\OxyPlot.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Update="DotNet.ReproducibleBuilds" Version="2.0.2" />
+    </ItemGroup>
 </Project>

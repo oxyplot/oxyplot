@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net462;net6.0-windows7.0;net8.0-windows7.0</TargetFrameworks>
+        <TargetFrameworks>net462;net8.0-windows7.0;net10.0-windows7.0</TargetFrameworks>
+        <AllowMissingPrunePackageData>true</AllowMissingPrunePackageData>
         <UseWindowsForms>true</UseWindowsForms>
         <Description>OxyPlot is a plotting library for .NET. This package targets Windows Forms applications.</Description>
         <PackageTags>plotting plot charting chart</PackageTags>
