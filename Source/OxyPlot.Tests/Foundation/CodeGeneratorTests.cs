@@ -10,6 +10,7 @@
 namespace OxyPlot.Tests
 {
     using NUnit.Framework;
+    using NUnit.Framework.Legacy;
 
     /// <summary>
     /// Provides unit tests for the <see cref="CodeGenerator" />.
@@ -53,7 +54,7 @@ namespace OxyPlot.Tests
             };
             plot.Series.Add(series);
 
-            Assert.That(plot.ToCode(), Does.Contain(@"{1}: {2:m\\:ss\\.ff}\n{3}: {4:0.##}"));
+            StringAssert.Contains(@"{1}: {2:m\\:ss\\.ff}\n{3}: {4:0.##}", plot.ToCode());
         }
     }
 }

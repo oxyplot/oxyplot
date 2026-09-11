@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ConrecTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -25,7 +25,7 @@ namespace OxyPlot.Tests
             var data = ArrayBuilder.Evaluate((x1, y1) => Math.Sin(x1 * y1), x, y);
             int segments = 0;
             Conrec.Contour(data, x, y, z, (x1, y1, x2, y2, elev) => { segments++; });
-            Assert.That(segments, Is.EqualTo(134068));
+            Assert.AreEqual(134068, segments);
         }
     }
 }

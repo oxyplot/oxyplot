@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PngDecoderTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -23,9 +23,9 @@ namespace OxyPlot.Tests
         {
             var d = new PngDecoder();
             var pixels = d.Decode(File.ReadAllBytes(path));
-            Assert.That(pixels.GetLength(0), Is.EqualTo(w));
-            Assert.That(pixels.GetLength(1), Is.EqualTo(h));
-            Assert.That(pixels, Is.Not.Null);
+            Assert.AreEqual(w, pixels.GetLength(0));
+            Assert.AreEqual(h, pixels.GetLength(1));
+            Assert.IsNotNull(pixels);
             var e = new PngEncoder(new PngEncoderOptions());
             var encodedPixels = e.Encode(pixels);
             File.WriteAllBytes(Path.ChangeExtension(path, "out.png"), encodedPixels);

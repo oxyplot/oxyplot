@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotControllerTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -32,7 +32,7 @@ namespace OxyPlot.Tests
             {
                 var c = new PlotController();
                 c.Unbind(new OxyMouseDownGesture(OxyMouseButton.Left));
-                Assert.That(c.InputCommandBindings.Any(b => b.Gesture.Equals(new OxyMouseDownGesture(OxyMouseButton.Left))), Is.False);
+                Assert.IsFalse(c.InputCommandBindings.Any(b => b.Gesture.Equals(new OxyMouseDownGesture(OxyMouseButton.Left))));
             }
 
             /// <summary>
@@ -43,7 +43,7 @@ namespace OxyPlot.Tests
             {
                 var c = new PlotController();
                 c.Unbind(PlotCommands.SnapTrack);
-                Assert.That(c.InputCommandBindings.Any(b => b.Command == PlotCommands.SnapTrack), Is.False);
+                Assert.IsFalse(c.InputCommandBindings.Any(b => b.Command == PlotCommands.SnapTrack));
             }
 
             /// <summary>
@@ -54,7 +54,7 @@ namespace OxyPlot.Tests
             {
                 var c = new PlotController();
                 c.UnbindAll();
-                Assert.That(c.InputCommandBindings.Count, Is.EqualTo(0));
+                Assert.AreEqual(0, c.InputCommandBindings.Count);
             }
         }
     }

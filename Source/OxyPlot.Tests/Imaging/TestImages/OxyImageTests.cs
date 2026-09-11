@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OxyImageTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -28,11 +28,11 @@ namespace OxyPlot.Tests
         public void GetFormat_TestFiles_(string fileName, ImageFormat expectedImageFormat)
         {
             var image = new OxyImage(File.ReadAllBytes(@"Imaging\TestImages\" + fileName));
-            Assert.That(image.Format, Is.EqualTo(expectedImageFormat));
-            Assert.That(image.Width, Is.EqualTo(137));
-            Assert.That(image.Height, Is.EqualTo(59));
-            Assert.That(Math.Round(image.DpiX), Is.EqualTo(72));
-            Assert.That(Math.Round(image.DpiY), Is.EqualTo(72));
+            Assert.AreEqual(expectedImageFormat, image.Format);
+            Assert.AreEqual(137, image.Width);
+            Assert.AreEqual(59, image.Height);
+            Assert.AreEqual(72, Math.Round(image.DpiX));
+            Assert.AreEqual(72, Math.Round(image.DpiY));
         }
 
         [Test]

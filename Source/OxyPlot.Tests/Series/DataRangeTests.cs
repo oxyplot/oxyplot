@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DataRangeTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -27,8 +27,8 @@ namespace OxyPlot.Tests
         {
             var range = new DataRange(3, 5);
 
-            Assert.That(range.Minimum, Is.EqualTo(3));
-            Assert.That(range.Maximum, Is.EqualTo(5));
+            Assert.AreEqual(3, range.Minimum);
+            Assert.AreEqual(5, range.Maximum);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace OxyPlot.Tests
         public void Initialize_ThrowsArgumentException_NaN()
         {
             ArgumentException ex = Assert.Throws<ArgumentException>(() => new DataRange(double.NaN, 3));
-            Assert.That(ex.Message, Is.EqualTo("NaN values are not permitted"));
+            Assert.AreEqual("NaN values are not permitted", ex.Message);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace OxyPlot.Tests
         public void Initialize_ThrowsArgumentException_MinGreaterMax()
         {
             ArgumentException ex = Assert.Throws<ArgumentException>(() => new DataRange(5, 3));
-            Assert.That(ex.Message, Is.EqualTo("max must be larger or equal min"));
+            Assert.AreEqual("max must be larger or equal min", ex.Message);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace OxyPlot.Tests
         {
             var range = new DataRange(3, 5);
 
-            Assert.That(range.Range, Is.EqualTo(2));
+            Assert.AreEqual(2, range.Range);
         }
 
         /// <summary>
@@ -68,15 +68,15 @@ namespace OxyPlot.Tests
         [Test]
         public void IsDefined()
         {
-            Assert.That(new DataRange(3, 5).IsDefined(), Is.True);
-            Assert.That(new DataRange(double.NegativeInfinity, double.PositiveInfinity).IsDefined(), Is.True);
-            Assert.That(new DataRange(double.MinValue, double.MaxValue).IsDefined(), Is.True);
+            Assert.IsTrue(new DataRange(3, 5).IsDefined());
+            Assert.IsTrue(new DataRange(double.NegativeInfinity, double.PositiveInfinity).IsDefined());
+            Assert.IsTrue(new DataRange(double.MinValue, double.MaxValue).IsDefined());
 
 #pragma warning disable SA1129 // Do not use default value type constructor
-            Assert.That(new DataRange().IsDefined(), Is.False);
+            Assert.IsFalse(new DataRange().IsDefined());
 #pragma warning restore SA1129 // Do not use default value type constructor
 
-            Assert.That(DataRange.Undefined.IsDefined(), Is.False);
+            Assert.IsFalse(DataRange.Undefined.IsDefined());
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace OxyPlot.Tests
         [Test]
         public void DefaultIsUndefined()
         {
-            Assert.That(default(DataRange).IsDefined(), Is.False);
+            Assert.IsFalse(default(DataRange).IsDefined());
         }
 
         /// <summary>
@@ -97,12 +97,12 @@ namespace OxyPlot.Tests
         {
             var range = new DataRange(3, 5);
 
-            Assert.That(range.Contains(3), Is.True);
-            Assert.That(range.Contains(4), Is.True);
-            Assert.That(range.Contains(5), Is.True);
+            Assert.IsTrue(range.Contains(3));
+            Assert.IsTrue(range.Contains(4));
+            Assert.IsTrue(range.Contains(5));
 
-            Assert.That(range.Contains(2), Is.False);
-            Assert.That(range.Contains(6), Is.False);
+            Assert.IsFalse(range.Contains(2));
+            Assert.IsFalse(range.Contains(6));
         }
 
         /// <summary>
@@ -114,18 +114,18 @@ namespace OxyPlot.Tests
         {
             var range = new DataRange(3, 5);
 
-            Assert.That(range.IntersectsWith(new DataRange(1, 4)), Is.True);
-            Assert.That(range.IntersectsWith(new DataRange(4, 6)), Is.True);
-            Assert.That(range.IntersectsWith(new DataRange(4, 4)), Is.True);
-            Assert.That(range.IntersectsWith(new DataRange(1, 6)), Is.True);
+            Assert.IsTrue(range.IntersectsWith(new DataRange(1, 4)));
+            Assert.IsTrue(range.IntersectsWith(new DataRange(4, 6)));
+            Assert.IsTrue(range.IntersectsWith(new DataRange(4, 4)));
+            Assert.IsTrue(range.IntersectsWith(new DataRange(1, 6)));
 
-            Assert.That(range.IntersectsWith(new DataRange(1, 3)), Is.True);
-            Assert.That(range.IntersectsWith(new DataRange(5, 6)), Is.True);
+            Assert.IsTrue(range.IntersectsWith(new DataRange(1, 3)));
+            Assert.IsTrue(range.IntersectsWith(new DataRange(5, 6)));
 
-            Assert.That(range.IntersectsWith(new DataRange(-5, -3)), Is.False);
-            Assert.That(range.IntersectsWith(new DataRange(13, 15)), Is.False);
+            Assert.IsFalse(range.IntersectsWith(new DataRange(-5, -3)));
+            Assert.IsFalse(range.IntersectsWith(new DataRange(13, 15)));
 
-            Assert.That(range.IntersectsWith(DataRange.Undefined), Is.False);
+            Assert.IsFalse(range.IntersectsWith(DataRange.Undefined));
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace OxyPlot.Tests
         [Test]
         public void ToCode()
         {
-            Assert.That(new DataRange(3, 5).ToCode(), Is.EqualTo("new DataRange(3,5)"));
+            Assert.AreEqual("new DataRange(3,5)", new DataRange(3, 5).ToCode());
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace OxyPlot.Tests
         [Test]
         public void TestToString()
         {
-            Assert.That(new DataRange(3, 5).ToString(), Is.EqualTo("[3, 5]"));
+            Assert.AreEqual("[3, 5]", new DataRange(3, 5).ToString());
         }
     }
 }

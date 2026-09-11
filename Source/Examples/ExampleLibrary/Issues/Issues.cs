@@ -2393,7 +2393,7 @@ namespace ExampleLibrary
 
                         for (int c = 0; c < data.GetLength(0); c++)
                         {
-                            data[r, c] = double.Parse(row[c], CultureInfo.InvariantCulture);
+                            data[r, c] = double.Parse(row[c]);
                         }
                     }
                 }
@@ -2407,7 +2407,7 @@ namespace ExampleLibrary
                     for (int i = 0; i < xs.Length; i++)
                     {
                         var line = reader.ReadLine();
-                        xs[i] = double.Parse(line, CultureInfo.InvariantCulture);
+                        xs[i] = double.Parse(line);
                     }
                 }
             }
@@ -2420,7 +2420,7 @@ namespace ExampleLibrary
                     for (int i = 0; i < ys.Length; i++)
                     {
                         var line = reader.ReadLine();
-                        ys[i] = double.Parse(line, CultureInfo.InvariantCulture);
+                        ys[i] = double.Parse(line);
                     }
                 }
             }

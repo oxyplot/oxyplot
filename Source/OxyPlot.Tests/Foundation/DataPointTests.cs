@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DataPointTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -23,9 +23,9 @@ namespace OxyPlot.Tests
         [Test]
         public void ValidPoints()
         {
-            Assert.That(new DataPoint(1, 2).IsDefined(), Is.True);
-            Assert.That(new DataPoint(double.MaxValue, double.MaxValue).IsDefined(), Is.True);
-            Assert.That(new DataPoint(double.MinValue, double.MinValue).IsDefined(), Is.True);
+            Assert.IsTrue(new DataPoint(1, 2).IsDefined());
+            Assert.IsTrue(new DataPoint(double.MaxValue, double.MaxValue).IsDefined());
+            Assert.IsTrue(new DataPoint(double.MinValue, double.MinValue).IsDefined());
         }
 
         /// <summary>
@@ -34,11 +34,11 @@ namespace OxyPlot.Tests
         [Test]
         public void InvalidPoints()
         {
-            Assert.That(new DataPoint(double.NaN, double.NaN).IsDefined(), Is.False);
-            Assert.That(new DataPoint(double.NaN, 2).IsDefined(), Is.False);
-            Assert.That(new DataPoint(2, double.NaN).IsDefined(), Is.False);
+            Assert.IsFalse(new DataPoint(double.NaN, double.NaN).IsDefined());
+            Assert.IsFalse(new DataPoint(double.NaN, 2).IsDefined());
+            Assert.IsFalse(new DataPoint(2, double.NaN).IsDefined());
             var p = DataPoint.Undefined;
-            Assert.That(p.IsDefined(), Is.False);
+            Assert.IsFalse(p.IsDefined());
         }
 
         /// <summary>

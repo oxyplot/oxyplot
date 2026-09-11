@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LinearAxisTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -35,7 +35,7 @@ namespace OxyPlot.Tests
             {
                 var axis1 = new LinearAxis();
                 var axis2 = new LinearAxis();
-                Assert.That(axis1.GetHashCode() != axis2.GetHashCode(), Is.True);
+                Assert.IsTrue(axis1.GetHashCode() != axis2.GetHashCode());
             }
         }
 
@@ -56,7 +56,7 @@ namespace OxyPlot.Tests
                     FractionUnit = Math.PI,
                     FractionUnitSymbol = "π"
                 };
-                Assert.That(axis.FormatValue(0), Is.EqualTo("0"));
+                Assert.AreEqual("0", axis.FormatValue(0));
             }
 
             /// <summary>
@@ -71,7 +71,7 @@ namespace OxyPlot.Tests
                     FractionUnit = Math.PI,
                     FractionUnitSymbol = "π"
                 };
-                Assert.That(axis.FormatValue(0.5 * Math.PI), Is.EqualTo("π/2"));
+                Assert.AreEqual("π/2", axis.FormatValue(0.5 * Math.PI));
             }
 
             /// <summary>
@@ -86,7 +86,7 @@ namespace OxyPlot.Tests
                     FractionUnit = Math.PI,
                     FractionUnitSymbol = "π"
                 };
-                Assert.That(axis.FormatValue(2 * Math.PI), Is.EqualTo("2π"));
+                Assert.AreEqual("2π", axis.FormatValue(2 * Math.PI));
             }
 
             /// <summary>
@@ -101,7 +101,7 @@ namespace OxyPlot.Tests
                     FractionUnit = Math.PI,
                     FractionUnitSymbol = "π"
                 };
-                Assert.That(axis.FormatValue(3d / 2 * Math.PI), Is.EqualTo("3π/2"));
+                Assert.AreEqual("3π/2", axis.FormatValue(3d / 2 * Math.PI));
             }
 
             /// <summary>
@@ -120,7 +120,7 @@ namespace OxyPlot.Tests
                 };
                 model.Axes.Add(axis);
                 ((IPlotModel)model).Update(true);
-                Assert.That(axis.FormatValue(4), Is.EqualTo("1.273π"));
+                Assert.AreEqual("1.273π", axis.FormatValue(4));
             }
         }
     }

@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="NayukiDeflateTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -246,10 +246,10 @@ namespace OxyPlot.Tests
 
         private static void AssertArrayEquals<T>(T[] refOut, T[] actualOut)
         {
-            Assert.That(actualOut.Length, Is.EqualTo(refOut.Length));
+            Assert.AreEqual(refOut.Length, actualOut.Length);
             for (int i = 0; i < refOut.Length; i++)
             {
-                Assert.That(actualOut[i], Is.EqualTo(refOut[i]));
+                Assert.AreEqual(refOut[i], actualOut[i]);
             }
         }
     }

@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotModelTests.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
@@ -77,7 +77,7 @@ namespace OxyPlot.Tests
             var pm = new PlotModel();
             var plot = Substitute.For<IPlotView>();
             ((IPlotModel)pm).AttachPlotView(plot);
-            Assert.That(pm.PlotView, Is.Not.Null);
+            Assert.IsNotNull(pm.PlotView);
 
             // ReSharper disable once RedundantAssignment
             plot = null;
@@ -86,7 +86,7 @@ namespace OxyPlot.Tests
             // Verify that the reference is lost
             // In debug builds a reference may be kept around for the debugger.
 #if !DEBUG
-            Assert.That(pm.PlotView, Is.Null);
+            Assert.IsNull(pm.PlotView);
 #endif
         }
 
@@ -147,7 +147,7 @@ namespace OxyPlot.Tests
             model.Axes.Add(new LinearAxis());
             model.Series.Add(new LineSeries { XAxisKey = "invalidKey" });
             ((IPlotModel)model).Update(true);
-            Assert.That(model.GetLastPlotException() as InvalidOperationException, Is.Not.Null);
+            Assert.IsNotNull(model.GetLastPlotException() as InvalidOperationException);
         }
 
         /// <summary>

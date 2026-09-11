@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="XYAxisSeriesTests.cs" company="OxyPlot">
 //   Copyright (c) 2020 OxyPlot contributors
 // </copyright>
@@ -77,9 +77,9 @@ namespace OxyPlot.Tests
             int foundIndex = xyAxiseries.FindWindowStartIndex(testData, x => x, targetX, guess);
 
             if (foundIndex > 0)
-                Assert.That(testData[foundIndex], Is.LessThanOrEqualTo(targetX), "At " + seed);
+                Assert.LessOrEqual(testData[foundIndex], targetX, "At " + seed);
             if (foundIndex < testData.Count - 1)
-                Assert.That(testData[foundIndex + 1], Is.GreaterThanOrEqualTo(targetX), "At " + seed);
+                Assert.GreaterOrEqual(testData[foundIndex + 1], targetX, "At " + seed);
         }
 
         private static void FuzzIterationWithNan(int seed)
@@ -133,11 +133,11 @@ namespace OxyPlot.Tests
                 {
                     var prevNonNaN = PrevNonNan(foundIndex-1);
                     if (prevNonNaN.HasValue)
-                        Assert.That(prevNonNaN, Is.LessThanOrEqualTo(targetX), "At " + seed);
+                        Assert.LessOrEqual(prevNonNaN, targetX, "At " + seed);
                 }
                 else
                 {
-                    Assert.That(testData[foundIndex], Is.LessThanOrEqualTo(targetX), "At " + seed);
+                    Assert.LessOrEqual(testData[foundIndex], targetX, "At " + seed);
                 }
             }
 
@@ -147,11 +147,11 @@ namespace OxyPlot.Tests
                 {
                     var nextNonNaN = NextNonNan(foundIndex+1);
                     if (nextNonNaN.HasValue)
-                        Assert.That(nextNonNaN, Is.GreaterThanOrEqualTo(targetX), "At " + seed);
+                        Assert.GreaterOrEqual(nextNonNaN, targetX, "At " + seed);
                 }
                 else
                 {
-                    Assert.That(testData[foundIndex + 1], Is.GreaterThanOrEqualTo(targetX), "At " + seed);
+                    Assert.GreaterOrEqual(testData[foundIndex + 1], targetX, "At " + seed);
                 }
             }
         }
