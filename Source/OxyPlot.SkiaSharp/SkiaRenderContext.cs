@@ -913,6 +913,7 @@ namespace OxyPlot.SkiaSharp
             this.paint.Style = SKPaintStyle.Fill;
             this.paint.HintingLevel = this.RendersToScreen ? SKPaintHinting.Full : SKPaintHinting.NoHinting;
             this.paint.SubpixelText = this.RendersToScreen;
+            this.paint.PathEffect = null;
             return this.paint;
         }
 
