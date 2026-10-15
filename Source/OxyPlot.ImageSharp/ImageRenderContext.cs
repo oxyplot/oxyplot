@@ -79,7 +79,7 @@ namespace OxyPlot.ImageSharp
             this.Dpi = (float)dpi;
             this.DpiScale = (float)(dpi / 96.0);
 
-            this.image.Mutate(img => img.BackgroundColor(ToRgba32(background)));
+            this.image.Mutate(img => img.BackgroundColor(ToRgba32Color(background)));
 
             this.RendersToScreen = false;
 
@@ -250,7 +250,7 @@ namespace OxyPlot.ImageSharp
                 // draw the glyphs
                 this.Target.Mutate(img =>
                 {
-                    img.Fill(ToRgba32(fill), glyphs);
+                    img.Fill(ToRgba32Color(fill), glyphs);
                 });
             }
         }
@@ -459,7 +459,7 @@ namespace OxyPlot.ImageSharp
                 return null;
             }
 
-            return Brushes.Solid(ToRgba32(fill));
+            return Brushes.Solid(ToRgba32Color(fill));
         }
 
         /// <summary>
@@ -482,7 +482,7 @@ namespace OxyPlot.ImageSharp
             var actualDashArray = dashArray is null ? null : this.ConvertDashArray(dashArray, actualThickness);
             var actualJointStyle = this.GetLineJointStyle(lineJoin);
 
-            var penOptions = new PenOptions(ToRgba32(stroke), actualThickness, actualDashArray)
+            var penOptions = new PenOptions(ToRgba32Color(stroke), actualThickness, actualDashArray)
             {
                 JointStyle = actualJointStyle,
             };
@@ -569,13 +569,13 @@ namespace OxyPlot.ImageSharp
         }
 
         /// <summary>
-        /// Translates an <see cref="OxyColor"/> to a <see cref="Rgba32"/>.
+        /// Translates an <see cref="OxyColor"/> to a <see cref="Color"/> via a <see cref="Rgba32"/>.
         /// </summary>
         /// <param name="color">The <see cref="OxyColor"/>.</param>
-        /// <returns>The resulting <see cref="Rgba32"/>.</returns>
-        private static Rgba32 ToRgba32(OxyColor color)
+        /// <returns>The resulting <see cref="Color"/>.</returns>
+        private static Color ToRgba32Color(OxyColor color)
         {
-            return new Rgba32(color.R, color.G, color.B, color.A);
+            return Color.FromPixel(new Rgba32(color.R, color.G, color.B, color.A));
         }
 
         /// <summary>
