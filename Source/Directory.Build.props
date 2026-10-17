@@ -1,7 +1,7 @@
 <Project>
-  <Sdk Name="DotNet.ReproducibleBuilds.Isolated" Version="1.1.1" />
+  <Sdk Name="DotNet.ReproducibleBuilds.Isolated" Version="2.0.5" />
   <ItemGroup>
-    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All"/>
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="2.0.5" PrivateAssets="All"/>
   </ItemGroup>
   <PropertyGroup>
     <Copyright>Copyright (c) 2014-2022 OxyPlot Contributors</Copyright>
