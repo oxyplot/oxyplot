@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+### Fixed
+
+### Changed
+
+## [2.2.1] - 2026-10-17
+
+### Added
+
 - Example to demonstrate how to create vertical BarSeries
 
 ### Fixed
@@ -537,8 +545,8 @@ All notable changes to this project will be documented in this file.
 - Expose ScatterSeries.ActualPoints (#201)
 - Add overridable Axis.FormatValueOverride (#181)
 - PngExporter text formatting (#170)
-
-[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/oxyplot/oxyplot/compare/v2.2.1...HEAD
+[2.2.1]: https://github.com/oxyplot/oxyplot/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/oxyplot/oxyplot/compare/v2.1.2...v2.2.0
 [2.1.2]: https://github.com/oxyplot/oxyplot/compare/v2.1.0...v2.1.2
 [2.1.0]: https://github.com/oxyplot/oxyplot/compare/v2.0.0...v2.1.0
