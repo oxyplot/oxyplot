@@ -24,6 +24,37 @@ namespace OxyPlot.SkiaSharp.Tests
         }
 
         [Test]
+        public void TestNoSvgTextShaping()
+        {
+            static void writeSvg(Stream stream)
+            {
+                using var canvas = SKSvgCanvas.Create(new SKRect(0, 0, 100, 100), stream);
+                var context = new SkiaRenderContext
+                {
+                    RenderTarget = RenderTarget.VectorGraphic,
+                    SkCanvas = canvas,
+                    UseTextShaping = false,
+                };
+
+                context.DrawLine(
+                    [new ScreenPoint(0, 0), new ScreenPoint(10, 0)],
+                    OxyColors.Black,
+                    1,
+                    EdgeRenderingMode.Automatic,
+                    [1, 2, 1, 2],
+                    LineJoin.Miter);
+
+                context.DrawText(new ScreenPoint(0, 0), "ABC", OxyColors.Black);
+            }
+
+            using var svgStream = new MemoryStream();
+            writeSvg(svgStream);
+            var svg = System.Text.Encoding.UTF8.GetString(svgStream.ToArray());
+
+            Assert.That(svg, Contains.Substring("<text"));
+        }
+
+        [Test]
         public void TestDisposal()
         {
             var plotModel = (IPlotModel)ShowCases.CreateNormalDistributionModel();
