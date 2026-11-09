@@ -38,6 +38,13 @@ namespace OxyPlot.Tests
         }
 
         [Test]
+        public void BinningOptions_InvalidExtremeValuesMode()
+        {
+            var exception = Assert.Throws<ArgumentException>(() => new BinningOptions(BinningOutlierMode.RejectOutliers, BinningIntervalType.InclusiveLowerBound, (BinningExtremeValueMode)999));
+            Assert.That(exception.ParamName, Is.EqualTo("extremeValuesMode"));
+        }
+
+        [Test]
         public void CreateUniformBins_SingleBin()
         {
             var start = double.Epsilon;
