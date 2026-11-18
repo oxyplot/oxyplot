@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - DateTimeAxis converting local time rather than UTC to TimeZone
+- PDF font name matching broken under Turkish culture (upper-case names such as "TIMES")
 
 ### Changed
 - Target .NET 10, remove target .NET 6 (out of support and incompatible with nuget updates)
