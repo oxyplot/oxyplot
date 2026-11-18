@@ -54,6 +54,30 @@ namespace OxyPlot.Tests
             doc.Save(Folder + "DrawText.pdf");
         }
 
+        [Test]
+        public void SetFont_UpperCaseName_TurkishCulture()
+        {
+            var culture = CultureInfo.CurrentCulture;
+            try
+            {
+                CultureInfo.CurrentCulture = new CultureInfo("tr-TR");
+                var doc = new PortableDocument();
+                doc.AddPage(PageSize.A4);
+                doc.SetFont("TIMES", 12);
+                doc.DrawText(50, 400, "Hello world!");
+                using (var ms = new MemoryStream())
+                {
+                    doc.Save(ms);
+                    var pdf = Encoding.ASCII.GetString(ms.ToArray());
+                    Assert.That(pdf, Does.Contain("TimesNewRoman"));
+                }
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = culture;
+            }
+        }
+
         [Test, Ignore("Not supported")]
         public void DrawText_SpecialCharacters()
         {

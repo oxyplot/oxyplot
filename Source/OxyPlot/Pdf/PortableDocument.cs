@@ -954,7 +954,7 @@ namespace OxyPlot
         {
             if (fontName != null)
             {
-                fontName = fontName.ToLower();
+                fontName = fontName.ToLowerInvariant();
             }
 
             switch (fontName)
