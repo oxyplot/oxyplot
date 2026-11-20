@@ -7,6 +7,7 @@
 namespace ExampleLibrary
 {
     using OxyPlot;
+    using OxyPlot.Axes;
 
     [Examples("Palettes")]
     public class PaletteExamples
@@ -141,6 +142,28 @@ namespace ExampleLibrary
         public static PlotModel Vertical_6()
         {
             return HeatMapSeriesExamples.CreatePeaks(OxyPalettes.Jet(6), false);
+        }
+
+        [Example("Okabe-Ito palette")]
+        public static PlotModel OkabeIto()
+        {
+            var model = new PlotModel
+            {
+                Title = "Okabe-Ito palette",
+                DefaultColors = OxyPalettes.OkabeIto8.Colors
+            };
+
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+
+            foreach (var color in model.DefaultColors)
+            {
+                var lineSeries = LineSeriesExamples.CreateExampleLineSeries((int)color.ToUint());
+                lineSeries.Title = color.ToString().ToUpper().Replace("#FF", "#");
+                model.Series.Add(lineSeries);
+            }
+
+            return model;
         }
     }
 }

@@ -22,6 +22,7 @@ namespace OxyPlot
             BlueWhiteRed31 = BlueWhiteRed(31);
             Hot64 = Hot(64);
             Hue64 = Hue(64);
+            OkabeIto8 = OkabeIto(8);
         }
 
         /// <summary>
@@ -38,6 +39,12 @@ namespace OxyPlot
         /// Gets the hue palette with 64 colors.
         /// </summary>
         public static OxyPalette Hue64 { get; private set; }
+
+        /// <summary>
+        /// Gets the Okabe-Ito colorblind friendly palette with 8 colors.
+        /// https://jfly.uni-koeln.de/color/
+        /// </summary>
+        public static OxyPalette OkabeIto8 { get; private set; }
 
         /// <summary>
         /// Creates a black/white/red palette with the specified number of colors.
@@ -164,6 +171,26 @@ namespace OxyPlot
                 OxyColors.Yellow,
                 OxyColors.Orange,
                 OxyColors.Red);
+        }
+
+        /// <summary>
+        /// Creates the Okabe-Ito colorblind friendly palette with the specified number of colors.
+        /// https://jfly.uni-koeln.de/color/
+        /// </summary>
+        /// <param name="numberOfColors">The number of colors to create for the palette.</param>
+        /// <returns>A palette.</returns>
+        public static OxyPalette OkabeIto(int numberOfColors)
+        {
+            return OxyPalette.Interpolate(
+                numberOfColors,
+                OxyColor.FromRgb(0, 0, 0),
+                OxyColor.FromRgb(230, 159, 0),
+                OxyColor.FromRgb(86, 180, 233),
+                OxyColor.FromRgb(0, 158, 115),
+                OxyColor.FromRgb(240, 228, 66),
+                OxyColor.FromRgb(0, 114, 178),
+                OxyColor.FromRgb(213, 94, 0),
+                OxyColor.FromRgb(204, 121, 167));
         }
     }
 }

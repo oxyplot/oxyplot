@@ -441,7 +441,7 @@ namespace ExampleLibrary
         /// Creates an example line series.
         /// </summary>
         /// <returns>A line series containing random points.</returns>
-        private static LineSeries CreateExampleLineSeries(int seed = 13)
+        public static LineSeries CreateExampleLineSeries(int seed = 13)
         {
             var lineSeries1 = new LineSeries();
             var r = new Random(seed);
