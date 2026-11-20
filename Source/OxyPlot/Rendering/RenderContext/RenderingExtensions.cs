@@ -270,6 +270,7 @@ namespace OxyPlot
         /// <param name="stroke">The stroke color.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        /// <param name="dashArray"></param>
         public static void DrawMarker(
             this IRenderContext rc,
             ScreenPoint p,
@@ -279,9 +280,10 @@ namespace OxyPlot
             OxyColor fill,
             OxyColor stroke,
             double strokeThickness,
-            EdgeRenderingMode edgeRenderingMode)
+            EdgeRenderingMode edgeRenderingMode,
+            double[]? dashArray)
         {
-            rc.DrawMarkers(new[] { p }, type, outline, new[] { size }, fill, stroke, strokeThickness, edgeRenderingMode);
+            rc.DrawMarkers(new[] { p }, type, outline, new[] { size }, fill, stroke, strokeThickness, edgeRenderingMode, dashArray);
         }
 
         /// <summary>
@@ -296,6 +298,7 @@ namespace OxyPlot
         /// <param name="markerStroke">The marker stroke.</param>
         /// <param name="markerStrokeThickness">The marker stroke thickness.</param>
         /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        /// <param name="dashArray"></param>
         /// <param name="resolution">The resolution.</param>
         /// <param name="binOffset">The bin Offset.</param>
         public static void DrawMarkers(
@@ -308,6 +311,7 @@ namespace OxyPlot
             OxyColor markerStroke,
             double markerStrokeThickness,
             EdgeRenderingMode edgeRenderingMode,
+            double[] dashArray,
             int resolution = 0,
             ScreenPoint binOffset = new ScreenPoint())
         {
@@ -321,6 +325,7 @@ namespace OxyPlot
                 markerStroke,
                 markerStrokeThickness,
                 edgeRenderingMode,
+                dashArray,
                 resolution,
                 binOffset);
         }
@@ -339,6 +344,7 @@ namespace OxyPlot
         /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <param name="resolution">The resolution.</param>
         /// <param name="binOffset">The bin Offset.</param>
+        /// <param name="dashArray"></param>
         public static void DrawMarkers(
             this IRenderContext rc,
             IList<ScreenPoint> markerPoints,
@@ -349,6 +355,7 @@ namespace OxyPlot
             OxyColor markerStroke,
             double markerStrokeThickness,
             EdgeRenderingMode edgeRenderingMode,
+            double[]? dashArray,
             int resolution = 0,
             ScreenPoint binOffset = new ScreenPoint())
         {
@@ -396,22 +403,22 @@ namespace OxyPlot
 
             if (ellipses.Count > 0)
             {
-                rc.DrawEllipses(ellipses, markerFill, markerStroke, markerStrokeThickness, edgeRenderingMode);
+                rc.DrawEllipses(ellipses, markerFill, markerStroke, markerStrokeThickness, edgeRenderingMode, dashArray);
             }
 
             if (rects.Count > 0)
             {
-                rc.DrawRectangles(rects, markerFill, markerStroke, markerStrokeThickness, edgeRenderingMode);
+                rc.DrawRectangles(rects, markerFill, markerStroke, markerStrokeThickness, edgeRenderingMode, dashArray);
             }
 
             if (polygons.Count > 0)
             {
-                rc.DrawPolygons(polygons, markerFill, markerStroke, markerStrokeThickness, edgeRenderingMode);
+                rc.DrawPolygons(polygons, markerFill, markerStroke, markerStrokeThickness, edgeRenderingMode, dashArray);
             }
 
             if (lines.Count > 0)
             {
-                rc.DrawLineSegments(lines, markerStroke, markerStrokeThickness, edgeRenderingMode);
+                rc.DrawLineSegments(lines, markerStroke, markerStrokeThickness, edgeRenderingMode, dashArray);
             }
         }
 
