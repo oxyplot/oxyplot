@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Example to demonstrate how to create vertical BarSeries
 
 ### Fixed
+- Validate unsupported histogram extreme value modes
 - DateTimeAxis converting local time rather than UTC to TimeZone
 
 ### Changed

@@ -92,10 +92,10 @@ namespace OxyPlot
                 throw new ArgumentException(nameof(outlierMode), "Unsupported bin interval type");
             }
 
-            if (intervalType != BinningIntervalType.InclusiveLowerBound &&
-                intervalType != BinningIntervalType.InclusiveUpperBound)
+            if (extremeValuesMode != BinningExtremeValueMode.ExcludeExtremeValues &&
+                extremeValuesMode != BinningExtremeValueMode.IncludeExtremeValues)
             {
-                throw new ArgumentException(nameof(outlierMode), "Unsupported bin interval type");
+                throw new ArgumentException("Unsupported bin extreme values mode", nameof(extremeValuesMode));
             }
 
             this.OutlierMode = outlierMode;
