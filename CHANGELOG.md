@@ -12,8 +12,8 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Target .NET 10, remove target .NET 6 (out of support and incompatible with nuget updates)
-- Update ImageSharp to 3.1.11
-- Update ImageSharp.Drawing to 2.1.4
+- Update ImageSharp to 4.1.3
+- Update ImageSharp.Drawing to 3.1.3
 - Update SkiaSharp.Views.Desktop.Common to 3.119.2
 - Update SkiaSharp to 3.199.2
 - Update SkiaSharp.HarfBuzz to 3.199.2

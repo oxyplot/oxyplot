@@ -23,6 +23,11 @@ namespace OxyPlot.ImageSharp
     using SixLabors.ImageSharp.Processing;
     using SixLabors.ImageSharp.Drawing;
     using SixLabors.ImageSharp.Processing.Processors;
+    using SixLabors.ImageSharp.Drawing.Text;
+    using System.Numerics;
+
+    using LineJoin = OxyPlot.LineJoin;
+    using ImageSharpLineJoin = SixLabors.ImageSharp.Drawing.LineJoin;
 
     /// <summary>
     /// Provides an implementation of IRenderContext which draws to a <see cref="Image"/>.
@@ -79,7 +84,7 @@ namespace OxyPlot.ImageSharp
             this.Dpi = (float)dpi;
             this.DpiScale = (float)(dpi / 96.0);
 
-            this.image.Mutate(img => img.BackgroundColor(ToRgba32(background)));
+            this.image.Mutate(img => img.BackgroundColor(ToRgba32Color(background)));
 
             this.RendersToScreen = false;
 
@@ -174,8 +179,9 @@ namespace OxyPlot.ImageSharp
             var outputY = this.Convert(p.Y);
             var outputPosition = new PointF(outputX, outputY);
 
-            var cos = (float)Math.Cos(rotation * Math.PI / 180.0);
-            var sin = (float)Math.Sin(rotation * Math.PI / 180.0);
+            var rotationRadians = rotation * Math.PI / 180.0;
+            var cos = (float)Math.Cos(rotationRadians);
+            var sin = (float)Math.Sin(rotationRadians);
 
             // measure bounds of the whole text (we only need the height)
             var bounds = this.MeasureTextLoose(text, fontFamily!, fontSize, fontWeight);
@@ -243,15 +249,19 @@ namespace OxyPlot.ImageSharp
                 });
 
                 // translate and rotate into possition
-                var transform = Matrix3x2Extensions.CreateRotationDegrees((float)rotation);
-                transform.Translation = lineBaseLineLeft;
-                var glyphs = glyphsAtOrigin.Transform(transform);
+                var transform = Matrix4x4.CreateRotationZ((float)rotationRadians);
+                transform.Translation = ToVector3(lineBaseLineLeft);
+                var glyphs = glyphsAtOrigin.Select(gpc => gpc.Transform(transform));
 
                 // draw the glyphs
-                this.Target.Mutate(img =>
+                var brush = new SolidBrush(ToRgba32Color(fill));
+                this.Target.Mutate(img => img.Paint(canvas =>
                 {
-                    img.Fill(ToRgba32(fill), glyphs);
-                });
+                    foreach (var glythPathCollection in glyphs)
+                    {
+                        canvas.Fill(brush, glythPathCollection.Paths);
+                    }
+                }));
             }
         }
 
@@ -367,7 +377,7 @@ namespace OxyPlot.ImageSharp
         }
 
         /// <inheritdoc/>
-        public override void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray, LineJoin lineJoin)
+        public override void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, EdgeRenderingMode edgeRenderingMode, double[] dashArray, OxyPlot.LineJoin lineJoin)
         {
             if (points.Count < 2)
             {
@@ -390,10 +400,10 @@ namespace OxyPlot.ImageSharp
                 return;
             }
 
-            this.Target.Mutate(img =>
+            this.Target.Mutate(img => img.Paint(options, canvas =>
             {
-                img.DrawLine(options, pen, actualPoints);
-            });
+                canvas.DrawLine(pen, actualPoints);
+            }));
         }
 
         /// <summary>
@@ -431,20 +441,23 @@ namespace OxyPlot.ImageSharp
             }
 
             var actualPoints = this.GetActualPoints(points, thickness, edgeRenderingMode).ToArray();
+            var path = new PathBuilder();
+            path.AddPolygon(actualPoints);
+
             var options = this.CreateDrawingOptions(this.ShouldUseAntiAliasingForLine(edgeRenderingMode, points));
 
-            this.Target.Mutate(img =>
+            this.Target.Mutate(img => img.Paint(options, canvas =>
             {
                 if (brush != null)
                 {
-                    img.FillPolygon(options, brush, actualPoints);
+                    canvas.Fill(brush, path);
                 }
 
                 if (pen != null)
                 {
-                    img.DrawPolygon(options, pen, actualPoints);
+                    canvas.Draw(pen, path);
                 }
-            });
+            }));
         }
 
         /// <summary>
@@ -459,7 +472,7 @@ namespace OxyPlot.ImageSharp
                 return null;
             }
 
-            return Brushes.Solid(ToRgba32(fill));
+            return Brushes.Solid(ToRgba32Color(fill));
         }
 
         /// <summary>
@@ -480,36 +493,39 @@ namespace OxyPlot.ImageSharp
 
             var actualThickness = this.GetActualThickness(thickness, edgeRenderingMode);
             var actualDashArray = dashArray is null ? null : this.ConvertDashArray(dashArray, actualThickness);
-            var actualJointStyle = this.GetLineJointStyle(lineJoin);
+            var actualLineJoin = this.GetLineJoin(lineJoin);
 
-            var penOptions = new PenOptions(ToRgba32(stroke), actualThickness, actualDashArray)
+            var penOptions = new PenOptions(ToRgba32Color(stroke), actualThickness, actualDashArray)
             {
-                JointStyle = actualJointStyle,
+                StrokeOptions = new StrokeOptions()
+                {
+                    LineJoin = actualLineJoin
+                },
             };
 
             return new PatternPen(penOptions);
         }
 
         /// <summary>
-        /// Converts a <see cref="LineJoin" /> to a <see cref="JointStyle"/>.
+        /// Converts a <see cref="LineJoin" /> to a <see cref="ImageSharpLineJoin"/>.
         /// </summary>
         /// <param name="lineJoin">The line join type.</param>
         /// <returns>The converted line join style.</returns>
-        protected JointStyle GetLineJointStyle(LineJoin lineJoin)
+        protected ImageSharpLineJoin GetLineJoin(LineJoin lineJoin)
         {
             switch (lineJoin)
             {
                 case LineJoin.Miter:
-                    return JointStyle.Miter;
+                    return ImageSharpLineJoin.Miter;
 
                 case LineJoin.Bevel:
-                    return JointStyle.Square;
+                    return ImageSharpLineJoin.Bevel;
 
                 case LineJoin.Round:
-                    return JointStyle.Round;
+                    return ImageSharpLineJoin.Round;
 
                 default:
-                    return JointStyle.Miter;
+                    return ImageSharpLineJoin.Miter;
             }
         }
 
@@ -569,13 +585,13 @@ namespace OxyPlot.ImageSharp
         }
 
         /// <summary>
-        /// Translates an <see cref="OxyColor"/> to a <see cref="Rgba32"/>.
+        /// Translates an <see cref="OxyColor"/> to a <see cref="Color"/> via a <see cref="Rgba32"/>.
         /// </summary>
         /// <param name="color">The <see cref="OxyColor"/>.</param>
-        /// <returns>The resulting <see cref="Rgba32"/>.</returns>
-        private static Rgba32 ToRgba32(OxyColor color)
+        /// <returns>The resulting <see cref="Color"/>.</returns>
+        private static Color ToRgba32Color(OxyColor color)
         {
-            return new Rgba32(color.R, color.G, color.B, color.A);
+            return Color.FromPixel(new Rgba32(color.R, color.G, color.B, color.A));
         }
 
         /// <summary>
@@ -726,8 +742,8 @@ namespace OxyPlot.ImageSharp
             var font = this.GetFontOrThrow(fontFamily, fontSize, this.ToFontStyle(fontWeight));
             var actualFontSize = this.NominalFontSizeToPoints(fontSize);
 
-            var result = TextMeasurer.MeasureSize(text, new TextOptions(font) { Dpi = this.Dpi });
-            return new OxySize(this.ConvertBack(result.Width), this.ConvertBack(result.Height));
+            var result = TextMeasurer.Measure(text, new TextOptions(font) { Dpi = this.Dpi });
+            return new OxySize(this.ConvertBack(result.Bounds.Width), this.ConvertBack(result.Bounds.Height));
         }
 
         /// <summary>
@@ -928,6 +944,16 @@ namespace OxyPlot.ImageSharp
             };
 
             return options;
+        }
+
+        /// <summary>
+        /// Prepares a <see cref="Vector3"/> from the X and Y components of a <see cref="PointF"/>.
+        /// </summary>
+        /// <param name="point">The <see cref="PointF"/>.</param>
+        /// <returns>A <see cref="Vector3"/> with X and Y components from <paramref name="point"/>, and Z component of zero.</returns>
+        private static Vector3 ToVector3(PointF point)
+        {
+            return new Vector3(point.X, point.Y, 0.0f);
         }
     }
 }
